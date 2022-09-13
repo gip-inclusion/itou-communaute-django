@@ -7,7 +7,7 @@ repos:
       - id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev", "--without-hashes"]
       - id: poetry-export
-        args: ["-f", "requirements.txt", "-o", "requirements/prod.txt", "--without-hashes"]
+        args: ["-f", "requirements.txt", "-o", "requirements/base.txt", "--without-hashes"]
   - repo: https://github.com/psf/black
     rev: 22.8.0
     hooks:
