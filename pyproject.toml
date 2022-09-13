@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "lacommunaute"
+version = "0.1.0"
+description = "La communauté de l'inclusion"
+authors = []
+license = "GNU AFFERO GENERAL PUBLIC LICENSE"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+export = { shell = "poetry export --without-hashes --output requirements/staging.txt" }
+export_dev = { shell = "poetry export --without-hashes --dev --output requirements/dev.txt" }
