@@ -40,3 +40,48 @@ superuser:
 requirements:
 	poetry run poe export_dev
 	poetry run poe export
+
+# QUALITY ASSURANCE
+# ~~~~~~~~~~~~~~~~~
+# The following rules can be used to check code quality, import sorting, etc.
+# --------------------------------------------------------------------------------------------------
+
+.PHONY: quality pylint djhtml black flake8
+## Trigger all quality assurance checks.
+quality:
+	$(EXEC_CMD) black --check $(PROJECT_NAME)
+	$(EXEC_CMD) isort --check $(PROJECT_NAME)
+## 	$(EXEC_CMD) djhtml --check $(shell find main/templates -name "*.html")
+	$(EXEC_CMD) flake8 $(PROJECT_NAME) --count --show-source --statistics
+
+pylint:
+	poetry run pylint $(PROJECT_NAME)
+
+black:
+	poetry run black $(PROJECT_NAME)
+
+flake8:
+	poetry run flake8 $(PROJECT_NAME)
+
+isort:
+	poetry run isort $(PROJECT_NAME)
+
+#djhtml:
+#	poetry run djhtml -i $(shell find main/templates -name "*.html")
+
+# TESTING
+# ~~~~~~~
+# The following rules can be used to trigger tests execution and produce coverage reports.
+# --------------------------------------------------------------------------------------------------
+
+.PHONY: t tests
+## Alias of "tests".
+t: tests
+## Run the Python test suite.
+tests:
+	poetry run py.test
+
+.PHONY: coverage
+## Collects code coverage data.
+coverage:
+	poetry run py.test --cov-report term-missing --cov $(PROJECT_NAME)
