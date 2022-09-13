@@ -11,10 +11,13 @@ python = "^3.10"
 Django = "^4.1.1"
 
 
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.16.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
-export = { shell = "poetry export --without-hashes --output requirements/staging.txt" }
-export_dev = { shell = "poetry export --without-hashes --dev --output requirements/dev.txt" }
+export = { shell = "poetry export --without-hashes --output requirements/prod.txt" }
+export_dev = { shell = "poetry export --without-hashes --with dev --output requirements/dev.txt" }
