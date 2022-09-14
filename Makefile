@@ -12,7 +12,7 @@ init:
 	poetry install
 
 
-.PHONY: c console migrate migrations s server superuser requirements
+.PHONY: c console migrate migrations s server
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -33,13 +33,7 @@ migrations:
 s: server
 server:
 	poetry run python manage.py runserver 127.0.0.1:8000 --settings=$(DJANGO_SETTINGS_MODULE)
-
-superuser:
-	poetry run python manage.py createsuperuser --settings=$(DJANGO_SETTINGS_MODULE)
-
-requirements:
-	poetry run poe export_dev
-	poetry run poe export
+	
 
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
@@ -69,19 +63,5 @@ isort:
 #djhtml:
 #	poetry run djhtml -i $(shell find main/templates -name "*.html")
 
-# TESTING
-# ~~~~~~~
-# The following rules can be used to trigger tests execution and produce coverage reports.
-# --------------------------------------------------------------------------------------------------
 
-.PHONY: t tests
-## Alias of "tests".
-t: tests
-## Run the Python test suite.
-tests:
-	poetry run py.test
 
-.PHONY: coverage
-## Collects code coverage data.
-coverage:
-	poetry run py.test --cov-report term-missing --cov $(PROJECT_NAME)
