@@ -29,6 +29,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
 ]
 LOCAL_APPS = [
     # Core apps, order is important.
@@ -73,6 +74,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "HOST": os.getenv("POSTGRESQL_ADDON_DIRECT_HOST"),
         "PORT": os.getenv("POSTGRESQL_ADDON_DIRECT_PORT"),
         "NAME": os.getenv("POSTGRESQL_ADDON_DB"),
