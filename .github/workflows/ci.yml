@@ -7,10 +7,16 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
+      PYTHONPATH: .
+      DJANGO_SETTINGS_MODULE: config.settings.base
+      DJANGO_SECRET_KEY: ministryofsillywalks
       CPUCOUNT: 1
       PGPASSWORD: password
       PGHOST: localhost
       PGUSER: postgres
+      POSTGRESQL_ADDON_DB: communaute
+      POSTGRESQL_ADDON_CUSTOM_USER: postgres
+      POSTGRESQL_ADDON_CUSTOM_PASSWORD: password
     services:
       postgres:
         # Docker Hub image
@@ -43,3 +49,9 @@ jobs:
           pip install -r requirements/dev.txt
       - name: ✨ Black, isort, flake8 & djhtml
         run: make quality
+      - name: 🚧 Check pending migrations
+        run: django-admin makemigrations --check --dry-run --noinput
+      - name: 🤹‍ Django tests
+        run: django-admin test --noinput --failfast --parallel
+        env:
+          DJANGO_DEBUG: True
