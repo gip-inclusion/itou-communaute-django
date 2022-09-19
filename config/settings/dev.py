@@ -16,3 +16,10 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 AUTH_PASSWORD_VALIDATORS = []  # Avoid password strength validation in DEV.
+
+if os.getenv("SQL_DEBUG", "False") == "True":
+    LOGGING.setdefault("loggers", {})["django.db.backends"] = {
+        "level": "DEBUG",
+        "handlers": ["console"],
+        "propagate": False,
+    }
