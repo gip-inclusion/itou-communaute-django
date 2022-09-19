@@ -88,6 +88,12 @@ LOGGING = {
     },
 }
 
+_sentry_dsn = os.getenv("SENTRY_DSN")
+if _sentry_dsn:
+    from ._sentry import sentry_init
+
+    sentry_init(dsn=_sentry_dsn)
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
