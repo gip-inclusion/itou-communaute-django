@@ -7,15 +7,24 @@
 #### Configuration environnement
 
 ```bash
-$ cp env.default.sh env.local.sh
-# Préparation de l'environnement local
-$ source ./env.local.sh
+$ cp .env.template .env
+```
+
+Installation de Poetry
+```bash
+$ poetry install
 ```
 
 #### Lancement
 
+Pour utiliser Poetry avec les commandes du fichier `Makefile`, ajoutez les variables d'environnement :
+
+* `USE_POETRY` à la valeur 1
+* `DJANGO_SETTINGS_MODULE` pour activer les settings de prod (`config.settings.base`) ou de dev (`config.settings.dev`)
+
+
 ```bash
-$ poetry run python manage.py runserver
+$ make server
 ```
 
 
@@ -31,6 +40,13 @@ Ajout d'une dépendance de développement :
 
 ```bash
 poetry add --group dev poethepoet
+```
+
+### Mise à jour des dépendances
+
+```bash
+poetry update
+poetry lock
 ```
 
 ## Générer les fichiers `requirements`
