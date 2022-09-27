@@ -4,6 +4,12 @@ else
 	EXEC_CMD :=
 endif
 
+ifeq ($(DJANGO_SETTINGS_MODULE),)
+    SETTINGS :=
+else
+    SETTINGS := --settings=$(DJANGO_SETTINGS_MODULE)
+endif
+
 .PHONY: console migrate migrations server
 
 # DEVELOPMENT
@@ -13,16 +19,16 @@ endif
 # --------------------------------------------------------------------------------------------------
 
 console:
-	$(EXEC_CMD) python manage.py shell
+	$(EXEC_CMD) python manage.py shell $(SETTINGS)
 
 migrate:
-	$(EXEC_CMD) python manage.py migrate
+	$(EXEC_CMD) python manage.py migrate $(SETTINGS)
 
 migrations:
-	$(EXEC_CMD) python manage.py makemigrations
+	$(EXEC_CMD) python manage.py makemigrations $(SETTINGS)
 
 server:
-	$(EXEC_CMD) python manage.py runserver
+	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
 
 
 # QUALITY ASSURANCE
