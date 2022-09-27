@@ -73,11 +73,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "HOST": os.getenv("POSTGRESQL_ADDON_DIRECT_HOST"),
-        "PORT": os.getenv("POSTGRESQL_ADDON_DIRECT_PORT"),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.getenv("POSTGRESQL_ADDON_HOST"),
+        "PORT": os.getenv("POSTGRESQL_ADDON_PORT"),
         "NAME": os.getenv("POSTGRESQL_ADDON_DB"),
-        "USER": os.getenv("POSTGRESQL_ADDON_CUSTOM_USER"),
-        "PASSWORD": os.getenv("POSTGRESQL_ADDON_CUSTOM_PASSWORD"),
+        "USER": os.getenv("POSTGRESQL_ADDON_USER"),
+        "PASSWORD": os.getenv("POSTGRESQL_ADDON_PASSWORD"),
     }
 }
 
