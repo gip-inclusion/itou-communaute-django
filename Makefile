@@ -47,3 +47,21 @@ flake8:
 
 isort:
 	$(EXEC_CMD) isort lacommunaute
+
+# Docker shell.
+# =============================================================================
+
+.PHONY: shell_on_postgres_container
+
+shell_on_postgres_container:
+	docker exec -ti postgres /bin/bash
+
+
+# Postgres CLI.
+# =============================================================================
+
+.PHONY: psql psql_root
+
+# Connect to the `postgres` database as the POSTGRES_USER user.
+psql:
+	docker exec -ti -e PGPASSWORD=password postgres psql -U $(POSTGRES_USER)

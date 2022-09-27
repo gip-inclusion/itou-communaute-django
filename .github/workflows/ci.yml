@@ -7,12 +7,33 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      DJANGO_SETTINGS_MODULE: config.settings.base
-      DJANGO_SECRET_KEY: ministryofsillywalks
+      CPUCOUNT: 1
+      PGPASSWORD: password
+      PGHOST: localhost
+      PGUSER: postgres
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10
+      - name: 💾 Create a database to check migrations
+        run: |
+          psql <<SQL
+              CREATE DATABASE communaute;
+          SQL
+      - name: 💂 Install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
