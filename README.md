@@ -10,7 +10,7 @@
 $ cp .env.template .env
 ```
 
-Installation de Poetry
+Installation des dependances avec Poetry
 ```bash
 $ poetry install
 ```
