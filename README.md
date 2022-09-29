@@ -49,9 +49,28 @@ poetry update
 poetry lock
 ```
 
-## Générer les fichiers `requirements`
+### Générer les fichiers `requirements`
 
 ```bash
 poetry run poe export
 poetry run poe export_dev
 ```
+
+## Docker
+
+
+### Lancer le serveur local
+
+```bash
+$ cp .env.template .env
+```
+
+Pour Docker, mettre : `POSTGRESQL_ADDON_HOST=postgres`.
+
+```bash
+$ docker-compose up -d
+```
+
+Visitez la page d'accueil du projet : http://localhost:8000.
+
+Si le port 8000 ne vous convient pas, vous pouvez définir la variable `DJANGO_PORT_ON_DOCKER_HOST` dans votre `.env` pour mettre le port que vous souhaitez.
