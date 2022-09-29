@@ -68,6 +68,6 @@ shell_on_postgres_container:
 
 .PHONY: psql psql_root
 
-# Connect to the `postgres` database as the POSTGRES_USER user.
+# Connect to the `postgres` container as the POSTGRES_USER user.
 psql:
-	docker exec -ti -e PGPASSWORD=password postgres psql -U $(POSTGRES_USER)
+	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) postgres psql -U $(POSTGRES_USER)
