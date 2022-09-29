@@ -23,6 +23,9 @@ pylint-django = "^2.5.3"
 pre-commit = "^2.20.0"
 djhtml = "^1.5.2"
 coverage = "^6.4.4"
+django-extensions = "^3.2.1"
+django-debug-toolbar = "^3.7.0"
+Werkzeug = "^2.2.2"
 
 [build-system]
 requires = ["poetry-core"]
