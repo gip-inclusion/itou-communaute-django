@@ -33,6 +33,7 @@ DJANGO_APPS = [
 ]
 LOCAL_APPS = [
     # Core apps, order is important.
+    "lacommunaute.users",
     "lacommunaute.www.home",
 ]
 
@@ -102,6 +103,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Auth.
+# ------------------------------------------------------------------------------
+AUTH_USER_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin.
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
