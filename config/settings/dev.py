@@ -30,6 +30,27 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 INSTALLED_APPS += ["debug_toolbar"]  # noqa F405
 
+INTERNAL_IPS = ["127.0.0.1"]
+
+# Enable django-debug-toolbar with Docker.
+import socket
+
+
+_, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS += [ip[:-1] + "1" for ip in ips]
+
+MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa F405
+
+DEBUG_TOOLBAR_CONFIG = {
+    # https://django-debug-toolbar.readthedocs.io/en/latest/panels.html#panels
+    "DISABLE_PANELS": [
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+        # ProfilingPanel makes the django admin extremely slow...
+        "debug_toolbar.panels.profiling.ProfilingPanel",
+    ],
+    "SHOW_TEMPLATE_CONTEXT": True,
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
