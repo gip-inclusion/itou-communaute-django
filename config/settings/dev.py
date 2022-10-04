@@ -64,3 +64,10 @@ DATABASES = {
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
     }
 }
+# Emails in Mailhog
+# ------------------------------------------------------------------------------
+EMAIL_HOST = "0.0.0.0"
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_TLS = False
