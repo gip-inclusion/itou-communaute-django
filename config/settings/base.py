@@ -34,7 +34,8 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     # Core apps, order is important.
     "lacommunaute.users",
-    "lacommunaute.www.home",
+    "lacommunaute.www.pages",
+    "lacommunaute.utils"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
@@ -129,7 +130,21 @@ DATE_INPUT_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%d %m %Y"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+# Static Files
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = (os.path.join(APPS_DIR, "static"),)
+
+STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
+
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+# STATICFILES_FINDERS = [
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
+# ]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

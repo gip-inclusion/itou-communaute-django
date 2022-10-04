@@ -1,0 +1,103 @@
+{% load static %}
+{% load theme_inclusion %}
+
+<section class="s-prefooter s-prefooter--communaute">
+    <div class="s-prefooter__container container">
+        <div class="s-prefooter__row row">
+            <div class="s-prefooter__col col-12 col-sm-auto d-flex align-items-center">
+                <div class="s-prefooter__logo">
+                    <img src="{% static_theme_images 'logo-communaute-inclusion.svg' %}" alt="La communauté de l'inclusion'">
+                </div>
+            </div>
+            <div class="s-prefooter__col col-12 col-sm d-flex align-items-center justify-content-start justify-content-sm-end justify-content-lg-start">
+                <p class="mb-0">
+                    Le site de la communauté <br class="d-none d-lg-inline">
+                    de l'inclusion dédié aux communautés,<br class="d-none d-lg-inline">
+                    service en expérimentation
+                </p>
+            </div>
+            <div class="s-prefooter__col col-12 col-lg-6 d-flex align-items-center">
+                <ul class="s-prefooter__gridlist">
+                    <li><a href="{% url 'pages:statistiques' %}">Statistiques</a></li>
+                    <li><a href="" target="_blank" rel="noopener" title="Github (lien externe)">Github</a><i class="ri-external-link-line ml-1 font-weight-bold"></i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="s-footer" role="contentinfo" id="footer">
+    <section class="s-footer-help">
+        <div class="s-footer-help__container container">
+            <div class="s-footer-help__row row">
+                <div class="s-footer-help__col col-12 col-lg">
+                    <ul>
+                        <li><a href="{% url 'pages:contact' %}">Nous contacter</a></li>
+                    </ul>
+                </div>
+                <div class="s-footer-help__col col-12 col-lg-auto">
+                    <ul>
+                        <li><span>Nous suivre</span></li>
+                        <li><a href="https://twitter.com/inclusion_gouv" target="_blank" rel="noopener"><img src="{% static_theme_images 'picto-twitter.svg' %}" height="25" alt="Rejoignez-nous sur Twitter (lien externe)"></a></li>
+                        <li><a href="https://www.linkedin.com/company/inclusion-gouv/" target="_blank" rel="noopener"><img src="{% static_theme_images 'picto-linkedin.svg' %}" height="25" alt="Rejoignez-nous sur Linkedin (lien externe)"></a></li>
+                        <li><a href="https://www.facebook.com/inclusion.gouv/" target="_blank" rel="noopener"><img src="{% static_theme_images 'picto-facebook.svg' %}" height="25" alt="Rejoignez-nous sur Facebook (lien externe)"></a></li>
+                        <li><a href="https://www.instagram.com/inclusion_gouv/" target="_blank" rel="noopener"><img src="{% static_theme_images 'picto-instagram.svg' %}" height="25" alt="Rejoignez-nous sur Instagram (lien externe)"></a></li>
+                        <li><a href="https://www.youtube.com/channel/UC06_yIYfzAiDOMTemH9q3OQ" target="_blank" rel="noopener"><img src="{% static_theme_images 'picto-youtube.svg' %}" height="25" alt="Rejoignez-nous sur Youtube (lien externe)"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-footer-nav">
+        <div class="s-footer-nav__container container">
+            <div class="s-footer-nav__row row">
+                <div class="s-footer-nav__col col-5 col-lg-2 d-flex align-items-center">
+                    <div class="s-footer-nav__logo">
+                        <img src="{% static_theme_images 'logo-republique-francaise.svg' %}" alt="République Française" class="img-fluid">
+                    </div>
+                </div>
+                <div class="s-footer-nav__col col-7 col-lg-4 d-flex align-items-center justify-content-end justify-content-lg-start">
+                    <div class="d-inline-block text-center">
+                        <span class="d-block">
+                            <img src="{% static_theme_images 'logo-plateforme-inclusion.svg' %}" height="60" alt="Plateforme de l'inclusion">
+                        </span>
+                        <span class="d-block mt-2">
+                            <img src="{% static_theme_images 'logo-accelere-betagouv.svg' %}" alt="Accéléré par Beta.gouv.fr">
+                        </span>
+                    </div>
+                </div>
+                <div class="s-footer-nav__col col-12 col-lg-6 d-flex align-items-center">
+                    <div>
+                        <p class="mb-3">
+                            Notre mantra issu du Pacte Ambition IAE : Permettre à chacun de trouver sa place.
+                            Libérons notre potentiel d'inclusion pour créer 100 000 emplois de plus.
+                        </p>
+                        <ul>
+                            <li><a href="https://emplois.inclusion.beta.gouv.fr" target="_blank" rel="noopener" title="Les emplois (lien externe)">Les emplois</a></li>
+                            <li><a href="https://communaute.inclusion.beta.gouv.fr" target="_blank" rel="noopener" title="La communauté (lien externe)">La communauté</a></li>
+                            <li><a href="https://pilotage.inclusion.beta.gouv.fr" target="_blank" rel="noopener" title="Le pilotage (lien externe)">Le pilotage</a></li>
+                            <li><a href="https://lemarche.inclusion.beta.gouv.fr" target="_blank" rel="noopener" title="Le marché (lien externe)">Le marché</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-footer-legal">
+        <div class="s-footer-legal__container container">
+            <div class="s-footer-legal__row row">
+                <div class="s-footer-legal__col col-12 col-lg">
+                    <ul>
+                        <li><a href="https://doc.inclusion.beta.gouv.fr/mentions" rel="noopener" target="_blank" title="Mentions légales (lien externe)">Mentions légales</a></li>
+                        <li><a href="{% url 'pages:accessibilite' %}">Accessibilité : non conforme</a></li>
+                    </ul>
+                </div>
+                <div class="s-footer-legal__col col-12 col-lg text-lg-right">
+                    <span>© République Française 2022</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
