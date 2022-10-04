@@ -13,6 +13,9 @@ ENV/
 # Django stuff:
 *.log
 
+# Project specific
+lacommunaute/static_collected/
+
 # Clever Cloud
 .clever.json
 
@@ -22,12 +25,17 @@ ENV/
 # Code quality
 .pylint.d
 *.isorted
+.cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 /.local/
+
+# Project specific
+lacommunaute/staticfiles/
+lacommunaute/media/
 
 # Debian
 .bash_history

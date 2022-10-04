@@ -1,0 +1,193 @@
+{% load static %}
+{% load theme_inclusion %}
+
+<section class="s-preheader d-none d-xl-block">
+    <div class="container s-preheader__container">
+        <div class="row">
+            <div class="col-12 s-preheader__col d-flex align-items-center justify-content-end">
+                <ul>
+                    <li>
+                        <a href="https://inclusion.beta.gouv.fr" class="is-plateforme" rel="noopener" target="_blank" title="La Plateforme de l'inclusion (lien externe)">
+                            <span>La plateforme</span>
+                            <i class="ri-arrow-right-up-line ri-lg"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://emplois.inclusion.beta.gouv.fr" class="is-emploi" rel="noopener" target="_blank" title="Les emplois de l'inclusion (lien externe)">
+                            <span>Les emplois</span>
+                            <i class="ri-arrow-right-up-line ri-lg"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://communaute.inclusion.beta.gouv.fr" class="is-communaute" rel="noopener" target="_blank" title="La communauté de l'inclusion (lien externe)">
+                            <span>La communauté</span>
+                            <i class="ri-arrow-right-up-line ri-lg"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://lemarche.inclusion.beta.gouv.fr" class="is-marche" rel="noopener" target="_blank" title="Le marché de l'inclusion (lien externe)">
+                            <span>Le marché</span>
+                            <i class="ri-arrow-right-up-line ri-lg"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://pilotage.inclusion.beta.gouv.fr" class="is-pilotage" rel="noopener" target="_blank" title="Le pilotage de l'inclusion (lien externe)">
+                            <span>Le pilotage</span>
+                            <i class="ri-arrow-right-up-line ri-lg"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<header id="header" class="s-header s-header--communaute sticky-top" role="banner">
+    <section class="s-header__container container">
+        <div class="s-header__row row">
+            <div class="s-header__col s-header__col--logo col-auto d-flex align-items-center pr-0 pr-md-3">
+                <a href="{% url 'pages:home' %}" class="s-header__logo-ministere">
+                    <img src="{% static_theme_images 'logo-ministere-emploi.svg' %}" alt="Ministère du travail, du plein emploi et de l'insertion">
+                </a>
+            </div>
+            <div class="s-header__col s-header__col--logo col-auto d-flex align-items-center px-0 px-md-3">
+                <a href="{% url 'pages:home' %}" />
+                    <img src="{% static_theme_images 'logo-communaute-inclusion.svg' %}" alt="La communauté de l'inclusion">
+                </a>
+            </div>
+            <!-- Visible only on large screens -->
+            <div class="s-header__col s-header__col--nav col d-none d-xl-inline-flex d-xl-flex align-items-center justify-content-end">
+                <nav id="nav-primary" role="navigation" aria-label="Navigation principale">
+									<ul>
+										<li>
+											<a href="" class="is-active" rel="noopener">
+												<span>Accueil</span>
+											</a>
+										</li>
+										<li>
+											<a href="" rel="noopener">
+												<span>Item 01</span>
+											</a>
+										</li>
+										<li>
+											<a href="" rel="noopener">
+												<span>Item 02</span>
+											</a>
+										</li>
+										<li>
+											<button class="btn btn-outline-primary">
+													Se connecter
+											</button>
+										</li>
+										<li>
+											<button class="btn btn-primary btn-ico">
+												<span>
+													S'inscrire
+												</span>
+												<i class="ri-arrow-right-line ri-lg"></i>
+											</button>
+										</li>
+									</ul>
+                </nav>
+            </div>
+            <!-- Visible only on small screens -->
+            <div class="s-header__col s-header__col--burger col d-flex align-items-center justify-content-end d-xl-none" data-toggle="burger" aria-controls="burgerNav" tabindex="0">
+                <span id="burger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="51" viewBox="0 0 36 51" role="img" aria-labelledby="title_burger">
+                      <g fill="none" fill-rule="evenodd">
+                        <g fill="#000638" fill-rule="nonzero" transform="translate(2)">
+                          <rect width="32" height="4" rx="2"></rect>
+                          <rect width="32" height="4" y="12" rx="2"></rect>
+                          <rect width="32" height="4" y="24" rx="2"></rect>
+                        </g>
+                        <text fill="#000638" font-family="Roboto" font-size="13" font-weight="400">
+                          <tspan x="2" y="45" id="title_burger">Menu</tspan>
+                        </text>
+                      </g>
+                    </svg>
+                  </span>
+                  <span id="close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="45" viewBox="0 0 44 45" role="img" aria-labelledby="title_close">
+                      <g fill="none" fill-rule="evenodd" transform="translate(-1 -2)">
+                        <g fill="#000638" fill-rule="nonzero" transform="translate(10 1)">
+                          <rect width="32" height="4" x="-3" y="11" rx="2" transform="rotate(45 13 13)"></rect>
+                          <rect width="32" height="4" x="-3" y="11" rx="2" transform="rotate(-45 13 13)"></rect>
+                        </g>
+                        <text fill="#000638" font-family="Roboto" font-size="13" font-weight="400">
+                          <tspan x="3" y="45" id="title_close">Fermer</tspan>
+                        </text>
+                      </g>
+                    </svg>
+                  </span>
+            </div>
+            <div id="burgerNav">
+                <nav role="navigation">
+									<ul>
+										<li>
+											<a href="" class="is-active" rel="noopener">
+												<span>Accueil</span>
+											</a>
+										</li>
+										<li>
+											<a href="" rel="noopener">
+												<span>Item 01</span>
+											</a>
+										</li>
+										<li>
+											<a href="" rel="noopener">
+												<span>Item 02</span>
+											</a>
+										</li>
+										<li>
+											<button class="btn btn-outline-primary">
+													Se connecter
+											</button>
+										</li>
+										<li>
+											<button class="btn btn-primary btn-ico">
+												<span>
+													S'inscrire
+												</span>
+												<i class="ri-arrow-right-line ri-lg"></i>
+											</button>
+										</li>
+									</ul>
+                </nav>
+                <div>
+                    <ul>
+                        <li>
+                            <a href="https://inclusion.beta.gouv.fr" class="is-plateforme" rel="noopener" target="_blank" title="La Plateforme de l'inclusion (lien externe)">
+                                <span>La plateforme</span>
+                                <i class="ri-arrow-right-up-line ri-lg"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://emplois.inclusion.beta.gouv.fr" class="is-emploi" rel="noopener" target="_blank" title="Les emplois de l'inclusion (lien externe)">
+                                <span>Les emplois</span>
+                                <i class="ri-arrow-right-up-line ri-lg"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://communaute.inclusion.beta.gouv.fr" class="is-communaute" rel="noopener" target="_blank" title="La communauté de l'inclusion (lien externe)">
+                                <span>La communauté</span>
+                                <i class="ri-arrow-right-up-line ri-lg"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://lemarche.inclusion.beta.gouv.fr" class="is-marche" rel="noopener" target="_blank" title="Le marché de l'inclusion (lien externe)">
+                                <span>Le marché</span>
+                                <i class="ri-arrow-right-up-line ri-lg"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://pilotage.inclusion.beta.gouv.fr" class="is-pilotage" rel="noopener" target="_blank" title="Le pilotage de l'inclusion (lien externe)">
+                                <span>Le pilotage</span>
+                                <i class="ri-arrow-right-up-line ri-lg"></i>
+                            </a>
+                        </li>
+                    </ul>
+                  </div>
+            </div>
+        </div>
+    </section>
+</header>

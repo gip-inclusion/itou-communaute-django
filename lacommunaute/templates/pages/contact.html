@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Accueil{{ block.super }}{% endblock %}
+{% block body_class %}p-contact{{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="s-title-01">
+    <div class="s-title-01__container container">
+        <div class="s-title-01__row row">
+            <div class="s-title-01__col col-12">
+                <h1 class="s-title-01__title h1"><strong>Contact</strong></h1>
+                <h2 class="h2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt voluptas at eaque ipsa harum, nam quibusdam neque? Fugit necessitatibus, veniam illo cumque iure animi ipsa asperiores. Inventore ullam libero nisi.</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae mollitia, maiores atque provident soluta nam tenetur cupiditate corrupti quisquam eveniet hic iusto necessitatibus aperiam, rerum ex, quia molestias doloribus officiis.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="s-section">
+    <div class="s-section__container container">
+        <div class="s-section__row row">
+            <div class="s-section__col col-12">
+                <p>Base section content</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
