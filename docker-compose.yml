@@ -30,6 +30,7 @@ services:
     restart: always
     ports:
       - "${DJANGO_PORT_ON_DOCKER_HOST:-8000}:8000"
+      - "${DJANGO_DEBUGPY_PORT:-5678}:5678"
 
   mailhog:
     image: mailhog/mailhog:latest

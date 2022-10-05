@@ -12,6 +12,6 @@ django-admin migrate
 
 # --nopin disables for you the annoying PIN security prompt on the web
 # debugger. For local dev only of course!
-django-admin runserver_plus 0.0.0.0:8000 --nopin
+python manage.py runserver_plus 0.0.0.0:8000 --nopin
 
 exec "$@"
