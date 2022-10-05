@@ -74,3 +74,34 @@ $ docker-compose up -d
 Visitez la page d'accueil du projet : http://localhost:8000.
 
 Si le port 8000 ne vous convient pas, vous pouvez définir la variable `DJANGO_PORT_ON_DOCKER_HOST` dans votre `.env` pour mettre le port que vous souhaitez.
+
+### Déboguer pas à pas
+
+Le débogueur démarre par défaut avec `debugpy` dans le conteneur Django sur le port 5678 (que vous pouvez changer avec la variable d'environnement `DJANGO_DEBUGPY_PORT`).
+Il vous reste juste à configurer votre IDE pour qu'il s'y attache. Dans VSCode, il suffit de créer le fichier `launch.json` dans le répertoire `.vscode` comme suit :
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Attacher",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "127.0.0.1",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/app"
+                }
+            ],
+            "django": true
+        }
+    ]
+}
+```
+
+Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le numéro de ligne dans la colonne à gauche et de lancer le débogueur (qui ne fera que s'attacher au serveur de deboguage qui tourne dans votre conteneur).

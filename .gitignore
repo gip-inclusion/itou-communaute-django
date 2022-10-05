@@ -35,3 +35,6 @@ __pycache__/
 
 # Mac Os
 .DS_Store
+
+# VS Code
+.vscode/launch.json
