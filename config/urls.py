@@ -3,12 +3,15 @@ from django.contrib import admin
 from django.urls import include, path
 from machina import urls as machina_urls
 
+from lacommunaute.www.forum_member import urls as forum_member_urls
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # www.
     path("", include("lacommunaute.www.pages.urls")),
     path("", include("django.contrib.auth.urls")),
+    path("members/", include(forum_member_urls)),
     # machina legacy
     path("forum/", include(machina_urls)),
 ]

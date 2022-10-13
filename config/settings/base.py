@@ -61,9 +61,9 @@ MIGRATION_MODULES = {
 LOCAL_APPS = [
     # Core apps, order is important.
     "lacommunaute.users",
-    "lacommunaute.www.pages",
     "lacommunaute.utils",
     "lacommunaute.forum_member",
+    "lacommunaute.www",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
