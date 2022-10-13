@@ -11,6 +11,7 @@ python = "^3.10"
 Django = "^4.1.1"
 python-dotenv = "^0.21.0"
 psycopg2-binary = "^2.9.3"
+django-machina = "^1.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
