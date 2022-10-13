@@ -8,6 +8,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # www.
     path("", include("lacommunaute.www.pages.urls")),
+    path("", include("django.contrib.auth.urls")),
     # machina legacy
     path("forum/", include(machina_urls)),
 ]
