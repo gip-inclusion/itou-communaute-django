@@ -186,15 +186,16 @@ STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
 # ]
 
 
-STATICFILES_DIRS = (MACHINA_MAIN_STATIC_DIR,)
-
-STATICFILES_DIRS = (MACHINA_MAIN_STATIC_DIR,)
+STATICFILES_DIRS = [
+    os.path.join(APPS_DIR, "static"),
+    MACHINA_MAIN_STATIC_DIR,
+]
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = os.path.join(ROOT_DIR, "public/media")
+MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
