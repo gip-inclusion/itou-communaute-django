@@ -12,6 +12,7 @@ Django = "^4.1.1"
 python-dotenv = "^0.21.0"
 psycopg2-binary = "^2.9.3"
 django-machina = "^1.2.0"
+factory-boy = "^3.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
