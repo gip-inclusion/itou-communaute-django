@@ -80,6 +80,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+LOGIN_REDIRECT_URL = "/forum"
+LOGOUT_REDIRECT_URL = "/forum"
 
 TEMPLATES = [
     {
