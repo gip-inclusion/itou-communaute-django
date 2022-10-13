@@ -1,4 +1,4 @@
-# Itou - La communauté de l'inclusion
+# La communauté de l'inclusion
 
 ## Poetry
 
@@ -133,3 +133,67 @@ Il vous reste juste à configurer votre IDE pour qu'il s'y attache. Dans VSCode,
 ```
 
 Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le numéro de ligne dans la colonne à gauche et de lancer le débogueur (qui ne fera que s'attacher au serveur de deboguage qui tourne dans votre conteneur).
+
+## Créer rapidement des forums privés dans le shell
+
+### chargement des modèles
+
+```
+from django.contrib.auth.models import Group
+from machina.core.db.models import get_model
+from machina.core.loading import get_class
+Forum = get_model("forum", "Forum")
+ForumPermission = get_model("forum_permission","ForumPermission")
+UserForumPermission = get_model("forum_permission","UserForumPermission")
+GroupForumPermission = get_model("forum_permission","GroupForumPermission")
+```
+
+### creation du forum et des groupes
+La variable `name` contient le nom du forum privé à créer.
+```
+name = 'nom du forum privé'
+```
+
+```
+forum, _ = Forum.objects.get_or_create(name=name,type=0)
+moderators, _ = Group.objects.get_or_create(name=f"{name} moderators")
+members, _ = Group.objects.get_or_create(name=f"{name} members")
+```
+
+### ajouter les droits pour les utilisateurs anonymes
+```
+UserForumPermission.objects.bulk_create(
+    [UserForumPermission(anonymous_user=True,authenticated_user=False,permission=permission,has_perm=False,forum=forum) for permission in ForumPermission.objects.all()
+    ]
+)
+```
+
+### ajouter les droits pour les utilisateurs authentifiés
+```
+UserForumPermission.objects.bulk_create(
+    [UserForumPermission(anonymous_user=False,authenticated_user=True,permission=permission,has_perm=False,forum=forum) for permission in ForumPermission.objects.all()
+    ]
+)
+```
+
+### ajouter les permissions du groupe moderators
+```
+GroupForumPermission.objects.bulk_create(
+    [GroupForumPermission(group=moderators,permission=permission,has_perm=True,forum=forum) for permission in ForumPermission.objects.all()
+
+    ]
+)
+```
+
+### ajouter les permissions du groupe members
+```
+declined = ['can_edit_posts', 'can_lock_topics', 'can_delete_posts', 'can_move_topics', 'can_approve_posts', 'can_reply_to_locked_topics', 'can_vote_in_polls', 'can_create_polls', 'can_post_stickies', 'can_post_announcements']
+GroupForumPermission.objects.bulk_create(
+    [GroupForumPermission(group=members,permission=permission,has_perm=False,forum=forum) for permission in ForumPermission.objects.filter(codename__in=declined)
+    ]
+)
+GroupForumPermission.objects.bulk_create(
+    [GroupForumPermission(group=members,permission=permission,has_perm=True,forum=forum) for permission in ForumPermission.objects.exclude(codename__in=declined)
+    ]
+)
+```
