@@ -4,13 +4,7 @@ else
 	EXEC_CMD :=
 endif
 
-ifeq ($(DJANGO_SETTINGS_MODULE),)
-    SETTINGS :=
-else
-    SETTINGS := --settings=$(DJANGO_SETTINGS_MODULE)
-endif
-
-.PHONY: console migrate migrations server
+.PHONY: console migrate migrations server rebuild_index
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -19,28 +13,35 @@ endif
 # --------------------------------------------------------------------------------------------------
 
 console:
-	$(EXEC_CMD) python manage.py shell $(SETTINGS)
+	$(EXEC_CMD) python manage.py shell
 
 migrate:
-	$(EXEC_CMD) python manage.py migrate $(SETTINGS)
+	$(EXEC_CMD) python manage.py migrate
 
 migrations:
-	$(EXEC_CMD) python manage.py makemigrations $(SETTINGS)
+	$(EXEC_CMD) python manage.py makemigrations
 
 server:
-	$(EXEC_CMD) python manage.py runserver $(SETTINGS)
+	$(EXEC_CMD) python manage.py runserver
 
+rebuild_index:
+	$(EXEC_CMD) python manage.py rebuild_index
 
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
 # The following rules can be used to check code quality, import sorting, etc.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: quality pylint black flake8 isort
+.PHONY: quality fix pylint black flake8 isort
 quality:
 	$(EXEC_CMD) black --check lacommunaute
 	$(EXEC_CMD) isort --check lacommunaute
 	$(EXEC_CMD) flake8 lacommunaute --count --show-source --statistics
+
+fix:
+	$(EXEC_CMD) black lacommunaute
+	$(EXEC_CMD) isort lacommunaute
+	$(EXEC_CMD) flake8 lacommunaute
 
 pylint:
 	$(EXEC_CMD) pylint lacommunaute
