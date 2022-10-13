@@ -48,15 +48,22 @@ THIRD_PARTIES_APPS = [
     "machina.apps.forum_moderation",
     "machina.apps.forum_search",
     "machina.apps.forum_tracking",
-    "machina.apps.forum_member",
     "machina.apps.forum_permission",
 ]
+
+# MIGRATION CONFIGURATION
+# ------------------------------------------------------------------------------
+
+MIGRATION_MODULES = {
+    "forum_member": "machina.apps.forum_member.migrations",
+}
 
 LOCAL_APPS = [
     # Core apps, order is important.
     "lacommunaute.users",
     "lacommunaute.www.pages",
     "lacommunaute.utils",
+    "lacommunaute.forum_member",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
@@ -87,6 +94,7 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.media",
                 "django.contrib.messages.context_processors.messages",
                 "machina.core.context_processors.metadata",
             ],
@@ -159,6 +167,7 @@ DATE_INPUT_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%d %m %Y"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+STATIC_ROOT = os.path.join(ROOT_DIR, "public/static")
 
 # Static Files
 STATIC_URL = "/static/"
@@ -176,6 +185,18 @@ STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
 
 
 STATICFILES_DIRS = (MACHINA_MAIN_STATIC_DIR,)
+
+STATICFILES_DIRS = (MACHINA_MAIN_STATIC_DIR,)
+
+# MEDIA CONFIGURATION
+# ------------------------------------------------------------------------------
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+MEDIA_ROOT = os.path.join(ROOT_DIR, "public/media")
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+MEDIA_URL = "/media/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
