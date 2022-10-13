@@ -1,6 +1,7 @@
 import os
 
 from dotenv import load_dotenv
+from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
 
 load_dotenv()
@@ -31,14 +32,34 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
 ]
+
+THIRD_PARTIES_APPS = [
+    # Machina dependencies:
+    "mptt",  # to handle the tree of forum instances
+    "haystack",  # search capabilities
+    "widget_tweaks",
+    # Machina apps:
+    "machina",
+    "machina.apps.forum",
+    "machina.apps.forum_conversation",
+    "machina.apps.forum_conversation.forum_attachments",
+    "machina.apps.forum_conversation.forum_polls",
+    "machina.apps.forum_feeds",
+    "machina.apps.forum_moderation",
+    "machina.apps.forum_search",
+    "machina.apps.forum_tracking",
+    "machina.apps.forum_member",
+    "machina.apps.forum_permission",
+]
+
 LOCAL_APPS = [
     # Core apps, order is important.
     "lacommunaute.users",
     "lacommunaute.www.pages",
-    "lacommunaute.utils"
+    "lacommunaute.utils",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -48,6 +69,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -55,14 +77,22 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(APPS_DIR, "templates")],
-        "APP_DIRS": True,
+        "DIRS": [
+            os.path.join(APPS_DIR, "templates"),
+            MACHINA_MAIN_TEMPLATE_DIR,
+        ],
+        # "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "machina.core.context_processors.metadata",
+            ],
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
         },
     },
@@ -145,8 +175,30 @@ STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
 # ]
 
 
+STATICFILES_DIRS = (MACHINA_MAIN_STATIC_DIR,)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Cache
+# TODO : improve default cache later, with pymemcache or redis
+# https://docs.djangoproject.com/en/4.1/topics/cache/
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
+    "machina_attachments": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/tmp",
+    },
+}
+
+# Search Backend
+# TODO : improve it later with woosh or elastic search
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
+    },
+}
