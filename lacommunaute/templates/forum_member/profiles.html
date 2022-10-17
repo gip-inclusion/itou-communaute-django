@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "board_base.html" %}
 {% load i18n %}
 {% load static %}
 
@@ -16,13 +16,10 @@
                     {% if forum_profile.signature %}
                         <p class="card-text">{{ forum_profile.signature }}</p>
                     {% endif %}
-
-
                 </div>
             </div>
         {% empty %}
             No body yet…
         {% endfor %}
     </div>
-
 {% endblock content %}
