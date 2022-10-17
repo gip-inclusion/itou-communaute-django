@@ -1,13 +1,15 @@
 {% load static %}
+{% load i18n %}
 {% load theme_inclusion %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    {% block head %}
     <meta charset="utf-8" />
-    <title>{% block title %} - La communauté de l'inclusion{% endblock %}</title>
-    {% block meta_description %}
-    <meta name="description" content="">
-    {% endblock %}
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+    <meta name="created" content="{% now "jS M Y h:i" %}" />
+    <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="theme-color" content="#ffffff">
@@ -28,17 +30,19 @@
 
     <!-- Use this to get the value of the CSRF token in JavaScript. -->
     <meta name="csrf-token" content="{{ csrf_token }}">
-
-    <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
-    {% import_static_CSS_theme_inclusion %}
+    {% endblock head %}
 
     {% block extra_head %}{% endblock %}
+
+    {% block css %}
+        <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
+        {% import_static_CSS_theme_inclusion %}
+    {% endblock %}
 
     {% block extra_css %}{% endblock %}
 </head>
 
 <body id="top" class="{% block body_class %}{% endblock %}">
-    <!-- allow a user to go to the main content of the page -->
     <noscript>
         <div class="alert alert-danger" role="status">
             Javascript doit être activé pour pouvoir assurer l'affichage correct de la page (recherche géographique par exemple).
@@ -53,21 +57,21 @@
     </nav>
 
     {% block header %}
-      {% include "includes/_header.html" %}
+      {% include "partials/header.html" %}
     {% endblock %}
 
     {% block sub_header %}{% endblock %}
 
     <main id="main" role="main" class="s-main">
-        {% block breadcrumbs %}{% endblock %}
+       {% block breadcrumb %}{% endblock %}
 
         {% block messages %}
             {% if messages %}
-                <section class="s-section">
-                    <div class="s-section__container container">
+            <section class="s-section">
+                <div class="s-section__container container">
                         <div class="s-section__row row">
                             <div class="s-section__col col-12">
-                                {% include 'includes/_messages.html' %}
+                                {% include 'partials/messages.html' %}
                             </div>
                         </div>
                     </div>
@@ -79,14 +83,13 @@
     </main>
 
     {% block footer %}
-        {% include "includes/_footer.html" %}
-
+        {% include "partials/footer.html" %}
     {% endblock %}
 
     {% block modals %}{% endblock %}
 
     <div class="sr-only sr-only-focusable">
-        <a href="#header">retour au début de la page</a>
+        <a href="#header">Retour au début de la page</a>
     </div>
 
     {% block js %}
