@@ -13,6 +13,8 @@ python-dotenv = "^0.21.0"
 psycopg2-binary = "^2.9.3"
 django-machina = "^1.2.0"
 factory-boy = "^3.2.1"
+boto3 = "^1.24.91"
+django-storages = "^1.13.1"
 
 
 [tool.poetry.group.dev.dependencies]
