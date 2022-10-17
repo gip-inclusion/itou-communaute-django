@@ -4,7 +4,7 @@ else
 	EXEC_CMD :=
 endif
 
-.PHONY: console migrate migrations server rebuild_index
+.PHONY: console migrate migrations server dependencies
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -24,36 +24,29 @@ migrations:
 server:
 	$(EXEC_CMD) python manage.py runserver
 
-rebuild_index:
-	$(EXEC_CMD) python manage.py rebuild_index
+dependencies:
+	poetry lock; poetry run poe export; poetry run poe export_dev
 
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
 # The following rules can be used to check code quality, import sorting, etc.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: quality fix pylint black flake8 isort
+.PHONY: quality fix pylint
 quality:
 	$(EXEC_CMD) black --check lacommunaute
-	$(EXEC_CMD) isort --check lacommunaute
+	$(EXEC_CMD) isort --check --profile black lacommunaute
 	$(EXEC_CMD) flake8 lacommunaute --count --show-source --statistics
 
 fix:
 	$(EXEC_CMD) black lacommunaute
-	$(EXEC_CMD) isort lacommunaute
+	$(EXEC_CMD) isort --profile black lacommunaute
 	$(EXEC_CMD) flake8 lacommunaute
+	$(EXEC_CMD) djhtml --in-place $(shell find lacommunaute/templates -name "*.html")
 
 pylint:
 	$(EXEC_CMD) pylint lacommunaute
 
-black:
-	$(EXEC_CMD) black lacommunaute
-
-flake8:
-	$(EXEC_CMD) flake8 lacommunaute
-
-isort:
-	$(EXEC_CMD) isort lacommunaute
 
 # Docker shell.
 # =============================================================================
