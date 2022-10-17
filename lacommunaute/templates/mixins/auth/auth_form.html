@@ -1,0 +1,19 @@
+<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <i class="icon-exclamation-sign"></i> {{ error }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% for field in form %}
+        {% include 'mixins/auth/form_input.html' with field=field %}
+    {% endfor %}
+
+    <input type="hidden" name="next" value="/">
+    <div class="form-actions">
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+        <input type="submit" class="btn btn-large btn-primary" value="{{ cta }}" />
+    </div>
+</form>

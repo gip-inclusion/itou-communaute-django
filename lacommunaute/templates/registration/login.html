@@ -38,28 +38,12 @@
                 <div class="s-section__col col-12 col-lg-7">
                     <div class="card">
                         <div class="c-form">
-                            <form method="post" action="." enctype="multipart/form-data" novalidate>
-                                {% csrf_token %}
-                                {% if form.non_field_errors %}
-                                    {% for error in form.non_field_errors %}
-                                        <div class="alert alert-danger">
-                                            <i class="icon-exclamation-sign"></i>
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                {% include "partials/form_field.html" with field=form.username %}
-                                {% include "partials/form_field.html" with field=form.password %}
-                                <input type="hidden" name="next" value="/">
-                                <div class="form-actions">
-                                    <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-                                    <input type="submit" class="btn btn-large btn-primary" value="{% trans "Login" %}" />
-                                </div>
-                            </form>
+                            {% include 'mixins/auth/auth_form.html' with form=form cta="Login" %}
+                            <a class="float-right" href="#" >Sign up</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
   </section>
-{% endblock content %}
+  {% endblock %}

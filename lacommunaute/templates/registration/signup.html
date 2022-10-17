@@ -1,0 +1,18 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block sub_title %}{% trans "Sign in" %}{% endblock sub_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="mx-auto col-md-6 vertical-offset-100">
+            <div class="card">
+                <div class="card-header"><h3 class="m-0 card-title h5"><strong>{% trans "Sign up" %}</strong></h3></div>
+                <div class="card-body">
+                    {% include 'mixins/auth/auth_form.html' with form=form cta="Signup" %}
+                    <a class="float-right" href="{% url 'users:login' %}" >Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
