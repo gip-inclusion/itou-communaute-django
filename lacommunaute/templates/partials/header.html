@@ -71,12 +71,18 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" class="btn btn-outline-primary">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}" class="btn btn-outline-primary">
+                                Se déconnecter ({{ user.get_username }})
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
                                 Se connecter
                             </a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a class="btn btn-primary btn-ico">
+                            <a href="" class="btn btn-primary btn-ico">
                                 <span>
                                     S'inscrire
                                 </span>
@@ -129,9 +135,15 @@
                             </a>
                         </li>
                         <li>
-                            <button class="btn btn-outline-primary">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'logout' %}" class="btn btn-outline-primary">
+                                Se déconnecter ({{ user.get_username }})
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
                                 Se connecter
-                            </button>
+                            </a>
+                            {% endif %}
                         </li>
                         <li>
                             <button class="btn btn-primary btn-ico">
