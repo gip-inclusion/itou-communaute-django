@@ -159,13 +159,12 @@ AUTHENTICATION_BACKENDS = (
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "fr-FR"
+USE_I18N = True
+USE_L10N = True
+LOCALE_PATHS = (os.path.join(ROOT_DIR, "locale"),)
 
 TIME_ZONE = "Europe/Paris"
-
-USE_I18N = True
-
 USE_TZ = True
-
 DATE_INPUT_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%d %m %Y"]
 
 
