@@ -1,0 +1,839 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lacommunaute.inclusion.beta.gouv.fr\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-18 18:07+0200\n"
+"PO-Revision-Date: 2022-10-18 19:23+0200\n"
+"Last-Translator: \n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: lacommunaute/templates/admin/forum/forum/change_form.html:5
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:25
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:18
+msgid "Forum permissions"
+msgstr "Autorisations de forum"
+
+#: lacommunaute/templates/admin/forum/forum/change_list.html:7
+msgid "List of forums"
+msgstr "Liste des forums"
+
+#: lacommunaute/templates/admin/forum/forum/change_list.html:15
+msgid "Global forum permissions"
+msgstr "Autorisations de forum global"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:9
+msgid "Name"
+msgstr "Nom"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:10
+msgid "Quick actions"
+msgstr "Actions rapides"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:11
+msgid "Type"
+msgstr "Type"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:12
+msgid "Details"
+msgstr "Détails"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:28
+msgid "Move up"
+msgstr "Déplacer vers le haut"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:33
+msgid "Move down"
+msgstr "Déplacer vers le bas"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:38
+msgid "Add a sub-forum"
+msgstr "Ajouter un sous-forum"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:42
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:38
+msgid "Delete"
+msgstr "Supprimer"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:51
+msgid "Topics:"
+msgstr "Sujets:"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:51
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:95
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:67
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:117
+msgid "Posts:"
+msgstr "Articles:"
+
+#: lacommunaute/templates/admin/forum/forum/change_list_table.html:53
+msgid "Link:"
+msgstr "Lien :"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_anonymous_user.html:4
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:34
+#: lacommunaute/templates/admin/forum/forum/editpermissions_user.html:4
+msgid "Edit user permissions"
+msgstr "Modifier les autorisations utilisateur"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_authenticated_user.html:4
+msgid "Edit authenticated user permissions"
+msgstr "Modifier les autorisations des utilisateurs authentifiés"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:21
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:14
+msgid "Home"
+msgstr "Accueil"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:39
+msgid "Permission"
+msgstr "Permission"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:40
+msgid "Not set"
+msgstr "Non défini"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:41
+msgid "Granted"
+msgstr "Accordé"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:42
+msgid "Not granted"
+msgstr "Non accordé"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:68
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_group.html:4
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:69
+msgid "Edit group permissions"
+msgstr "Modifier les autorisations de groupe"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:29
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:64
+msgid "Please correct the error below."
+msgstr "Veuillez corriger l'erreur indiquée."
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:29
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:64
+msgid "Please correct the errors below."
+msgstr "Veuillez corriger les erreurs indiquées."
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:35
+msgid "Please select a user in order to update its permissions"
+msgstr ""
+"Veuillez sélectionner un utilisateur afin de mettre à jour ses autorisations"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:55
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:90
+msgid "Select"
+msgstr "Sélectionner"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:70
+msgid "Please select a group in order to update its permissions"
+msgstr ""
+"Veuillez sélectionner un groupe afin de mettre à jour ses autorisations"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:98
+msgid "Copy permissions from another forum"
+msgstr "Copier les autorisations d’un autre forum"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:99
+msgid ""
+"Please select a forum in order to copy its permissions configuration to the "
+"current forum"
+msgstr ""
+"Veuillez sélectionner un forum afin de copier sa configuration "
+"d’autorisations sur le forum actuel"
+
+#: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:119
+msgid "Copy"
+msgstr "Copier"
+
+#: lacommunaute/templates/machina/board_base.html:25
+#: lacommunaute/templates/machina/forum_search/search.html:5
+#: lacommunaute/templates/machina/forum_search/search.html:11
+#: lacommunaute/templates/machina/forum_search/search.html:32
+#: lacommunaute/templates/machina/forum_search/search.html:42
+msgid "Search"
+msgstr "Recherche"
+
+#: lacommunaute/templates/machina/board_base.html:28
+msgid "Advanced search"
+msgstr "Recherche avancée"
+
+#: lacommunaute/templates/machina/board_base.html:41
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+#: lacommunaute/templates/machina/board_base.html:42
+msgid "View my posts"
+msgstr "Voir mes posts"
+
+#: lacommunaute/templates/machina/board_base.html:46
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:5
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:10
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:5
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:10
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:33
+msgid "Moderation queue"
+msgstr "File d’attente de modération"
+
+#: lacommunaute/templates/machina/forum/forum_detail.html:22
+msgid "Mark subforums read"
+msgstr "Marquer les sous-forums lus"
+
+#: lacommunaute/templates/machina/forum/forum_detail.html:34
+#: lacommunaute/templates/machina/forum/forum_detail.html:59
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:19
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:67
+msgid "New topic"
+msgstr "Nouveau sujet"
+
+#: lacommunaute/templates/machina/forum/forum_detail.html:40
+#: lacommunaute/templates/machina/forum/forum_detail.html:65
+#: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:5
+#: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:11
+msgid "Mark topics read"
+msgstr "Marquer les sujets lus"
+
+#: lacommunaute/templates/machina/forum/forum_detail.html:48
+msgid "Announcements"
+msgstr "Annonces"
+
+#: lacommunaute/templates/machina/forum/forum_detail.html:52
+#: lacommunaute/templates/machina/forum/forum_list.html:20
+#: lacommunaute/templates/machina/forum/forum_list.html:38
+#: lacommunaute/templates/machina/forum/forum_list.html:206
+msgid "Topics"
+msgstr "Sujets"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:21
+#: lacommunaute/templates/machina/forum/forum_list.html:39
+#: lacommunaute/templates/machina/forum/forum_list.html:207
+msgid "Posts"
+msgstr "Articles"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:22
+#: lacommunaute/templates/machina/forum/forum_list.html:40
+#: lacommunaute/templates/machina/forum/forum_list.html:208
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:15
+msgid "Last post"
+msgstr "Dernier article"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:36
+#: lacommunaute/templates/machina/forum/forum_list.html:204
+msgid "Forums"
+msgstr "Forums"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:70
+#: lacommunaute/templates/machina/forum/forum_list.html:143
+msgid "RSS feed"
+msgstr "Flux RSS"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:77
+#: lacommunaute/templates/machina/forum/forum_list.html:150
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:54
+#, python-format
+msgid "By: <a href=\"%(poster_url)s\">%(username)s</a>"
+msgstr "Par: <a href=\"%(poster_url)s\">%(username)s</a>"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:81
+#: lacommunaute/templates/machina/forum/forum_list.html:154
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:58
+#, python-format
+msgid "By: %(poster_username)s"
+msgstr "Par : %(poster_username)s"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:89
+#: lacommunaute/templates/machina/forum/forum_list.html:162
+msgid "No posts"
+msgstr "Aucun article"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:108
+#: lacommunaute/templates/machina/forum/forum_list.html:181
+msgid "Total redirects:"
+msgstr "Nombre total de redirections :"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:188
+#: lacommunaute/templates/machina/forum/forum_list.html:194
+msgid "Subforums:"
+msgstr "Sous-forums :"
+
+#: lacommunaute/templates/machina/forum/forum_list.html:213
+msgid "No forums."
+msgstr "Pas de forums."
+
+#: lacommunaute/templates/machina/forum/index.html:6
+msgid "Index"
+msgstr "Index"
+
+#: lacommunaute/templates/machina/forum/index.html:13
+#: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:5
+#: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:11
+msgid "Mark forums read"
+msgstr "Marquer les forums comme lus"
+
+#: lacommunaute/templates/machina/forum/index.html:15
+#: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:4
+#: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:8
+msgid "View unread topics"
+msgstr "Afficher les sujets non lues"
+
+#: lacommunaute/templates/machina/forum/index.html:22
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:34
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: lacommunaute/templates/machina/forum/index.html:23
+msgid "Total posts:"
+msgstr "Total des articles:"
+
+#: lacommunaute/templates/machina/forum/index.html:23
+msgid "Total topics:"
+msgstr "Total des sujets :"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_attachments/attachment_formset.html:28
+#: lacommunaute/templates/machina/forum_member/forum_profile_update.html:19
+#: lacommunaute/templates/machina/partials/form_field.html:6
+#: lacommunaute/templates/partials/form_field.html:5
+msgid "(optional)"
+msgstr "(optionnel)"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_attachments/attachment_formset.html:41
+msgid "Add another file"
+msgstr "Ajouter un autre fichier"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_attachments/attachments_detail.html:8
+#: lacommunaute/templates/machina/forum_conversation/forum_attachments/attachments_preview.html:7
+#: lacommunaute/templates/machina/forum_conversation/partials/post_form.html:22
+#: lacommunaute/templates/machina/forum_conversation/partials/post_form.html:60
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:24
+msgid "Attachments"
+msgstr "Pièces jointes"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_detail.html:17
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_preview.html:13
+msgid "You may select <b>1</b> option"
+msgstr "Vous pouvez sélectionner <b>1</b> option"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_detail.html:21
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_preview.html:17
+#, python-format
+msgid "You may select up to <b>%(max_options)s</b> options"
+msgstr "Vous pouvez sélectionner jusqu’à <b>%(max_options)s</b> options"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_detail.html:40
+msgid "Vote"
+msgstr "Vote"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_detail.html:45
+msgid "Change your vote"
+msgstr "Modifier votre vote"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_option_formset.html:3
+msgid "Poll options"
+msgstr "Options de sondage"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_option_formset.html:26
+msgid "Add a poll option"
+msgstr "Ajouter une option de sondage"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_option_formset.html:30
+msgid ""
+"<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the "
+"associated votes."
+msgstr ""
+"<b>Note:</b> La suppression des options de sondage d’un sondage existant "
+"supprimera les votes associés."
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_preview.html:9
+#: lacommunaute/templates/machina/forum_conversation/post_preview.html:10
+msgid "Preview:"
+msgstr "Aperçu :"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_results.html:7
+msgid "Results are currently hidden."
+msgstr "Les résultats sont actuellement masqués."
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_results.html:29
+msgid "Total votes:"
+msgstr "Total des votes :"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_vote_form.html:35
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:108
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:28
+#: lacommunaute/templates/machina/forum_conversation/post_update.html:27
+#: lacommunaute/templates/machina/forum_member/forum_profile_update.html:35
+msgid "Submit"
+msgstr "Soumettre"
+
+#: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_vote_form.html:36
+msgid "View results"
+msgstr "Voir les résultats"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/post_form.html:21
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:22
+msgid "Options"
+msgstr "Options"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:15
+msgid "Post reply"
+msgstr "Poster une réponse"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:18
+msgid "Subscribe"
+msgstr "S'abonner"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:20
+msgid "Unsubscribe"
+msgstr "Se désabonner"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:26
+#: lacommunaute/templates/machina/forum_moderation/topic_lock.html:5
+#: lacommunaute/templates/machina/forum_moderation/topic_lock.html:12
+msgid "Lock topic"
+msgstr "Verrouiller le sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:27
+#: lacommunaute/templates/machina/forum_moderation/topic_unlock.html:5
+#: lacommunaute/templates/machina/forum_moderation/topic_unlock.html:12
+msgid "Unlock topic"
+msgstr "Déverrouiller le sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:28
+#: lacommunaute/templates/machina/forum_moderation/topic_delete.html:5
+#: lacommunaute/templates/machina/forum_moderation/topic_delete.html:12
+msgid "Delete topic"
+msgstr "Supprimer le sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:29
+#: lacommunaute/templates/machina/forum_moderation/topic_move.html:5
+#: lacommunaute/templates/machina/forum_moderation/topic_move.html:12
+msgid "Move topic"
+msgstr "Déplacer le sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:31
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:38
+msgid "Change to sticky topic"
+msgstr "Passer en sujet collant"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:32
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:35
+msgid "Change to announce"
+msgstr "Passer en annonce"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:34
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:37
+msgid "Change to standard topic"
+msgstr "Passer en sujet standard"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:23
+msgid "Poll"
+msgstr "Sondage"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:107
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:27
+#: lacommunaute/templates/machina/forum_conversation/post_update.html:26
+msgid "Preview"
+msgstr "Aperçu"
+
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:6
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:21
+msgid "Post a reply"
+msgstr "Publier une réponse"
+
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:39
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:133
+msgid "Topic review"
+msgstr "Révision du sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:51
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:53
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:34
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:50
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:86
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:145
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:51
+#: lacommunaute/templates/machina/forum_search/search.html:83
+#, python-format
+msgid "By: <a href=\"%(poster_url)s\">%(username)s</a> on %(creation_date)s"
+msgstr "Par: <a href=\"%(poster_url)s\">%(username)s</a> le %(creation_date)s"
+
+#: lacommunaute/templates/machina/forum_conversation/post_create.html:55
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:57
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:38
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:90
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:149
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:55
+#: lacommunaute/templates/machina/forum_search/search.html:87
+#, python-format
+msgid "By: %(poster_username)s on %(creation_date)s"
+msgstr "Par : %(poster_username)s le %(creation_date)s"
+
+#: lacommunaute/templates/machina/forum_conversation/post_delete.html:5
+#: lacommunaute/templates/machina/forum_conversation/post_delete.html:12
+msgid "Delete post"
+msgstr "Supprimer l'article"
+
+#: lacommunaute/templates/machina/forum_conversation/post_delete.html:15
+msgid "Are you sure you want to delete this post?"
+msgstr "Êtes-vous certain de vouloir supprimer cet article ?"
+
+#: lacommunaute/templates/machina/forum_conversation/post_delete.html:18
+#: lacommunaute/templates/machina/forum_member/topic_subscribe.html:18
+#: lacommunaute/templates/machina/forum_member/topic_unsubscribe.html:18
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:18
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:18
+#: lacommunaute/templates/machina/forum_moderation/topic_delete.html:18
+#: lacommunaute/templates/machina/forum_moderation/topic_lock.html:18
+#: lacommunaute/templates/machina/forum_moderation/topic_move.html:23
+#: lacommunaute/templates/machina/forum_moderation/topic_unlock.html:18
+#: lacommunaute/templates/machina/forum_moderation/topic_update_type.html:18
+#: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:16
+#: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:16
+msgid "Yes, I'm sure"
+msgstr "Oui, je suis sûr(e)"
+
+#: lacommunaute/templates/machina/forum_conversation/post_delete.html:19
+#: lacommunaute/templates/machina/forum_member/topic_subscribe.html:19
+#: lacommunaute/templates/machina/forum_member/topic_unsubscribe.html:19
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:19
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:19
+#: lacommunaute/templates/machina/forum_moderation/topic_delete.html:19
+#: lacommunaute/templates/machina/forum_moderation/topic_lock.html:19
+#: lacommunaute/templates/machina/forum_moderation/topic_move.html:24
+#: lacommunaute/templates/machina/forum_moderation/topic_unlock.html:19
+#: lacommunaute/templates/machina/forum_moderation/topic_update_type.html:19
+#: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:17
+#: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:17
+msgid "No, take me back"
+msgstr "Non, ramenez-moi"
+
+#: lacommunaute/templates/machina/forum_conversation/post_update.html:5
+#: lacommunaute/templates/machina/forum_conversation/post_update.html:20
+#: lacommunaute/templates/machina/forum_conversation/topic_update.html:5
+#: lacommunaute/templates/machina/forum_conversation/topic_update.html:23
+msgid "Edit post"
+msgstr "Modifier l'article"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_create.html:5
+#: lacommunaute/templates/machina/forum_conversation/topic_create.html:23
+msgid "Post a new topic"
+msgstr "Publier un nouveau sujet"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:34
+msgid "Edit"
+msgstr "Editer"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:76
+msgid "Last edited by:"
+msgstr "Dernière édition par:"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:76
+msgid "Updated"
+msgstr "Mis à jour"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:76
+msgid "on"
+msgstr "le"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:76
+#, python-format
+msgid "edited %(counter)s time in total."
+msgid_plural "edited %(counter)s times in total."
+msgstr[0] "édité %(counter)s temps au total."
+msgstr[1] "édité %(counter)s temps au total."
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:81
+msgid "Reason:"
+msgstr "Motif :"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_detail.html:98
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:120
+msgid "Anonymous user"
+msgstr "Utilisateur anonyme"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:13
+msgid "Replies"
+msgstr "Réponses"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:14
+msgid "Views"
+msgstr "Vues"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:29
+msgid "This topic is locked"
+msgstr "Ce sujet est verrouillé"
+
+#: lacommunaute/templates/machina/forum_conversation/topic_list.html:74
+msgid "There are no topics in this forum."
+msgstr "Il n’y a pas de sujets dans ce forum."
+
+#: lacommunaute/templates/machina/forum_conversation/topic_pages_inline_list.html:5
+msgid "Go to the page:"
+msgstr "Aller à la page:"
+
+#: lacommunaute/templates/machina/forum_feeds/topics_description.html:7
+#: lacommunaute/templates/machina/forum_feeds/topics_description.html:9
+msgid "Posted by"
+msgstr "Publié par"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:5
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:10
+#, python-format
+msgid "%(username)s profile"
+msgstr "%(username)s profil"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:26
+msgid "Edit profile"
+msgstr "Editer le profil"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:40
+#, python-format
+msgid ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Post</small></p>"
+msgid_plural ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p class=\"mb-1\"><small>Posts</small></p>"
+msgstr[0] ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Article</small></p>"
+msgstr[1] ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Articles</small></p>"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:45
+#, python-format
+msgid ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Topic</small></p>"
+msgid_plural ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p class=\"mb-1\"><small>Topics</small></p>"
+msgstr[0] ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Sujet</small></p>"
+msgstr[1] ""
+"<h2><strong>%(counter)s</strong></h2>\n"
+"                      <p><small>Sujets</small></p>"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:60
+msgid "Recent posts"
+msgstr "Articles récents"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:60
+msgid "View all"
+msgstr "Voir tout"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:70
+#, python-format
+msgid "On %(creation_date)s"
+msgstr "Le %(creation_date)s"
+
+#: lacommunaute/templates/machina/forum_member/forum_profile_update.html:4
+#: lacommunaute/templates/machina/forum_member/forum_profile_update.html:11
+msgid "Edit forum profile"
+msgstr "Modifier le profil du forum"
+
+#: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:4
+#: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:10
+msgid "Topics that you are subscribed to"
+msgstr "Sujets auxquels vous êtes abonné"
+
+#: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:17
+#, python-format
+msgid "%(counter)s topic found"
+msgid_plural "%(counter)s topics found"
+msgstr[0] "%(counter)s sujet trouvé"
+msgstr[1] "%(counter)s sujets trouvés"
+
+#: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:31
+msgid "Not topics found."
+msgstr "Pas de sujets trouvés."
+
+#: lacommunaute/templates/machina/forum_member/topic_subscribe.html:5
+#: lacommunaute/templates/machina/forum_member/topic_subscribe.html:12
+msgid "Subscribe to topic"
+msgstr "S’abonner au sujet"
+
+#: lacommunaute/templates/machina/forum_member/topic_subscribe.html:15
+msgid "Would you like to subscribe to this topic?"
+msgstr "Vous souhaitez vous abonner à ce sujet ?"
+
+#: lacommunaute/templates/machina/forum_member/topic_unsubscribe.html:5
+#: lacommunaute/templates/machina/forum_member/topic_unsubscribe.html:12
+msgid "Unsubscribe from topic"
+msgstr "Se désabonner du sujet"
+
+#: lacommunaute/templates/machina/forum_member/topic_unsubscribe.html:15
+msgid "Would you like to unsubscribe from this topic?"
+msgstr "Souhaitez-vous vous désabonner de ce sujet?"
+
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:5
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:10
+msgid "My messages"
+msgstr "Mes messages"
+
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:5
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:10
+#, python-format
+msgid "%(username)s's posts"
+msgstr "Articles de %(username)s"
+
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:17
+#, python-format
+msgid "%(counter)s post found"
+msgid_plural "%(counter)s posts found"
+msgstr[0] "%(counter)s article trouvé"
+msgstr[1] "%(counter)s articles trouvés"
+
+#: lacommunaute/templates/machina/forum_member/user_posts_list.html:24
+msgid "No posts found"
+msgstr "Aucun article trouvé"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:15
+msgid "Disapprove"
+msgstr "Désapprouver"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:16
+msgid "Approve"
+msgstr "Approuver"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:19
+msgid "New post"
+msgstr "Nouvel article"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:32
+msgid "<b>1</b> option may be selected"
+msgstr "<b>1</b> option peut être sélectionnée"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:36
+#, python-format
+msgid "Up to <b>%(max_options)s</b> options may be selected"
+msgstr "Jusqu'à <b>%(max_options)s</b> options peuvent être sélectionnées"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:17
+#, python-format
+msgid "%(topic_length)s posts found"
+msgstr "%(topic_length)s articles trouvées"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:35
+msgid "Topic"
+msgstr "Sujet"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:36
+msgid "Forum"
+msgstr "Forum"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:79
+msgid "No posts awaiting approval."
+msgstr "Aucun article en attente d’approbation."
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:5
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:12
+msgid "Approve post"
+msgstr "Approuver l'article"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:15
+msgid "Are you sure you want to approve this post?"
+msgstr "Êtes-vous sûr de vouloir approuver cet article ?"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:5
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:12
+msgid "Disapprove post"
+msgstr "Désapprouver l'article"
+
+#: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:15
+msgid ""
+"Are you sure you want to disapprove this post? This post will be deleted."
+msgstr ""
+"Êtes-vous sûr de vouloir désapprouver cet article? Cet article sera "
+"supprimé."
+
+#: lacommunaute/templates/machina/forum_moderation/topic_delete.html:15
+msgid "Are you sure you want to delete this topic?"
+msgstr "Voulez-vous vraiment supprimer cet sujet ?"
+
+#: lacommunaute/templates/machina/forum_moderation/topic_lock.html:15
+msgid "Are you sure you want to lock this topic?"
+msgstr "Voulez-vous vraiment verrouiller ce sujet ?"
+
+#: lacommunaute/templates/machina/forum_moderation/topic_unlock.html:15
+msgid "Are you sure you want to unlock this topic?"
+msgstr "Voulez-vous vraiment déverrouiller ce sujet ?"
+
+#: lacommunaute/templates/machina/forum_moderation/topic_update_type.html:5
+#: lacommunaute/templates/machina/forum_moderation/topic_update_type.html:12
+msgid "Change topic type"
+msgstr "Modifier le type de sujet"
+
+#: lacommunaute/templates/machina/forum_search/search.html:18
+msgid "Search forums"
+msgstr "Chercher dans les forums"
+
+#: lacommunaute/templates/machina/forum_search/search.html:44
+msgid "New search"
+msgstr "Nouvelle recherche"
+
+#: lacommunaute/templates/machina/forum_search/search.html:50
+#, python-format
+msgid "Your search has returned <b>%(number_of_results)s</b> result"
+msgid_plural "Your search has returned <b>%(number_of_results)s</b> results"
+msgstr[0] "Votre recherche a renvoyé <b>%(number_of_results)s</b> résultat"
+msgstr[1] "Votre recherche a renvoyé <b>%(number_of_results)s</b> résultats"
+
+#: lacommunaute/templates/machina/forum_search/search.html:70
+msgid "Results"
+msgstr "Résultats"
+
+#: lacommunaute/templates/machina/forum_search/search.html:101
+msgid "No results."
+msgstr "Aucun résultat."
+
+#: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:13
+msgid "Are you sure you want to mark forums read?"
+msgstr "Êtes-vous sûr de vouloir marquer les forums comme lus ?"
+
+#: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:13
+msgid "Are you sure you want to mark topics read?"
+msgstr "Êtes-vous sûr de vouloir marquer les sujets comme lus ?"
+
+#: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:13
+#, python-format
+msgid "%(topic_length)s unread topic found"
+msgid_plural "%(topic_length)s unread topics found"
+msgstr[0] "%(topic_length)s rubrique non lue trouvée"
+msgstr[1] "%(topic_length)s rubriques non lues trouvées"
+
+#: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:25
+msgid "There are no unread topics."
+msgstr "Il n'y a pas de sujets non lus."
+
+#: lacommunaute/templates/machina/partials/breadcrumb.html:5
+#: lacommunaute/templates/partials/breadcrumb.html:9
+#: lacommunaute/templates/registration/login.html:14
+msgid "Forum index"
+msgstr "Index du Forum"
+
+#: lacommunaute/templates/registration/login.html:4
+#: lacommunaute/templates/registration/login.html:15
+#: lacommunaute/templates/registration/login.html:29
+msgid "Sign in"
+msgstr "S'inscrire"
+
+#: lacommunaute/templates/registration/login.html:56
+msgid "Login"
+msgstr "Se connecter"
