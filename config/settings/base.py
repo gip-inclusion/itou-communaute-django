@@ -42,10 +42,6 @@ THIRD_PARTIES_APPS = [
     "widget_tweaks",
     # Machina apps:
     "machina",
-    "machina.apps.forum",
-    "machina.apps.forum_conversation",
-    "machina.apps.forum_conversation.forum_attachments",
-    "machina.apps.forum_conversation.forum_polls",
     "machina.apps.forum_feeds",
     "machina.apps.forum_moderation",
     "machina.apps.forum_search",
@@ -64,6 +60,10 @@ LOCAL_APPS = [
     # Core apps, order is important.
     "lacommunaute.users",
     "lacommunaute.utils",
+    "lacommunaute.forum",
+    "lacommunaute.forum_conversation",
+    "lacommunaute.forum_conversation.forum_attachments",
+    "lacommunaute.forum_conversation.forum_polls",
     "lacommunaute.forum_member",
     "lacommunaute.www",
 ]
@@ -237,3 +237,5 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/"  # noqa
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MACHINA_FORUM_NAME = "La Communauté"
+FORUM_TOPICS_NUMBER_PER_PAGE = 10
