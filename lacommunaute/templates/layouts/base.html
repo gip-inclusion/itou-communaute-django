@@ -67,7 +67,7 @@
 
         {% block messages %}
             {% if messages %}
-            <section class="s-section">
+            <section class="s-section m-0">
                 <div class="s-section__container container">
                         <div class="s-section__row row">
                             <div class="s-section__col col-12">
@@ -79,7 +79,9 @@
             {% endif %}
         {% endblock %}
 
-        {% block content %}{% endblock %}
+        {% block main %}
+            {% block content %}{% endblock %}
+        {% endblock %}
     </main>
 
     {% block footer %}
