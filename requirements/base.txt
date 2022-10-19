@@ -1,6 +1,6 @@
 asgiref==3.5.2 ; python_version >= "3.10" and python_version < "4.0"
-boto3==1.24.92 ; python_version >= "3.10" and python_version < "4.0"
-botocore==1.27.92 ; python_version >= "3.10" and python_version < "4.0"
+boto3==1.24.93 ; python_version >= "3.10" and python_version < "4.0"
+botocore==1.27.93 ; python_version >= "3.10" and python_version < "4.0"
 django-haystack==3.2.1 ; python_version >= "3.10" and python_version < "4.0"
 django-js-asset==2.0.0 ; python_version >= "3.10" and python_version < "4.0"
 django-machina==1.2.0 ; python_version >= "3.10" and python_version < "4.0"
