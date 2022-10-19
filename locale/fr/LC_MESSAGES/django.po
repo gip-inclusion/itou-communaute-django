@@ -828,6 +828,10 @@ msgstr "Il n'y a pas de sujets non lus."
 msgid "Forum index"
 msgstr "Index du Forum"
 
+#: lacommunaute/templates/partials/form_field.html:5
+msgid "(optional)"
+msgstr "(optionnel)"
+
 #: lacommunaute/templates/registration/login.html:4
 #: lacommunaute/templates/registration/login.html:15
 #: lacommunaute/templates/registration/login.html:29
