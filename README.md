@@ -197,3 +197,47 @@ GroupForumPermission.objects.bulk_create(
     ]
 )
 ```
+
+## Utiliser les factories de `machina`
+
+### créer un forum
+
+```
+from machina.test.factories.forum import create_forum
+forum = create_forum(name="forum 1")
+```
+
+### créer des topics et des posts dans un forum
+
+```
+from machina.test.factories.conversation import PostFactory, TopicFactory
+
+from machina.core.db.models import get_model
+Topic = get_model("forum_conversation", "Topic")
+
+topics = TopicFactory.create_batch(10, forum=forum, poster=user, type=Topic.TOPIC_POST)
+posts =  (PostFactory.create_batch(5, topic=topic, poster=user) for topic in topics)
+```
+
+### Ajouter les permissions à l'utilisateur pour lire le forum
+
+```
+from machina.test.factories.permission import UserForumPermissionFactory
+
+from machina.core.db.models import get_model
+ForumPermission = get_model("forum_permission", "ForumPermission")
+UserForumPermission = get_model("forum_permission", "UserForumPermission")
+
+UserForumPermissionFactory(
+    permission=ForumPermission.objects.get(codename="can_see_forum"),
+    forum=forum,
+    user=user,
+    has_perm=True,
+    )
+UserForumPermissionFactory(
+    permission=ForumPermission.objects.get(codename="can_read_forum"),
+    forum=forum,
+    user=self.user,
+    has_perm=True,
+    )
+```
