@@ -1,5 +1,5 @@
 asgiref==3.5.2 ; python_version >= "3.10" and python_version < "4.0"
-astroid==2.12.11 ; python_version >= "3.10" and python_version < "4.0"
+astroid==2.12.12 ; python_version >= "3.10" and python_version < "4.0"
 attrs==22.1.0 ; python_version >= "3.10" and python_version < "4.0"
 black==22.10.0 ; python_version >= "3.10" and python_version < "4.0"
 boto3==1.24.93 ; python_version >= "3.10" and python_version < "4.0"
