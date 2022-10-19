@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.forms import CharField, HiddenInput
 from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm
 from machina.conf import settings as machina_settings
@@ -29,3 +30,10 @@ class PostForm(AbstractPostForm):
             post.username = self.cleaned_data["username"]
             post.anonymous_key = get_anonymous_user_forum_key(self.user)
         return post
+
+    def update_post(self, post):
+        if not self.user.is_anonymous:
+            post.updated_by = self.user
+        else:
+            post.username = self.cleaned_data["username"]
+        post.updates_count = F("updates_count") + 1
