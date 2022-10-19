@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("forum_conversation", "0002_initial"),
+        ("forum_conversation", "0001_initial"),
     ]
 
     operations = [
