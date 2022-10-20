@@ -24,8 +24,8 @@
     {% if forloop.first and post.is_topic_head and poll %}
     {% include "forum_conversation/forum_polls/poll_detail.html" %}
     {% endif %}
-    <div id="{{ post.id }}" class="my-3 card post{% if post.is_topic_head %} bg-light{% else %} ml-5{% endif %}">
-      <div class="card-body">
+    <div id="{{ post.id }}" class="my-3 card post{% if post.is_topic_head %} bg-light{% else %} ml-3{% endif %}">
+      <div class="card-body pb-0">
         <div class="row">
           <div class="col-md-10 post-content-wrapper">
             <div class="float-right post-controls">
@@ -41,7 +41,7 @@
               {% spaceless %}
               <h4 class="m-0 subject">
                 {{ post.subject }}
-                &nbsp;<a href="{% url 'forum_conversation:topic' forum.slug forum.pk topic.slug topic.pk %}?post={{ post.pk }}#{{ post.pk }}">&#182;</a>
+                <a href="{% url 'forum_conversation:topic' forum.slug forum.pk topic.slug topic.pk %}?post={{ post.pk }}#{{ post.pk }}" class="text-decoration-none font-weight-normal"> #</a>
               </h4>
               {% endspaceless %}
               <p>

@@ -76,3 +76,4 @@ EMAIL_USE_TLS = False
 MEDIA_URL = "/media/"
 
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+

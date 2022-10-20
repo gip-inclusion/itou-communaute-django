@@ -61,34 +61,72 @@
                     <ul>
                         {% comment %} TODO : Ajouter la class .is-active sur l'item de menu actif {% endcomment %}
                         <li>
-                            <a href="{% url 'pages:home' %}" rel="noopener">
-                                <span>Accueil</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="{% url 'forum:index' %}">
                                 <span>Forum</span>
                             </a>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
+                                Mon espace
+                            </button>
+                            <div class="dropdown-menu" id="dashboardUserDropdown">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <div class="media align-items-center">
+                                                <span class="mr-2"><i class="ri-user-line ri-2x"></i></span>
+                                                <div class="media-body">
+                                                    {% if user.get_username %}
+                                                        <span>{{ user.get_username }}</span>
+                                                        <br>
+                                                    {% endif %}
+                                                    <span class="fs-sm lh-sm text-secondary">{{ user.email }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-primary" href="{% url 'forum_member:profile_update' %}">Modifier mon profil</a>
+                                    </li>
+                                    {% if user.is_superuser %}
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-primary" href="{% url 'admin:index' %}">Accéder à l'admin</a>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" id="js-logout" href="{% url 'logout' %}">Déconnexion</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        {% else %}
                         <li>
-                            {% if user.is_authenticated %}
-                            <a href="{% url 'logout' %}" class="btn btn-outline-primary">
-                                Se déconnecter ({{ user.get_username }})
+                            <a href="{% url 'login' %}" class="btn btn-ico btn-outline-primary">
+                                <i class="ri-login-box-line ri-lg"></i>
+                                <span>
+                                    Se connecter
+                                </span>
                             </a>
-                            {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
-                                Se connecter
-                            </a>
-                            {% endif %}
                         </li>
                         <li>
                             <a href="" class="btn btn-primary btn-ico">
+                                <i class="ri-user-add-line ri-lg"></i>
                                 <span>
                                     S'inscrire
                                 </span>
-                                <i class="ri-arrow-right-line ri-lg"></i>
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
@@ -125,34 +163,72 @@
                 <nav role="navigation">
                     <ul>
                         <li>
-                            <a href="{% url 'pages:home' %}" class="is-active" rel="noopener">
-                                <span>Accueil</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="{% url 'forum:index' %}">
                                 <span>Forum</span>
                             </a>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
+                                Mon espace
+                            </button>
+                            <div class="dropdown-menu" id="dashboardUserDropdown">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <div class="media align-items-center">
+                                                <span class="mr-2"><i class="ri-user-line ri-2x"></i></span>
+                                                <div class="media-body">
+                                                    {% if user.get_username %}
+                                                        <span>{{ user.get_username }}</span>
+                                                        <br>
+                                                    {% endif %}
+                                                    <span class="fs-sm lh-sm text-secondary">{{ user.email }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-primary" href="{% url 'forum_member:profile_update' %}">Modifier mon profil</a>
+                                    </li>
+                                    {% if user.is_superuser %}
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-primary" href="{% url 'admin:index' %}">Accéder à l'admin</a>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" id="js-logout" href="{% url 'logout' %}">Déconnexion</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        {% else %}
                         <li>
-                            {% if user.is_authenticated %}
-                            <a href="{% url 'logout' %}" class="btn btn-outline-primary">
-                                Se déconnecter ({{ user.get_username }})
+                            <a href="{% url 'login' %}" class="btn btn-sm btn-ico btn-outline-primary">
+                                <i class="ri-login-box-line ri-lg"></i>
+                                <span>
+                                    Se connecter
+                                </span>
                             </a>
-                            {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-outline-primary">
-                                Se connecter
-                            </a>
-                            {% endif %}
                         </li>
                         <li>
-                            <button class="btn btn-primary btn-ico">
+                            <a href="" class="btn btn-sm btn-primary btn-ico">
+                                <i class="ri-user-add-line ri-lg"></i>
                                 <span>
                                     S'inscrire
                                 </span>
-                                <i class="ri-arrow-right-line ri-lg"></i>
-                            </button>
+                            </a>
                         </li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <div>
