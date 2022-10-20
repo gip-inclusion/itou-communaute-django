@@ -4,37 +4,37 @@
 {% block sub_title %}{% trans "Sign in" %}{% endblock sub_title %}
 
 {% block breadcrumb %}
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum index" %}</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{% trans "Sign in" %}</li>
-                    </ol>
-                </nav>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum index" %}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{% trans "Sign in" %}</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
 
 {% block content %}
-<section class="s-title-01">
-    <div class="s-title-01__container container">
-        <div class="s-title-01__row row">
-            <div class="s-title-01__col col-12">
-                <h1 class="s-title-01__title h1"><strong>{% trans "Sign in" %}</strong></h1>
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>{% trans "Sign in" %}</strong></h1>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="s-section">
-    <div class="s-section__container container">
-        <div class="s-section__row row">
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-7">
                     <div class="card">
                         <div class="c-form">
@@ -61,5 +61,5 @@
                 </div>
             </div>
         </div>
-  </section>
+    </section>
 {% endblock content %}
