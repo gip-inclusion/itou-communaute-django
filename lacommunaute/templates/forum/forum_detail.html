@@ -27,18 +27,16 @@
         {% forum_list sub_forums %}
     {% endif %}
     {% if forum.is_forum %}
-        <div class="mt-4 mb-3 row">
-            <div class="col-6 col-md-4 forum-actions-block">
+        <div class="mt-4 mb-3 row justify-content-between">
+            <div class="col-12 col-sm-auto forum-actions-block">
                 {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
                 {% if user_can_add_topic %}
-                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-comments fa-lg"></i>&nbsp;{% trans "New topic" %}</a>
+                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-sm btn-block"><i class="fa fa-comments fa-lg"></i>&nbsp;{% trans "New topic" %}</a>
                 {% endif %}
             </div>
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-sm-auto">
                 {% if topics|length > 0 and request.user.is_authenticated %}
-                    <div class="float-left">
-                        <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="my-1 d-inline-block">{% trans "Mark topics read" %}</a>
-                    </div>
+                    <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="btn btn-sm btn-link btn-block">{% trans "Mark topics read" %}</a>
                 {% endif %}
                 {% with "pagination-sm justify-content-end" as pagination_size %}
                     {% include "partials/pagination.html" %}

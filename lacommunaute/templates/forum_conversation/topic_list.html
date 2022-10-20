@@ -12,13 +12,12 @@
                 <div class="p-0 card-header">
                     <div class="row m-0 px-3 py-2">
                         <div class="pl-0 col-md-8 col-sm-9 col-12 topic-name-col"><h3 class="m-0 card-title h5 text-dark"><i class="fas fa-comment"></i> {% trans topic_list_title %}</h3></div>
-
                     </div>
                 </div>
                 <div class="p-0 card-body">{% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
                     {% for topic in topics %}
                         <div class="row m-0 px-3 py-2 border-bottom">
-                            <div class="pl-0 col-md-8 col-sm-9 col-xs-11 topic-name">
+                            <div class="pl-0 col-12 topic-name">
                                 <div class="topic-inline-pagination float-right d-none d-sm-block">{% topic_pages_inline_list topic %}</div>
                                 <table class="topic-data-table">
                                     <tr>
@@ -27,91 +26,81 @@
                                         </td>
                                         <td class="align-top topic-name">
                                             <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="topic-name-link">{{ topic.subject }}</a>{% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-12">
-                                {% for post in topic.posts.all %}
-
-                                    {% if forloop.first and poll %} <!-- removed if post.is_topic_head -->
-                                        {% include "forum_conversation/forum_polls/poll_detail.html" %}
-                                    {% endif %}
-                                    <div id="{{ post.id }}" {% if forloop.first%}{%else%}class="card post"{%endif%}>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-10 post-content-wrapper">
-                                                    <p>
-                                                        <small class="text-muted">
-                                                            {% spaceless %}
-                                                                <i class="fas fa-clock"></i>&nbsp;
-                                                                {% if post.poster %}
-                                                                    {% url 'forum_member:profile' post.poster_id as poster_url %}
-                                                                    {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
-                                                                        By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
-                                                                    {% endblocktrans %}
-                                                                {% else %}
-                                                                    {% blocktrans trimmed with poster_username=post.username creation_date=post.created %}
-                                                                        By: {{ poster_username }} on {{ creation_date }}
-                                                                    {% endblocktrans %}
-                                                                {% endif %}
-                                                            {% endspaceless %}
-
-                                                            {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
-                                                            {% if user_can_edit_post %}
-                                                                &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
-                                                            {% endif %}
-
-                                                            {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
-                                                            {% if user_can_delete_post %}
-                                                                &nbsp;<a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" title="{% trans "Delete" %}">Supprimer</a>
-                                                            {% endif %}
-
-
-                                                        </small>
-                                                    </p>
-
-                                                    <div class="post-content">
-                                                        {% if forloop.first %} <!-- removed if post.is_topic_head -->
-                                                            <h3 class="m-0 card-title h5 text-dark">{{ post.content.rendered }}</h3>
-                                                        {% else %}
-                                                            {{ post.content.rendered }}
-                                                        {% endif %}
-                                                    </div>
-                                                    {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
-                                                    {% if post.enable_signature and post.poster.forum_profile.signature %}
-                                                        <div class="post-signature">
-                                                            {{ post.poster.forum_profile.signature.rendered }}
-                                                        </div>
-                                                    {% endif %}
-                                                    {% if post.updates_count %}
-                                                        <div class="mt-4 edit-info">
-                                                            <small class="text-muted">
-                                                                <i class="fas fa-edit"></i>&nbsp;{% if post.updated_by %}{% trans "Last edited by:" %}&nbsp;<a href="{% url 'forum_member:profile' post.updated_by_id %}">{{ post.updated_by|forum_member_display_name }}</a>&nbsp;{% else %}{% trans "Updated" %}&nbsp;{% endif %}{% trans "on" %}&nbsp;{{ post.updated }}, {% blocktrans count counter=post.updates_count %}edited {{counter }} time in total.{% plural %}edited {{counter }} times in total.{% endblocktrans %}
-                                                            </small>
-                                                            {% if post.update_reason %}
-                                                                <br />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% for post in topic.posts.all %}
+                                            {% if forloop.first and poll %} <!-- removed if post.is_topic_head -->
+                                                {% include "forum_conversation/forum_polls/poll_detail.html" %}
+                                            {% endif %}
+                                            <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} ml-3{%endif%}">
+                                                <div class="card-body pb-0">
+                                                    <div class="row">
+                                                        <div class="col-md-12 post-content-wrapper">
+                                                            <p>
                                                                 <small class="text-muted">
-                                                                    <b>{% trans "Reason:" %}</b>&nbsp;{{ post.update_reason }}
+                                                                    {% spaceless %}
+                                                                        <i class="fas fa-clock"></i>&nbsp;
+                                                                        {% if post.poster %}
+                                                                            {% url 'forum_member:profile' post.poster_id as poster_url %}
+                                                                            {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
+                                                                                By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
+                                                                            {% endblocktrans %}
+                                                                        {% else %}
+                                                                            {% blocktrans trimmed with poster_username=post.username creation_date=post.created %}
+                                                                                By: {{ poster_username }} on {{ creation_date }}
+                                                                            {% endblocktrans %}
+                                                                        {% endif %}
+                                                                    {% endspaceless %}
+
+                                                                    {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
+                                                                    {% if user_can_edit_post %}
+                                                                        &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
+                                                                    {% endif %}
+
+                                                                    {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
+                                                                    {% if user_can_delete_post %}
+                                                                        &nbsp;<a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" title="{% trans "Delete" %}">Supprimer</a>
+                                                                    {% endif %}
                                                                 </small>
+                                                            </p>
+
+                                                            <div class="post-content">
+                                                                {% if forloop.first %} <!-- removed if post.is_topic_head -->
+                                                                    {{ post.content.rendered }}
+                                                                {% else %}
+                                                                    {{ post.content.rendered }}
+                                                                {% endif %}
+                                                            </div>
+                                                            {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
+                                                            {% if post.enable_signature and post.poster.forum_profile.signature %}
+                                                                <div class="post-signature">
+                                                                    {{ post.poster.forum_profile.signature.rendered }}
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if post.updates_count %}
+                                                                <div class="mt-4 edit-info">
+                                                                    <small class="text-muted">
+                                                                        <i class="fas fa-edit"></i>&nbsp;{% if post.updated_by %}{% trans "Last edited by:" %}&nbsp;<a href="{% url 'forum_member:profile' post.updated_by_id %}">{{ post.updated_by|forum_member_display_name }}</a>&nbsp;{% else %}{% trans "Updated" %}&nbsp;{% endif %}{% trans "on" %}&nbsp;{{ post.updated }}, {% blocktrans count counter=post.updates_count %}edited {{counter }} time in total.{% plural %}edited {{counter }} times in total.{% endblocktrans %}
+                                                                    </small>
+                                                                    {% if post.update_reason %}
+                                                                        <br />
+                                                                        <small class="text-muted">
+                                                                            <b>{% trans "Reason:" %}</b>&nbsp;{{ post.update_reason }}
+                                                                        </small>
+                                                                    {% endif %}
+                                                                </div>
                                                             {% endif %}
                                                         </div>
-                                                    {% endif %}
+                                                    </div>
                                                 </div>
-
                                             </div>
-                                        </div>
+                                        {% endfor %}
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
-                        </div>
-
-
                         </div>
                     {% empty %}
                         <div class="row m-0 px-3 py-2">
