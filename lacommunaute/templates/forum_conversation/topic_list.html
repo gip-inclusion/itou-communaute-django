@@ -25,7 +25,7 @@
                                             <i class="fas {% if topic.is_sticky %}fa-lightbulb{% elif topic.is_announce %}fa-info{% else %}fa-dot-circle{% endif %} fa-2x"></i>
                                         </td>
                                         <td class="align-top topic-name">
-                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="topic-name-link">{{ topic.subject }}</a>{% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
+                                            {{ topic.subject }}{% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
                                         </td>
                                     </tr>
                                 </table>
