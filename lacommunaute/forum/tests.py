@@ -71,6 +71,10 @@ class ForumViewQuerysetTest(TestCase):
         # todo fix vincentporte :
         # assumed duplicated queries in ForumView()
         # view to be optimized again soon
+        with self.assertNumQueries(30):
+            response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
 
 
 class ForumViewTest(TestCase):
