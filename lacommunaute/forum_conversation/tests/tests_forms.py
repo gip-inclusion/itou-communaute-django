@@ -53,13 +53,13 @@ class PostFormTest(TestCase):
             topic=self.topic,
             subject=faker.text(max_nb_chars=5),
             content=faker.text(max_nb_chars=5),
-            username=faker.name(),
+            username=faker.email,
             anonymous_key=123,
         )
         form_data = {
             "subject": "subject",
             "content": "content",
-            "username": "testname",
+            "username": "john@test.com",
         }
         form = PostForm(
             data=form_data,
@@ -70,7 +70,7 @@ class PostFormTest(TestCase):
         )
         self.assertTrue(form.is_valid())
         form.update_post(post)
-        self.assertEqual(post.username, "testname")
+        self.assertEqual(post.username, "john@test.com")
         self.assertFalse(post.updated_by)
         self.assertEqual(post.updates_count, F("updates_count") + 1)
 
@@ -79,7 +79,7 @@ class PostFormTest(TestCase):
         form_data = {
             "subject": "subject",
             "content": "content",
-            "username": "testname",
+            "username": "john@test.com",
         }
         form = PostForm(
             data=form_data,
