@@ -1,7 +1,9 @@
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import F
+from django.forms import HiddenInput
 from django.test import TestCase
 from faker import Faker
+from machina.conf import settings as machina_settings
 from machina.core.db.models import get_model
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
@@ -20,6 +22,31 @@ class PostFormTest(TestCase):
         self.user = UserFactory()
         self.forum = create_forum()
         self.topic = create_topic(forum=self.forum, poster=self.user)
+
+    def test_subject_is_hidden(self):
+        form = PostForm()
+        self.assertIn("subject", form.declared_fields)
+        subject = form.declared_fields["subject"]
+        self.assertIsInstance(subject.widget, HiddenInput)
+
+    def test_post_subject_comes_from_topic_subject(self):
+        form_data = {
+            "subject": "subject",
+            "content": "content",
+            "username": "testname",
+        }
+        form = PostForm(
+            data=form_data,
+            user=self.user,
+            forum=self.forum,
+            topic=self.topic,
+        )
+        self.assertTrue(form.is_valid())
+        post = form.create_post()
+        self.assertEqual(
+            post.subject,
+            f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}",
+        )
 
     def test_reply_as_anonymous_user(self):
         post = Post.objects.create(
