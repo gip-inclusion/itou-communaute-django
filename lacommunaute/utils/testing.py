@@ -6,9 +6,7 @@ from django.test.utils import TestContextDecorator
 class reload_module(TestContextDecorator):
     def __init__(self, module):
         self._module = module
-        self._original_values = {
-            key: getattr(module, key) for key in dir(module) if not key.startswith("__")
-        }
+        self._original_values = {key: getattr(module, key) for key in dir(module) if not key.startswith("__")}
         super().__init__()
 
     def enable(self):

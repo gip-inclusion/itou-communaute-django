@@ -31,9 +31,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Creation date"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Creation date"),
                 ),
                 (
                     "updated",
@@ -53,29 +51,21 @@ class Migration(migrations.Migration):
                     "content",
                     machina.models.fields.MarkupTextField(
                         no_rendered_field=True,
-                        validators=[
-                            machina.core.validators.MarkupMaxLengthValidator(None)
-                        ],
+                        validators=[machina.core.validators.MarkupMaxLengthValidator(None)],
                         verbose_name="Content",
                     ),
                 ),
                 (
                     "username",
-                    models.CharField(
-                        blank=True, max_length=155, null=True, verbose_name="Username"
-                    ),
+                    models.CharField(blank=True, max_length=155, null=True, verbose_name="Username"),
                 ),
                 (
                     "approved",
-                    models.BooleanField(
-                        db_index=True, default=True, verbose_name="Approved"
-                    ),
+                    models.BooleanField(db_index=True, default=True, verbose_name="Approved"),
                 ),
                 (
                     "enable_signature",
-                    models.BooleanField(
-                        db_index=True, default=True, verbose_name="Attach a signature"
-                    ),
+                    models.BooleanField(db_index=True, default=True, verbose_name="Attach a signature"),
                 ),
                 (
                     "update_reason",
@@ -155,9 +145,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "approved",
-                    models.BooleanField(
-                        db_index=True, default=True, verbose_name="Approved"
-                    ),
+                    models.BooleanField(db_index=True, default=True, verbose_name="Approved"),
                 ),
                 (
                     "posts_count",
@@ -188,15 +176,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, db_index=True, verbose_name="Creation date"
-                    ),
+                    models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Creation date"),
                 ),
                 (
                     "updated",
-                    models.DateTimeField(
-                        auto_now=True, db_index=True, verbose_name="Update date"
-                    ),
+                    models.DateTimeField(auto_now=True, db_index=True, verbose_name="Update date"),
                 ),
                 (
                     "first_post",
@@ -283,8 +267,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="topic",
-            index=models.Index(
-                fields=["type", "last_post_on"], name="forum_conve_type_cc96d0_idx"
-            ),
+            index=models.Index(fields=["type", "last_post_on"], name="forum_conve_type_cc96d0_idx"),
         ),
     ]

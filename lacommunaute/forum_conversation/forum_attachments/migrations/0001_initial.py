@@ -40,9 +40,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "comment",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, verbose_name="Comment"
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, verbose_name="Comment"),
                 ),
                 (
                     "post",

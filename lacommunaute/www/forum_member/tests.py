@@ -11,9 +11,7 @@ class ForumProfileListViewTest(TestCase):
         response = self.client.get(reverse("members:profiles"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            len(response.context["forum_profiles"]), ForumProfile.objects.count()
-        )
+        self.assertEqual(len(response.context["forum_profiles"]), ForumProfile.objects.count())
 
         for forum_profile in forum_profiles:
             with self.subTest(forum_profile=forum_profile):
@@ -21,7 +19,5 @@ class ForumProfileListViewTest(TestCase):
                 self.assertContains(
                     response,
                     # legacy machina reversed url
-                    reverse(
-                        "forum_member:profile", kwargs={"pk": forum_profile.user_id}
-                    ),
+                    reverse("forum_member:profile", kwargs={"pk": forum_profile.user_id}),
                 )

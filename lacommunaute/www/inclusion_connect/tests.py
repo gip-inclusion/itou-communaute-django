@@ -1,8 +1,4 @@
-import dataclasses
-import json
-from operator import itemgetter
-from unittest import mock
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 
 import httpx
 import respx
@@ -56,9 +52,7 @@ def mock_oauth_dance(
     authorize_params = {k: v for k, v in authorize_params.items() if v}
 
     # Calling this view is mandatory to start a new session.
-    authorize_url = (
-        f"{reverse('inclusion_connect:authorize')}?{urlencode(authorize_params)}"
-    )
+    authorize_url = f"{reverse('inclusion_connect:authorize')}?{urlencode(authorize_params)}"
     test_class.client.get(authorize_url)
 
     # User is logged out from IC when an error happens during the oauth dance.
@@ -70,16 +64,12 @@ def mock_oauth_dance(
         "expires_in": 60,
         "id_token": "123456",
     }
-    respx.post(constants.INCLUSION_CONNECT_ENDPOINT_TOKEN).mock(
-        return_value=httpx.Response(200, json=token_json)
-    )
+    respx.post(constants.INCLUSION_CONNECT_ENDPOINT_TOKEN).mock(return_value=httpx.Response(200, json=token_json))
 
     user_info = OIDC_USERINFO.copy()
     if user_info_email:
         user_info["email"] = user_info_email
-    respx.get(constants.INCLUSION_CONNECT_ENDPOINT_USERINFO).mock(
-        return_value=httpx.Response(200, json=user_info)
-    )
+    respx.get(constants.INCLUSION_CONNECT_ENDPOINT_USERINFO).mock(return_value=httpx.Response(200, json=user_info))
 
     csrf_signed = InclusionConnectState.create_signed_csrf_token()
     url = reverse("inclusion_connect:callback")
@@ -110,9 +100,7 @@ class InclusionConnectViewTest(InclusionConnectBaseTestCase):
         url = f"{reverse('inclusion_connect:authorize')}"
         # Don't use assertRedirects to avoid fetching the last URL.
         response = self.client.get(url, follow=False)
-        self.assertTrue(
-            response.url.startswith(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE)
-        )
+        self.assertTrue(response.url.startswith(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE))
         self.assertIn(constants.INCLUSION_CONNECT_SESSION_KEY, self.client.session)
 
     ####################################
