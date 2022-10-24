@@ -11,10 +11,7 @@ from django.utils import crypto
 from django.utils.http import urlencode
 
 from lacommunaute.inclusion_connect import constants
-from lacommunaute.inclusion_connect.models import (
-    InclusionConnectState,
-    OIDConnectUserData,
-)
+from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
 from lacommunaute.utils.urls import get_absolute_url
 
 

@@ -33,6 +33,7 @@ Werkzeug = "^2.2.2"
 pytest-django = "^4.5.2"
 debugpy = "^1.6.3"
 factory-boy = "^3.2.1"
+respx = "^0.20.0"
 
 [build-system]
 requires = ["poetry-core"]
