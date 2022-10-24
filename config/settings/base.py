@@ -65,6 +65,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_conversation.forum_attachments",
     "lacommunaute.forum_conversation.forum_polls",
     "lacommunaute.forum_member",
+    "lacommunaute.inclusion_connect",
     "lacommunaute.www",
 ]
 
@@ -218,6 +219,11 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+# Environment, sets the type of env of the app (PROD, DEV…)
+ITOU_ENVIRONMENT = os.getenv("ITOU_ENVIRONMENT", "PROD")
+ITOU_PROTOCOL = "https"
+ITOU_FQDN = os.getenv("ITOU_FQDN", "communaute-experimentation.inclusion.beta.gouv.fr")
+
 # S3 uploads
 # ------------------------------------------------------------------------------
 
@@ -239,3 +245,9 @@ MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/"  # noqa
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 MACHINA_FORUM_NAME = "La Communauté"
 FORUM_TOPICS_NUMBER_PER_PAGE = 10
+
+# Inclusion Connect
+INCLUSION_CONNECT_BASE_URL = os.getenv("INCLUSION_CONNECT_BASE_URL")
+INCLUSION_CONNECT_REALM = os.getenv("INCLUSION_CONNECT_REALM")
+INCLUSION_CONNECT_CLIENT_ID = os.getenv("INCLUSION_CONNECT_CLIENT_ID")
+INCLUSION_CONNECT_CLIENT_SECRET = os.getenv("INCLUSION_CONNECT_CLIENT_SECRET")
