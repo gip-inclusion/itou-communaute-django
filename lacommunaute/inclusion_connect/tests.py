@@ -4,10 +4,7 @@ from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from lacommunaute.inclusion_connect import constants
-from lacommunaute.inclusion_connect.models import (
-    InclusionConnectState,
-    OIDConnectUserData,
-)
+from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.testing import reload_module
