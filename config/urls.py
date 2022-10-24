@@ -9,6 +9,11 @@ from lacommunaute.www.forum_member import urls as forum_member_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Inclusion Connect URLs.
+    path(
+        "inclusion_connect/",
+        include("lacommunaute.www.inclusion_connect.urls"),
+    ),
     # www.
     path("", include("lacommunaute.www.pages.urls")),
     path("", include("django.contrib.auth.urls")),
