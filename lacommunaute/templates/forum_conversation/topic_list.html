@@ -68,11 +68,7 @@
                                                             </p>
 
                                                             <div class="post-content">
-                                                                {% if forloop.first %} <!-- removed if post.is_topic_head -->
-                                                                    {{ post.content.rendered }}
-                                                                {% else %}
-                                                                    {{ post.content.rendered }}
-                                                                {% endif %}
+                                                                {{ post.content.rendered }}
                                                             </div>
                                                             {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
                                                             {% if post.enable_signature and post.poster.forum_profile.signature %}

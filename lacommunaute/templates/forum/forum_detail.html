@@ -28,12 +28,12 @@
     {% endif %}
     {% if forum.is_forum %}
         <div class="mt-4 mb-3 row justify-content-between">
-            <div class="col-12 col-sm-auto forum-actions-block">
-                {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
-                {% if user_can_add_topic %}
+            {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
+            {% if user_can_add_topic %}
+                <div class="col-12 col-sm-auto forum-actions-block">
                     <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-sm btn-block"><i class="fa fa-comments fa-lg"></i>&nbsp;{% trans "New topic" %}</a>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
             <div class="col-12 col-sm-auto">
                 {% if topics|length > 0 and request.user.is_authenticated %}
                     <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="btn btn-sm btn-link btn-block">{% trans "Mark topics read" %}</a>
