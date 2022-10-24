@@ -14,6 +14,7 @@ psycopg2-binary = "^2.9.3"
 django-machina = "^1.2.0"
 boto3 = "^1.24.91"
 django-storages = "^1.13.1"
+httpx = "^0.23.0"
 
 
 [tool.poetry.group.dev.dependencies]
