@@ -30,9 +30,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Creation date"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Creation date"),
                 ),
                 (
                     "updated",
@@ -44,9 +42,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "duration",
-                    models.PositiveIntegerField(
-                        blank=True, null=True, verbose_name="Poll duration, in days"
-                    ),
+                    models.PositiveIntegerField(blank=True, null=True, verbose_name="Poll duration, in days"),
                 ),
                 (
                     "max_options",
@@ -61,9 +57,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "user_changes",
-                    models.BooleanField(
-                        default=False, verbose_name="Allow vote changes"
-                    ),
+                    models.BooleanField(default=False, verbose_name="Allow vote changes"),
                 ),
                 (
                     "topic",

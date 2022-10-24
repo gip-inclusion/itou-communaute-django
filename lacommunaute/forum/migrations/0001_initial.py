@@ -26,9 +26,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="Creation date"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="Creation date"),
                 ),
                 (
                     "updated",
@@ -107,9 +105,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "last_post_on",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="Last post added on"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="Last post added on"),
                 ),
                 (
                     "display_sub_forum_list",

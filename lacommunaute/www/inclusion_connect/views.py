@@ -42,9 +42,7 @@ class InclusionConnectSession:
 
 def _redirect_to_login_page_on_error(error_msg, request=None):
     if request:
-        messages.error(
-            request, "Une erreur technique est survenue. Merci de recommencer."
-        )
+        messages.error(request, "Une erreur technique est survenue. Merci de recommencer.")
     logger.error(error_msg)
     return HttpResponseRedirect(reverse("pages:home"))
 
@@ -69,18 +67,14 @@ def inclusion_connect_authorize(request):
         "nonce": crypto.get_random_string(length=12),
         "from": "communaute",  # Display a "La communauté" logo on the connection page.
     }
-    return HttpResponseRedirect(
-        f"{constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE}?{urlencode(data)}"
-    )
+    return HttpResponseRedirect(f"{constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE}?{urlencode(data)}")
 
 
 def inclusion_connect_callback(request):  # pylint: disable=too-many-return-statements
     code = request.GET.get("code")
     state = request.GET.get("state")
     if code is None or not InclusionConnectState.is_valid(state):
-        return _redirect_to_login_page_on_error(
-            error_msg="Missing code or invalid state.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Missing code or invalid state.", request=request)
 
     ic_session = request.session[constants.INCLUSION_CONNECT_SESSION_KEY]
     token_redirect_uri = get_absolute_url(reverse("inclusion_connect:callback"))
@@ -100,17 +94,13 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
     )
 
     if response.status_code != 200:
-        return _redirect_to_login_page_on_error(
-            error_msg="Impossible to get IC token.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Impossible to get IC token.", request=request)
 
     # Contains access_token, token_type, expires_in, id_token
     token_data = response.json()
     access_token = token_data.get("access_token")
     if not access_token:
-        return _redirect_to_login_page_on_error(
-            error_msg="Access token field missing.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Access token field missing.", request=request)
 
     # Keep token_data["id_token"] to logout from IC.
     # At this step, we can update the user's fields in DB and create a session if required.
@@ -127,22 +117,16 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
         timeout=constants.INCLUSION_CONNECT_TIMEOUT,
     )
     if response.status_code != 200:
-        return _redirect_to_login_page_on_error(
-            error_msg="Impossible to get user infos.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Impossible to get user infos.", request=request)
 
     try:
         user_data = json.loads(response.content.decode("utf-8"))
     except json.decoder.JSONDecodeError:
-        return _redirect_to_login_page_on_error(
-            error_msg="Impossible to decode user infos.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Impossible to decode user infos.", request=request)
 
     if "sub" not in user_data:
         # 'sub' is the unique identifier from Inclusion Connect, we need that to match a user later on.
-        return _redirect_to_login_page_on_error(
-            error_msg="Sub parameter missing.", request=request
-        )
+        return _redirect_to_login_page_on_error(error_msg="Sub parameter missing.", request=request)
 
     ic_user_data = OIDConnectUserData.from_user_info(user_data)
     user, _ = ic_user_data.create_or_update_user()
@@ -151,9 +135,7 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
         logout_url_params = {
             "redirect_url": ic_session["previous_url"],
         }
-        next_url = (
-            f"{reverse('inclusion_connect:logout')}?{urlencode(logout_url_params)}"
-        )
+        next_url = f"{reverse('inclusion_connect:logout')}?{urlencode(logout_url_params)}"
         return HttpResponseRedirect(next_url)
 
     login(request, user)
