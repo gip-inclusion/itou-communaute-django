@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
 {% load theme_inclusion %}
+{% load forum_member_tags %}
 
 <section class="s-preheader d-none d-xl-block">
     <div class="container s-preheader__container">
@@ -78,7 +79,7 @@
                                                 <span class="mr-2"><i class="ri-user-line ri-2x"></i></span>
                                                 <div class="media-body">
                                                     {% if user.get_username %}
-                                                        <span>{{ user.get_username }}</span>
+                                                        <span>{{ user|forum_member_display_name }}</span>
                                                         <br>
                                                     {% endif %}
                                                     <span class="fs-sm lh-sm text-secondary">{{ user.email }}</span>
