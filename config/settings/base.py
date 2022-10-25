@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS", "inclusion.beta.gouv.fr,communaute.inclusion.beta.gouv.fr"
+    "ALLOWED_HOSTS", "communaute-experimentation.inclusion.beta.gouv.fr,communaute.inclusion.beta.gouv.fr,"
 ).split(",")
 
 # Application definition
@@ -191,9 +191,7 @@ STATICFILES_FINDERS = [
     "compressor.finders.CompressorFinder",
 ]
 
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
+COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -231,7 +229,9 @@ ITOU_FQDN = os.getenv("ITOU_FQDN", "communaute-experimentation.inclusion.beta.go
 
 AWS_S3_ACCESS_KEY_ID = os.getenv("CELLAR_ADDON_KEY_ID", "123")
 AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET", "secret")
-AWS_S3_ENDPOINT_URL = os.getenv("CELLAR_ADDON_HOST", "http://set-var-env.com/")
+AWS_S3_ENDPOINT_URL = (
+    f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.getenv('CELLAR_ADDON_HOST', 'set-var-env.com/')}"
+)
 AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME", "set-bucket-name")
 AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION", "fr")
 
