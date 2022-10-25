@@ -47,6 +47,8 @@ THIRD_PARTIES_APPS = [
     "machina.apps.forum_search",
     "machina.apps.forum_tracking",
     "machina.apps.forum_permission",
+    # django-compressor
+    "compressor",
 ]
 
 # MIGRATION CONFIGURATION
@@ -176,22 +178,22 @@ STATIC_ROOT = os.path.join(ROOT_DIR, "public/static")
 # Static Files
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (os.path.join(APPS_DIR, "static"),)
-
-STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
-
-# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
-# STATICFILES_FINDERS = [
-#     "django.contrib.staticfiles.finders.FileSystemFinder",
-#     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
-# ]
-
-
 STATICFILES_DIRS = [
     os.path.join(APPS_DIR, "static"),
     MACHINA_MAIN_STATIC_DIR,
 ]
+
+STATIC_ROOT = os.path.join(APPS_DIR, "staticfiles")
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

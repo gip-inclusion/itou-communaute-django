@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+{% load compress %}
 {% load theme_inclusion %}
 <!DOCTYPE html>
 <html lang="fr">
@@ -41,6 +42,10 @@
             <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
             {% import_static_CSS_theme_inclusion %}
         {% endblock %}
+
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss" />
+        {% endcompress %}
 
         {% block extra_css %}{% endblock %}
     </head>
