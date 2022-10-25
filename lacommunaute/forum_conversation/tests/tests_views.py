@@ -18,9 +18,7 @@ from lacommunaute.users.factories import UserFactory
 
 def build_post_in_forum():
     poster = UserFactory()
-    return PostFactory(
-        topic=create_topic(forum=create_forum(), poster=poster), poster=poster
-    )
+    return PostFactory(topic=create_topic(forum=create_forum(), poster=poster), poster=poster)
 
 
 class TopicCreateViewTest(TestCase):
@@ -31,9 +29,7 @@ class TopicCreateViewTest(TestCase):
         view.forum_post = self.post
         self.assertEqual(
             view.get_success_url(),
-            reverse(
-                "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-            ),
+            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
 
@@ -45,9 +41,7 @@ class TopicUpdateViewTest(TestCase):
         view.forum_post = self.post
         self.assertEqual(
             view.get_success_url(),
-            reverse(
-                "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-            ),
+            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
 
@@ -59,9 +53,7 @@ class PostCreateViewTest(TestCase):
         view.forum_post = self.post
         self.assertEqual(
             view.get_success_url(),
-            reverse(
-                "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-            ),
+            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
 
@@ -73,9 +65,7 @@ class PostUpdateViewTest(TestCase):
         view.forum_post = self.post
         self.assertEqual(
             view.get_success_url(),
-            reverse(
-                "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-            ),
+            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
 
@@ -93,9 +83,7 @@ class PostDeleteViewTest(TestCase):
         view.request = request
         self.assertEqual(
             view.get_success_url(),
-            reverse(
-                "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-            ),
+            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
         msgs = get_messages(request)
         self.assertTrue(view.success_message, msgs._queued_messages[0].message)

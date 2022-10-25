@@ -12,7 +12,5 @@ class PostModelTest(TestCase):
         topic = create_topic(forum=create_forum(), poster=UserFactory())
         post = Post(username="not an email", subject="xxx", content="xxx", topic=topic)
 
-        with self.assertRaisesMessage(
-            ValidationError, "Saisissez une adresse de courriel valide."
-        ):
+        with self.assertRaisesMessage(ValidationError, "Saisissez une adresse de courriel valide."):
             post.full_clean()
