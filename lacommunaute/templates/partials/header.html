@@ -104,28 +104,19 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" id="js-logout" href="{% url 'logout' %}">Déconnexion</a>
+                                        <a class="dropdown-item text-danger" id="js-logout" href="{% url 'inclusion_connect:logout' %}">Déconnexion</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                     {% else %}
                         <li>
-                            <a href="{% url 'login' %}" class="btn btn-ico btn-outline-primary">
+                            <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-ico btn-outline-primary">
                                 <i class="ri-login-box-line ri-lg"></i>
-                                <span>
-                                    Se connecter
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="btn btn-primary btn-ico">
-                                <i class="ri-user-add-line ri-lg"></i>
                                 <span>
                                     Se connecter | S'inscrire
                                 </span>
                             </a>
-                            {% endif %}
                         </li>
                     {% endif %}
                 </ul>

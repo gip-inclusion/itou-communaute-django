@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="post",
             name="username",
-            field=models.EmailField(
-                blank=True, max_length=254, null=True, verbose_name="Adresse email"
-            ),
+            field=models.EmailField(blank=True, max_length=254, null=True, verbose_name="Adresse email"),
         ),
     ]

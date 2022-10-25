@@ -9,9 +9,7 @@ class PostForm(AbstractPostForm):
 
     def create_post(self):
         post = super().create_post()
-        post.subject = (
-            f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}"
-        )
+        post.subject = f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}"
         return post
 
     def update_post(self, post):

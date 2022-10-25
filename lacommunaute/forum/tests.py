@@ -29,9 +29,7 @@ class ForumViewQuerysetTest(TestCase):
         self.assertFalse(view.get_queryset())
 
     def test_exclude_not_approved_posts(self):
-        TopicFactory(
-            forum=self.forum, poster=self.user, approved=False, type=Topic.TOPIC_POST
-        )
+        TopicFactory(forum=self.forum, poster=self.user, approved=False, type=Topic.TOPIC_POST)
         view = ForumView()
         view.kwargs = {"pk": self.forum.pk}
         self.assertFalse(view.get_queryset())
@@ -42,12 +40,8 @@ class ForumViewQuerysetTest(TestCase):
 
     def test_numqueries(self):
         poster = UserFactory()
-        topics = TopicFactory.create_batch(
-            10, forum=self.forum, poster=poster, type=Topic.TOPIC_POST
-        )
-        _ = (
-            PostFactory.create_batch(5, topic=topic, poster=poster) for topic in topics
-        )
+        topics = TopicFactory.create_batch(10, forum=self.forum, poster=poster, type=Topic.TOPIC_POST)
+        _ = (PostFactory.create_batch(5, topic=topic, poster=poster) for topic in topics)
 
         UserForumPermissionFactory(
             permission=ForumPermission.objects.get(codename="can_see_forum"),
@@ -62,9 +56,7 @@ class ForumViewQuerysetTest(TestCase):
             has_perm=True,
         )
 
-        url = reverse(
-            "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-        )
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
 
@@ -97,9 +89,7 @@ class ForumViewTest(TestCase):
 
     def test_subscription_button_is_hidden(self):
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
-        url = reverse(
-            "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-        )
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         response = self.client.get(url)
@@ -129,9 +119,7 @@ class ForumViewTest(TestCase):
 
     def test_topic_subject_is_not_hyperlink(self):
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
-        url = reverse(
-            "forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}
-        )
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         response = self.client.get(url)
