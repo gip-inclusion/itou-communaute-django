@@ -6,7 +6,8 @@
         "module": "config.wsgi:application",
         "managetasks": [
             "migrate --no-input",
-            "collectstatic --no-input"
+            "collectstatic --no-input",
+            "compress --force"
         ]
     }
 }
