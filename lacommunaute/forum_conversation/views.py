@@ -1,6 +1,11 @@
+import logging
+
 from django.contrib import messages
 from django.urls import reverse
 from machina.apps.forum_conversation import views
+
+
+logger = logging.getLogger(__name__)
 
 
 class SuccessUrlMixin:
