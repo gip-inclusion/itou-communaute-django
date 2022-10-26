@@ -11,4 +11,5 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("statistiques/", views.statistiques, name="statistiques"),
     path("accessibilite/", views.accessibilite, name="accessibilite"),
+    path("sentry-debug/", views.trigger_error, name="sentry_debug"),
 ]
