@@ -253,3 +253,31 @@ INCLUSION_CONNECT_BASE_URL = os.getenv("INCLUSION_CONNECT_BASE_URL")
 INCLUSION_CONNECT_REALM = os.getenv("INCLUSION_CONNECT_REALM")
 INCLUSION_CONNECT_CLIENT_ID = os.getenv("INCLUSION_CONNECT_CLIENT_ID")
 INCLUSION_CONNECT_CLIENT_SECRET = os.getenv("INCLUSION_CONNECT_CLIENT_SECRET")
+
+# LOGGING
+# ------------------------------------------------------------------------------
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "{levelname} {asctime} {pathname} : {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+        },
+    },
+}
+
+_sentry_dsn = os.getenv("SENTRY_DSN")
+if _sentry_dsn:
+    from ._sentry import sentry_init
+
+    sentry_init(dsn=_sentry_dsn)
