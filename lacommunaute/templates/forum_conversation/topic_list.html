@@ -49,7 +49,7 @@
                                                                                 By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
                                                                             {% endblocktrans %}
                                                                         {% else %}
-                                                                            {% blocktrans trimmed with poster_username=post.username creation_date=post.created %}
+                                                                            {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
                                                                                 By: {{ poster_username }} on {{ creation_date }}
                                                                             {% endblocktrans %}
                                                                         {% endif %}
