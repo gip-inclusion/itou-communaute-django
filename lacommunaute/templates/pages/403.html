@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Erreur 403{{ block.super }}{% endblock %}
+{% block body_class %}p-error{{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Erreur 403</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Erreur 403</strong></h1>
+                    <h2 class="h2">Vous ne pouvez pas continuer.</h2>
+                    <p>Accès refusé</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
