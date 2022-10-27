@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Erreur 404{{ block.super }}{% endblock %}
+{% block body_class %}p-error{{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Erreur 404</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Erreur 404</strong></h1>
+                    <h2 class="h2">La page que vous avez demandée n'a pas pu être trouvée.</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
