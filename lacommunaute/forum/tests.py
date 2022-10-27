@@ -61,9 +61,8 @@ class ForumViewQuerysetTest(TestCase):
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
 
         # todo fix vincentporte :
-        # assumed duplicated queries in ForumView()
         # view to be optimized again soon
-        with self.assertNumQueries(30):
+        with self.assertNumQueries(20):
             response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
