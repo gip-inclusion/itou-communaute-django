@@ -32,7 +32,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         {% for post in topic.posts.all %}
-                                            {% if forloop.first and poll %} <!-- removed if post.is_topic_head -->
+                                            {% if forloop.first and poll %}
                                                 {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                             {% endif %}
                                             <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} ml-3{%endif%}">
@@ -57,7 +57,7 @@
 
                                                                     {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
                                                                     {% if user_can_edit_post %}
-                                                                        &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
+                                                                        &nbsp;<a href="{% if forloop.first  %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
                                                                     {% endif %}
 
                                                                     {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
