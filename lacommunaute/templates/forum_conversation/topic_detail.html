@@ -27,17 +27,8 @@
                 <div id="{{ post.id }}" class="my-3 card post{% if post.is_topic_head %} bg-light{% else %} ml-3{% endif %}">
                     <div class="card-body pb-0">
                         <div class="row">
-                            <div class="col-md-10 post-content-wrapper">
-                                <div class="float-right post-controls">
-                                    {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
-                                    {% if user_can_edit_post %}
-                                        <a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" class="btn btn-warning btn-sm" title="{% trans "Edit" %}"><i class="fas fa-edit"></i>&nbsp;{% trans "Edit" %}</a>
-                                    {% endif %}
-                                    {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
-                                    {% if user_can_delete_post %}
-                                        <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" class="btn btn-danger btn-sm" title="{% trans "Delete" %}"><i class="fas fa-times"></i></a>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-12 post-content-wrapper">
+
                                 {% spaceless %}
                                     <h4 class="m-0 subject">
                                         {{ post.subject }}
@@ -59,6 +50,15 @@
                                                 {% endblocktrans %}
                                             {% endif %}
                                         {% endspaceless %}
+                                        {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
+                                        {% if user_can_edit_post %}
+                                            &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
+                                        {% endif %}
+
+                                        {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
+                                        {% if user_can_delete_post %}
+                                            &nbsp;<a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" title="{% trans "Delete" %}">Supprimer</a>
+                                        {% endif %}
                                     </small>
                                 </p>
                                 <div class="post-content">
@@ -84,20 +84,7 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="col-md-2 d-none d-md-block post-sidebar">
-                                {% if post.poster %}
-                                    <div class="avatar">
-                                        <a href="{% url 'forum_member:profile' post.poster_id %}">
-                                            {% include "partials/avatar.html" with profile=post.poster.forum_profile show_placeholder=True %}
-                                        </a>
-                                    </div>
-                                    <div class="username"><a href="{% url 'forum_member:profile' post.poster_id %}"><b>{{ post.poster|forum_member_display_name }}</b></a></div>
-                                    <div class="posts-count text-muted"><b>{% trans "Posts:" %}</b>&nbsp;{{ post.poster.forum_profile.posts_count }}</div>
-                                {% else %}
-                                    <div class="username"><b>{% trans "Anonymous user" %}</b></div>
-                                    <div class="username text-muted">{% trans "Anonymous user" %}</div>
-                                {% endif %}
-                            </div>
+
                         </div>
                     </div>
                 </div>
