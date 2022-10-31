@@ -67,6 +67,33 @@ class ForumViewQuerysetTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_get_first_and_last_n_posts(self):
+        view = ForumView()
+        view.kwargs = {"pk": self.forum.pk}
+        n = 5
+
+        topic = TopicFactory(forum=self.forum, poster=self.user)
+        first_post = PostFactory(topic=topic, poster=self.user, content="first post")
+        qs = view.get_queryset()
+        self.assertEqual(qs.first().posts.all().count(), 1)
+        self.assertEqual(qs.first().posts.first(), first_post)
+
+        second_post = PostFactory(topic=topic, poster=self.user, content="second post")
+        qs = view.get_queryset()
+        self.assertEqual(qs.first().posts.all().count(), 2)
+        self.assertEqual(qs.first().posts.first(), first_post)
+        self.assertIn(second_post, qs.first().posts.all())
+
+        PostFactory.create_batch(2 * n, topic=topic, poster=self.user)
+        qs = view.get_queryset()
+        self.assertGreater(topic.posts.count(), qs.first().posts.all().count())
+        self.assertEqual(qs.first().posts.all().count(), n + 1)
+        self.assertEqual(qs.first().posts.first(), first_post)
+        self.assertNotIn(second_post, qs.first().posts.all())
+        self.assertEqual(
+            list(qs.first().posts.all().reverse().values("id")[:n]), list(topic.posts.all().reverse().values("id")[:n])
+        )
+
 
 class ForumViewTest(TestCase):
     def setUp(self) -> None:
