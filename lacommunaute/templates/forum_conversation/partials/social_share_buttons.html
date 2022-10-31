@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load social_share %}
+
+<div class="float-right m1-2">
+    {% trans "Share this topics on " %}
+    {% post_to_facebook topic '<i class="fab fa-facebook-square"></i>'%}
+    {% post_to_whatsapp topic '<i class="fab fa-whatsapp"></i>'%}
+    {% post_to_twitter "{{topic_subject}}" topic '<i class="fab fa-twitter"></i>' %}
+    {% send_email topic.subject "Ce lien peut t'intéresser :" topic '<i class="fas fa-envelope "></i>' %}
+    {% post_to_linkedin topic %}
+</div>
