@@ -316,6 +316,14 @@ django-js-asset = "*"
 tests = ["coverage", "mock-django"]
 
 [[package]]
+name = "django-social-share"
+version = "2.3.0"
+description = "Templatetags for 'tweet this' and 'share on facebook'"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "django-storages"
 version = "1.13.1"
 description = "Support for many storage backends in Django"
@@ -1031,7 +1039,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e5ece760d94b262ad4392433a4667e94a3c80cf1e2ea02e816d4cb85423b6d56"
+content-hash = "5e8a3e77b6fff01ac38efd03bf6fcda25817b99af82e339258ff9435ef85b42f"
 
 [metadata.files]
 anyio = [
@@ -1215,6 +1223,10 @@ django-machina = [
 django-mptt = [
     {file = "django-mptt-0.14.0.tar.gz", hash = "sha256:2c92a2b1614c53086278795ccf50580cf1f9b8564f3ff03055dd62bab5987711"},
     {file = "django_mptt-0.14.0-py3-none-any.whl", hash = "sha256:d9a87433ab0e4f35247c6f6d5a93ace6990860a4ba8796f815d185f773b9acfc"},
+]
+django-social-share = [
+    {file = "django-social-share-2.3.0.tar.gz", hash = "sha256:37844f3b4f88a2008604ece7eaedd52fd5914f111f13525200ce1101b750757f"},
+    {file = "django_social_share-2.3.0-py2.py3-none-any.whl", hash = "sha256:13d0a1fbb2a90e3a6e7eb556315ececd1e93a906574a3284affbe2f43e2f7398"},
 ]
 django-storages = [
     {file = "django-storages-1.13.1.tar.gz", hash = "sha256:b3d98ecc09f1b1627c2b2cf430964322ce4e08617dbf9b4236c16a32875a1e0b"},
