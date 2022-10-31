@@ -49,6 +49,7 @@ THIRD_PARTIES_APPS = [
     "machina.apps.forum_permission",
     # django-compressor
     "compressor",
+    "django_social_share",
 ]
 
 # MIGRATION CONFIGURATION
