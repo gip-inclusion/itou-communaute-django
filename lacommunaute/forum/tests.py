@@ -2,11 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.conversation import PostFactory, TopicFactory, create_topic
 from machina.test.factories.forum import create_forum
 from machina.test.factories.permission import UserForumPermissionFactory
 
 from lacommunaute.forum.views import ForumView
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
 
 
@@ -29,7 +29,7 @@ class ForumViewQuerysetTest(TestCase):
         self.assertFalse(view.get_queryset())
 
     def test_exclude_not_approved_posts(self):
-        TopicFactory(forum=self.forum, poster=self.user, approved=False, type=Topic.TOPIC_POST)
+        TopicFactory(forum=self.forum, poster=self.user, approved=False)
         view = ForumView()
         view.kwargs = {"pk": self.forum.pk}
         self.assertFalse(view.get_queryset())
@@ -40,7 +40,7 @@ class ForumViewQuerysetTest(TestCase):
 
     def test_numqueries(self):
         poster = UserFactory()
-        topics = TopicFactory.create_batch(10, forum=self.forum, poster=poster, type=Topic.TOPIC_POST)
+        topics = TopicFactory.create_batch(10, forum=self.forum, poster=poster)
         _ = (PostFactory.create_batch(5, topic=topic, poster=poster) for topic in topics)
 
         UserForumPermissionFactory(
@@ -77,7 +77,7 @@ class ForumViewTest(TestCase):
         self.forum = create_forum()
 
         # Set up a topic and some posts
-        self.topic = create_topic(forum=self.forum, poster=self.user)
+        self.topic = TopicFactory(forum=self.forum, poster=self.user)
         self.post = PostFactory.create(topic=self.topic, poster=self.user)
 
         # Assign some permissions
@@ -136,4 +136,4 @@ class ForumViewTest(TestCase):
             },
         )
         self.assertContains(response, f'<a href="{topic_url}post/create/')
-        self.assertNotContains(response, f'<a href="{topic_url}/ ')
+        self.assertNotContains(response, f'<a href="{topic_url}"')
