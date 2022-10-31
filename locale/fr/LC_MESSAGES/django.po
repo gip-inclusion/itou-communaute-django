@@ -824,3 +824,8 @@ msgstr "S'inscrire"
 #: lacommunaute/templates/registration/login.html:56
 msgid "Login"
 msgstr "Se connecter"
+
+
+#: lacommunaute/templates/forum_conversation/topic_list.html
+msgid "Show me more posts"
+msgstr "Montrer plus de publications"

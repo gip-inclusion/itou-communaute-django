@@ -164,3 +164,28 @@ class ForumViewTest(TestCase):
         )
         self.assertContains(response, f'<a href="{topic_url}post/create/')
         self.assertNotContains(response, f'<a href="{topic_url}"')
+
+    def test_show_more_button_visibility(self):
+        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        topic_url = reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": self.forum.pk,
+                "forum_slug": self.forum.slug,
+                "pk": self.topic.pk,
+                "slug": self.topic.slug,
+            },
+        )
+
+        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, f'<a href="{topic_url}"')
+
+        PostFactory.create_batch(10, topic=self.topic, poster=self.user)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'<a href="{topic_url}"')

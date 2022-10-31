@@ -18,7 +18,6 @@
                     {% for topic in topics %}
                         <div class="row m-0 px-3 py-2 border-bottom">
                             <div class="pl-0 col-12 topic-name">
-                                <div class="topic-inline-pagination float-right d-none d-sm-block">{% topic_pages_inline_list topic %}</div>
                                 <table class="topic-data-table">
                                     <tr>
                                         <td class="pt-1 pr-3 align-top topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
@@ -93,6 +92,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% if forloop.first and topic.posts.count > FORUM_NUMBER_POSTS_PER_TOPIC %}
+                                                <div>
+                                                    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-outline-primary btn-sm mb-3">
+                                                        {% trans "Show me more posts" %}</a>
+                                                </div>
+                                            {%endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
