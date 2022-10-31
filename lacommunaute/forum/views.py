@@ -39,3 +39,8 @@ class ForumView(BaseForumView):
             .exclude(approved=False)
             .prefetch_related(Prefetch("posts", queryset=posts))
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
+        return context
