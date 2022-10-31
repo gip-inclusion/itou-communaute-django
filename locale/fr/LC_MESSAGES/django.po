@@ -844,3 +844,11 @@ msgstr "Accéder à cette communauté"
 #: lacommunaute/templates/pages/home.html:89
 msgid "Join this forum"
 msgstr "Rejoindre cette communauté"
+#: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:5
+msgid "Share this topics on "
+msgstr "Partager ce sujet sur "
+
+#: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:4
+#, python-format
+msgid "%(forum_name)s - %(topic_subject)s: Check it out!"
+msgstr "Regardez %(topic_subject)s dans la communauté %(forum_name)s !"
