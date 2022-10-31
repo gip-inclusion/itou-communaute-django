@@ -85,6 +85,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+LOGIN_URL = "/inclusion_connect/authorize"
 LOGIN_REDIRECT_URL = "/forum"
 LOGOUT_REDIRECT_URL = "/forum"
 
