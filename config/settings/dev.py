@@ -77,6 +77,6 @@ MEDIA_URL = "/media/"
 
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
-ITOU_ENVIRONMENT = "DEV"
-ITOU_PROTOCOL = "http"
-ITOU_FQDN = "127.0.0.1:8000"
+COMMU_ENVIRONMENT = "DEV"
+COMMU_PROTOCOL = "http"
+COMMU_FQDN = "127.0.0.1:8000"

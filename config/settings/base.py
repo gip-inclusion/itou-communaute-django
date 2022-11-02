@@ -103,6 +103,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.template.context_processors.media",
                 "django.contrib.messages.context_processors.messages",
+                "lacommunaute.utils.settings_context_processors.expose_settings",
                 "machina.core.context_processors.metadata",
             ],
             "loaders": [
@@ -220,9 +221,9 @@ HAYSTACK_CONNECTIONS = {
 }
 
 # Environment, sets the type of env of the app (PROD, DEV…)
-ITOU_ENVIRONMENT = os.getenv("ITOU_ENVIRONMENT", "PROD")
-ITOU_PROTOCOL = "https"
-ITOU_FQDN = os.getenv("ITOU_FQDN", "communaute-experimentation.inclusion.beta.gouv.fr")
+COMMU_ENVIRONMENT = os.getenv("COMMU_ENVIRONMENT", "PROD")
+COMMU_PROTOCOL = "https"
+COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute-experimentation.inclusion.beta.gouv.fr")
 
 # S3 uploads
 # ------------------------------------------------------------------------------
