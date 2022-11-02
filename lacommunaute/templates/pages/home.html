@@ -1,4 +1,6 @@
 {% extends "layouts/base.html" %}
+{% load static %}
+{% load i18n %}
 
 {% block title %}Accueil{{ block.super }}{% endblock %}
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
@@ -8,19 +10,58 @@
         <div class="s-page-menu-01__container container">
             <div class="s-page-menu-01__row row align-items-center">
                 <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                    <h1 class="h1-hero">Bienvenue sur la communauté de l'inclusion</h1>
-                    <h2 class="h1">
-                        La communauté de l'inclusion est une plateforme de contribution à la création, l'évolution d'un produit numérique ou de la politique publique.</h2>
+                    <h1 class="h1-hero lh-sm font-weight-bold">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                </div>
+            </div>
+            <div class="s-page-menu-01__row row">
+                <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-md-8">
+                    <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
+                    <ul class="lead list-unstyled mb-md-5">
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Partagez votre avis, expériences, suggestions</span>
+                        </li>
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Rencontrez d’autres professionnels de l’inclusion !</span>
+                        </li>
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Participez à la construction des outils numériques de l'insertion</span>
+                        </li>
+                    </ul>
+                    <p>
+                        <a href="{% url 'forum:index' %}" class="btn btn-primary">
+                            <span>Accéder aux {% trans "Forums"|lower %} publics</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="s-page-menu-01__col col-12 d-none d-md-inline-flex col-md-4">
+                    <div>
+                        <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid" alt="">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="s-section">
+    <section class="s-section m-0 bg-nuance-09">
         <div class="s-section__container container">
             <div class="s-section__row row">
+                <div class="s-section__col col-12 py-5 text-center">
+                    <h2 class="h1 m-0">Vous souhaitez sonder la communauté, créer votre groupe de travail <br class="d-none d-md-inline">ou animer un sujet de discussion, notre équipe est à votre écoute !</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section my-md-7">
+        <div class="s-section__container container">
+            <div class="s-section__row row mb-1 mb-md-3">
                 <div class="s-section__col col-12">
-                    <p>Pour contribuer aux discussions, rendez-vous dans le <a href="{% url 'forum:index' %}">forum</a></p>
+                    <h2>Les {% trans "Forums"|lower %}</h2>
+                    <p>Nous déployons des communautés publiques et privées.</p>
+                    <p>Ces communautés sont co-construits avec et pour les acteurs de l’inclusion en fonction de leurs besoins et de leurs objectifs. <br> Cliquez sur une communauté ci-dessous pour consulter les sujets en cours. Pour contribuer, connectez vous sur Inclusion Connect.</p>
                 </div>
             </div>
         </div>
