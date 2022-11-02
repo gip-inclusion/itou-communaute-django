@@ -12,6 +12,7 @@
         <div class="col-12 col-md-auto topic-actions-block">
             {% include "forum_conversation/partials/topic_detail_actions.html" %}
         </div>
+        {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
         <div class="col-12 col-md pagination-block">
             {% with "pagination-sm justify-content-end" as pagination_size %}
                 {% include "partials/pagination.html" %}
@@ -95,6 +96,7 @@
         <div class="col-6 col-md-auto topic-actions-block">
             {% include "forum_conversation/partials/topic_detail_actions.html" %}
         </div>
+        {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
         <div class="col-12 col-md">
             {% with "pagination-sm justify-content-end" as pagination_size %}
                 {% include "partials/pagination.html" %}
