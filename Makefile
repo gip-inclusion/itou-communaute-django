@@ -60,8 +60,8 @@ shell_on_postgres_container:
 # Postgres CLI.
 # =============================================================================
 
-.PHONY: psql psql_root
+.PHONY: psql
 
 # Connect to the `postgres` container as the POSTGRES_USER user.
 psql:
-	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) postgres psql -U $(POSTGRES_USER)
+	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) commu_postgres psql -U $(POSTGRES_USER)
