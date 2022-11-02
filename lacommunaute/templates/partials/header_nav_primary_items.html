@@ -1,9 +1,10 @@
 {% load forum_member_tags %}
+{% load i18n %}
 <ul>
     {% comment %} TODO : Ajouter la class .is-active sur l'item de menu actif {% endcomment %}
     <li>
         <a href="{% url 'forum:index' %}">
-            <span>Forum</span>
+            <span>{% trans "Forum" %}</span>
         </a>
     </li>
     {% if user.is_authenticated %}
@@ -52,7 +53,7 @@
         </li>
     {% else %}
         <li>
-            <a href="{% url 'inclusion_connect:authorize' %}" class="btn {{ button_size }} btn-ico btn-outline-primary">
+            <a href="{% url 'inclusion_connect:authorize' %}" class="btn {{ button_size }} btn-ico btn-primary">
                 <i class="ri-login-box-line ri-lg"></i>
                 <span>
                     Se connecter | S'inscrire

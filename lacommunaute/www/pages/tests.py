@@ -6,4 +6,5 @@ class HomepageTest(TestCase):
     def test_home_page(self):
         url = reverse("pages:home")
         response = self.client.get(url)
-        self.assertContains(response, "Bienvenue sur la communauté de l'inclusion")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/home.html")

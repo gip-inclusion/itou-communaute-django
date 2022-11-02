@@ -11,4 +11,24 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+.p-homepage {
+  .s-main::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 260px;
+    background-image: url('data:image/svg+xml;utf8,%3csvg xmlns="http://www.w3.org/2000/svg" width="416" height="416"%3e%3cpath fill="%23D1EDE5" fill-rule="evenodd" d="M237.285 413.902C123.557 430.077 18.239 350.982 2.1 237.26-14.08 123.57 64.977 18.245 178.699 2.107c113.734-16.211 219.015 62.877 235.19 176.605 16.18 113.691-62.907 218.972-176.604 235.19z"/%3e%3c/svg%3e');
+    background-repeat: no-repeat;
+    background-size: 554px;
+    background-position: bottom right;
+  }
+}
+
+body {
+  .main {
+    border-radius: 1px;
+  }
 }
