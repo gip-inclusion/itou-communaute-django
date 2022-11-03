@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import FormView, ListView, TemplateView
@@ -39,12 +40,41 @@ class JoinForumLandingView(TemplateView):
 
 class JoinForumFormView(LoginRequiredMixin, FormView):
 
-    login_url = reverse_lazy("members:join_forum_landing")
     template_name = "forum_member/join_forum_form.html"
     form_class = JoinForumForm
 
-    success_url = "/"  # TODO: set target forum URL
+    def get_forum(self):
+        if not hasattr(self, "forum"):
+            self.forum = get_object_or_404(
+                Forum,
+                invitation_token=self.kwargs["token"],
+            )
+        return self.forum
 
     def form_valid(self, form):
+        form.forum = self.get_forum()
+        form.user = self.request.user
         form.join_forum()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["forum"] = self.get_forum()
+        return context
+
+    def get_login_url(self):
+        return reverse(
+            "members:join_forum_landing",
+            kwargs={
+                "token": self.kwargs["token"],
+            },
+        )
+
+    def get_success_url(self):
+        return reverse(
+            "forum:forum",
+            kwargs={
+                "slug": self.forum.slug,
+                "pk": self.forum.pk,
+            },
+        )
