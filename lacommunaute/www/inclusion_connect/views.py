@@ -51,6 +51,7 @@ def inclusion_connect_authorize(request):
     # Start a new session.
     previous_url = request.GET.get("previous_url", reverse("pages:home"))
     next_url = request.GET.get("next_url")
+    sign_in = bool(request.GET.get("sign_in", False))
 
     ic_session = InclusionConnectSession(previous_url=previous_url, next_url=next_url)
     request = ic_session.bind_to_request(request)
@@ -67,7 +68,12 @@ def inclusion_connect_authorize(request):
         "nonce": crypto.get_random_string(length=12),
         "from": "communaute",  # Display a "La communauté" logo on the connection page.
     }
-    return HttpResponseRedirect(f"{constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE}?{urlencode(data)}")
+    redirect_url = (
+        constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE
+        if not sign_in
+        else constants.INCLUSION_CONNECT_ENDPOINT_REGISTRATIONS
+    )
+    return HttpResponseRedirect(f"{redirect_url}?{urlencode(data)}")
 
 
 def inclusion_connect_callback(request):  # pylint: disable=too-many-return-statements
