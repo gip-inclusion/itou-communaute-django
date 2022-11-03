@@ -1,1 +1,6 @@
-from machina.apps.forum.admin import *  # noqa: F403 F401
+from machina.apps.forum.admin import ForumAdmin as BaseForumAdmin
+
+
+class ForumAdmin(BaseForumAdmin):
+    fieldsets = BaseForumAdmin.fieldsets
+    fieldsets[1][1]["fields"] += ("members_group", "invitation_token")
