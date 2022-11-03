@@ -1,0 +1,52 @@
+{% extends "board_base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block sub_title %}{% trans "Join forum" %}{% endblock sub_title %}
+
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum index" %}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{% trans "Join forum" %}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>{% trans "Join forum" %}</strong></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-7">
+                    <div class="card">
+                        <a href="{% url 'inclusion_connect:authorize' %}" class="btn {{ button_size }} btn-ico btn-outline-primary">
+                            <i class="ri-login-box-line ri-lg"></i>
+                            <span>
+                                Se connecter avec Inclusion Connect
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

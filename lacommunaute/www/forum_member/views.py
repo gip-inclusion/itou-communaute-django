@@ -1,7 +1,11 @@
 import logging
 
-from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import FormView, ListView, TemplateView
 from machina.core.db.models import get_model
+
+from lacommunaute.www.forum_member.forms import JoinForumForm
 
 
 logger = logging.getLogger(__name__)
@@ -15,3 +19,21 @@ class ForumProfileListView(ListView):
     model = ForumProfile
     template_name = "forum_member/profiles.html"
     context_object_name = "forum_profiles"
+
+
+class JoinForumLandingView(TemplateView):
+
+    template_name = "forum_member/join_forum_landing.html"
+
+
+class JoinForumFormView(LoginRequiredMixin, FormView):
+
+    login_url = reverse_lazy("members:join_forum_landing")
+    template_name = "forum_member/join_forum_form.html"
+    form_class = JoinForumForm
+
+    success_url = "/"  # TODO: set target forum URL
+
+    def form_valid(self, form):
+        form.join_forum()
+        return super().form_valid(form)
