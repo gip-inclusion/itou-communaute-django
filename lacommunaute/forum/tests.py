@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
 from machina.core.db.models import get_model
@@ -189,3 +190,12 @@ class ForumViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f'<a href="{topic_url}"')
+
+
+class ForumModelTest(TestCase):
+    def test_invitation_token_is_unique(self):
+        forum = create_forum()
+
+        with self.assertRaises(IntegrityError):
+            forum.id = None
+            forum.save()
