@@ -825,7 +825,15 @@ msgstr "S'inscrire"
 msgid "Login"
 msgstr "Se connecter"
 
-
 #: lacommunaute/templates/forum_conversation/topic_list.html
 msgid "Show me more posts"
 msgstr "Montrer plus de publications"
+
+#: lacommunaute/templates/forum_member/join_forum_form.html: 32
+#, python-format
+msgid "Join forum %(name)s"
+msgstr "Vous êtes invité à rejoindre la communauté %(name)s"
+
+#: lacommunaute/templates/forum_member/join_forum_form.html: 60
+msgid "Join forum"
+msgstr "Rejoindre la communauté"
