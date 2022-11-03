@@ -241,3 +241,17 @@ UserForumPermissionFactory(
     has_perm=True,
     )
 ```
+
+## Reinitialiser les tokens d'invitation et attribuer un groupe de membres à chaque forum
+
+```
+import uuid
+from django.contrib.auth.models import Group
+from lacommunaute.forum.models import Forum
+forums = Forum.objects.all()
+for forum in forums:
+    forum.invitation_token = uuid.uuid4()
+    group,_ =Group.objects.get_or_create(name=f'{forum.name} members')
+    forum.members_group = group
+    forum.save()
+```
