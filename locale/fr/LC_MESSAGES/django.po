@@ -837,3 +837,10 @@ msgstr "Vous êtes invité à rejoindre la communauté %(name)s"
 #: lacommunaute/templates/forum_member/join_forum_form.html: 60
 msgid "Join forum"
 msgstr "Rejoindre la communauté"
+#: lacommunaute/templates/pages/home.html:84
+msgid "Go to this forum"
+msgstr "Accéder à cette communauté"
+
+#: lacommunaute/templates/pages/home.html:89
+msgid "Join this forum"
+msgstr "Rejoindre cette communauté"

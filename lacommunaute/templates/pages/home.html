@@ -78,6 +78,19 @@
                             <div class="card-body">
                                 <p>{{forum.description}}</p>
                             </div>
+                            <div class="card-footer text-right">
+                                {% if user_can_read_forum %}
+                                    <a href="{% url 'forum:forum' forum.slug forum.id %}" class="btn btn-ico btn-link stretched-link">
+                                        <span>{% trans "Go to this forum" %}</span>
+                                        <i class="ri-external-link-line ri-lg"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'members:join_forum_form' forum.invitation_token %}" class="btn btn-ico btn-link stretched-link">
+                                        <span>{% trans "Join this forum" %}</span>
+                                        <i class="ri-external-link-line ri-lg"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 
