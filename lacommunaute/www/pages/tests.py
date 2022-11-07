@@ -15,7 +15,7 @@ class HomepageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/home.html")
 
-    def test_is_highlited(self):
+    def test_is_highlighted(self):
         forum = create_forum(is_highlighted=True)
         assign_perm("can_read_forum", AnonymousUser(), forum)
 
@@ -24,7 +24,7 @@ class HomepageTest(TestCase):
 
         self.assertContains(response, reverse("forum:forum", kwargs={"slug": forum.slug, "pk": forum.id}), count=1)
 
-    def test_is_not_highlited(self):
+    def test_is_not_highlighted(self):
         forum = create_forum(is_highlighted=False)
         assign_perm("can_read_forum", AnonymousUser(), forum)
 
