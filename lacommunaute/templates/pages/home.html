@@ -1,6 +1,7 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 {% load i18n %}
+{% load forum_permission_tags %}
 
 {% block title %}Accueil{{ block.super }}{% endblock %}
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
@@ -63,6 +64,24 @@
                     <p>Nous déployons des communautés publiques et privées.</p>
                     <p>Ces communautés sont co-construits avec et pour les acteurs de l’inclusion en fonction de leurs besoins et de leurs objectifs. <br> Cliquez sur une communauté ci-dessous pour consulter les sujets en cours. Pour contribuer, connectez vous sur Inclusion Connect.</p>
                 </div>
+            </div>
+            <div class="s-section__row row row-cols-1 row-cols-md-2 row-cols-lg-3">
+
+                {%for forum in forums%}
+                    {% get_permission 'can_read_forum' forum request.user as user_can_read_forum %}
+                    <div class="col mb-3 mb-md-5">
+                        <div class="card c-card c-card--communaute has-one-link-inside h-100 w-100">
+                            <div class="card-header">
+                                <h3 class="h3 mb-0">{{forum.name}}</h3>
+                                <p class="text-muted">{% trans "Forum" %} {%if forum.is_private%}privée{%else%}publique{%endif%}</p>
+                            </div>
+                            <div class="card-body">
+                                <p>{{forum.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
             </div>
         </div>
     </section>
