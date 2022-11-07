@@ -61,4 +61,12 @@
             </div>
         </div>
     {% endif %}
+
+    {% get_permission 'can_approve_posts' forum request.user as user_can_invite_to_forum %}
+    {% if user_can_invite_to_forum %}
+        <div class="small">Inviter des nouveaux membres en partageant ce lien :
+            {{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_landing' forum.invitation_token %}
+        </div>
+    {%endif%}
+
 {% endblock content %}
