@@ -52,3 +52,10 @@ class HomepageTest(TestCase):
 
         self.assertContains(response, forum.name, count=1)
         self.assertContains(response, '<p class="text-muted">Communauté publique</p>', count=1)
+
+    def test_can_join_forum_members(self):
+        forum = create_forum(is_highlighted=True)
+
+        response = self.client.get(reverse("pages:home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse("members:join_forum_form", kwargs={"token": forum.invitation_token}))
