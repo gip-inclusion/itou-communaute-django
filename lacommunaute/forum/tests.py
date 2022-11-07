@@ -191,6 +191,35 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f'<a href="{topic_url}"')
 
+    def test_join_url_is_hidden(self):
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        response = self.client.get(url)
+        self.assertNotContains(
+            response,
+            reverse(
+                "members:join_forum_landing",
+                kwargs={
+                    "token": self.forum.invitation_token,
+                },
+            ),
+        )
+
+    def test_join_url_is_shown(self):
+        assign_perm("can_approve_posts", self.user, self.forum)
+        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        response = self.client.get(url)
+        self.assertContains(
+            response,
+            reverse(
+                "members:join_forum_landing",
+                kwargs={
+                    "token": self.forum.invitation_token,
+                },
+            ),
+        )
+
 
 class ForumModelTest(TestCase):
     def test_invitation_token_is_unique(self):
