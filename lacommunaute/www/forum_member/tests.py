@@ -94,5 +94,5 @@ class JoinForumFormViewTest(TestCase):
     def test_already_in_group(self):
         self.forum.members_group.user_set.add(self.user)
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
-        _ = self.client.post(self.url)
+        self.client.post(self.url)
         self.assertTrue(self.forum.members_group.user_set.filter(id=self.user.id).exists())
