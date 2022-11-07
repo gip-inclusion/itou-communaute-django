@@ -7,7 +7,7 @@ from lacommunaute.www.pages import views
 app_name = "pages"
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.HomeListView.as_view(), name="home"),
     path("contact/", views.contact, name="contact"),
     path("statistiques/", views.statistiques, name="statistiques"),
     path("accessibilite/", views.accessibilite, name="accessibilite"),
