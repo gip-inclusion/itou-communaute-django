@@ -33,6 +33,16 @@ class ForumProfileListViewTest(TestCase):
                 )
 
 
+class JoinForumLandingView(TestCase):
+    def test_token_doesnt_exists(self):
+        user = UserFactory()
+        wrong_token = uuid.uuid4()
+        self.client.login(username=user.username, password=DEFAULT_PASSWORD)
+        url = reverse("members:join_forum_form", kwargs={"token": wrong_token})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+
 class JoinForumFormViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -53,7 +63,7 @@ class JoinForumFormViewTest(TestCase):
             response, reverse("members:join_forum_landing", kwargs={"token": self.token}) + "?next=" + self.url
         )
 
-    def test_token_dont_exists(self):
+    def test_token_doesnt_exists(self):
         wrong_token = uuid.uuid4()
         self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         url = reverse("members:join_forum_form", kwargs={"token": wrong_token})

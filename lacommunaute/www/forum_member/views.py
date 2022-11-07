@@ -2,7 +2,7 @@ import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils.http import urlencode
 from django.views.generic import FormView, ListView, TemplateView
 from machina.core.db.models import get_model
@@ -28,10 +28,25 @@ class JoinForumLandingView(TemplateView):
 
     template_name = "forum_member/join_forum_landing.html"
 
+    def get_forum(self):
+        if not hasattr(self, "forum"):
+            self.forum = get_object_or_404(
+                Forum,
+                invitation_token=self.kwargs["token"],
+            )
+        return self.forum
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        forum = self.get_forum()
+        context["forum"] = forum
         params = {
-            "previous_url": reverse_lazy("members:join_forum_landing"),
+            "previous_url": reverse(
+                "members:join_forum_landing",
+                kwargs={
+                    "token": forum.invitation_token,
+                },
+            ),
             "next_url": get_safe_url(self.request, "next"),
         }
         context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"

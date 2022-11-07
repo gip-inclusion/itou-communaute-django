@@ -27,7 +27,9 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% trans "Join forum" %}</strong></h1>
+                    <h1 class="s-title-01__title h1"><strong>{% blocktrans trimmed with name=forum.name %}
+                        Join forum {{ name }}
+                    {% endblocktrans %}</strong></h1>
                 </div>
             </div>
         </div>
