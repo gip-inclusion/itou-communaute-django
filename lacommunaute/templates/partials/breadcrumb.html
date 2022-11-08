@@ -9,12 +9,12 @@
                         <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum" %}</a></li>
                         {% if forum %}
                             {% for ancestor in forum.get_ancestors %}
-                                <li class="breadcrumb-item"><a href="{% url 'forum:forum' ancestor.slug ancestor.id %}">{{ ancestor.name }}</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'forum:forum' ancestor.slug ancestor.id %}">{{ ancestor.name }}</a></li>
                             {% endfor %}
                             <li class="breadcrumb-item"><a href="{% url 'forum:forum' forum.slug forum.id %}">{{ forum.name }}</a></li>
                         {% endif %}
                         {% if topic %}
-                            <li class="breadcrumb-item"><a href="{% url 'forum_conversation:topic' forum.slug forum.id topic.slug topic.id %}">{{ topic.subject }}</a></li>
+                            <li class="breadcrumb-item active">{{ topic.subject }}</li>
                         {% endif %}
                     </ol>
                 </nav>
