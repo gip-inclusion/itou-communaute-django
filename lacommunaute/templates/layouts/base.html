@@ -50,7 +50,7 @@
         {% block extra_css %}{% endblock %}
     </head>
 
-    <body id="top" class="{% block body_class %}{% endblock %}">
+    <body id="top" class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <noscript>
             <div class="alert alert-danger" role="status">
                 Javascript doit être activé pour pouvoir assurer l'affichage correct de la page (recherche géographique par exemple).
@@ -148,6 +148,7 @@
                     (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
             </script>
+            <script type="text/javascript" src="{% static 'vendor/htmx-1.8.4/htmx.min.js' %}" defer></script>
         {% endblock %}
     </body>
 </html>

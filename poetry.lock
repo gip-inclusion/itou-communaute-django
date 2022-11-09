@@ -260,6 +260,17 @@ Django = ">=2.2"
 elasticsearch = ["elasticsearch (>=5,<8)"]
 
 [[package]]
+name = "django-htmx"
+version = "1.12.2"
+description = "Extensions for using Django with htmx."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "django-js-asset"
 version = "2.0.0"
 description = "script tag with additional attributes for django.forms.Media"
@@ -1039,7 +1050,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5e8a3e77b6fff01ac38efd03bf6fcda25817b99af82e339258ff9435ef85b42f"
+content-hash = "cd764db13ad4a2f1a9d114900681d3244b180ff2aae3573dab93189085e46c39"
 
 [metadata.files]
 anyio = [
@@ -1207,6 +1218,10 @@ django-extensions = [
 ]
 django-haystack = [
     {file = "django-haystack-3.2.1.tar.gz", hash = "sha256:97e3197aefc225fe405b6f17600a2534bf827cb4d6743130c20bc1a06f7293a4"},
+]
+django-htmx = [
+    {file = "django-htmx-1.12.2.tar.gz", hash = "sha256:93a356ec0a983a33cc11d927bfe4ab3eca847dc89786d6293e80bc12dc9da03c"},
+    {file = "django_htmx-1.12.2-py3-none-any.whl", hash = "sha256:fe2d31eb8eeae1f531248c0b7cc441dc68b77158892514ed2fcf5f6119b89bd5"},
 ]
 django-js-asset = [
     {file = "django_js_asset-2.0.0-py3-none-any.whl", hash = "sha256:86f9f300d682537ddaf0487dc2ab356581b8f50c069bdba91d334a46e449f923"},
