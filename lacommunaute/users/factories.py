@@ -1,12 +1,19 @@
+import functools
 import random
 
 import factory
+from django.contrib.auth.hashers import make_password
 from machina.core.db.models import get_model
 
 
 User = get_model("users", "User")
 
 DEFAULT_PASSWORD = "supercalifragilisticexpialidocious"
+
+
+@functools.cache
+def default_password():
+    return make_password(DEFAULT_PASSWORD)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -19,4 +26,4 @@ class UserFactory(factory.django.DjangoModelFactory):
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
     email = factory.LazyAttribute(lambda a: "{}.{}@neuralia.co".format(a.first_name, a.last_name).lower())
-    password = factory.PostGenerationMethodCall("set_password", DEFAULT_PASSWORD)
+    password = factory.LazyFunction(default_password)
