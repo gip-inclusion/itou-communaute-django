@@ -66,20 +66,20 @@ class JoinForumFormViewTest(TestCase):
 
     def test_token_doesnt_exists(self):
         wrong_token = uuid.uuid4()
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         url = reverse("members:join_forum_form", kwargs={"token": wrong_token})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/404.html")
 
     def test_get(self):
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.forum.name)
 
     def test_post(self):
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.post(self.url)
         self.assertRedirects(
             response,
@@ -95,6 +95,6 @@ class JoinForumFormViewTest(TestCase):
 
     def test_already_in_group(self):
         self.forum.members_group.user_set.add(self.user)
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         self.client.post(self.url)
         self.assertTrue(self.forum.members_group.user_set.filter(id=self.user.id).exists())
