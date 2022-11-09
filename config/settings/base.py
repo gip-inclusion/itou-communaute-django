@@ -50,6 +50,7 @@ THIRD_PARTIES_APPS = [
     # django-compressor
     "compressor",
     "django_social_share",
+    "django_htmx",
 ]
 
 # MIGRATION CONFIGURATION
@@ -83,6 +84,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
