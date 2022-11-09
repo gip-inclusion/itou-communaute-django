@@ -8,7 +8,7 @@ from machina.test.factories.permission import UserForumPermissionFactory
 
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
+from lacommunaute.users.factories import UserFactory
 
 
 Topic = get_model("forum_conversation", "Topic")
@@ -59,7 +59,7 @@ class ForumViewQuerysetTest(TestCase):
 
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
 
         # todo fix vincentporte :
         # view to be optimized again soon
@@ -115,10 +115,9 @@ class ForumViewTest(TestCase):
         assign_perm("can_reply_to_topics", self.user, self.forum)
 
     def test_subscription_button_is_hidden(self):
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -145,10 +144,9 @@ class ForumViewTest(TestCase):
         )
 
     def test_topic_subject_is_not_hyperlink(self):
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
 
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -167,7 +165,6 @@ class ForumViewTest(TestCase):
         self.assertNotContains(response, f'<a href="{topic_url}"')
 
     def test_show_more_button_visibility(self):
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         topic_url = reverse(
             "forum_conversation:topic",
@@ -179,7 +176,7 @@ class ForumViewTest(TestCase):
             },
         )
 
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -193,7 +190,7 @@ class ForumViewTest(TestCase):
 
     def test_join_url_is_hidden(self):
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(url)
         self.assertNotContains(
             response,
@@ -208,7 +205,7 @@ class ForumViewTest(TestCase):
     def test_join_url_is_shown(self):
         assign_perm("can_approve_posts", self.user, self.forum)
         url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
-        self.client.login(username=self.user.username, password=DEFAULT_PASSWORD)
+        self.client.force_login(self.user)
         response = self.client.get(url)
         self.assertContains(
             response,
