@@ -543,8 +543,8 @@ msgstr "le"
 #, python-format
 msgid "edited %(counter)s time in total."
 msgid_plural "edited %(counter)s times in total."
-msgstr[0] "édité %(counter)s temps au total."
-msgstr[1] "édité %(counter)s temps au total."
+msgstr[0] "édité %(counter)s fois."
+msgstr[1] "édité %(counter)s fois."
 
 #: lacommunaute/templates/machina/forum_conversation/topic_detail.html:81
 msgid "Reason:"
