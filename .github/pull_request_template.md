@@ -1,22 +1,22 @@
-### Quoi ?
+## Description
 
-Résumé des changements apportés.
+🎸 Inclure un résumé du changement ou du problème corrigé. Inclure les éléments de contexte pertinents.
+🛸 Dépendances nécessaires pour ce changement.
 
-### Pourquoi ?
+## Type de changement
 
-Indiquer le problème que nous sommes en train de résoudre et les objectifs métiers ou techniques qui sont visés par ces changements.
+🪲 Correction de bug (changement non cassant qui corrige un problème).
+🎢 Nouvelle fonctionnalité (changement non cassant qui ajoute une fonctionnalité).
+🥁 Changement de rupture (modification ou caractéristique qui empêcherait une fonctionnalité existante de fonctionner comme prévu)
+🎨 changement nécessitant une mise à jour de la documentation.
 
-### Comment ?
+### Points d'attention
 
-Attirer l'attention sur les décisions d'architecture ou de conception importantes.
+🦺 Décision d'architure
+🦺 Lien avec d'autres PR
+🦺 Code sensible
+
 
 ### Captures d'écran (optionnel)
 
 Utile pour les changements liés à l'UI.
-
-### Autre (optionnel)
-
-- si des tests manquent, indiquer la raison, la probabilité, et les risques associés à ce manque
-- être explicite sur le délai attendu pour une revue de code
-- être explicite sur la qualité attendue pour la revue de code
-- etc.
