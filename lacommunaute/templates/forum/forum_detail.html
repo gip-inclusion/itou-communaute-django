@@ -11,7 +11,8 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h1>{{ forum.name }}</h1>
+            <h1 class="mb-0">{{ forum.name }}</h1>
+            <small class="text-muted">{{forum.description}}</small>
         </div>
     </div>
     {% if sub_forums %}
@@ -27,7 +28,7 @@
         {% forum_list sub_forums %}
     {% endif %}
     {% if forum.is_forum %}
-        <div class="mt-4 mb-3 row justify-content-between">
+        <div class="mt-4 mb-1 row justify-content-between">
             {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
             {% if user_can_add_topic %}
                 <div class="col-12 col-sm-auto forum-actions-block">
