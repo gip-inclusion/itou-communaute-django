@@ -3,7 +3,7 @@
 {% if is_paginated %}
     <ul class="m-0 pagination {{ pagination_size|default:"" }}">
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-            <a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" class="page-link">&laquo;</a>
+            <a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" class="page-link" aria-label="Précédent"><i class="ri-arrow-left-s-line"></i></a>
         </li>
         {% for number in paginator.page_range %}
             {% if forloop.first %}
@@ -27,7 +27,7 @@
             {% endif %}
         {% endfor %}
         <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-            <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" class="page-link">&raquo;</a>
+            <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" class="page-link" aria-label="Suivant"><i class="ri-arrow-right-s-line"></i></a>
         </li>
     </ul>
 {% endif %}

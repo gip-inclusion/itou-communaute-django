@@ -8,36 +8,39 @@
 {% if topics or not hide_if_empty %}
     <div class="mb-3 row">
         <div class="col-12">
-            <div class="card topiclist">
-                <div class="p-0 card-header">
+            <div class="card topiclist mt-3">
+                <div class="p-0 card-header bg-light">
                     <div class="row m-0 px-3 py-2">
-                        <div class="pl-0 col-md-8 col-sm-9 col-12 topic-name-col"><h3 class="m-0 card-title h5 text-dark"><i class="fas fa-comment"></i> {% trans topic_list_title %}</h3></div>
+                        <div class="pl-0 col-md-8 col-sm-9 col-12 topic-name-col">
+                            <h2 class="m-0 font-weight-normal fs-xs text-uppercase text-muted"><i class="ri-chat-4-line ri-lg"></i> {% trans topic_list_title %}</h2>
+                        </div>
                     </div>
                 </div>
                 <div class="p-0 card-body">{% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
                     {% for topic in topics %}
-                        <div class="row m-0 px-3 py-2 border-bottom">
+                        <div class="row m-0 p-3 border-bottom">
                             <div class="pl-0 col-12 topic-name">
-                                <table class="topic-data-table">
-                                    <tr>
-                                        <td class="pt-1 pr-3 align-top topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
-                                            <i class="fas {% if topic.is_sticky %}fa-lightbulb{% elif topic.is_announce %}fa-info{% else %}fa-dot-circle{% endif %} fa-2x"></i>
-                                        </td>
-                                        <td class="align-top topic-name">
-                                            {{ topic.subject }}{% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
-                                        </td>
-                                    </tr>
-                                </table>
                                 <div class="row">
                                     <div class="col-12">
                                         {% for post in topic.posts.all %}
                                             {% if forloop.first and poll %}
                                                 {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                             {% endif %}
-                                            <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} ml-3{%endif%}">
-                                                <div class="card-body pb-0">
+                                            <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} has-links-inside ml-3{%endif%}">
+                                                {% if forloop.first %}
+                                                    <div class="card-header d-flex align-items-center mb-1">
+                                                        <span class="topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
+                                                            <i class="{% if topic.is_sticky %}ri-lightbulb-fill{% elif topic.is_announce %}ri-information-fill{% else %}ri-record-circle-fill{% endif %} ri-2x"></i>
+                                                        </span>
+                                                        <p class="fs-lg mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
+                                                        {% block htmx %}
+                                                            {% include "forum_conversation/partials/topic_likes.html"%}
+                                                        {% endblock %}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="card-body {% if forloop.first%} pt-0{%endif%}">
                                                     <div class="row">
-                                                        <div class="col-md-12 post-content-wrapper">
+                                                        <div class="col-12 post-content-wrapper">
                                                             <p>
                                                                 <small class="text-muted">
                                                                     {% spaceless %}
@@ -71,13 +74,8 @@
                                                                 {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                                                             </div>
 
-                                                            {% if forloop.first%}
-                                                                {% block htmx %}
-                                                                    {% include "forum_conversation/partials/topic_likes.html"%}
-                                                                {% endblock %}
-                                                            {% endif %}
-
                                                             {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
+
                                                             {% if post.enable_signature and post.poster.forum_profile.signature %}
                                                                 <div class="post-signature">
                                                                     {{ post.poster.forum_profile.signature.rendered }}
@@ -100,22 +98,33 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {% if forloop.first and topic.posts.count > FORUM_NUMBER_POSTS_PER_TOPIC %}
-                                                <div>
-                                                    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-outline-primary btn-sm mb-3">
-                                                        {% trans "Show me more posts" %}</a>
+                                            {% if forloop.first%}
+                                                <div class="row align-items-center mb-3">
+                                                    <div class="col-12 col-md">
+                                                        {% include "forum_conversation/partials/topic_detail_actions.html" %}
+                                                    </div>
+
+                                                    <div class="col-12 col-md-auto">
+                                                        {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
+                                                    </div>
                                                 </div>
-                                            {%endif %}
+                                            {% endif %}
+                                            {% if forloop.first and topic.posts.count > FORUM_NUMBER_POSTS_PER_TOPIC %}
+                                                <div class="card post mb-3 ml-3">
+                                                    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-link btn-sm btn-ico">
+                                                        <i class="ri-history-fill ri-lg"></i>
+                                                        <span>{% trans "Show me more posts" %}</span>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
-                                {% include "forum_conversation/partials/topic_detail_actions.html" %}
-                                {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
                             </div>
                         </div>
                     {% empty %}
-                        <div class="row m-0 px-3 py-2">
-                            <div class="p-0 col-12">
+                        <div class="row m-0 p-3">
+                            <div class="col-12 pl-0">
                                 {% if empty_message %}
                                     {{ empty_message }}
                                 {% else %}

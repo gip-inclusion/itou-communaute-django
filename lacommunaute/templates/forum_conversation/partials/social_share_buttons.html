@@ -1,11 +1,13 @@
 {% load i18n %}
 {% load social_share %}
 
-<div class="float-right m1-2">
-    {% trans "Share this topics on " %}
-    {% post_to_facebook topic '<i class="fab fa-facebook-square"></i>'%}
-    {% post_to_whatsapp topic '<i class="fab fa-whatsapp"></i>'%}
-    {% post_to_twitter "{{topic_subject}}" topic '<i class="fab fa-twitter"></i>' %}
-    {% send_email topic.subject "Ce lien peut t'intéresser :" topic '<i class="fas fa-envelope "></i>' %}
+<button class="btn btn-sm btn-ico-only btn-secondary" type="button" id="dropdownMenuSocialShare" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="ri-share-fill ri-lg" aria-label="{% trans "Share this topics on " %}"></i>
+</button>
+<div class="dropdown-menu" aria-labelledby="dropdownMenuSocialShare">
+    {% post_to_facebook topic '<i class="ri-facebook-fill ri-lg"></i> Partager sur Facebook' %}
+    {% post_to_whatsapp topic '<i class="ri-whatsapp-line ri-lg"></i> Partager sur Whatsapp' %}
+    {% post_to_twitter "{{topic_subject}}" topic '<i class="ri-twitter-line ri-lg"></i> Partager sur Twitter' %}
+    {% send_email topic.subject "Ce lien peut t'intéresser :" topic '<i class="ri-mail-line ri-lg"></i> Partager par email' %}
     {% post_to_linkedin topic %}
 </div>

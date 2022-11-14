@@ -4,10 +4,9 @@
 {% if post.attachments.exists %}
     {% for attachment in post.attachments.all %}
         {% if attachment|is_image %}
-            <div>
+            <div class="attachment-image mb-3">
                 <img src="{{ attachment.file.url }}" class="rounded img-fluid" alt="{{ attachment.filename }}">
             </div>
         {%endif%}
     {% endfor %}
-    </div>
 {% endif %}
