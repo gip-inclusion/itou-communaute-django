@@ -16,32 +16,36 @@
         </div>
     </div>
     {% if sub_forums %}
-        <div class="row">
-            <div class="forumlist-top-controls col-12">
+        <div class="row justify-content-end">
+            <div class="col-12 col-sm-auto">
                 {% if request.user.is_authenticated %}
-                    <div class="float-right">
-                        <a href="{% url 'forum_tracking:mark_subforums_read' forum.pk %}" class="d-inline-block"><i class="fa fa-check-circle-o">&nbsp;</i>{% trans "Mark subforums read" %}</a>
-                    </div>
+                    <a href="{% url 'forum_tracking:mark_subforums_read' forum.pk %}" class="btn btn-sm btn-block btn-ico btn-link pr-0">
+                        <i class="ri-checkbox-circle-line ri-lg"></i>
+                        <span>{% trans "Mark subforums read" %}</span>
+                    </a>
                 {% endif %}
             </div>
         </div>
         {% forum_list sub_forums %}
     {% endif %}
     {% if forum.is_forum %}
-        <div class="mt-4 mb-1 row justify-content-between">
+        <div class="mt-4 row justify-content-between">
             {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
             {% if user_can_add_topic %}
                 <div class="col-12 col-sm-auto forum-actions-block">
-                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-sm btn-block"><i class="fa fa-comments fa-lg"></i>&nbsp;{% trans "New topic" %}</a>
+                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-sm btn-ico btn-block">
+                        <i class="ri-chat-new-line ri-lg"></i>
+                        <span>{% trans "New topic" %}</span>
+                    </a>
                 </div>
             {% endif %}
             <div class="col-12 col-sm-auto">
                 {% if topics|length > 0 and request.user.is_authenticated %}
-                    <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="btn btn-sm btn-link btn-block">{% trans "Mark topics read" %}</a>
+                    <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="btn btn-sm btn-block btn-ico btn-link pr-0">
+                        <i class="ri-checkbox-circle-line ri-lg"></i>
+                        <span>{% trans "Mark topics read" %}</span>
+                    </a>
                 {% endif %}
-                {% with "pagination-sm justify-content-end" as pagination_size %}
-                    {% include "partials/pagination.html" %}
-                {% endwith %}
             </div>
         </div>
         {% trans "Announcements" as announcements_title_trans %}
@@ -52,11 +56,9 @@
         {% with topic_list_title=topics_title_trans unread_topics=unread_topics%}
             {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
         {% endwith %}
-        <div class="mt-3 mb-5 row">
-
-            <div class="col-12 col-md-8">
-
-                {% with "pagination-sm justify-content-end" as pagination_size %}
+        <div class="mt-5 mb-5 row">
+            <div class="col-12">
+                {% with "justify-content-center" as pagination_size %}
                     {% include "partials/pagination.html" %}
                 {% endwith %}
             </div>
@@ -65,9 +67,8 @@
 
     {% get_permission 'can_approve_posts' forum request.user as user_can_invite_to_forum %}
     {% if user_can_invite_to_forum %}
-        <div class="small">Inviter des nouveaux membres en partageant ce lien :
-            {{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_landing' forum.invitation_token %}
-        </div>
+        <hr>
+        <p class="fs-lg">Inviter des nouveaux membres en partageant ce lien : <br><strong>{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_landing' forum.invitation_token %}</strong></p>
     {%endif%}
 
 {% endblock content %}

@@ -1,8 +1,8 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-{% load static %}
+{% load forum_conversation_tags %}
 
-{% block sub_title %}{% trans "Join forum" %}{% endblock sub_title %}
+{% block sub_title %}{% trans "Mark forums read" %}{% endblock sub_title %}
 
 {% block breadcrumb %}
     <section>
@@ -13,7 +13,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum" %}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{% trans "Join forum" %}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{% trans "Mark forums read" %}</li>
                         </ol>
                     </nav>
                 </div>
@@ -27,7 +27,7 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% blocktrans trimmed with name=forum.name %}Join forum {{ name }}{% endblocktrans %}</strong></h1>
+                    <h1 class="s-title-01__title h1"><strong>{% trans "Mark forums read" %}</strong></h1>
                 </div>
             </div>
         </div>
@@ -38,19 +38,19 @@
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-7">
                     <div class="c-form">
-                        <form method="post" action="." enctype="multipart/form-data" novalidate>
+                        <form action="" method="post">
                             {% csrf_token %}
-                            {% if form.non_field_errors %}
-                                {% for error in form.non_field_errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        <p class="mb-0">
-                                            {{ error }}
-                                        </p>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                            <div class="form-actions mb-3">
-                                <input type="submit" class="btn btn-primary" value="{% trans "Join forum" %}" />
+                            <div class="form-group">
+                                <label for="post">{% trans "Are you sure you want to mark forums read?" %}</label>
+                                <input type="hidden" name="post" value="yes" />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-12 col-sm-auto">
+                                    <a href="{{ top_level_forum_url }}" class="btn btn-block btn-ico btn-outline-primary">{% trans "No, take me back" %}</a>
+                                </div>
+                                <div class="form-group col-12 col-sm-auto">
+                                    <button role="submit" class="btn btn-ico btn-block btn-primary">{% trans "Yes, I'm sure" %}</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -58,4 +58,5 @@
             </div>
         </div>
     </section>
+
 {% endblock content %}

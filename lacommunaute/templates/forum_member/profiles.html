@@ -1,25 +1,63 @@
-{% extends "board_base.html" %}
+{% extends "layouts/base.html" %}
 {% load i18n %}
 {% load static %}
 
-{% block content %}
-    <div class="card-columns">
-        {% for forum_profile in forum_profiles %}
-            <div class="card">
-                {% if forum_profile.avatar %}
-                    <img class="avatar" src="{{ forum_profile.avatar }}" class="card-img-top" alt="{{ forum_profile.user.get_full_name }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{%url 'forum_member:profile' pk=forum_profile.user_id%}">{{ forum_profile.user.get_full_name }}</a>
-                    </h5>
-                    {% if forum_profile.signature %}
-                        <p class="card-text">{{ forum_profile.signature }}</p>
-                    {% endif %}
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Membres</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        {% empty %}
-            No body yet…
-        {% endfor %}
-    </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Membres</strong></h1>
+                    <h2 class="h2">Liste des membres de la communauté.</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="card-columns">
+                        {% for forum_profile in forum_profiles %}
+                            <div class="card">
+                                {% if forum_profile.avatar %}
+                                    <img class="avatar" src="{{ forum_profile.avatar }}" class="card-img-top" alt="{{ forum_profile.user.get_full_name }}">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h3 class="h5 card-title">
+                                        <a href="{%url 'forum_member:profile' pk=forum_profile.user_id%}">{{ forum_profile.user.get_full_name }}</a>
+                                    </h3>
+                                    {% if forum_profile.signature %}
+                                        <p class="card-text">{{ forum_profile.signature }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No body yet…</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 {% endblock content %}

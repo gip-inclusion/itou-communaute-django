@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load forum_conversation_tags %}
+
+{% block sub_title %}{% trans "Mark topics read" %}{% endblock sub_title %}
+
+{% block breadcrumb %}{% include "partials/breadcrumb.html" %}{% endblock breadcrumb %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>{% trans "Mark topics read" %}</strong></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-7">
+                    <div class="c-form">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="post">{% trans "Are you sure you want to mark topics read?" %}</label>
+                                <input type="hidden" name="post" value="yes" />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-12 col-sm-auto">
+                                    <a href="{{ forum_url }}" class="btn btn-block btn-ico btn-outline-primary">{% trans "No, take me back" %}</a>
+                                </div>
+                                <div class="form-group col-12 col-sm-auto">
+                                    <button role="submit" class="btn btn-ico btn-block btn-primary">{% trans "Yes, I'm sure" %}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
