@@ -3,7 +3,10 @@
 
 <div id="div_id_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
     {% if field.label %}<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}{% if not field.field.required %} <span class="text-muted">{% trans "(optional)" %}</span>{% endif %}</label>{% endif %}
-    {{ field|add_class:'form-control' }}
+    {{ field | add_class:'form-control' }}
     {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
     {% for error in field.errors %}<span class="text-danger error">{{ error }}</span>{% endfor %}
+    {% if field.auto_id == 'id_content' %}
+        {% include "partials/form_field_help_text_md.html" %}
+    {% endif %}
 </div>

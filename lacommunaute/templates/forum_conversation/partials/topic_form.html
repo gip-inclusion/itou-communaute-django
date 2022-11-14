@@ -6,7 +6,6 @@
             <i class="icon-exclamation-sign"></i> {{ error }}
         </div>
     {% endfor %}
-
     {% include "partials/form_field.html" with field=post_form.subject %}
     {% include "partials/form_field.html" with field=post_form.content %}
     {% if post_form.username %}
@@ -93,9 +92,12 @@
             </div>
         {% endif %}
     </div>
-
-    <div class="form-actions">
-        <input type="submit" name="preview" class="btn btn-large btn-default" value="{% trans "Preview" %}" />&nbsp;
-        <input type="submit" class="btn btn-large btn-primary" value="{% trans "Submit" %}" />
+    <div class="form-actions form-row">
+        <div class="form-group col-auto">
+          <input type="submit" name="preview" class="btn btn-outline-primary" value="{% trans "Preview" %}" />
+        </div>
+        <div class="form-group col-auto">
+          <input type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+        </div>
     </div>
 </form>
