@@ -10,7 +10,9 @@
                         <h3 class="h4 mb-0">Votre {% trans "Preview"|lower %}</h3>
                         <hr>
                         <div class="post-content">
-                            <p class="font-weight-bold">{{ post_form.subject.value }}</p>
+                            {% if post_form.subject.value %}
+                                <p class="font-weight-bold">{{ post_form.subject.value }}</p>
+                            {% endif %}
                             {{ post_form.content.value|safe|rendered|urlize }}
                         </div>
                         {% include "forum_conversation/forum_attachments/attachments_preview.html" %}
