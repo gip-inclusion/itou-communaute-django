@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load attachments_tags %}
+
+{% if post.attachments.exists %}
+    {% for attachment in post.attachments.all %}
+        {% if attachment|is_image %}
+            <div>
+                <img src="{{ attachment.file.url }}" class="rounded img-fluid" alt="{{ attachment.filename }}">
+            </div>
+        {%endif%}
+    {% endfor %}
+    </div>
+{% endif %}
