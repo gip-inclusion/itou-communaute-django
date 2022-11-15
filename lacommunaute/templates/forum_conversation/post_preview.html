@@ -2,21 +2,21 @@
 {% load forum_markup_tags %}
 
 <div class="mb-3 row preview">
-  <div class="col-12">
-    <div class="card post post-preview">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-12 post-content-wrapper">
-            <h3 class="h4 mb-0">Votre {% trans "Preview"|lower %}</h3>
-            <hr>
-            <div class="post-content">
-              <p class="font-weight-bold">{{ post_form.subject.value }}</p>
-              {{ post_form.content.value|safe|rendered }}
+    <div class="col-12">
+        <div class="card post post-preview">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 post-content-wrapper">
+                        <h3 class="h4 mb-0">Votre {% trans "Preview"|lower %}</h3>
+                        <hr>
+                        <div class="post-content">
+                            <p class="font-weight-bold">{{ post_form.subject.value }}</p>
+                            {{ post_form.content.value|safe|rendered|urlize }}
+                        </div>
+                        {% include "forum_conversation/forum_attachments/attachments_preview.html" %}
+                    </div>
+                </div>
             </div>
-            {% include "forum_conversation/forum_attachments/attachments_preview.html" %}
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
