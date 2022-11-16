@@ -2,10 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 from machina import urls as machina_urls
 
-from config.views import error_400, error_403, error_404, error_500
 from lacommunaute.www.forum_member import urls as forum_member_urls
 
 
@@ -28,9 +26,3 @@ if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     import debug_toolbar
 
     urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
-
-# error pages, using function based view to manage compatibility with htmx post call
-handler400 = error_400
-handler403 = error_403
-handler404 = error_404
-handler500 = error_500
