@@ -40,8 +40,8 @@ class JoinForumLandingView(TestCase):
         self.client.login(username=user.username, password=DEFAULT_PASSWORD)
         url = reverse("members:join_forum_form", kwargs={"token": wrong_token})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "pages/404.html")
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(response, "404.html")
 
 
 class JoinForumFormViewTest(TestCase):
@@ -69,8 +69,8 @@ class JoinForumFormViewTest(TestCase):
         self.client.force_login(self.user)
         url = reverse("members:join_forum_form", kwargs={"token": wrong_token})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "pages/404.html")
+        self.assertEqual(response.status_code, 404)
+        self.assertTemplateUsed(response, "404.html")
 
     def test_get(self):
         self.client.force_login(self.user)
