@@ -83,8 +83,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
