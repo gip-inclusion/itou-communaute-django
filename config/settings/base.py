@@ -107,8 +107,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.template.context_processors.media",
                 "django.contrib.messages.context_processors.messages",
-                "lacommunaute.utils.settings_context_processors.expose_settings",
                 "machina.core.context_processors.metadata",
+                "lacommunaute.utils.settings_context_processors.expose_settings",
             ],
             "loaders": [
                 "django.template.loaders.filesystem.Loader",
