@@ -59,6 +59,13 @@
                                     {{ post.content.rendered|urlize }}
                                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                                 </div>
+
+                                {% if forloop.first%}
+                                    {% block htmx %}
+                                        {% include "forum_conversation/partials/topic_likes.html"%}
+                                    {% endblock %}
+                                {% endif %}
+
                                 {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
                                 {% if post.enable_signature and post.poster.forum_profile.signature %}
                                     <div class="post-signature">
