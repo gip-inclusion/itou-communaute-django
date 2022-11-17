@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends BASE_TEMPLATE %}
 
 {% block title %}Erreur 403{{ block.super }}{% endblock %}
 {% block body_class %}p-error{{ block.super }}{% endblock %}
@@ -21,15 +21,17 @@
 {% endblock %}
 
 {% block content %}
-    <section class="s-title-01">
-        <div class="s-title-01__container container">
-            <div class="s-title-01__row row">
-                <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>Erreur 403</strong></h1>
-                    <h2 class="h2">Vous ne pouvez pas continuer.</h2>
-                    <p>Accès refusé</p>
+    {% block htmx %}
+        <section class="s-title-01">
+            <div class="s-title-01__container container">
+                <div class="s-title-01__row row">
+                    <div class="s-title-01__col col-12">
+                        <h1 class="s-title-01__title h1"><strong>Erreur 403</strong></h1>
+                        <h2 class="h2">Vous ne pouvez pas continuer.</h2>
+                        <p>Accès refusé</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endblock %}
 {% endblock %}
