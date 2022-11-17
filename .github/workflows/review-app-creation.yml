@@ -1,0 +1,114 @@
+# See https://developer.github.com/v3/
+# and https://help.github.com/en/actions
+name: 🕵 Review app
+
+# Run this pipeline when a label is added and when a push is made on this PR.
+# `types: [ synchronize ]` targets a push event made on a PR.
+on:
+  pull_request:
+    types: [ labeled, synchronize ]
+
+env:
+  CLEVER_TOOLS_DOWNLOAD_URL: https://clever-tools.clever-cloud.com/releases/latest/clever-tools-latest_linux.tar.gz
+  CLEVER_TAR_FILE: clever-tools-latest_linux.tar.gz
+  CLEVER_CLI: clever-tools-latest_linux/clever
+  CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
+  CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
+  BRANCH: ${{ github.head_ref }}
+  PYTHON_VERSION: "3.10"
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'labeled' && github.event.label.name == 'recette-jetable'
+
+    steps:
+    - name: 📥 Checkout to the PR branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: 📥 Fetch git branches
+      run: git fetch --prune --unshallow
+
+    # Environment variables
+    - name: 🏷 Set review app name
+      run:
+        echo "REVIEW_APP_NAME=`echo \"c3-django-review-$BRANCH\" | sed -r 's/[-;\\/._]+/-/g'`" >> $GITHUB_ENV
+
+    - name: 🏷 Set database addon name
+      run:
+        echo "REVIEW_APP_DB_NAME=`echo $REVIEW_APP_NAME | sed -r 's/-/_/g'`" >> $GITHUB_ENV
+
+    - name: 🏷 Set deploy url
+      run:
+        # The maximum length of a domain label (part of domain name separated
+        # by dot) is 63 characters.
+        # https://datatracker.ietf.org/doc/html/rfc1035#section-2.3.4
+        echo "DEPLOY_URL=`echo \"${REVIEW_APP_NAME::63}.cleverapps.io\"`" >> $GITHUB_ENV
+    # End of environment variables
+
+    - name: 🧫 Create a review app on Clever Cloud
+      run: |
+        curl $CLEVER_TOOLS_DOWNLOAD_URL > $CLEVER_TAR_FILE
+        tar -xvf $CLEVER_TAR_FILE
+        $CLEVER_CLI login --token $CLEVER_TOKEN --secret $CLEVER_SECRET
+        $CLEVER_CLI create $REVIEW_APP_NAME -t python --org itou_review_apps --region par --alias $REVIEW_APP_NAME
+        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI domain add $DEPLOY_URL --alias $REVIEW_APP_NAME
+
+    - name: 🗃 Create database addon
+      run: |
+        $CLEVER_CLI addon create postgresql-addon $REVIEW_APP_DB_NAME --org itou_review_apps --plan xxs_sml --yes
+        $CLEVER_CLI service link-addon $REVIEW_APP_DB_NAME
+
+    - name: 🤝 Link addons & add environment variables
+      run: |
+        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI env set ITOU_ENVIRONMENT "REVIEW-APP"
+        $CLEVER_CLI env set S3_STORAGE_BUCKET_NAME c3-django-review-apps-bucket
+        $CLEVER_CLI service link-addon c3-django-s3
+        $CLEVER_CLI service link-addon c3-django-deployment-config
+
+    - name: 🚀 Deploy to Clever Cloud
+      run: |
+        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI deploy --branch $BRANCH --force
+
+    - name: 🍻 Add link to pull request
+      uses: thollander/actions-comment-pull-request@main
+      with:
+        message: "🥁 La recette jetable est prête ! [👉 Je veux tester cette PR !](https://${{ env.DEPLOY_URL }})"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  redeploy:
+    runs-on: ubuntu-latest
+    # A push event targets a new deployment.
+    if: github.event.action == 'synchronize' && contains( github.event.pull_request.labels.*.name, 'recette-jetable')
+
+    steps:
+    - name: 📥 Checkout to the PR branch
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: 📥 Fetch git branches
+      run: git fetch --prune --unshallow
+
+    - name: 🏷 Set review app name
+      run:
+        echo "REVIEW_APP_NAME=`echo \"c3-django-review-$BRANCH\" | sed -r 's/[-;\\/._]+/-/g'`" >> $GITHUB_ENV
+
+    - name: 🤝 Find the application on Clever Cloud
+      run: |
+        curl $CLEVER_TOOLS_DOWNLOAD_URL > $CLEVER_TAR_FILE
+        tar -xvf $CLEVER_TAR_FILE
+        $CLEVER_CLI login --token $CLEVER_TOKEN --secret $CLEVER_SECRET
+        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+
+    - name: ⏭ Skip fixtures
+      run:
+        $CLEVER_CLI env set SKIP_FIXTURES true
+
+    - name: 🚀 Deploy to Clever Cloud
+      run: $CLEVER_CLI deploy --branch $BRANCH --force
