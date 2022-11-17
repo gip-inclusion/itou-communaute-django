@@ -51,7 +51,9 @@ class Forum(AbstractForum):
                 .values("count")
             )
             subquery_members = Subquery(
-                User.objects.filter(date_joined__lte=day, groups__in=OuterRef("pk"), is_active=True, is_staff=False)
+                User.objects.filter(
+                    date_joined__lte=day, groups__in=OuterRef("members_group"), is_active=True, is_staff=False
+                )
                 .values("groups")
                 .annotate(count=Count("pk"))
                 .values("count")
