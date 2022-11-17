@@ -1,6 +1,9 @@
 {% extends "layouts/base.html" %}
+{% load str_filters %}
+{% load js_filters %}
+{% load static %}
 
-{% block title %}Accueil{{ block.super }}{% endblock %}
+{% block title %}Statistiques{{ block.super }}{% endblock %}
 {% block body_class %}p-statistiques{{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
@@ -21,12 +24,58 @@
 {% endblock %}
 
 {% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
     <section class="s-title-01">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
                     <h1 class="s-title-01__title h1"><strong>Statistiques</strong></h1>
-                    <h2 class="h2">Cette page est en cours de construction.</h2>
+
+                    {% for forum_stats in forums_stats %}
+                        <div class="mt-6 card c-card">
+                            <div class="card-header">
+                                <h2>{{ forum_stats.name }}</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.members_count }} membre{{ forum_stats.members_count|pluralizefr }}</span>
+                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.topics_count }} sujet{{ forum_stats.topics_count|pluralizefr }}</span>
+                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.posts_count }} post{{ forum_stats.posts_count|pluralizefr }}</span>
+                                </p>
+                                <div>
+                                    <canvas id="statChart{{ forloop.counter }}"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            const ctx{{ forloop.counter }} = document.getElementById('statChart{{ forloop.counter }}');
+                            new Chart(ctx{{ forloop.counter }}, {
+                                type: 'line',
+                                data: {
+                                    labels: {{ forum_stats.stats.days|js }},
+                                    datasets: [{
+                                        label: 'Nombre de sujets',
+                                        data: {{ forum_stats.stats.topics|js }},
+                                    },
+                                        {
+                                            label: 'Nombre de posts',
+                                            data: {{ forum_stats.stats.posts|js }},
+                                        },
+                                        {
+                                            label: 'Nombre de membres',
+                                            data: {{ forum_stats.stats.members|js }},
+                                        }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                    {% endfor %}
                 </div>
             </div>
         </div>
