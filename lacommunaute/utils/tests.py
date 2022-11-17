@@ -65,4 +65,15 @@ class SettingsContextProcessorsTest(TestCase):
         response = self.client.get("/", headers=headers)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(hasattr(response.wsgi_request, "htmx"))
-        self.assertEqual(response.status_code, 405)
+
+
+class UtilsTemplateTagsTestCase(TestCase):
+    def test_pluralizefr(self):
+        """Test `pluralizefr` template tag."""
+        template = Template("{% load str_filters %}Résultat{{ counter|pluralizefr }}")
+        out = template.render(Context({"counter": 0}))
+        self.assertEqual(out, "Résultat")
+        out = template.render(Context({"counter": 1}))
+        self.assertEqual(out, "Résultat")
+        out = template.render(Context({"counter": 10}))
+        self.assertEqual(out, "Résultats")
