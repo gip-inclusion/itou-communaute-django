@@ -93,6 +93,22 @@ class ForumViewQuerysetTest(TestCase):
             list(qs.first().posts.all().reverse().values("id")[:n]), list(topic.posts.all().reverse().values("id")[:n])
         )
 
+    def test_has_liked(self):
+        topic = TopicFactory(forum=self.forum, poster=self.user)
+        topic.likers.add(self.user)
+        topic.save()
+
+        first_topic = self.view.get_queryset().first()
+        self.assertEqual(first_topic.likes, 1)
+        self.assertTrue(first_topic.has_liked)
+
+    def test_has_not_liked(self):
+        TopicFactory(forum=self.forum, poster=self.user)
+
+        first_topic = self.view.get_queryset().first()
+        self.assertEqual(first_topic.likes, 0)
+        self.assertFalse(first_topic.has_liked)
+
 
 class ForumViewTest(TestCase):
     @classmethod
@@ -209,6 +225,36 @@ class ForumViewTest(TestCase):
                 },
             ),
         )
+
+    def test_has_liked(self):
+        topic = self.topic
+        topic.likers.add(self.user)
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: solid heart
+        self.assertContains(response, '<i class="fas fa-heart mr-2 like"></i>1 like')
+
+    def test_has_not_liked(self):
+        topic = self.post.topic
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: regular heart (outlined)
+        self.assertContains(response, '<i class="far fa-heart mr-2 like"></i>0 like')
+
+    def test_pluralized_likes(self):
+        topic = self.post.topic
+        topic.likers.add(UserFactory())
+        topic.likers.add(UserFactory())
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: regular heart (outlined)
+        self.assertContains(response, '<i class="far fa-heart mr-2 like"></i>2 likes')
 
 
 class ForumModelTest(TestCase):
