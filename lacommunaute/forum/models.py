@@ -4,7 +4,7 @@ import uuid
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.db import models
-from django.db.models import Count, IntegerField, OuterRef, Subquery
+from django.db.models import Count, IntegerField, Subquery
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 from machina.apps.forum.abstract_models import AbstractForum
@@ -22,7 +22,8 @@ class Forum(AbstractForum):
     is_highlighted = models.BooleanField(default=False, verbose_name="affichée sur la homepage")
     is_private = models.BooleanField(default=False, verbose_name="privée")
 
-    def get_stats(self, days_back=7):
+    def get_stats(self, days_back):
+
         stats = {"days": [], "topics": [], "posts": [], "members": []}
 
         # to get a datetime timezone aware like "2022-11-16 00:00:00+01:00"
@@ -30,31 +31,40 @@ class Forum(AbstractForum):
         today = datetime.datetime(year=now_date.year, month=now_date.month, day=now_date.day)
         today = timezone.make_aware(today)
 
+        # create pks lists to filter by forum and its children
+        pks = [self.pk]
+        groups_pks = [self.members_group]
+        for child in self.children.all():
+            pks.append(child.id)
+            groups_pks.append(child.members_group)
+
         qs = Forum.objects.filter(pk=self.pk)
         for i in range(days_back):
             day = today - relativedelta(days=i - 1)
 
             subquery_topics = Subquery(
-                Topic.objects.filter(forum=OuterRef("pk"), approved=True, created__lte=day)
+                Topic.objects.filter(forum__in=pks, approved=True, created__lte=day)
                 .exclude(approved=False)
-                .values("forum")
+                .values("approved")  # group by unique value to group forum and its children
                 .annotate(count=Count("pk"))
                 .values("count"),
                 output_field=IntegerField(),
             )
             subquery_posts = Subquery(
-                Post.objects.filter(topic__forum=OuterRef("id"), approved=True, created__lte=day)
+                Post.objects.filter(
+                    topic__forum__in=pks,
+                    approved=True,
+                    created__lte=day,
+                )
                 .exclude(topic__type=Topic.TOPIC_ANNOUNCE)
                 .exclude(topic__approved=False)
-                .values("topic__forum")
+                .values("topic__approved")  # group by unique value to group forum and its children
                 .annotate(count=Count("pk"))
                 .values("count")
             )
             subquery_members = Subquery(
-                User.objects.filter(
-                    date_joined__lte=day, groups__in=OuterRef("members_group"), is_active=True, is_staff=False
-                )
-                .values("groups")
+                User.objects.filter(date_joined__lte=day, groups__in=groups_pks, is_active=True, is_staff=False)
+                .values("is_active")  # group by unique value to group forum and its children
                 .annotate(count=Count("pk"))
                 .values("count")
             )
