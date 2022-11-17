@@ -3,11 +3,12 @@ import logging
 from django.shortcuts import render
 from django.views.generic import ListView
 from machina.core.db.models import get_model
+from machina.core.loading import get_class
 
-
-logger = logging.getLogger(__name__)
 
 Forum = get_model("forum", "Forum")
+
+logger = logging.getLogger(__name__)
 
 
 class HomeListView(ListView):
@@ -21,7 +22,29 @@ def contact(request):
 
 
 def statistiques(request):
-    return render(request, "pages/statistiques.html")
+
+    # Visibility Tree is used to check forum permissions
+    ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
+    content_tree = ForumVisibilityContentTree.from_forums(
+        request.forum_permission_handler.forum_list_filter(
+            Forum.objects.all(),
+            request.user,
+        ),
+    )
+
+    forums_stats = []
+    for node in content_tree.top_nodes:
+        stats = node.obj.get_stats(7)
+        forum_stats = {
+            "name": node.obj.name,
+            "posts_count": node.posts_count,
+            "topics_count": node.topics_count,
+            "members_count": stats["members"][-1],
+            "stats": stats,
+        }
+        forums_stats.append(forum_stats)
+
+    return render(request, "pages/statistiques.html", context={"forums_stats": forums_stats})
 
 
 def accessibilite(request):
