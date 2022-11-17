@@ -3,6 +3,7 @@ from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from machina.core.loading import get_class
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
@@ -14,6 +15,10 @@ from lacommunaute.forum_conversation.views import (
     TopicUpdateView,
 )
 from lacommunaute.users.factories import UserFactory
+
+
+PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
+assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 def build_post_in_forum():
@@ -87,3 +92,45 @@ class PostDeleteViewTest(TestCase):
         )
         msgs = get_messages(request)
         self.assertTrue(view.success_message, msgs._queued_messages[0].message)
+
+
+class TopicViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.perm_handler = PermissionHandler()
+        cls.post = build_post_in_forum()
+        assign_perm("can_read_forum", cls.user, cls.post.topic.forum)
+        assign_perm("can_see_forum", cls.user, cls.post.topic.forum)
+        cls.url = cls.post.topic.get_absolute_url()
+
+    def test_has_liked(self):
+        topic = self.post.topic
+        topic.likers.add(self.user)
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: solid heart
+        self.assertContains(response, '<i class="fas fa-heart mr-2 like"></i>1 like')
+
+    def test_has_not_liked(self):
+        topic = self.post.topic
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: regular heart (outlined)
+        self.assertContains(response, '<i class="far fa-heart mr-2 like"></i>0 like')
+
+    def test_pluralized_likes(self):
+        topic = self.post.topic
+        topic.likers.add(UserFactory())
+        topic.likers.add(UserFactory())
+        topic.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: regular heart (outlined)
+        self.assertContains(response, '<i class="far fa-heart mr-2 like"></i>2 likes')
+

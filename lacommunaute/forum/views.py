@@ -1,9 +1,11 @@
 import logging
 
 from django.conf import settings
-from django.db.models import OuterRef, Prefetch, Q, Subquery
+from django.db.models import Count, Exists, OuterRef, Prefetch, Q, Subquery
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.db.models import get_model
+
+from lacommunaute.users.models import User
 
 
 logger = logging.getLogger(__name__)
@@ -37,6 +39,8 @@ class ForumView(BaseForumView):
         return (
             self.forum.topics.exclude(type=Topic.TOPIC_ANNOUNCE)
             .exclude(approved=False)
+            .annotate(likes=Count("likers"))
+            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
             .prefetch_related(Prefetch("posts", queryset=posts))
         )
 

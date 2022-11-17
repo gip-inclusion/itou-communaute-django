@@ -46,3 +46,11 @@ class PostDeleteView(views.PostDeleteView):
                 "pk": self.object.topic.forum.pk,
             },
         )
+
+
+class TopicView(views.TopicView):
+    def get_topic(self):
+        self.topic = super().get_topic()
+        self.topic.has_liked = self.topic.likers.filter(id=self.request.user.id).exists()
+        self.topic.likes = self.topic.likers.count()
+        return self.topic
