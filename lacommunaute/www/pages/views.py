@@ -37,6 +37,7 @@ def statistiques(request):
         stats = node.obj.get_stats(7)
         forum_stats = {
             "name": node.obj.name,
+            "is_private": node.obj.is_private,  # add this because members counters make sense only if forum is private
             "posts_count": node.posts_count,
             "topics_count": node.topics_count,
             "members_count": stats["members"][-1],
