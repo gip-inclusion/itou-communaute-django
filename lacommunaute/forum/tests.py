@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
@@ -19,25 +19,25 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 class ForumViewQuerysetTest(TestCase):
-    def setUp(self) -> None:
-        self.user = UserFactory()
-        self.forum = create_forum()
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.forum = create_forum()
+        cls.view = ForumView()
+        cls.view.kwargs = {"pk": cls.forum.pk}
+        cls.view.request = RequestFactory().get("/")
+        cls.view.request.user = cls.user
 
     def test_excluded_announces_topics(self):
         TopicFactory(forum=self.forum, poster=self.user, type=Topic.TOPIC_ANNOUNCE)
-        view = ForumView()
-        view.kwargs = {"pk": self.forum.pk}
-        self.assertFalse(view.get_queryset())
+        self.assertFalse(self.view.get_queryset())
 
     def test_exclude_not_approved_posts(self):
         TopicFactory(forum=self.forum, poster=self.user, approved=False)
-        view = ForumView()
-        view.kwargs = {"pk": self.forum.pk}
-        self.assertFalse(view.get_queryset())
+        self.assertFalse(self.view.get_queryset())
 
     def test_pagination(self):
-        view = ForumView()
-        self.assertEquals(10, view.paginate_by)
+        self.assertEqual(10, self.view.paginate_by)
 
     def test_numqueries(self):
         poster = UserFactory()
@@ -61,7 +61,7 @@ class ForumViewQuerysetTest(TestCase):
 
         self.client.force_login(self.user)
 
-        # todo fix vincentporte :
+        # TODO fix vincentporte :
         # view to be optimized again soon
         with self.assertNumQueries(20):
             response = self.client.get(url)
@@ -69,24 +69,22 @@ class ForumViewQuerysetTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_get_first_and_last_n_posts(self):
-        view = ForumView()
-        view.kwargs = {"pk": self.forum.pk}
         n = 5
 
         topic = TopicFactory(forum=self.forum, poster=self.user)
         first_post = PostFactory(topic=topic, poster=self.user, content="first post")
-        qs = view.get_queryset()
+        qs = self.view.get_queryset()
         self.assertEqual(qs.first().posts.all().count(), 1)
         self.assertEqual(qs.first().posts.first(), first_post)
 
         second_post = PostFactory(topic=topic, poster=self.user, content="second post")
-        qs = view.get_queryset()
+        qs = self.view.get_queryset()
         self.assertEqual(qs.first().posts.all().count(), 2)
         self.assertEqual(qs.first().posts.first(), first_post)
         self.assertIn(second_post, qs.first().posts.all())
 
         PostFactory.create_batch(2 * n, topic=topic, poster=self.user)
-        qs = view.get_queryset()
+        qs = self.view.get_queryset()
         self.assertGreater(topic.posts.count(), qs.first().posts.all().count())
         self.assertEqual(qs.first().posts.all().count(), n + 1)
         self.assertEqual(qs.first().posts.first(), first_post)
@@ -97,28 +95,29 @@ class ForumViewQuerysetTest(TestCase):
 
 
 class ForumViewTest(TestCase):
-    def setUp(self) -> None:
-        self.user = UserFactory()
-        self.perm_handler = PermissionHandler()
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.perm_handler = PermissionHandler()
 
         # Set up a top-level forum
-        self.forum = create_forum()
+        cls.forum = create_forum()
 
         # Set up a topic and some posts
-        self.topic = TopicFactory(forum=self.forum, poster=self.user)
-        self.post = PostFactory.create(topic=self.topic, poster=self.user)
+        cls.topic = TopicFactory(forum=cls.forum, poster=cls.user)
+        cls.post = PostFactory.create(topic=cls.topic, poster=cls.user)
 
         # Assign some permissions
-        assign_perm("can_read_forum", self.user, self.forum)
-        assign_perm("can_see_forum", self.user, self.forum)
-        assign_perm("can_post_without_approval", self.user, self.forum)
-        assign_perm("can_reply_to_topics", self.user, self.forum)
+        assign_perm("can_read_forum", cls.user, cls.forum)
+        assign_perm("can_see_forum", cls.user, cls.forum)
+        assign_perm("can_post_without_approval", cls.user, cls.forum)
+        assign_perm("can_reply_to_topics", cls.user, cls.forum)
+
+        cls.url = reverse("forum:forum", kwargs={"pk": cls.forum.pk, "slug": cls.forum.slug})
 
     def test_subscription_button_is_hidden(self):
-        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
-
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(
@@ -144,10 +143,8 @@ class ForumViewTest(TestCase):
         )
 
     def test_topic_subject_is_not_hyperlink(self):
-        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
-
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.topic.subject)
@@ -165,7 +162,6 @@ class ForumViewTest(TestCase):
         self.assertNotContains(response, f'<a href="{topic_url}"')
 
     def test_show_more_button_visibility(self):
-        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         topic_url = reverse(
             "forum_conversation:topic",
             kwargs={
@@ -175,23 +171,21 @@ class ForumViewTest(TestCase):
                 "slug": self.topic.slug,
             },
         )
-
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, f'<a href="{topic_url}"')
 
         PostFactory.create_batch(10, topic=self.topic, poster=self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f'<a href="{topic_url}"')
 
     def test_join_url_is_hidden(self):
-        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertNotContains(
             response,
             reverse(
@@ -204,9 +198,8 @@ class ForumViewTest(TestCase):
 
     def test_join_url_is_shown(self):
         assign_perm("can_approve_posts", self.user, self.forum)
-        url = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         self.client.force_login(self.user)
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertContains(
             response,
             reverse(
