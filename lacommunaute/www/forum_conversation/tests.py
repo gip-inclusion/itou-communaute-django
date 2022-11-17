@@ -34,6 +34,12 @@ class TopicLikeViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
 
+    def test_post_anonymous(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 302)
+        # vincentporte : response contains redirection, how to handle it through HTMX Post Request ?
+        self.assertEqual(response.url, reverse("inclusion_connect:authorize") + "?next=" + self.url)
+
     def test_post_without_permission(self):
         self.client.force_login(UserFactory())
         response = self.client.post(self.url)

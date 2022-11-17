@@ -2,10 +2,16 @@ import logging
 
 from django.contrib import messages
 from django.urls import reverse
+from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
 
 
+# from machina.core.db.models import get_model
+
+
 logger = logging.getLogger(__name__)
+
+# Topic = get_model("forum_conversation", "Topic")
 
 
 class SuccessUrlMixin:
@@ -54,3 +60,11 @@ class TopicView(views.TopicView):
         self.topic.has_liked = self.topic.likers.filter(id=self.request.user.id).exists()
         self.topic.likes = self.topic.likers.count()
         return self.topic
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        params = {
+            "next_url": self.topic.get_absolute_url(),
+        }
+        context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+        return context
