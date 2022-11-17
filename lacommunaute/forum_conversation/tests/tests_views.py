@@ -1,8 +1,10 @@
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.utils.http import urlencode
 from machina.core.loading import get_class
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
@@ -134,3 +136,14 @@ class TopicViewTest(TestCase):
         # icon: regular heart (outlined)
         self.assertContains(response, '<i class="far fa-heart mr-2 like"></i>2 likes')
 
+    def test_anonymous_like(self):
+        assign_perm("can_read_forum", AnonymousUser(), self.post.topic.forum)
+        params = {"next_url": self.url}
+        url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+
+        response = self.client.get(self.url)
+        self.assertContains(response, url)
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertNotContains(response, url)
