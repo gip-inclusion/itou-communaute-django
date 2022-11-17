@@ -1,10 +1,13 @@
-from django.contrib.auth.models import AnonymousUser
+from dateutil.relativedelta import relativedelta
+from django.contrib.auth.models import AnonymousUser, Group
 from django.db import IntegrityError
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.http import urlencode
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+from machina.test.factories.conversation import create_topic
 from machina.test.factories.forum import create_forum
 from machina.test.factories.permission import UserForumPermissionFactory
 
@@ -14,6 +17,7 @@ from lacommunaute.users.factories import UserFactory
 
 
 Topic = get_model("forum_conversation", "Topic")
+Post = get_model("forum_conversation", "Post")
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
@@ -278,3 +282,49 @@ class ForumModelTest(TestCase):
         with self.assertRaises(IntegrityError):
             forum.id = None
             forum.save()
+
+    def test_get_stats(self):
+
+        poster = UserFactory()
+
+        # create fake forum to ensure post and topic number is filter by forum
+        forum_fake = create_forum()
+        forum_fake.members_group = Group.objects.create(name="members_forum_fake")
+        forum_fake.members_group.user_set.add(poster)
+        forum_fake.members_group.user_set.add(UserFactory())
+        topic = create_topic(forum=forum_fake, poster=poster)
+        PostFactory(topic=topic, poster=poster)
+
+        # create forum to test stats on it
+        forum = create_forum()
+        forum.members_group = Group.objects.create(name="members_forum")
+        forum.members_group.user_set.add(poster)
+        forum.members_group.user_set.add(UserFactory())
+        forum.members_group.user_set.add(UserFactory())
+
+        # create topics and posts
+        now = timezone.now()
+        for i in range(9):
+            day = now - relativedelta(days=i - 1)
+
+            for _ in range(2):
+                # create topic and force topic created date (arg doesn't force created date)
+                topic = create_topic(forum=forum, poster=poster)
+                topic.created = day
+                topic.save()
+
+                for _ in range(3):
+                    post = PostFactory(topic=topic, poster=poster)
+                    post.created = day
+                    post.save()
+
+        # get forum stats for last 7 days
+        stats = forum.get_stats(7)
+        self.assertEqual(stats["days"][-1], str(now.date() + relativedelta(days=1)))
+        self.assertEqual(stats["topics"][0], 4)
+        self.assertEqual(stats["topics"][3], 10)
+        self.assertEqual(stats["topics"][6], 16)
+        self.assertEqual(stats["posts"][0], 12)
+        self.assertEqual(stats["posts"][3], 30)
+        self.assertEqual(stats["posts"][6], 48)
+        self.assertEqual(stats["members"][-1], 3)
