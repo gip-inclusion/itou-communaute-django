@@ -1,3 +1,6 @@
+"""
+https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
+"""
 from django import template
 
 
