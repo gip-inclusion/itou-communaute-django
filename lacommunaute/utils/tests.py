@@ -1,5 +1,5 @@
 from django.template import Context, Template
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from machina.test.factories.attachments import AttachmentFactory
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
@@ -40,3 +40,23 @@ class AttachmentsTemplateTagTests(TestCase):
                     )
                 )
                 self.assertEqual(out, "False")
+
+
+class SettingsContextProcessorsTest(TestCase):
+    @override_settings(ALLOWED_HOSTS=["allowed.com"])
+    def test_disallowed_host(self):
+        headers = {"Host": "disallowed.com"}
+        response = self.client.get("/", headers=headers)
+        self.assertFalse(hasattr(response.wsgi_request, "htmx"))
+        self.assertTemplateUsed(response, "400.html")
+
+    def test_allowed_host(self):
+        response = self.client.get("/")
+        self.assertTrue(hasattr(response.wsgi_request, "htmx"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_htmx_request(self):
+        headers = {"HX-Request": True}
+        response = self.client.post("/", headers=headers)
+        self.assertTrue(hasattr(response.wsgi_request, "htmx"))
+        self.assertEqual(response.status_code, 405)
