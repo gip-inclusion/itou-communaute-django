@@ -13,7 +13,7 @@ endif
 # --------------------------------------------------------------------------------------------------
 
 console:
-	$(EXEC_CMD) python manage.py shell
+	$(EXEC_CMD) python manage.py shell_plus
 
 migrate:
 	$(EXEC_CMD) python manage.py migrate
