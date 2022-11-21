@@ -42,6 +42,21 @@ class ForumViewQuerysetTest(TestCase):
         TopicFactory(forum=self.forum, poster=self.user, approved=False)
         self.assertFalse(self.view.get_queryset())
 
+    def test_ordering_topics_on_last_post(self):
+        old_topic = TopicFactory(forum=self.forum, poster=self.user)
+        new_topic = TopicFactory(forum=self.forum, poster=self.user)
+
+        PostFactory(topic=old_topic, poster=self.user)
+        PostFactory(topic=new_topic, poster=self.user)
+
+        qs = self.view.get_queryset()
+        self.assertEqual(qs.first(), new_topic)
+        self.assertEqual(qs.last(), old_topic)
+
+        PostFactory(topic=old_topic, poster=self.user)
+        self.assertEqual(qs.first(), old_topic)
+        self.assertEqual(qs.last(), new_topic)
+
     def test_pagination(self):
         self.assertEqual(10, self.view.paginate_by)
 
