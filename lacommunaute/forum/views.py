@@ -44,6 +44,7 @@ class ForumView(BaseForumView):
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
             .prefetch_related(Prefetch("posts", queryset=posts))
+            .order_by("-last_post_on")
         )
 
     def get_context_data(self, **kwargs):
