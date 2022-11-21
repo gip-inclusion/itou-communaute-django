@@ -56,7 +56,6 @@ class Forum(AbstractForum):
                     approved=True,
                     created__lte=day,
                 )
-                .exclude(topic__type=Topic.TOPIC_ANNOUNCE)
                 .exclude(topic__approved=False)
                 .values("topic__approved")  # group by unique value to group forum and its children
                 .annotate(count=Count("pk"))
