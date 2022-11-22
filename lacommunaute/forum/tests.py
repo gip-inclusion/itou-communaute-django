@@ -226,7 +226,7 @@ class ForumViewTest(TestCase):
         self.assertNotContains(
             response,
             reverse(
-                "members:join_forum_landing",
+                "members:join_forum_form",
                 kwargs={
                     "token": self.forum.invitation_token,
                 },
@@ -240,7 +240,7 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response,
             reverse(
-                "members:join_forum_landing",
+                "members:join_forum_form",
                 kwargs={
                     "token": self.forum.invitation_token,
                 },
