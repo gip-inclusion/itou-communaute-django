@@ -155,9 +155,9 @@ name = 'nom du forum privé'
 ```
 
 ```
-forum, _ = Forum.objects.get_or_create(name=name,type=0)
 moderators, _ = Group.objects.get_or_create(name=f"{name} moderators")
 members, _ = Group.objects.get_or_create(name=f"{name} members")
+forum, _ = Forum.objects.get_or_create(name=name,private=True,members_group=members,type=0)
 ```
 
 ### ajouter les droits pour les utilisateurs anonymes
