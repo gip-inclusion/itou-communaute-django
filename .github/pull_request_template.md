@@ -12,7 +12,7 @@
 
 ### Points d'attention
 
-🦺 Décision d'architure
+🦺 Décision d'architecture
 🦺 Lien avec d'autres PR
 🦺 Code sensible
 
