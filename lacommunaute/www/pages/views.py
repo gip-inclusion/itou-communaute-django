@@ -32,9 +32,11 @@ def statistiques(request):
         ),
     )
 
+    days_back = 7
     forums_stats = []
+    forums_stats_totals = {"topics": [0] * days_back, "posts": [0] * days_back}
     for node in content_tree.top_nodes:
-        stats = node.obj.get_stats(7)
+        stats = node.obj.get_stats(days_back)
         forum_stats = {
             "name": node.obj.name,
             "is_private": node.obj.is_private,  # add this because members counters make sense only if forum is private
@@ -42,6 +44,22 @@ def statistiques(request):
             "topics_count": node.topics_count,
             "members_count": stats["members"][-1],
             "stats": stats,
+        }
+        forums_stats.append(forum_stats)
+
+        for key in ["topics", "posts"]:
+            forums_stats_totals[key] = [x + y for x, y in zip(forums_stats_totals[key], stats[key])]
+
+    if len(forums_stats) > 1:
+        # added total stats as it was a forum
+        forums_stats_totals["days"] = forums_stats[-1]["stats"]["days"]
+        forum_stats = {
+            "name": "Toutes les communautés",
+            "is_private": False,
+            "posts_count": forums_stats_totals["posts"][-1],
+            "topics_count": forums_stats_totals["topics"][-1],
+            "members_count": 0,  # The number of members is not set because a member can be a member of several forums
+            "stats": forums_stats_totals,
         }
         forums_stats.append(forum_stats)
 
