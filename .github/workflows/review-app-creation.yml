@@ -65,7 +65,8 @@ jobs:
     - name: 🤝 Link addons & add environment variables
       run: |
         $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
-        $CLEVER_CLI env set ITOU_ENVIRONMENT "REVIEW-APP"
+        $CLEVER_CLI env set COMMU_ENVIRONMENT "REVIEW-APP"
+        $CLEVER_CLI env set COMMU_FQDN "${{ env.DEPLOY_URL }}"
         $CLEVER_CLI env set S3_STORAGE_BUCKET_NAME c3-django-review-apps-bucket
         $CLEVER_CLI service link-addon c3-django-s3
         $CLEVER_CLI service link-addon c3-django-deployment-config
