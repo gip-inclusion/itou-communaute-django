@@ -11,8 +11,8 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-0">{{ forum.name }}</h1>
-            <small class="text-muted">{{forum.description}}</small>
+            <h1 class="mb-1">{{ forum.name }}</h1>
+            <p class="lead">{{forum.description}}</small>
         </div>
     </div>
     {% if sub_forums %}
@@ -21,7 +21,7 @@
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'forum_tracking:mark_subforums_read' forum.pk %}" class="btn btn-sm btn-block btn-ico btn-link pr-0">
                         <i class="ri-checkbox-circle-line ri-lg"></i>
-                        <span>{% trans "Mark subforums read" %}</span>
+                        <span>AAA   {% trans "Mark subforums read" %}</span>
                     </a>
                 {% endif %}
             </div>
