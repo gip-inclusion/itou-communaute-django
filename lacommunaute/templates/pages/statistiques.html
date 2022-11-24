@@ -57,17 +57,17 @@
                                         label: 'Nombre de sujets',
                                         data: {{ forum_stats.stats.topics|js }},
                                     },
-                                    {
-                                        label: 'Nombre de posts',
-                                        data: {{ forum_stats.stats.posts|js }},
-                                    }
-                                    {% if forum_stats.is_private %}
-                                    ,
-                                    {
-                                        label: 'Nombre de membres',
-                                        data: {{ forum_stats.stats.members|js }},
-                                    }
-                                    {% endif %}
+                                        {
+                                            label: 'Nombre de posts',
+                                            data: {{ forum_stats.stats.posts|js }},
+                                        }
+                                        {% if forum_stats.is_private %}
+                                            ,
+                                            {
+                                                label: 'Nombre de membres',
+                                                data: {{ forum_stats.stats.members|js }},
+                                            }
+                                        {% endif %}
                                     ]
                                 },
                                 options: {

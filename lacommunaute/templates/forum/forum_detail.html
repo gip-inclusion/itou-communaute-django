@@ -21,7 +21,7 @@
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'forum_tracking:mark_subforums_read' forum.pk %}" class="btn btn-sm btn-block btn-ico btn-link pr-0">
                         <i class="ri-checkbox-circle-line ri-lg"></i>
-                        <span>AAA   {% trans "Mark subforums read" %}</span>
+                        <span>{% trans "Mark subforums read" %}</span>
                     </a>
                 {% endif %}
             </div>
@@ -39,7 +39,6 @@
                     </a>
                 </div>
             {% endif %}
-
         </div>
         {% trans "Announcements" as announcements_title_trans %}
         {% with topic_list_title=announcements_title_trans topics=announces hide_if_empty=True unread_topics=unread_topics %}

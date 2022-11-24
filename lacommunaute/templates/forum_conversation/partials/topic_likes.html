@@ -1,22 +1,29 @@
 {% load str_filters %}
 
-<div id="likesarea{{topic.pk}}" class="mb-1">
+<div id="likesarea{{topic.pk}}">
     {% with topic.likes as counter %}
         {% if user.is_authenticated %}
             <button hx-post="{% url 'forum_conversation_extension:like_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" id="like-button{{topic.pk}}"
                 hx-target="#likesarea{{topic.pk}}"
-                hx-swap="outerHTML" class="btn btn-link btn-sm btn-ico pr-0 matomo-event"
+                hx-swap="outerHTML"
+                class="btn btn-ico btn-link btn-like pr-0 matomo-event"
                 data-matomo-category="engagement" data-matomo-action="like" data-matomo-option="{% if topic.has_liked %}unlike{%else%}like{%endif%}"
-                >
-                <i class="{% if topic.has_liked %}fas{%else%}far{%endif%} fa-heart mr-2 text-danger"></i>
+            >
+                <i class="{% if topic.has_liked %}ri-heart-3-fill{%else%}ri-heart-3-line{%endif%}" aria-hidden="true"></i>
                 <span>{{counter}} like{{ counter|pluralizefr }}</span>
             </button>
         {% else %}
-            {% comment %} TODO add next_url later {% endcomment %}
-            <a href="{{inclusion_connect_url}}" class="btn btn-link btn-sm btn-ico pr-0">
-                <i class="far fa-heart mr-2  text-danger"></i>
-                <span>{{counter}} like{{ counter|pluralizefr }}. Connectez-vous pour contribuer</span>
+            {% comment %} TODO add next_url later {% endcomment %}
+            <a href="{{inclusion_connect_url}}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
+                <i class="ri-heart-3-line" aria-hidden="true"></i>
+                <span>{{counter}} like{{ counter|pluralizefr }}</span>
             </a>
         {% endif %}
     {% endwith %}
 </div>
+
+<script>
+    htmx.onLoad(function() {
+        document.activeElement?.blur();
+    });
+</script>
