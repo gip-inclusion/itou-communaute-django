@@ -1,0 +1,58 @@
+{% extends 'board_base.html' %}
+{% load i18n %}
+
+{% load forum_permission_tags %}
+
+{% block sub_title %}{{ forum.name }}{% endblock sub_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-0">{{ forum.name }}</h1>
+            <small class="text-muted">{{forum.description}}</small>
+        </div>
+    </div>
+
+    {% get_permission 'can_approve_posts' forum request.user as user_can_access_stats %}
+    {% if user_can_access_stats %}
+        <div class="row mb-3 mb-md-5">
+            <div class="col-12">
+                <div class="mt-3 card forumlist">
+                    <div class="p-0 card-header">
+                        <div class="row m-0 px-3 py-2">
+                            <div class="col-md-8 col-4 d-md-block text-nowrap text-muted text-uppercase fs-xs">{% trans "Topics" %}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap text-muted text-uppercase fs-xs">{% trans "Views" %}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap text-muted text-uppercase fs-xs">{% trans "Likes" %}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap text-muted text-uppercase fs-xs">{% trans "Replies" %}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap text-muted text-uppercase fs-xs">{% trans "Attached" %}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-0 card-body">
+                    {%for topic in topics%}
+                        <div class="row m-0 p-3 border-bottom">
+                            <div class="col-md-8 col-4 d-md-block fs-xs">
+                                <a href="{{topic.get_absolute_url}}" title={{topic.subject}}>
+                                    {{topic.subject}}
+                                </a>
+                                <br />
+                                <small>{{ topic.created }}</small>
+                            </div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap fs-xs">{{topic.views}}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap fs-xs">{{topic.likes}}</div>
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap fs-xs">{{topic.replies|add:"-1" }}</div>{% comment %}only count replies{% endcomment %}
+                            <div class="col-md-1 col-2 d-md-block text-center text-nowrap fs-xs">{{topic.attached }}</div>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+{%endblock%}
+
+
+

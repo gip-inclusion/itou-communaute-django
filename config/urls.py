@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from machina import urls as machina_urls
 
+from lacommunaute.www.forum import urls as forum_extension_urls
 from lacommunaute.www.forum_conversation import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_member import urls as forum_member_urls
 
@@ -20,6 +21,7 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     path("members/", include(forum_member_urls)),
     path("forum/", include(forum_conversation_extension_urls)),
+    path("forum/", include(forum_extension_urls)),
     # machina legacy
     path("forum/", include(machina_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
