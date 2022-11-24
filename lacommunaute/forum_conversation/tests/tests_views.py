@@ -114,7 +114,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="fas fa-heart mr-2 text-danger"></i>')
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>')
         self.assertContains(response, "<span>1 like</span>")
 
     def test_has_not_liked(self):
@@ -124,7 +124,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="far fa-heart mr-2 text-danger"></i>')
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
         self.assertContains(response, "<span>0 like</span>")
 
     def test_pluralized_likes(self):
@@ -136,7 +136,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="far fa-heart mr-2 text-danger"></i>')
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
         self.assertContains(response, "<span>2 likes</span>")
 
     def test_anonymous_like(self):
