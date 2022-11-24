@@ -292,6 +292,27 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertNotContains(response, url)
 
+    def test_moderator_links(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertNotContains(
+            response,
+            reverse(
+                "forum_extension:engagement",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
+
+        assign_perm("can_approve_posts", self.user, self.forum)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_extension:engagement",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
+
 
 class ForumModelTest(TestCase):
     def test_invitation_token_is_unique(self):
