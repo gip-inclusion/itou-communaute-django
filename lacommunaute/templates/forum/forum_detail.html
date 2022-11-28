@@ -39,14 +39,7 @@
                     </a>
                 </div>
             {% endif %}
-            <div class="col-12 col-sm-auto">
-                {% if topics|length > 0 and request.user.is_authenticated %}
-                    <a href="{% url 'forum_tracking:mark_topics_read' forum.pk %}" class="btn btn-sm btn-block btn-ico btn-link pr-0">
-                        <i class="ri-checkbox-circle-line ri-lg"></i>
-                        <span>{% trans "Mark topics read" %}</span>
-                    </a>
-                {% endif %}
-            </div>
+
         </div>
         {% trans "Announcements" as announcements_title_trans %}
         {% with topic_list_title=announcements_title_trans topics=announces hide_if_empty=True unread_topics=unread_topics %}

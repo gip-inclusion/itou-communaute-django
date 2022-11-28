@@ -11,22 +11,7 @@
             <h1>Les {% trans "Forums"|lower %}</h1>
         </div>
     </div>
-    <div class="mt-3 row">
-        <div class="forumlist-top-controls col-12">
-            {% if request.user.is_authenticated %}
-                <div class="float-right">
-                    <a href="{% url 'forum_tracking:mark_all_forums_read' %}" class="btn btn-ico btn-link pr-0">
-                        <i class="ri-checkbox-circle-line ri-lg"></i>
-                        <span>{% trans "Mark forums read" %}</span>
-                    </a>
-                </div>
-                <a href="{% url 'forum_tracking:unread_topics' %}" class="btn btn-ico btn-link pl-0">
-                    <i class="ri-eye-line"></i>
-                    <span>{% trans "View unread topics" %}</span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
+
     {% forum_list forums %}
     <hr class="mt-5">
     <div class="my-4 row">
