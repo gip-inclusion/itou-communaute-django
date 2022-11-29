@@ -265,6 +265,10 @@ msgstr "Nombre total de redirections :"
 msgid "Subforums:"
 msgstr "Sous-communautés :"
 
+#: lacommunaute/templates/machina/forum/forum_list.html:37
+msgid "Subforums"
+msgstr "Sous-communautés"
+
 #: lacommunaute/templates/machina/forum/forum_list.html:213
 msgid "No forums."
 msgstr "Pas de communautés."
