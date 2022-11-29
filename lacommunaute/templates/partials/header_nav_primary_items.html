@@ -2,11 +2,7 @@
 {% load i18n %}
 <ul>
     {% comment %} TODO : Ajouter la class .is-active sur l'item de menu actif {% endcomment %}
-    <li>
-        <a href="{% url 'forum:index' %}">
-            <span>Les communautés</span>
-        </a>
-    </li>
+
     {% if user.is_authenticated %}
         <li class="dropdown">
             <button type="button" class="btn {{ button_size }} btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
