@@ -233,20 +233,6 @@ class ForumViewTest(TestCase):
             ),
         )
 
-    def test_join_url_is_shown(self):
-        assign_perm("can_approve_posts", self.user, self.forum)
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertContains(
-            response,
-            reverse(
-                "members:join_forum_form",
-                kwargs={
-                    "token": self.forum.invitation_token,
-                },
-            ),
-        )
-
     def test_has_liked(self):
         topic = self.topic
         topic.likers.add(self.user)
@@ -302,6 +288,13 @@ class ForumViewTest(TestCase):
                 kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
             ),
         )
+        self.assertNotContains(
+            response,
+            reverse(
+                "members:forum_profiles",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
 
         assign_perm("can_approve_posts", self.user, self.forum)
         response = self.client.get(self.url)
@@ -309,6 +302,13 @@ class ForumViewTest(TestCase):
             response,
             reverse(
                 "forum_extension:engagement",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
+        self.assertContains(
+            response,
+            reverse(
+                "members:forum_profiles",
                 kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
             ),
         )
