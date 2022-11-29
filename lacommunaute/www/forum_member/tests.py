@@ -33,6 +33,83 @@ class ForumProfileListViewTest(TestCase):
                 )
 
 
+class ModeratorProfileListView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.forum = create_forum()
+        cls.forum.members_group = Group.objects.create(name="members")
+        cls.forum.save()
+        cls.profile = ForumProfileFactory()
+
+        cls.url = reverse(
+            "members:forum_profiles",
+            kwargs={"pk": cls.forum.pk, "slug": cls.forum.slug},
+        )
+
+        cls.perm_handler = PermissionHandler()
+        assign_perm("can_approve_posts", cls.profile.user, cls.forum)
+
+    def test_access_page(self):
+        user = UserFactory()
+        self.client.force_login(user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+        assign_perm("can_approve_posts", user, self.forum)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_context_data(self):
+        self.client.force_login(self.profile.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.context_data["forum"], self.forum)
+        self.assertEqual(response.context_data["paginator"].per_page, 60)
+
+    def test_content(self):
+        forum_profile = ForumProfileFactory(user__first_name="Jeff", user__last_name="Buckley")
+        self.forum.members_group.user_set.add(forum_profile.user)
+        self.forum.members_group.save()
+
+        self.client.force_login(self.profile.user)
+        response = self.client.get(self.url)
+        self.assertContains(response, forum_profile.user.get_full_name())
+        self.assertContains(response, reverse("forum_member:profile", kwargs={"pk": forum_profile.user_id}))
+
+    def test_ordering_and_count(self):
+        self.forum.members_group.user_set.add(ForumProfileFactory(user__first_name="z").user)
+        self.forum.members_group.user_set.add(ForumProfileFactory(user__first_name="a").user)
+        self.forum.members_group.save()
+
+        self.client.force_login(self.profile.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.context["forum_profiles"][0].user.first_name, "a")
+        self.assertEqual(response.context["forum_profiles"][1].user.first_name, "z")
+        self.assertContains(response, "2 membres")
+
+    def test_profile_in_group(self):
+        ForumProfileFactory(user__first_name="john_is_not_a_member")
+        self.forum.members_group.user_set.add(ForumProfileFactory(user__first_name="bob_is_a_member").user)
+        self.forum.members_group.save()
+
+        self.client.force_login(self.profile.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.context["forum_profiles"][0].user.first_name, "bob_is_a_member")
+        self.assertContains(response, "1 membre")
+
+    def test_join_url_is_shown(self):
+        self.client.force_login(self.profile.user)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            reverse(
+                "members:join_forum_form",
+                kwargs={
+                    "token": self.forum.invitation_token,
+                },
+            ),
+        )
+
+
 class JoinForumLandingView(TestCase):
     def test_token_doesnt_exists(self):
         user = UserFactory()

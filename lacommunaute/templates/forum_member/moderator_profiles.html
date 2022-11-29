@@ -1,0 +1,53 @@
+{% extends "board_base.html" %}
+{% load i18n %}
+{% load static %}
+{% load str_filters %}
+
+{% block content %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Membres de la communauté {{forum.name}}</strong></h1>
+                    <h2 class="h2">{{paginator.count}} membre{{ paginator.count|pluralizefr }}</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="card-columns">
+                        {% for forum_profile in forum_profiles %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="h5 card-title">
+                                        <a href="{%url 'forum_member:profile' pk=forum_profile.user_id%}">{{ forum_profile.user.get_full_name }}</a>
+                                    </h3>
+                                </div>
+                            </div>
+
+                        {% empty %}
+                            <p>No body yet…</p>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-5 mb-5 row">
+                        <div class="col-12">
+                            {% with "justify-content-center" as pagination_size %}
+                                {% include "partials/pagination.html" %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="mt-5 mb-5 row">
+                        <div class="col-12">
+                            <p class="fs-lg">Lier pour inviter de nouveaux membres : {{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_form' forum.invitation_token %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
