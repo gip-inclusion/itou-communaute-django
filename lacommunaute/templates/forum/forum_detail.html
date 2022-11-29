@@ -36,6 +36,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
                             <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Engagement" %}</a>
+                            <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}" class="dropdown-item">{% trans "Members" %}</a>
                         </div>
                     {%endif%}
                 </div>
@@ -58,10 +59,6 @@
         </div>
     {% endif %}
 
-    {% get_permission 'can_approve_posts' forum request.user as user_can_invite_to_forum %}
-    {% if user_can_invite_to_forum %}
-        <hr>
-        <p class="fs-lg">Inviter des nouveaux membres en partageant ce lien : <br><strong>{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_form' forum.invitation_token %}</strong></p>
-    {%endif%}
+
 
 {% endblock content %}
