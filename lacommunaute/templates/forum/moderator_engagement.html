@@ -14,7 +14,8 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum" %}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ forum.name }}: Engagement </li>{% comment %} TODO: Dynamiser la valeur engagement {% endcomment %}
+                            <li class="breadcrumb-item active"><a href="{% url 'forum:forum' forum.slug forum.id %}">{{ forum.name }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Engagement</li>{% comment %} TODO: Dynamiser la valeur engagement {% endcomment %}
                         </ol>
                     </nav>
                 </div>
@@ -28,7 +29,7 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{{ forum.name }}: Engagement</strong></h1>{% comment %} TODO: Dynamiser la valeur engagement {% endcomment %}
+                    <h1 class="s-title-01__title h1"><strong>{{ forum.name }}: Engagement</strong></h1>
                     <p class="lead">{{forum.description}}</p>
                 </div>
             </div>
