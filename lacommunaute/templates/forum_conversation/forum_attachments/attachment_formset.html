@@ -1,10 +1,11 @@
 {% load i18n %}
+{% load widget_tweaks %}
 
 {{ attachment_formset.management_form }}
 {% for form in attachment_formset.forms %}
-    <div class="attachment-form row">
+    <div class="attachment-form row align-items-center">
         {% for field in form.visible_fields %}
-            <div class="col-md-4">
+            <div class="{% if field.name == 'DELETE' %}col-md-2{% else %}col-md-5{% endif %}">
                 {% if forloop.first %}
                     {{ form.id }}
                 {% endif %}
@@ -16,17 +17,15 @@
                     {% endfor %}
                 {% endif %}
                 {% if field.name == 'DELETE' %}
-                    <div class="checkbox">
-                        <label for="{{ field.auto_id }}">
-                            {{ field }}
-                            {{ field.label }}
-                        </label>
+                    <div class="custom-control custom-checkbox mt-3">
+                        {{ field | add_class:'custom-control-input' }}
+                        <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                     </div>
                 {% elif field.name == 'file' %}
                     <div id="div_id_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
-                        <div class="controls">
+                        <div class="form-group">
                             {% if field.label %}<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}{% if not field.field.required %} <span class="text-muted">{% trans "(optional)" %}</span>{% endif %}</label>{% endif %}
-                            {{ field }}
+                            {{ field | add_class:'form-control-file' }}
                             {% if field.help_text %}<p class="help-block">{{ field.help_text }}</p>{% endif %}
                             {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
                         </div>
@@ -38,4 +37,11 @@
         {% endfor %}
     </div>
 {% endfor %}
-<a href="#" id="add_more_attachment" class="btn btn-sm btn-info"><i class="icon-white icon-plus-sign"></i>&nbsp;{% trans "Add another file" %}</a>
+<div class="row">
+    <div class="col-12 mb-3">
+        <a href="#" id="add_more_attachment" class="btn btn-sm btn-secondary btn-ico">
+            <i class="ri-add-line"></i>
+            <span>{% trans "Add another file" %}</span>
+        </a>
+    </div>
+</div>
