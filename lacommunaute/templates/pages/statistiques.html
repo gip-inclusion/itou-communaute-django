@@ -24,7 +24,6 @@
 {% endblock %}
 
 {% block content %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
     <section class="s-title-01">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
@@ -84,4 +83,9 @@
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
 {% endblock %}
