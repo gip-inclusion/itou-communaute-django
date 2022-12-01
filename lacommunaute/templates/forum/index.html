@@ -3,7 +3,9 @@
 {% load mptt_tags %}
 {% load forum_tags %}
 
-{% block sub_title %}{% trans "Index" %}{% endblock sub_title %}
+{% block sub_title %}Les {% trans "Forums"|lower %} {% endblock sub_title %}
+{% block meta_description %}Vous souhaitez sonder la communauté, créer votre groupe de travail ou animer un sujet de discussion, notre équipe est à votre écoute !{% endblock meta_description %}"
+
 
 {% block content %}
     <div class="row">
@@ -13,6 +15,7 @@
     </div>
 
     {% forum_list forums %}
+
     <hr class="mt-5">
     <div class="my-4 row">
         <div class="forum-page-statistics col-12">
