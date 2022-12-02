@@ -35,7 +35,7 @@ class ForumView(BaseForumView):
             .exclude(topic__approved=False)
             .filter(Q(id__in=Subquery(newest_sq)) | Q(id__in=Subquery(latest_sq)))
             .order_by("topic", "created")
-            .select_related("poster", "poster__forum_profile")
+            .select_related("poster", "poster__forum_profile", "updated_by")
             .prefetch_related("attachments")
         )
         return (

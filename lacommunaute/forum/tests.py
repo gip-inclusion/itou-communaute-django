@@ -62,8 +62,20 @@ class ForumViewQuerysetTest(TestCase):
 
     def test_numqueries(self):
         poster = UserFactory()
-        topics = TopicFactory.create_batch(10, forum=self.forum, poster=poster)
-        _ = (PostFactory.create_batch(5, topic=topic, poster=poster) for topic in topics)
+        topic = TopicFactory(forum=self.forum, poster=poster)
+        PostFactory.create_batch(
+            3,
+            topic=topic,
+            poster=poster,
+            updated_by=poster,
+            updates_count=3,
+        )
+        PostFactory(
+            topic=TopicFactory(forum=self.forum, poster=poster),
+            poster=poster,
+            updated_by=poster,
+            updates_count=3,
+        )
 
         UserForumPermissionFactory(
             permission=ForumPermission.objects.get(codename="can_see_forum"),
@@ -84,7 +96,25 @@ class ForumViewQuerysetTest(TestCase):
 
         # TODO fix vincentporte :
         # view to be optimized again soon
-        with self.assertNumQueries(20):
+        with self.assertNumQueries(
+            1  # django sessions (OK)
+            + 1  # connected user info (5 occurrences!)
+            + 1  # forum informations
+            + 1  # user forum permissions
+            + 2  # connected user info (!)
+            + 1  # group forum permissions
+            + 1  # count likers (OK)
+            + 1  # forum informations
+            + 1  # user forum permissions
+            + 2  # connected user info (!)
+            + 1  # group forum permissions
+            + 2  # forum informations
+            + 2  # topic informations
+            + 1  # post informations
+            + 1  # attachements infos (OK)
+            + 1  # topic read track (OK)
+            + 1  # forum read track (OK)
+        ):
             response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
