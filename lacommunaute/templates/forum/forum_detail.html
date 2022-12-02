@@ -25,14 +25,14 @@
             {% if user_can_add_topic or user_can_access_stats %}
                 <div class="col-12 col-sm-auto forum-actions-block">
                     {% if user_can_add_topic %}
-                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-ico btn-sm">
+                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-ico">
                             <i class="ri-chat-new-line ri-lg"></i>
                             <span>{% trans "New topic" %}</span>
                         </a>
                     {%endif%}
                     {% if user_can_access_stats %}
-                        <button id="id_dropdown_moderators_stats_button" class="btn btn-outline-primary btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Stats Animateurs
+                        <button id="id_dropdown_moderators_stats_button" class="btn btn-outline-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
                             <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Engagement" %}</a>
