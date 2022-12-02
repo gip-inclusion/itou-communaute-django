@@ -8,22 +8,18 @@
 {% endif %}
 
 {% if not poll.hide_results or user_can_edit_first_post %}
-{% for option in poll.options.all %}
-{% if forloop.first or not forloop.counter|divisibleby:2 %}
-<div class="mb-3 row">
-{% endif %}
-<div class="col-md-6">
-  <b>{{ option.text }}</b>
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="{{ option.percentage|floatformat }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ option.percentage|stringformat:"f" }}%;">
-      {{ option.percentage|floatformat }}%
-    </div>
-  </div>
-</div>
-{% if forloop.last or forloop.counter|divisibleby:2 %}
-</div>
-{% endif %}
-{% endfor %}
+    {% for option in poll.options.all %}
+        <div class="mb-3 row">
+            <div class="col-md-6">
+                <b>{{ option.text }}</b>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar  bg-success" role="progressbar" aria-valuenow="{{ option.percentage|floatformat }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ option.percentage|stringformat:"f" }}%;">
+                        {{ option.percentage|floatformat }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endif %}
 
 {% trans "Total votes:" %}&nbsp;{{ poll.votes|length }}
