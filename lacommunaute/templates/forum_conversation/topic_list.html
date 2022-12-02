@@ -22,10 +22,10 @@
                             <div class="pl-0 col-12 topic-name">
                                 <div class="row">
                                     <div class="col-12">
+                                        {% if topic.poll %}
+                                            {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
+                                        {% endif %}
                                         {% for post in topic.posts.all %}
-                                            {% if forloop.first and poll %}
-                                                {% include "forum_conversation/forum_polls/poll_detail.html" %}
-                                            {% endif %}
                                             <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} has-links-inside ml-3{%endif%}">
                                                 {% if forloop.first %}
                                                     <div class="card-header d-flex align-items-center mb-1">
