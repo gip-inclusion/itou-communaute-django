@@ -10,6 +10,7 @@ from machina.core.loading import get_class
 from machina.test.factories.conversation import create_topic
 from machina.test.factories.forum import create_forum
 from machina.test.factories.permission import UserForumPermissionFactory
+from machina.test.factories.polls import TopicPollFactory, TopicPollOptionFactory
 
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
@@ -84,7 +85,7 @@ class ForumViewQuerysetTest(TestCase):
 
         # TODO fix vincentporte :
         # view to be optimized again soon
-        with self.assertNumQueries(20):
+        with self.assertNumQueries(21):
             response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
@@ -312,6 +313,15 @@ class ForumViewTest(TestCase):
                 kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
             ),
         )
+
+    def test_poll_form(self):
+        poll_option = TopicPollOptionFactory(poll=TopicPollFactory(topic=self.topic))
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, poll_option.poll.question)
+        self.assertContains(response, poll_option.text)
 
 
 class ForumModelTest(TestCase):
