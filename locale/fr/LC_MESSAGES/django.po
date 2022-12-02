@@ -184,6 +184,10 @@ msgstr "Voir mes posts"
 msgid "Moderation queue"
 msgstr "File d’attente de modération"
 
+#: lacommunaute/templates/machina/forum/forum_detail.html:39
+msgid "Members"
+msgstr "Membres"
+
 #: lacommunaute/templates/machina/forum/forum_detail.html:22
 msgid "Mark subforums read"
 msgstr "Marquer les sous-communautés lus"
@@ -856,3 +860,7 @@ msgstr "Partager ce sujet sur "
 #, python-format
 msgid "%(forum_name)s - %(topic_subject)s: Check it out!"
 msgstr "Regardez %(topic_subject)s dans la communauté %(forum_name)s !"
+
+#: lacommunaute/templates/forum/moderator_engagement.html:54
+msgid "Attached"
+msgstr "Fichiers"
