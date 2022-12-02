@@ -43,7 +43,7 @@ class ForumView(BaseForumView):
             .exclude(approved=False)
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
-            .prefetch_related(Prefetch("posts", queryset=posts))
+            .prefetch_related(Prefetch("posts", queryset=posts), "poll")
             .order_by("-last_post_on")
         )
 
