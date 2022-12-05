@@ -1,6 +1,7 @@
 {% extends 'board_base.html' %}
 {% load i18n %}
 {% load forum_conversation_tags %}
+{% load forum_permission_tags %}
 
 {% block sub_title %}{% trans "Edit post" %}{% endblock sub_title %}
 
@@ -29,6 +30,12 @@
                             <div class="form-group col-auto">
                                 <input type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
                             </div>
+                            {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
+                            {% if user_can_delete_post %}
+                                <div class="form-group col-auto">
+                                    <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" role="button" class="btn btn-outline-danger" value="{% trans "Delete" %}">{% trans "Delete" %}</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </form>
                 </div>

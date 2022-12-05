@@ -47,10 +47,6 @@
                                             &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
                                         {% endif %}
 
-                                        {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
-                                        {% if user_can_delete_post %}
-                                            &nbsp;<a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" title="{% trans "Delete" %}">Supprimer</a>
-                                        {% endif %}
                                     </small>
                                 </p>
                                 <div class="post-content">
