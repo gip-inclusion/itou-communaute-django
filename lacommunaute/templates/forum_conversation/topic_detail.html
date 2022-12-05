@@ -18,7 +18,7 @@
                 <div id="{{ post.id }}" class="my-3 card has-links-inside post{% if post.is_topic_head %} bg-light{% else %} ml-3{% endif %}">
                     {% if forloop.first %}
                         <div class="card-header d-flex align-items-center mb-1">
-                            <p class="fs-lg mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
+                            <p class="h4 mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
                             {% block htmx %}
                                 {% include "forum_conversation/partials/topic_likes.html"%}
                             {% endblock %}
@@ -58,11 +58,11 @@
                                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                                 </div>
 
-                                {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
-
                                 {% if forloop.first and post.is_topic_head and poll %}
                                     {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                 {% endif %}
+
+                                {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
 
                                 {% if post.enable_signature and post.poster.forum_profile.signature %}
                                     <div class="post-signature">

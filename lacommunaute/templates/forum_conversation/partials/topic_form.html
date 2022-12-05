@@ -60,12 +60,12 @@
                             </div>
                         </div>
                         {% if post_form.poll_hide_results %}
-                        <div class="form-group{% if post_form.poll_hide_results.errors %} has-error{% endif %}">
-                            <div class="custom-control custom-checkbox mt-3">
-                                {{ post_form.poll_hide_results | add_class:'custom-control-input' }}
-                                <label class="custom-control-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
+                            <div class="form-group{% if post_form.poll_hide_results.errors %} has-error{% endif %}">
+                                <div class="custom-control custom-checkbox mt-3">
+                                    {{ post_form.poll_hide_results | add_class:'custom-control-input' }}
+                                    <label class="custom-control-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
                     </div>
                     <div id="poll_formset" class="col-md-6">
