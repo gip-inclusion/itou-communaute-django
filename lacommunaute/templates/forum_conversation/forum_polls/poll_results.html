@@ -12,7 +12,7 @@
         <div class="row mb-3">
             <div class="col-md-9">
                 <p>{{ option.text }} - <strong>{{ option.percentage|floatformat }}%</strong></p>
-                <div class="progress progress--communaute" style="height: 20px;">
+                <div class="progress progress--communaute">
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{ option.percentage|floatformat }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ option.percentage|stringformat:"f" }}%;"></div>
                 </div>
             </div>
