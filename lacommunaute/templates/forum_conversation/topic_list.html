@@ -22,9 +22,6 @@
                             <div class="pl-0 col-12 topic-name">
                                 <div class="row">
                                     <div class="col-12">
-                                        {% if topic.poll %}
-                                            {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
-                                        {% endif %}
                                         {% for post in topic.posts.all %}
                                             <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} has-links-inside ml-3{%endif%}">
                                                 {% if forloop.first %}
@@ -75,6 +72,10 @@
                                                             </div>
 
                                                             {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
+
+                                                            {% if forloop.first and topic.poll %}
+                                                                {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
+                                                            {% endif %}
 
                                                             {% if post.enable_signature and post.poster.forum_profile.signature %}
                                                                 <div class="post-signature">
