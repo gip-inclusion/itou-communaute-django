@@ -14,12 +14,12 @@
             <li>
                 {% if poll.max_options == 1 %}
                     <div class="custom-control custom-radio">
-                        <input type="radio" id="option{{poll.pk}}_{{ option.id }}" name="options" class="custom-control-input">
-                        <label class="custom-control-label" for="{{poll.pk}}_{{ option.id }}">{{ option.text }}</label>
+                        <input type="radio" class="custom-control-input" name="options" value="{{ option.id }}" id="option{{poll.pk}}_{{ option.id }}">
+                        <label class="custom-control-label" for="option{{poll.pk}}_{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% else %}
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" name="options" class="custom-control-input" id="option{{poll.pk}}_{{ option.id }}">
+                        <input type="checkbox" class="custom-control-input" name="options" value="{{ option.id }}" id="option{{poll.pk}}_{{ option.id }}">
                         <label class="custom-control-label" for="option{{poll.pk}}_{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% endif %}
@@ -28,6 +28,5 @@
     </ul>
     <div class="form-actions">
         <input type="submit" class="btn btn-sm btn-secondary matomo-event" value="{% trans "Submit" %}" data-matomo-category="engagement" data-matomo-action="vote"/>
-        <a href="{% if change_vote_action %}.{% else %}?view_results=true{% endif %}" class="btn btn-sm btn-link ml-3">{% trans "View results" %}</a>
     </div>
 </form>
