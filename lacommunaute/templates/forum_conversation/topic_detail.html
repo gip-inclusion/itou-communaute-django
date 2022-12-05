@@ -98,14 +98,16 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row align-items-center">
-        <div class="col-12 col-md">
-            {% include "forum_conversation/partials/topic_detail_actions.html" %}
+    {% if posts.count > 4 %}
+        <div class="row align-items-center">
+            <div class="col-12 col-md">
+                {% include "forum_conversation/partials/topic_detail_actions.html" %}
+            </div>
+            <div class="col-12 col-md-auto">
+                {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
+            </div>
         </div>
-        <div class="col-12 col-md-auto">
-            {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
-        </div>
-    </div>
+    {% endif %}
     <div class="mt-5 mb-5 row">
         <div class="col-12">
             {% with "justify-content-center" as pagination_size %}
