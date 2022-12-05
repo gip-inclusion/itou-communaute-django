@@ -4,31 +4,31 @@
 <label class="font-weight-bold">{% trans "Poll options" %}</label>
 {{ poll_option_formset.management_form }}
 {% for form in poll_option_formset.forms %}
-  <div class="poll-option-form row">
-    {% for field in form.visible_fields %}
-    <div class="{% if field.name == 'DELETE' %}col-md-4{% else %}col-md-8{% endif %}">
-      {% if forloop.first %}
-        {{ form.id }}
-      {% endif %}
-      {% if field.name == 'DELETE' %}
-        <div class="custom-control custom-checkbox mt-2">
-          {{ field | add_class:'custom-control-input' }}
-          <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-        </div>
-      {% else %}
-        {% include "partials/form_field.html" with field=field %}
-      {% endif %}
+    <div class="poll-option-form row">
+        {% for field in form.visible_fields %}
+            <div class="{% if field.name == 'DELETE' %}col-md-4{% else %}col-md-8{% endif %}">
+                {% if forloop.first %}
+                    {{ form.id }}
+                {% endif %}
+                {% if field.name == 'DELETE' %}
+                    <div class="custom-control custom-checkbox mt-2">
+                        {{ field | add_class:'custom-control-input' }}
+                        <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                    </div>
+                {% else %}
+                    {% include "partials/form_field.html" with field=field %}
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 {% endfor %}
 <a href="#" id="add_more_poll_option" class="btn btn-sm btn-secondary btn-ico">
-  <i class="ri-add-line"></i>
-  <span>{% trans "Add a poll option" %}</span>
+    <i class="ri-add-line"></i>
+    <span>{% trans "Add a poll option" %}</span>
 </a>
 
 {% if poll_option_formset.initial_form_count %}
-  <div class="alert alert-warning mt-3">
-    <p class="mb-0">{% blocktrans %}<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the associated votes.{% endblocktrans %}</p>
-  </div>
+    <div class="alert alert-warning mt-3">
+        <p class="mb-0">{% blocktrans %}<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the associated votes.{% endblocktrans %}</p>
+    </div>
 {% endif %}

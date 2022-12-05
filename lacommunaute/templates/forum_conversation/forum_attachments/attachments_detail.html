@@ -3,9 +3,10 @@
 
 {% get_permission 'can_download_files' post.topic.forum request.user as user_can_download_files %}
 {% if post.attachments.exists and user_can_download_files %}
-    <div class="row attachments">
+    <div class="row attachments mt-3 mt-md-5">
         <div class="col-md-12">
-            <span class="text-muted attachments-title"><i class="fa fa-files-o"></i>&nbsp;{% trans "Attachments" %}</span>
+            <hr />
+            <p class="h5 mb-0">{% trans "Attachments" %}</p>
         </div>
         {% for attachment in post.attachments.all %}
             <div class="col-md-12 attachment">
