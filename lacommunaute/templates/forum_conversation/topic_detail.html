@@ -69,19 +69,7 @@
                                         {{ post.poster.forum_profile.signature.rendered }}
                                     </div>
                                 {% endif %}
-                                {% if post.updates_count %}
-                                    <div class="mt-4 edit-info">
-                                        <small class="text-muted">
-                                            <i class="fas fa-edit"></i>&nbsp;{% if post.updated_by %}{% trans "Last edited by:" %}&nbsp;<a href="{% url 'forum_member:profile' post.updated_by_id %}">{{ post.updated_by|forum_member_display_name }}</a>&nbsp;{% else %}{% trans "Updated" %}&nbsp;{% endif %}{% trans "on" %}&nbsp;{{ post.updated }}, {% blocktrans count counter=post.updates_count %}edited {{counter }} time in total.{% plural %}edited {{counter }} times in total.{% endblocktrans %}
-                                        </small>
-                                        {% if post.update_reason %}
-                                            <br />
-                                            <small class="text-muted">
-                                                <b>{% trans "Reason:" %}</b>&nbsp;{{ post.update_reason }}
-                                            </small>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
+
                             </div>
                         </div>
                     </div>
