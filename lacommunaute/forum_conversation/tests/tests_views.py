@@ -41,14 +41,79 @@ class TopicCreateViewTest(TestCase):
 
 
 class TopicUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.post = build_post_in_forum()
+        cls.forum = cls.post.topic.forum
+        cls.perm_handler = PermissionHandler()
+        assign_perm("can_read_forum", cls.post.poster, cls.post.topic.forum)
+        assign_perm("can_see_forum", cls.post.poster, cls.post.topic.forum)
+
     def test_redirection(self):
-        self.post = build_post_in_forum()
-        self.forum = self.post.topic.forum
         view = TopicUpdateView()
         view.forum_post = self.post
         self.assertEqual(
             view.get_success_url(),
             reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
+    def test_has_not_permission_to_delete_post(self):
+        assign_perm("can_edit_own_posts", self.post.poster, self.forum)
+        self.client.force_login(self.post.poster)
+        response = self.client.get(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": self.post.topic.slug,
+                    "pk": self.post.topic.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            reverse(
+                "forum_conversation:post_delete",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            ),
+        )
+
+    def test_has_permission_to_delete_post(self):
+        assign_perm("can_edit_own_posts", self.post.poster, self.forum)
+        assign_perm("can_delete_own_posts", self.post.poster, self.forum)
+        self.client.force_login(self.post.poster)
+        response = self.client.get(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": self.post.topic.slug,
+                    "pk": self.post.topic.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_conversation:post_delete",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            ),
         )
 
 
@@ -65,6 +130,14 @@ class PostCreateViewTest(TestCase):
 
 
 class PostUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.post = build_post_in_forum()
+        cls.forum = cls.post.topic.forum
+        cls.perm_handler = PermissionHandler()
+        assign_perm("can_read_forum", cls.post.poster, cls.post.topic.forum)
+        assign_perm("can_see_forum", cls.post.poster, cls.post.topic.forum)
+
     def test_redirection(self):
         self.post = build_post_in_forum()
         self.forum = self.post.topic.forum
@@ -73,6 +146,67 @@ class PostUpdateViewTest(TestCase):
         self.assertEqual(
             view.get_success_url(),
             reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
+    def test_has_not_permission_to_delete_post(self):
+        assign_perm("can_edit_own_posts", self.post.poster, self.forum)
+        self.client.force_login(self.post.poster)
+        response = self.client.get(
+            reverse(
+                "forum_conversation:post_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            reverse(
+                "forum_conversation:post_delete",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            ),
+        )
+
+    def test_has_permission_to_delete_post(self):
+        assign_perm("can_edit_own_posts", self.post.poster, self.forum)
+        assign_perm("can_delete_own_posts", self.post.poster, self.forum)
+        self.client.force_login(self.post.poster)
+        response = self.client.get(
+            reverse(
+                "forum_conversation:post_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_conversation:post_delete",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "topic_slug": self.post.topic.slug,
+                    "topic_pk": self.post.topic.pk,
+                    "pk": self.post.pk,
+                },
+            ),
         )
 
 
