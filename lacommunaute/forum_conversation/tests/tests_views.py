@@ -29,6 +29,14 @@ def build_post_in_forum():
 
 
 class TopicCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.poster = UserFactory()
+        cls.forum = create_forum()
+        cls.perm_handler = PermissionHandler()
+        assign_perm("can_read_forum", cls.poster, cls.forum)
+        assign_perm("can_see_forum", cls.poster, cls.forum)
+
     def test_redirection(self):
         self.post = build_post_in_forum()
         self.forum = self.post.topic.forum
@@ -37,6 +45,23 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(
             view.get_success_url(),
             reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
+    def test_delete_button_is_hidden(self):
+        assign_perm("can_start_new_topics", self.poster, self.forum)
+        self.client.force_login(self.poster)
+        response = self.client.get(
+            reverse(
+                "forum_conversation:topic_create",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response, '/post/delete/" title="Supprimer" role="button" class="btn btn-outline-danger">Supprimer</a>'
         )
 
 
