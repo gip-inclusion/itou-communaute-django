@@ -9,13 +9,7 @@ from machina.core.loading import get_class
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
-from lacommunaute.forum_conversation.views import (
-    PostCreateView,
-    PostDeleteView,
-    PostUpdateView,
-    TopicCreateView,
-    TopicUpdateView,
-)
+from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.users.factories import UserFactory
 
 
@@ -142,18 +136,6 @@ class TopicUpdateViewTest(TestCase):
         )
 
 
-class PostCreateViewTest(TestCase):
-    def test_redirection(self):
-        self.post = build_post_in_forum()
-        self.forum = self.post.topic.forum
-        view = PostCreateView()
-        view.forum_post = self.post
-        self.assertEqual(
-            view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
-
 class PostUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -162,16 +144,6 @@ class PostUpdateViewTest(TestCase):
         cls.perm_handler = PermissionHandler()
         assign_perm("can_read_forum", cls.post.poster, cls.post.topic.forum)
         assign_perm("can_see_forum", cls.post.poster, cls.post.topic.forum)
-
-    def test_redirection(self):
-        self.post = build_post_in_forum()
-        self.forum = self.post.topic.forum
-        view = PostUpdateView()
-        view.forum_post = self.post
-        self.assertEqual(
-            view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
 
     def test_has_not_permission_to_delete_post(self):
         assign_perm("can_edit_own_posts", self.post.poster, self.forum)
