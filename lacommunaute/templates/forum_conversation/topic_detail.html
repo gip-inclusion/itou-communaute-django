@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-12">
             {% for post in posts %}
-                <div id="{{ post.id }}" class="my-3 card has-links-inside post{% if post.is_topic_head %} bg-light{% else %} ml-3{% endif %}">
+                <div id="{{ post.id }}" class="my-3 card has-links-inside post{% if not post.is_topic_head %} ml-3{% endif %}">
                     {% if forloop.first %}
                         <div class="card-header d-flex align-items-center mb-1">
                             <p class="h4 mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
@@ -24,7 +24,7 @@
                             {% endblock %}
                         </div>
                     {% endif %}
-                    <div class="card-body {% if forloop.first%} pt-0{%endif%}">
+                    <div class="card-body {% if forloop.first%} pt-0 {% else %} bg-light{%endif%}">
                         <div class="row">
                             <div class="col-md-12 post-content-wrapper">
                                 <p>

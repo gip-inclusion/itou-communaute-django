@@ -43,3 +43,12 @@
         {% endif %}
     </div>
 {% endif %}
+
+{% if posts_count > 1 %}
+    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-link btn-sm btn-ico">
+        <i class="ri-history-fill ri-lg"></i>
+        <span>{% blocktrans trimmed with posts_count=posts_count|add:"-1" %}
+            Show me the {{ posts_count }} comments
+        {% endblocktrans %}</span>
+    </a>
+{% endif %}

@@ -18,94 +18,89 @@
                 </div>
                 <div class="p-0 card-body">{% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
                     {% for topic in topics %}
+                        {% if forloop.first %}
+                            {% get_permission 'can_edit_post' topic.first_post request.user as user_can_edit_post %}
+
+                        {% endif %}
                         <div class="row m-0 p-3 border-bottom">
                             <div class="pl-0 col-12 topic-name">
                                 <div class="row">
                                     <div class="col-12">
-                                        {% for post in topic.posts.all %}
-                                            <div id="{{ post.id }}" class="card post mb-3{% if forloop.first%} bg-light{%else%} has-links-inside ml-3{%endif%}">
-                                                {% if forloop.first %}
-                                                    <div class="card-header d-flex align-items-center mb-1">
-                                                        <span class="topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
-                                                            <i class="{% if topic.is_sticky %}ri-lightbulb-fill{% elif topic.is_announce %}ri-information-fill{% else %}ri-record-circle-fill{% endif %} ri-2x"></i>
-                                                        </span>
-                                                        <p class="h4 mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
-                                                        {% block htmx %}
-                                                            {% include "forum_conversation/partials/topic_likes.html"%}
-                                                        {% endblock %}
+                                        <div id="{{ topic.firt_post.id }}" class="card post mb-3">
+                                            <div class="card-header d-flex align-items-center mb-1">
+                                                <span class="topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
+                                                    <i class="{% if topic.is_sticky %}ri-lightbulb-fill{% elif topic.is_announce %}ri-information-fill{% else %}ri-record-circle-fill{% endif %} ri-2x"></i>
+                                                </span>
+                                                <p class="h4 mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
+                                                {% block htmx %}
+                                                    {% include "forum_conversation/partials/topic_likes.html"%}
+                                                {% endblock %}
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <div class="col-12 post-content-wrapper">
+                                                        <small class="text-muted">
+                                                            {% spaceless %}
+                                                                <i class="fas fa-clock"></i>&nbsp;
+                                                                {% if topic.poster %}
+                                                                    {% url 'forum_member:profile' topic.poster_id as poster_url %}
+                                                                    {% blocktrans trimmed with poster_url=poster_url username=topic.poster|forum_member_display_name creation_date=topic.created %}
+                                                                        By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
+                                                                    {% endblocktrans %}
+                                                                {% else %}
+                                                                    {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=topic.created %}
+                                                                        By: {{ poster_username }} on {{ creation_date }}
+                                                                    {% endblocktrans %}
+                                                                {% endif %}
+                                                            {% endspaceless %}
+
+
+                                                            {% if user_can_edit_post %}
+                                                                &nbsp;<a href="{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
+                                                            {% endif %}
+
+                                                        </small>
+                                                    </p>
+
+                                                    <div class="post-content">
+                                                        {{ topic.first_post.content.rendered|urlize|truncatechars:400 }}
+                                                        {% if topic.first_post.content.rendered|length > 400 %}
+                                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-link btn-sm btn-ico">
+                                                                <span>{% trans "+ show more" %}</span>
+                                                            </a>
+                                                        {% endif %}
+                                                        {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
                                                     </div>
-                                                {% endif %}
-                                                <div class="card-body {% if forloop.first%} pt-0{%endif%}">
-                                                    <div class="row">
-                                                        <div class="col-12 post-content-wrapper">
-                                                            <p>
-                                                                <small class="text-muted">
-                                                                    {% spaceless %}
-                                                                        <i class="fas fa-clock"></i>&nbsp;
-                                                                        {% if post.poster %}
-                                                                            {% url 'forum_member:profile' post.poster_id as poster_url %}
-                                                                            {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
-                                                                                By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
-                                                                            {% endblocktrans %}
-                                                                        {% else %}
-                                                                            {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
-                                                                                By: {{ poster_username }} on {{ creation_date }}
-                                                                            {% endblocktrans %}
-                                                                        {% endif %}
-                                                                    {% endspaceless %}
 
-                                                                    {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
-                                                                    {% if user_can_edit_post %}
-                                                                        &nbsp;<a href="{% if forloop.first  %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
-                                                                    {% endif %}
+                                                    {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post %}
 
-                                                                </small>
-                                                            </p>
+                                                    {% if topic.poll %}
+                                                        {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
+                                                    {% endif %}
 
-                                                            <div class="post-content">
-                                                                {{ post.content.rendered|urlize }}
-                                                                {% include "forum_conversation/forum_attachments/attachments_images.html" %}
-                                                            </div>
-
-                                                            {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
-
-                                                            {% if forloop.first and topic.poll %}
-                                                                {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
-                                                            {% endif %}
-
-                                                            {% if post.enable_signature and post.poster.forum_profile.signature %}
-                                                                <div class="post-signature">
-                                                                    {{ post.poster.forum_profile.signature.rendered }}
-                                                                </div>
-                                                            {% endif %}
-
+                                                    {% if topic.first_post.enable_signature and topic.poster.forum_profile.signature %}
+                                                        <div class="post-signature">
+                                                            {{ topic.poster.forum_profile.signature.rendered }}
                                                         </div>
-                                                    </div>
+                                                    {% endif %}
+
                                                 </div>
                                             </div>
-                                            {% if forloop.first%}
-                                                <div class="row align-items-center mb-3">
-                                                    <div class="col-12 col-md">
-                                                        {% include "forum_conversation/partials/topic_detail_actions.html" %}
-                                                    </div>
+                                        </div>
+                                    </div>
 
-                                                    <div class="col-12 col-md-auto">
-                                                        {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                            {% if forloop.first and topic.posts.count > FORUM_NUMBER_POSTS_PER_TOPIC %}
-                                                <div class="card post mb-3 ml-3">
-                                                    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-link btn-sm btn-ico">
-                                                        <i class="ri-history-fill ri-lg"></i>
-                                                        <span>{% trans "Show me more posts" %}</span>
-                                                    </a>
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-12 col-md">
+                                            {% include "forum_conversation/partials/topic_detail_actions.html" with posts_count=topic.posts_count%}
+                                        </div>
+
+                                        <div class="col-12 col-md-auto">
+                                            {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     {% empty %}
                         <div class="row m-0 p-3">
