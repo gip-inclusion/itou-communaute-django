@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load forum_permission_tags %}
+{% load attachments_tags %}
 
 {% get_permission 'can_download_files' post.topic.forum request.user as user_can_download_files %}
 {% if post.attachments.exists and user_can_download_files %}
@@ -9,12 +10,14 @@
             <p class="h5 mb-0">{% trans "Attachments" %}</p>
         </div>
         {% for attachment in post.attachments.all %}
-            <div class="col-md-12 attachment">
-                <a href="{% url 'forum_conversation:attachment' pk=attachment.id %}"><i class="fa fa-file"></i>&nbsp;{{ attachment.filename }} ({{ attachment.file.size|filesizeformat }})</a>
-                {% if attachment.comment %}
-                    <p class="text-muted"><em>{{ attachment.comment }}</em></p>
-                {% endif %}
-            </div>
+            {% if not attachment|is_image %}
+                <div class="col-md-12 attachment">
+                    <a href="{% url 'forum_conversation:attachment' pk=attachment.id %}"><i class="fa fa-file"></i>&nbsp;{{ attachment.filename }} ({{ attachment.file.size|filesizeformat }})</a>
+                    {% if attachment.comment %}
+                        <p class="text-muted"><em>{{ attachment.comment }}</em></p>
+                    {% endif %}
+                </div>
+            {%endif%}
         {% endfor %}
     </div>
 {% endif %}
