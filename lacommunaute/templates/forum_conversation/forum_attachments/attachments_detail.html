@@ -5,10 +5,12 @@
 {% get_permission 'can_download_files' post.topic.forum request.user as user_can_download_files %}
 {% if post.attachments.exists and user_can_download_files %}
     <div class="row attachments mt-3 mt-md-5">
+        {% comment %}
         <div class="col-md-12">
             <hr />
             <p class="h5 mb-0">{% trans "Attachments" %}</p>
         </div>
+        {% endcomment %}
         {% for attachment in post.attachments.all %}
             {% if not attachment|is_image %}
                 <div class="col-md-12 attachment">
