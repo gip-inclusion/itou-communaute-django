@@ -230,6 +230,10 @@ msgstr "Posts"
 msgid "Last post"
 msgstr "Dernier post"
 
+#: lacommunaute/templates/forum_conversation/topic_list.html:70
+msgid "+ show more"
+msgstr "+ voir la suite"
+
 #: lacommunaute/templates/machina/forum/forum_list.html:36
 #: lacommunaute/templates/machina/forum/forum_list.html:204
 msgid "Forums"
@@ -436,6 +440,11 @@ msgstr "Passer en annonce"
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:37
 msgid "Change to standard topic"
 msgstr "Passer en sujet standard"
+
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:50
+#, python-format
+msgid "Show me the %(posts_count)s comments"
+msgstr "Voir les %(posts_count)s commentaires"
 
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:23
 msgid "Poll"
