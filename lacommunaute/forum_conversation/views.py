@@ -33,14 +33,6 @@ class TopicUpdateView(SuccessUrlMixin, views.TopicUpdateView):
     pass
 
 
-class PostCreateView(SuccessUrlMixin, views.PostCreateView):
-    pass
-
-
-class PostUpdateView(SuccessUrlMixin, views.PostUpdateView):
-    pass
-
-
 class PostDeleteView(views.PostDeleteView):
     def get_success_url(self):
         messages.success(self.request, self.success_message)
