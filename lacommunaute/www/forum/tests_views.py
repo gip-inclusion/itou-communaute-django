@@ -5,6 +5,7 @@ from machina.core.loading import get_class
 from machina.test.factories.attachments import AttachmentFactory
 from machina.test.factories.conversation import create_topic
 from machina.test.factories.forum import create_forum
+from machina.test.factories.polls import TopicPollFactory, TopicPollVoteFactory
 from machina.test.factories.tracking import TopicReadTrackFactory
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
@@ -46,10 +47,14 @@ class ModeratorEngagementViewTest(TestCase):
         # count attachments
         AttachmentFactory(post=self.post)
 
+        # count votes
+        poll = TopicPollFactory(topic=self.post.topic)
+        TopicPollVoteFactory.create_batch(4, poll_option__poll=poll, voter=self.user)
+
         response = self.client.get(self.url)
         self.assertEqual(
-            response.context["topics"].values("likes", "views", "replies", "attached").first(),
-            {"likes": 3, "views": 3, "replies": 2, "attached": 1},
+            response.context["topics"].values("likes", "views", "replies", "attached", "votes").first(),
+            {"likes": 3, "views": 3, "replies": 2, "attached": 1, "votes": 4},
         )
 
         # exclued topic not approved

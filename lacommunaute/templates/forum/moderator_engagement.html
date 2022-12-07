@@ -52,6 +52,7 @@
                                         <th scope="col" class="text-center">{% trans "Likes" %}</th>
                                         <th scope="col" class="text-center">{% trans "Replies" %}</th>
                                         <th scope="col" class="text-center">{% trans "Attached" %}</th>
+                                        <th scope="col" class="text-center">{% trans "Votes" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +67,7 @@
                                             <td class="text-center">{{topic.likes}}</td>
                                             <td class="text-center">{{topic.replies|add:"-1" }}</td>{% comment %}only count replies{% endcomment %}
                                             <td class="text-center">{{topic.attached }}</td>
+                                            <td class="text-center">{{topic.votes }}</td>
                                         </tr>
                                     {%endfor%}
                                 </tbody>

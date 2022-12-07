@@ -33,6 +33,7 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
                 views=Count("tracks", distinct=True),
                 replies=Count("posts", distinct=True),
                 attached=Count("posts__attachments", distinct=True),
+                votes=Count("poll__options__votes", distinct=True),
             )
             .order_by("-last_post_on")
         )
