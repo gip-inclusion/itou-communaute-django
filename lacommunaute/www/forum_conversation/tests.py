@@ -9,6 +9,8 @@ from lacommunaute.users.factories import UserFactory
 
 
 Topic = get_model("forum_conversation", "Topic")
+TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
+
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
@@ -94,3 +96,20 @@ class TopicLikeViewTest(TestCase):
         # icon: solid heart
         self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>')
         self.assertContains(response, "<span>3 likes</span>")
+
+    def test_topic_is_marked_as_read_when_liking(self):
+        # need an other unread topic to get TopicReadTrack
+        # otherwise (when all topics are read), machina deletes
+        # all TopicReadTrack and create/update ForumReadTrack
+        TopicFactory(forum=self.topic.forum, poster=self.user)
+        self.assertFalse(TopicReadTrack.objects.count())
+
+        assign_perm("can_see_forum", self.user, self.topic.forum)
+        assign_perm("can_read_forum", self.user, self.topic.forum)
+
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, TopicReadTrack.objects.count())

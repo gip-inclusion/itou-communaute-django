@@ -42,6 +42,8 @@ class TopicLikeView(PermissionRequiredMixin, View):
         topic.save()
         topic.likes = topic.likers.count()
 
+        track_handler.mark_topic_read(topic, request.user)
+
         return render(request, "forum_conversation/partials/topic_likes.html", context={"topic": topic})
 
     def get_controlled_object(self):
