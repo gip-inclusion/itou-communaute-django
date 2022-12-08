@@ -3,6 +3,7 @@ from unittest import mock
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
+from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.inclusion_connect import constants
 from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
 from lacommunaute.users.factories import UserFactory
@@ -69,6 +70,8 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
+        self.assertEqual(ForumProfile.objects.get(user=user).user, user)
+
     def test_update_user_from_user_info(self):
         USERINFO = {
             "first_name": "Jeff",
@@ -77,6 +80,7 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
             "username": "af6b26f9-85cd-484e-beb9-bea5be13e30f",
         }
         user = UserFactory(**(USERINFO))
+        ForumProfile.objects.create(user=user)
 
         ic_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
 
@@ -90,6 +94,8 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
         self.assertEqual(user.email, OIDC_USERINFO["email"])
+
+        self.assertTrue(ForumProfile.objects.get(user=user))
 
     def test_get_existing_user_with_existing_email(self):
         """
