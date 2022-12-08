@@ -6,12 +6,7 @@ from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
 
 
-# from machina.core.db.models import get_model
-
-
 logger = logging.getLogger(__name__)
-
-# Topic = get_model("forum_conversation", "Topic")
 
 
 class SuccessUrlMixin:
@@ -48,10 +43,10 @@ class PostDeleteView(views.PostDeleteView):
 
 class TopicView(views.TopicView):
     def get_topic(self):
-        self.topic = super().get_topic()
-        self.topic.has_liked = self.topic.likers.filter(id=self.request.user.id).exists()
-        self.topic.likes = self.topic.likers.count()
-        return self.topic
+        topic = super().get_topic()
+        topic.has_liked = self.topic.likers.filter(id=self.request.user.id).exists()
+        topic.likes = self.topic.likers.count()
+        return topic
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
