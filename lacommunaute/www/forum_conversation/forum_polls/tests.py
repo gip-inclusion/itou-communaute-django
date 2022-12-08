@@ -11,7 +11,9 @@ from lacommunaute.users.factories import UserFactory
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
+
 TopicPollVote = get_model("forum_polls", "TopicPollVote")
+TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 
 
 class TopicPollVoteViewTest(TestCase):
@@ -58,3 +60,26 @@ class TopicPollVoteViewTest(TestCase):
         self.assertEqual(response.status_code, 403)
         votes = TopicPollVote.objects.filter(voter=self.user)
         self.assertEqual(votes.count(), 0)
+
+    def test_topic_is_marked_as_read_when_voting(self):
+        # need an other unread topic to get TopicReadTrack
+        # otherwise (when all topics are read), machina deletes
+        # all TopicReadTrack and create/update ForumReadTrack
+        TopicFactory(forum=self.forum, poster=self.user)
+        self.assertFalse(TopicReadTrack.objects.count())
+
+        assign_perm("can_vote_in_polls", self.user, self.forum)
+        assign_perm("can_see_forum", self.user, self.forum)
+        assign_perm("can_read_forum", self.user, self.forum)
+
+        self.client.force_login(self.user)
+
+        post_data = {
+            "options": [
+                self.poll_option.pk,
+            ],
+        }
+        response = self.client.post(self.url, post_data, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, TopicReadTrack.objects.count())

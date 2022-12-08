@@ -12,6 +12,9 @@ Topic = get_model("forum_conversation", "Topic")
 TopicPollVote = get_model("forum_polls", "TopicPollVote")
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
+TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
+
+track_handler = TrackingHandler()
 
 
 class TopicPollVoteView(BaseTopicPollVoteView):
@@ -31,6 +34,8 @@ class TopicPollVoteView(BaseTopicPollVoteView):
         options = form.cleaned_data["options"]
         for option in options:
             TopicPollVote.objects.create(poll_option=option, **user_kwargs)
+
+        track_handler.mark_topic_read(self.object.topic, self.request.user)
 
         return TemplateResponse(
             request=self.request,
