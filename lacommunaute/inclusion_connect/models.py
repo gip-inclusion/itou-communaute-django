@@ -81,9 +81,8 @@ class OIDConnectUserData:
         user_data_dict = dataclasses.asdict(self)
         user_data_dict = {key: value for key, value in user_data_dict.items() if value}
         try:
-            user = User.objects.get(email=self.email)
+            user = User.objects.get(username=self.username)
             created = False
-            return user, created
         except User.DoesNotExist:
             # User.objects.create_user does the following:
             # - set User.is_active to true,
