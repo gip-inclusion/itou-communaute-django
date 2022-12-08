@@ -4,9 +4,13 @@ from django.contrib import messages
 from django.urls import reverse
 from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
+from machina.core.loading import get_class
 
 
 logger = logging.getLogger(__name__)
+
+TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
+track_handler = TrackingHandler()
 
 
 class SuccessUrlMixin:
@@ -20,11 +24,26 @@ class SuccessUrlMixin:
         )
 
 
-class TopicCreateView(SuccessUrlMixin, views.TopicCreateView):
+class FormValidMixin:
+    def form_valid(self, *args, **kwargs):
+        valid = super().form_valid(*args, **kwargs)
+        track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
+        return valid
+
+
+class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
     pass
 
 
-class TopicUpdateView(SuccessUrlMixin, views.TopicUpdateView):
+class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):
+    pass
+
+
+class PostCreateView(SuccessUrlMixin, FormValidMixin, views.PostCreateView):
+    pass
+
+
+class PostUpdateView(SuccessUrlMixin, FormValidMixin, views.PostUpdateView):
     pass
 
 
