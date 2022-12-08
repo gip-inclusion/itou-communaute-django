@@ -94,7 +94,9 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
         self.assertEqual(user.email, OIDC_USERINFO["email"])
+        self.assertNotEqual(user.email, USERINFO["email"])
 
+        self.assertEqual(1, User.objects.count())
         self.assertTrue(ForumProfile.objects.get(user=user))
 
     def test_get_existing_user_with_existing_email(self):
