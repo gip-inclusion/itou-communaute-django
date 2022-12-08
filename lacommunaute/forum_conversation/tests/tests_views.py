@@ -5,16 +5,18 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.http import urlencode
+from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
-from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
+from lacommunaute.forum_conversation.views import PostCreateView, PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.users.factories import UserFactory
 
 
-PostCreateView = get_class("forum_conversation.views", "PostCreateView")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
+TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
+ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
@@ -57,6 +59,21 @@ class TopicCreateViewTest(TestCase):
         self.assertNotContains(
             response, '/post/delete/" title="Supprimer" role="button" class="btn btn-outline-danger">Supprimer</a>'
         )
+
+    def test_topic_is_marked_as_read_when_created(self):
+        self.assertFalse(TopicReadTrack.objects.count())
+
+        assign_perm("can_start_new_topics", self.poster, self.forum)
+        self.client.force_login(self.poster)
+
+        post_data = {"subject": "s", "content": "c"}
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, TopicReadTrack.objects.count())
 
 
 class TopicUpdateViewTest(TestCase):
@@ -124,6 +141,23 @@ class TopicUpdateViewTest(TestCase):
             ),
         )
 
+    def test_topic_is_marked_as_read_when_updated(self):
+        # evaluating ForumReadTrack instead of TopicReadTrack
+        # because of django-machina logic
+        self.assertFalse(ForumReadTrack.objects.count())
+
+        assign_perm("can_edit_own_posts", self.post.poster, self.forum)
+        self.client.force_login(self.post.poster)
+
+        post_data = {"subject": "s", "content": "c"}
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, ForumReadTrack.objects.count())
+
 
 class PostCreateViewTest(TestCase):
     @classmethod
@@ -151,6 +185,22 @@ class PostCreateViewTest(TestCase):
             view.get_success_url(),
             reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
+
+    def test_topic_is_marked_as_read_when_post_is_created(self):
+        # evaluating ForumReadTrack instead of TopicReadTrack
+        # because of django-machina logic
+        self.assertFalse(ForumReadTrack.objects.count())
+
+        self.client.force_login(self.post.poster)
+
+        post_data = {"content": "c"}
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, ForumReadTrack.objects.count())
 
 
 class PostUpdateViewTest(TestCase):
@@ -209,6 +259,22 @@ class PostUpdateViewTest(TestCase):
                 },
             ),
         )
+
+    def test_topic_is_marked_as_read_when_post_is_updated(self):
+        # evaluating ForumReadTrack instead of TopicReadTrack
+        # because of django-machina logic
+        self.assertFalse(ForumReadTrack.objects.count())
+
+        self.client.force_login(self.post.poster)
+
+        post_data = {"content": "c"}
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, ForumReadTrack.objects.count())
 
 
 class PostDeleteViewTest(TestCase):
