@@ -46,38 +46,6 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            const ctx{{ forloop.counter }} = document.getElementById('statChart{{ forloop.counter }}');
-                            new Chart(ctx{{ forloop.counter }}, {
-                                type: 'line',
-                                data: {
-                                    labels: {{ forum_stats.stats.days|js }},
-                                    datasets: [{
-                                        label: 'Nombre de sujets',
-                                        data: {{ forum_stats.stats.topics|js }},
-                                    },
-                                        {
-                                            label: 'Nombre de posts',
-                                            data: {{ forum_stats.stats.posts|js }},
-                                        }
-                                        {% if forum_stats.is_private %}
-                                            ,
-                                            {
-                                                label: 'Nombre de membres',
-                                                data: {{ forum_stats.stats.members|js }},
-                                            }
-                                        {% endif %}
-                                    ]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        </script>
                     {% endfor %}
                 </div>
             </div>
@@ -88,4 +56,38 @@
 {% block extra_js %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+    {% for forum_stats in forums_stats %}
+        <script>
+            const ctx{{ forloop.counter }} = document.getElementById('statChart{{ forloop.counter }}');
+            new Chart(ctx{{ forloop.counter }}, {
+                type: 'line',
+                data: {
+                    labels: {{ forum_stats.stats.days|js }},
+                    datasets: [{
+                        label: 'Nombre de sujets',
+                        data: {{ forum_stats.stats.topics|js }},
+                    },
+                        {
+                            label: 'Nombre de posts',
+                            data: {{ forum_stats.stats.posts|js }},
+                        }
+                        {% if forum_stats.is_private %}
+                            ,
+                            {
+                                label: 'Nombre de membres',
+                                data: {{ forum_stats.stats.members|js }},
+                            }
+                        {% endif %}
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    {% endfor %}
 {% endblock %}
