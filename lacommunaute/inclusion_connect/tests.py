@@ -69,6 +69,28 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
+    def test_update_user_from_user_info(self):
+        USERINFO = {
+            "first_name": "Jeff",
+            "last_name": "BUCKLEY",
+            "email": "jeff@buckley.com",
+            "username": "af6b26f9-85cd-484e-beb9-bea5be13e30f",
+        }
+        user = UserFactory(**(USERINFO))
+
+        ic_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+
+        now = timezone.now()
+        with mock.patch("django.utils.timezone.now", return_value=now):
+            _, created = ic_user_data.create_or_update_user()
+
+        self.assertFalse(created)
+
+        user = User.objects.get(username=USERINFO["username"])
+        self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.email, OIDC_USERINFO["email"])
+
     def test_get_existing_user_with_existing_email(self):
         """
         If there already is an existing django user with email InclusionConnect sent us, we do not create it again,
