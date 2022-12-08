@@ -5,6 +5,7 @@ from django.core import signing
 from django.db import models
 from django.utils import crypto, timezone
 
+from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.inclusion_connect.constants import OIDC_STATE_EXPIRATION
 from lacommunaute.users.models import User
 
@@ -92,6 +93,7 @@ class OIDConnectUserData:
             # provider the code will break here. We know it but since it's highly unlikely we just added a test
             # on this behaviour. No need to do a fancy bypass if it's never used.
             user = User.objects.create_user(**user_data_dict)
+            ForumProfile.objects.create(user=user)
             created = True
 
         if not created:
