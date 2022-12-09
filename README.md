@@ -17,16 +17,17 @@ $ poetry install
 
 #### Lancement
 
-Pour utiliser Poetry avec les commandes du fichier `Makefile`, ajoutez les variables d'environnement :
+Pour utiliser les commandes python dans l'environnement géré par `poetry`
 
-* `USE_POETRY` à la valeur 1
-* `DJANGO_SETTINGS_MODULE` pour activer les settings de prod (`config.settings.base`) ou de dev (`config.settings.dev`)
-
-
+* Ajoutez la variable d'environnement : `DJANGO_SETTINGS_MODULE` pour activer les settings de prod (`config.settings.base`) ou de dev (`config.settings.dev`)
+* Lancer le shell `poetry shell`
+* Puis executer les commandes du fichier `Makefile`
 ```bash
 $ make server
 ```
 
+* Ou les commandes python de votre choix : ie `pytest`. Executées depuis le `shell` de `poetry`, cette commande équivaut à `poetry run pytest`
+* Bonus, les tests lancés depuis `vscode` avec `pytest` bénéficient aussi de tout l'environnement `poetry`
 
 ### Ajout de dépendance
 

@@ -1,9 +1,3 @@
-ifeq ($(USE_POETRY),1)
-	EXEC_CMD := poetry run
-else
-	EXEC_CMD :=
-endif
-
 .PHONY: console migrate migrations server dependencies
 
 # DEVELOPMENT
@@ -12,17 +6,17 @@ endif
 # locales, etc.
 # --------------------------------------------------------------------------------------------------
 
-console:
-	$(EXEC_CMD) python manage.py shell_plus
+shell:
+	python manage.py shell_plus
 
 migrate:
-	$(EXEC_CMD) python manage.py migrate
+	python manage.py migrate
 
 migrations:
-	$(EXEC_CMD) python manage.py makemigrations
+	python manage.py makemigrations
 
 server:
-	$(EXEC_CMD) python manage.py runserver
+	python manage.py runserver
 
 dependencies:
 	poetry lock; poetry run poe export; poetry run poe export_dev
@@ -34,18 +28,18 @@ dependencies:
 
 .PHONY: quality fix pylint
 quality:
-	$(EXEC_CMD) black --check lacommunaute
-	$(EXEC_CMD) isort --check --profile black lacommunaute
-	$(EXEC_CMD) flake8 lacommunaute --count --show-source --statistics
+	black --check lacommunaute
+	isort --check --profile black lacommunaute
+	flake8 lacommunaute --count --show-source --statistics
 
 fix:
-	$(EXEC_CMD) black lacommunaute
-	$(EXEC_CMD) isort --profile black lacommunaute
-	$(EXEC_CMD) flake8 lacommunaute
-	$(EXEC_CMD) djhtml --in-place $(shell find lacommunaute/templates -name "*.html")
+	black lacommunaute
+	isort --profile black lacommunaute
+	flake8 lacommunaute
+	djhtml --in-place $(shell find lacommunaute/templates -name "*.html")
 
 pylint:
-	$(EXEC_CMD) pylint lacommunaute
+	pylint lacommunaute
 
 
 # Docker shell.
