@@ -48,6 +48,34 @@ class TopicLikeView(PermissionRequiredMixin, View):
         return self.get_topic().forum
 
 
+class TopicContentView(PermissionRequiredMixin, View):
+    permission_required = [
+        "can_read_forum",
+    ]
+
+    def get_topic(self):
+        if not hasattr(self, "topic"):
+            self.topic = get_object_or_404(
+                Topic.objects.select_related("forum").all(),
+                pk=self.kwargs["pk"],
+            )
+        return self.topic
+
+    def get(self, request, **kwargs):
+        topic = self.get_topic()
+
+        track_handler.mark_topic_read(topic, request.user)
+
+        return render(
+            request,
+            "forum_conversation/partials/topic_content.html",
+            context={"topic": topic},
+        )
+
+    def get_controlled_object(self):
+        return self.get_topic().forum
+
+
 class PostListView(PermissionRequiredMixin, View):
     permission_required = [
         "can_read_forum",
