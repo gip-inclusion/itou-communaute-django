@@ -149,7 +149,7 @@ class ForumViewTest(TestCase):
 
     def test_show_comments(self):
         topic_url = reverse(
-            "forum_conversation:topic",
+            "forum_conversation_extension:showmore_posts",
             kwargs={
                 "forum_pk": self.forum.pk,
                 "forum_slug": self.forum.slug,
@@ -167,8 +167,8 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'<a href="{topic_url}" class="btn btn-link btn-sm btn-ico">')
-        self.assertContains(response, "<span>Voir les 2 commentaires</span>")
+        self.assertContains(response, f'<button hx-get="{topic_url}"')
+        self.assertContains(response, "Voir les 2 commentaires")
 
     def test_show_more_content(self):
         self.post.content = faker.paragraph(nb_sentences=30)
