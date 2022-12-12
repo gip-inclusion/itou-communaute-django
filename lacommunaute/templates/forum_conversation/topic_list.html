@@ -63,12 +63,23 @@
                                                     </p>
 
                                                     <div class="post-content">
-                                                        {{ topic.first_post.content.rendered|urlize|truncatechars:400 }}
-                                                        {% if topic.first_post.content.rendered|length > 400 %}
-                                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-link btn-sm btn-ico">
-                                                                <span>{% trans "+ show more" %}</span>
-                                                            </a>
-                                                        {% endif %}
+                                                        <div id="showmoretopicsarea{{topic.pk}}">
+                                                            {{ topic.first_post.content.rendered|urlize|truncatechars:200 }}
+                                                            {% if topic.first_post.content.rendered|length > 200 %}
+                                                                <button hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                                                    id="showmoretopic-button{{topic.pk}}"
+                                                                    hx-target="#showmoretopicsarea{{topic.pk}}"
+                                                                    hx-swap="outerHTML"
+                                                                    class="btn btn-ico btn-link btn-like pr-0 matomo-event"
+                                                                    data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="topic"
+                                                                >
+                                                                    <span>
+                                                                        {% trans "+ show more" %}
+                                                                    </span>
+                                                                </button>
+
+                                                            {% endif %}
+                                                        </div>
                                                         {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
                                                     </div>
 
