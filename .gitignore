@@ -36,6 +36,8 @@ __pycache__/
 # Project specific
 lacommunaute/staticfiles/
 lacommunaute/media/
+backups
+exports
 
 # Debian
 .bash_history
