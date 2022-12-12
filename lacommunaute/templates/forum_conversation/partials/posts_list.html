@@ -1,0 +1,50 @@
+{% load i18n %}
+
+{% load forum_member_tags %}
+{% load forum_permission_tags %}
+
+
+{% for post in posts %}
+
+    <div class="card post mb-3 bg-light has-links-inside ml-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 post-content-wrapper">
+                    <p>
+                        <small class="text-muted">
+                            {% spaceless %}
+                                <i class="fas fa-clock"></i>&nbsp;
+                                {% if post.poster %}
+                                    {% url 'forum_member:profile' post.poster_id as poster_url %}
+                                    {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
+                                        By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
+                                    {% endblocktrans %}
+                                {% else %}
+                                    {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
+                                        By: {{ poster_username }} on {{ creation_date }}
+                                    {% endblocktrans %}
+                                {% endif %}
+                            {% endspaceless %}
+
+                            {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
+                            {% if user_can_edit_post %}
+                                &nbsp;<a href="{% url 'forum_conversation:post_update' topic.forum.slug topic.forum.pk topic.slug topic.pk post.pk %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
+                            {% endif %}
+
+                        </small>
+                    </p>
+
+                    <div class="post-content">
+                        {{ post.content.rendered|urlize }}
+                        {% include "forum_conversation/forum_attachments/attachments_images.html" %}
+                    </div>
+
+                    {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
