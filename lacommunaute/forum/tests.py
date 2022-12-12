@@ -171,10 +171,10 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "Voir les 2 commentaires")
 
     def test_show_more_content(self):
-        self.post.content = faker.paragraph(nb_sentences=30)
+        self.post.content = faker.paragraph(nb_sentences=100)
         self.post.save()
         topic_url = reverse(
-            "forum_conversation:topic",
+            "forum_conversation_extension:showmore_topic",
             kwargs={
                 "forum_pk": self.forum.pk,
                 "forum_slug": self.forum.slug,
@@ -186,8 +186,8 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'<a href="{topic_url}" class="btn btn-link btn-sm btn-ico">')
-        self.assertContains(response, "<span>+ voir la suite</span>")
+        self.assertContains(response, f'<button hx-get="{topic_url}"')
+        self.assertContains(response, "+ voir la suite")
 
     def test_join_url_is_hidden(self):
         self.client.force_login(self.user)
