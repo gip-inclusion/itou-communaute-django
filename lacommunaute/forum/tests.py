@@ -128,25 +128,6 @@ class ForumViewTest(TestCase):
             ),
         )
 
-    def test_topic_subject_is_not_hyperlink(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.topic.subject)
-
-        topic_url = reverse(
-            "forum_conversation:topic",
-            kwargs={
-                "forum_pk": self.forum.pk,
-                "forum_slug": self.forum.slug,
-                "pk": self.topic.pk,
-                "slug": self.topic.slug,
-            },
-        )
-        self.assertContains(response, f'<a href="{topic_url}post/create/')
-        self.assertNotContains(response, f'<a href="{topic_url}"')
-
     def test_show_comments(self):
         topic_url = reverse(
             "forum_conversation_extension:showmore_posts",
@@ -167,7 +148,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'<button hx-get="{topic_url}"')
+        self.assertContains(response, f'hx-get="{topic_url}"')
         self.assertContains(response, "Voir les 2 commentaires")
 
     def test_show_more_content(self):
@@ -186,7 +167,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'<button hx-get="{topic_url}"')
+        self.assertContains(response, f'hx-get="{topic_url}"')
         self.assertContains(response, "+ voir la suite")
 
     def test_join_url_is_hidden(self):

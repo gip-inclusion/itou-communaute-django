@@ -19,10 +19,25 @@
 {% endif %}
 
 {% if posts_count > 1 %}
-    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-secondary btn-sm btn-ico mr-1">
-        <i class="ri-eye-line font-weight-normal"></i>
-        <span>{% blocktrans trimmed with posts_count=posts_count|add:"-1" %}Show me the {{ posts_count }} comments{% endblocktrans %}</span>
+    <a hx-get="{% url 'forum_conversation_extension:showmore_posts' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+        id="showmoreposts-button{{topic.pk}}"
+        hx-target="#showmorepostsarea{{topic.pk}}"
+        hx-swap="outerHTML"
+        class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
+        data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="posts"
+    >
+        <span>
+            <i class="ri-eye-line font-weight-normal"></i>
+            {% if posts_count > 2 %}
+                {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
+                    Show me the {{ posts_count }} comments
+                {% endblocktrans %}
+            {%else%}
+                {% trans "Show me the comment" %}
+            {%endif%}
+        </span>
     </a>
+
 {% endif %}
 
 {% comment %}{% if user_can_subscribe_to_topic %}  note vincentporte temporarly deactivated

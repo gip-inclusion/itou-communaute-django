@@ -46,5 +46,8 @@
             </div>
         </div>
     </div>
+    {% if forloop.last %}
+        {% include "forum_conversation/partials/topic_detail_actions.html" with topic=post.topic forum=post.topic.forum %}
+    {% endif %}
 {% endfor %}
 
