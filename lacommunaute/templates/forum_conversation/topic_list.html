@@ -101,30 +101,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% if topic.posts_count > 1 %}
-                                        <div class="row align-items-center">
-                                            <div class="col-12 col-md-auto">
-                                                <div id="showmorepostsarea{{topic.pk}}">
-                                                    <button hx-get="{% url 'forum_conversation_extension:showmore_posts' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                                        id="showmoreposts-button{{topic.pk}}"
-                                                        hx-target="#showmorepostsarea{{topic.pk}}"
-                                                        hx-swap="outerHTML"
-                                                        class="btn btn-ico btn-link btn-like pr-0 matomo-event"
-                                                        data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="posts"
-                                                    >
-                                                        <span>
-                                                            {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
-                                                                Show me the {{ posts_count }} comments
-                                                            {% endblocktrans %}
-                                                        </span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
+
                                     <div class="row align-items-center mb-3">
                                         <div class="col-12 col-md">
-                                            {% include "forum_conversation/partials/topic_detail_actions.html" %}
+                                            <div id="showmorepostsarea{{topic.pk}}">
+                                                {% include "forum_conversation/partials/topic_detail_actions.html" with posts_count=topic.posts_count %}
+                                            </div>
                                         </div>
 
                                         <div class="col-12 col-md-auto">

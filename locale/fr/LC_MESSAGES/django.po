@@ -441,10 +441,13 @@ msgstr "Passer en annonce"
 msgid "Change to standard topic"
 msgstr "Passer en sujet standard"
 
-#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:50
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:33
 #, python-format
 msgid "Show me the %(posts_count)s comments"
 msgstr "Voir les %(posts_count)s commentaires"
+#: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:36
+msgid "Show me the comment"
+msgstr "Voir le commentaire"
 
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:23
 msgid "Poll"
