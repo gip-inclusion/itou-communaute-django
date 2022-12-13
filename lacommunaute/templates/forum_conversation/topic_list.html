@@ -70,17 +70,15 @@
                                                         <div id="showmoretopicsarea{{topic.pk}}">
                                                             {{ topic.first_post.content.rendered|urlize|truncatechars:200 }}
                                                             {% if topic.first_post.content.rendered|length > 200 %}
-                                                                <button hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                                                <a hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                                                                     id="showmoretopic-button{{topic.pk}}"
                                                                     hx-target="#showmoretopicsarea{{topic.pk}}"
                                                                     hx-swap="outerHTML"
-                                                                    class="btn btn-ico btn-link btn-like pr-0 matomo-event"
+                                                                    class="btn btn-link p-0 matomo-event"
                                                                     data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="topic"
                                                                 >
-                                                                    <span>
-                                                                        {% trans "+ show more" %}
-                                                                    </span>
-                                                                </button>
+                                                                    {% trans "+ show more" %}
+                                                                </a>
 
                                                             {% endif %}
                                                         </div>
