@@ -287,3 +287,7 @@ if _sentry_dsn:
     from ._sentry import sentry_init
 
     sentry_init(dsn=_sentry_dsn)
+
+# WIDGETS
+# ---------------------------------------
+MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextareaWidget"
