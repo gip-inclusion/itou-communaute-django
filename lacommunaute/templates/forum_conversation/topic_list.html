@@ -31,7 +31,11 @@
                                                 <span class="topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
                                                     <i class="{% if topic.is_sticky %}ri-lightbulb-fill{% elif topic.is_announce %}ri-information-fill{% else %}ri-record-circle-fill{% endif %} ri-2x"></i>
                                                 </span>
-                                                <p class="h4 mb-0 flex-grow-1">{{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}</p>
+                                                <p class="h4 mb-0 flex-grow-1">
+                                                    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}">
+                                                        {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
+                                                    </a>
+                                                </p>
                                                 {% block htmx %}
                                                     {% include "forum_conversation/partials/topic_likes.html"%}
                                                 {% endblock %}

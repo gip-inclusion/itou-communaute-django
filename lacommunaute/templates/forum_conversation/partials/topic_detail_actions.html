@@ -12,11 +12,19 @@
 {% get_permission 'can_update_topics_to_announces' topic.forum request.user as user_can_change_to_announces %}
 
 {% if user_can_add_post %}
-    <a href="{% url 'forum_conversation:post_create' forum.slug forum.pk topic.slug topic.pk %}" class="btn btn-primary btn-ico btn-sm">
+    <a href="{% url 'forum_conversation:post_create' forum.slug forum.pk topic.slug topic.pk %}" class="btn btn-primary btn-ico btn-sm mr-1">
         <i class="ri-question-answer-line"></i>
         <span>{% trans "Post reply" %}</span>
     </a>
 {% endif %}
+
+{% if posts_count > 1 %}
+    <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" class="btn btn-secondary btn-sm btn-ico mr-1">
+        <i class="ri-eye-line font-weight-normal"></i>
+        <span>{% blocktrans trimmed with posts_count=posts_count|add:"-1" %}Show me the {{ posts_count }} comments{% endblocktrans %}</span>
+    </a>
+{% endif %}
+
 {% comment %}{% if user_can_subscribe_to_topic %}  note vincentporte temporarly deactivated
     <a href="{% url 'forum_member:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
 {% elif user_can_unsubscribe_from_topic %}
@@ -24,7 +32,7 @@
 {% endif %}{% endcomment %}
 {% if user_can_lock_topics and not topic.is_locked or user_can_move_topics or user_can_delete_topics %}
     <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="ri-more-line ri-lg" aria-label="Plus d'actions"></i>
+        <i class="ri-more-line" aria-label="Plus d'actions"></i>
     </button>
     <div class="dropdown-menu" aria-labelledby="id_dropdown_moderation_menu_button">
         {% if user_can_lock_topics and not topic.is_locked %}<a href="{% url 'forum_moderation:topic_lock' slug=topic.slug pk=topic.pk %}" class="dropdown-item">{% trans "Lock topic" %}</a>{% endif %}
@@ -43,4 +51,3 @@
         {% endif %}
     </div>
 {% endif %}
-
