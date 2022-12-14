@@ -66,7 +66,7 @@ class TopicPollVoteViewTest(TestCase):
         # otherwise (when all topics are read), machina deletes
         # all TopicReadTrack and create/update ForumReadTrack
         TopicFactory(forum=self.forum, poster=self.user)
-        self.assertFalse(TopicReadTrack.objects.count())
+        self.assertEqual(TopicReadTrack.objects.count(), 0)
 
         assign_perm("can_vote_in_polls", self.user, self.forum)
         assign_perm("can_see_forum", self.user, self.forum)
