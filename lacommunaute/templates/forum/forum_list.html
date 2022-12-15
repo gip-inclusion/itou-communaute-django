@@ -50,8 +50,10 @@
                                 <div class="pl-0 col-md-7 col-sm-9 col-11 forum-name">
                                     <table class="forum-data-table">
                                         <tr>
-                                            <td class="pt-1 pr-3 align-top forum-icon {% if node.obj in unread_forums %}unread{% endif %}">
-                                                <i class="far fa-circle fa-2x"></i>
+                                            <td class="pr-1 align-top">
+                                                <span class="forum-icon {% if node.obj in unread_forums %}unread{% endif %}">
+                                                    <i class="ri-checkbox-blank-circle-line"></i>
+                                                </span>
                                             </td>
                                             <td>
                                                 {% if node.obj.image %}
@@ -126,7 +128,11 @@
                                 <div class="pl-0 col-md-7 col-sm-9 col-11 forum-name">
                                     <table class="forum-data-table">
                                         <tr>
-                                            <td class="pt-1 pr-3 align-top forum-icon {% if node.obj in unread_forums %}unread{% endif %}"><i class="far fa-circle fa-2x"></i></td>
+                                            <td class="pr-1 align-top">
+                                                <span class="forum-icon {% if node.obj in unread_forums %}unread{% endif %}">
+                                                    <i class="ri-checkbox-blank-circle-line"></i>
+                                                </span>
+                                            </td>
                                             {% if node.obj.image %}
                                                 <td>
                                                     <div class="d-none d-md-block forum-image pr-2">

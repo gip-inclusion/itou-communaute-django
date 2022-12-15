@@ -22,14 +22,22 @@
                         {% if forloop.first %}
                             {% get_permission 'can_edit_post' topic.first_post request.user as user_can_edit_post %}
                         {% endif %}
+                        {{user_can_edit_post}}
                         <div class="row">
                             <div class="col-12">
                                 <div id="{{ topic.firt_post.id }}" class="card post mb-3">
                                     <div class="card-header d-flex align-items-center mb-1">
-                                        <span class="topic-icon {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
-                                            <i class="{% if topic.is_sticky %}ri-lightbulb-fill{% elif topic.is_announce %}ri-information-fill{% else %}ri-record-circle-fill{% endif %} ri-2x"></i>
-                                        </span>
+                                        <div class="topic-thumbnail bg-light">
+                                            {% if topic.poster.forum_profile.avatar %}
+                                                <img class="img-thumbnail" src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}">
+                                            {% else %}
+                                                <i class="ri-user-line ri-2x"></i>
+                                            {% endif %}
+                                        </div>
                                         <p class="h4 mb-0 flex-grow-1">
+                                            <span class="topic-icon font-weight-normal {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
+                                                <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl"></i>
+                                            </span>
                                             <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}">
                                                 {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
                                             </a>
@@ -52,7 +60,9 @@
                                                             hx-target="#showmoretopicsarea{{topic.pk}}"
                                                             hx-swap="outerHTML"
                                                             class="btn btn-link p-0 matomo-event"
-                                                            data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="topic"
+                                                            data-matomo-category="engagement"
+                                                            data-matomo-action="showmore"
+                                                            data-matomo-option="topic"
                                                         >
                                                             {% trans "+ show more" %}
                                                         </a>
