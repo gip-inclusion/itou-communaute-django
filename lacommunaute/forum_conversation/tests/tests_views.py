@@ -10,6 +10,7 @@ from machina.core.loading import get_class
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.views import PostCreateView, PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.users.factories import UserFactory
 
@@ -201,6 +202,12 @@ class PostCreateViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, ForumReadTrack.objects.count())
+
+    def test_postform_in_context(self):
+        self.client.force_login(self.post.poster)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context_data["post_form"], PostForm)
 
 
 class PostUpdateViewTest(TestCase):

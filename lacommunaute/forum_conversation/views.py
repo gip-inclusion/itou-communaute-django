@@ -6,6 +6,8 @@ from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
+from lacommunaute.forum_conversation.forms import PostForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -73,4 +75,5 @@ class TopicView(views.TopicView):
             "next_url": self.topic.get_absolute_url(),
         }
         context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+        context["form"] = PostForm(forum=self.topic.forum, user=self.request.user)
         return context
