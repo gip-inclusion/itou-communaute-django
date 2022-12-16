@@ -1,8 +1,6 @@
 {% extends 'board_base.html' %}
 {% load i18n %}
 {% load forum_conversation_tags %}
-{% load forum_member_tags %}
-{% load forum_permission_tags %}
 
 {% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
 
@@ -20,25 +18,7 @@
                         <div class="card-header d-flex align-items-center mb-1">
                             <p class="h4 mb-0 flex-grow-1">
                                 {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
-                                <small class="text-muted">
-                                    {% spaceless %}
-                                        <i class="fas fa-clock"></i>&nbsp;
-                                        {% if post.poster %}
-                                            {% url 'forum_member:profile' post.poster_id as poster_url %}
-                                            {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
-                                                By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
-                                            {% endblocktrans %}
-                                        {% else %}
-                                            {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
-                                                By: {{ poster_username }} on {{ creation_date }}
-                                            {% endblocktrans %}
-                                        {% endif %}
-                                    {% endspaceless %}
-                                    {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
-                                    {% if user_can_edit_post %}
-                                        &nbsp;<a href="{% if post.is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" title="{% trans "Edit" %}">{% trans "Edit" %}</a>
-                                    {% endif %}
-                                </small>
+                                {%include "forum_conversation/partials/poster.html" with post=post%}
                             </p>
                             {% block htmx %}
                                 {% include "forum_conversation/partials/topic_likes.html"%}
@@ -48,6 +28,11 @@
                     <div class="card-body {% if forloop.first%} pt-0 {% else %} bg-light{%endif%}">
                         <div class="row">
                             <div class="col-md-12 post-content-wrapper">
+                                {% if not forloop.first %}
+                                    <p class="mb-0 flex-grow-1">
+                                        {%include "forum_conversation/partials/poster.html" with post=post%}
+                                    </p>
+                                {%endif%}
                                 <div class="post-content">
                                     {{ post.content.rendered|urlize }}
                                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
@@ -64,35 +49,29 @@
                                         {{ post.poster.forum_profile.signature.rendered }}
                                     </div>
                                 {% endif %}
-
                             </div>
                         </div>
                     </div>
                 </div>
-                {% if forloop.first%}
-                    <div class="row align-items-center">
-                        <div class="col-12 col-md">
-                            {% include "forum_conversation/partials/topic_detail_actions.html" %}
-                        </div>
-                        <div class="col-12 col-md-auto">
-                            {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
-                        </div>
-                    </div>
-                {%endif%}
             {% endfor %}
+            <div id="postinfeedarea{{topic.pk}}">
+                {%if topic.posts_count == 1%}
+                    {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form %}
+                {% else %}
+                    {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form inline=1 %}
+                {% endif %}
+            </div>
         </div>
     </div>
-    {% if posts.count > 4 %}
-        <div class="row align-items-center">
-            <div class="col-12 col-md">
-                {% include "forum_conversation/partials/topic_detail_actions.html" %}
-            </div>
-            <div class="col-12 col-md-auto">
-                {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
-            </div>
+    <div class="row align-items-center mb-3">
+        <div class="col-12 col-md">
+            {% include "forum_conversation/partials/topic_detail_actions.html" %}
         </div>
-    {% endif %}
-    <div class="mt-5 mb-5 row">
+        <div class="col-12 col-md-auto">
+            {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
         <div class="col-12">
             {% with "justify-content-center" as pagination_size %}
                 {% include "partials/pagination.html" %}
