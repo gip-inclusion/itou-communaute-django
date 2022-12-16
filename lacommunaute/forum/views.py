@@ -7,6 +7,7 @@ from django.utils.http import urlencode
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.db.models import get_model
 
+from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.users.models import User
 
 
@@ -44,4 +45,5 @@ class ForumView(BaseForumView):
             "next_url": reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         }
         context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+        context["form"] = PostForm(forum=self.forum, user=self.request.user)
         return context
