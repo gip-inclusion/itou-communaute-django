@@ -1,17 +1,21 @@
 from django.test import TestCase
 from django.urls import reverse
+from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
 
-from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.users.factories import UserFactory
 
 
 Topic = get_model("forum_conversation", "Topic")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
-
+ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
+
+faker = Faker()
 
 
 class TopicLikeViewTest(TestCase):
@@ -113,3 +117,69 @@ class TopicLikeViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, TopicReadTrack.objects.count())
+
+
+class PostFeedCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.url = reverse(
+            "forum_conversation_extension:comment_topic",
+            kwargs={
+                "forum_pk": cls.topic.forum.pk,
+                "forum_slug": cls.topic.forum.slug,
+                "pk": cls.topic.pk,
+                "slug": cls.topic.slug,
+            },
+        )
+
+    def test_get_method_unallowed(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_cannot_post(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, 403)
+
+    def test_topic_doesnt_exist(self):
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse(
+                "forum_conversation_extension:comment_topic",
+                kwargs={
+                    "forum_pk": self.topic.forum.pk,
+                    "forum_slug": self.topic.forum.slug,
+                    "pk": self.topic.pk + 1,
+                    "slug": self.topic.slug,
+                },
+            ),
+            data={},
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_form_is_invalid(self):
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data={})
+
+        self.assertEqual(response.status_code, 500)
+
+    def test_save_valid_post(self):
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        PostFactory(topic=self.topic, poster=self.user)
+        content = faker.text(max_nb_chars=20)
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data={"content": content})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, content)
+        self.assertIsInstance(response.context["form"], PostForm)
+        self.assertEqual(1, ForumReadTrack.objects.count())
