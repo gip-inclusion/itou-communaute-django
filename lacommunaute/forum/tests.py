@@ -14,6 +14,7 @@ from machina.test.factories.polls import TopicPollFactory, TopicPollOptionFactor
 
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.users.factories import UserFactory
 
 
@@ -25,6 +26,7 @@ ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
+remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
 
 
 class ForumViewQuerysetTest(TestCase):
@@ -109,12 +111,12 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response,
             reverse(
-                "forum_conversation:post_create",
+                "forum_conversation_extension:comment_topic",
                 kwargs={
                     "forum_pk": self.forum.pk,
                     "forum_slug": self.forum.slug,
-                    "topic_pk": self.topic.pk,
-                    "topic_slug": self.topic.slug,
+                    "pk": self.topic.pk,
+                    "slug": self.topic.slug,
                 },
             ),
         )
@@ -271,6 +273,25 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, poll_option.poll.question)
         self.assertContains(response, poll_option.text)
+
+    def test_postform_in_context(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context_data["form"], PostForm)
+        self.assertContains(response, f'id="collapsePost{self.topic.pk}')
+
+    def test_cannot_submit_post(self):
+        user = UserFactory()
+        assign_perm("can_read_forum", user, self.forum)
+        assign_perm("can_see_forum", user, self.forum)
+        remove_perm("can_reply_to_topics", user, self.forum)
+        self.client.force_login(user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, f'id="collapsePost{self.topic.pk}')
 
 
 class ForumModelTest(TestCase):
