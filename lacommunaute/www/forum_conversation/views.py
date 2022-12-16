@@ -107,7 +107,15 @@ class PostListView(PermissionRequiredMixin, View):
 
         track_handler.mark_topic_read(topic, request.user)
 
-        return render(request, "forum_conversation/partials/posts_list.html", context={"topic": topic, "posts": posts})
+        return render(
+            request,
+            "forum_conversation/partials/posts_list.html",
+            context={
+                "topic": topic,
+                "posts": posts,
+                "form": PostForm(forum=self.topic.forum, user=request.user),
+            },
+        )
 
     def get_controlled_object(self):
         return self.get_topic().forum
