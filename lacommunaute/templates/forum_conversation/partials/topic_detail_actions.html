@@ -12,7 +12,7 @@
 {% get_permission 'can_update_topics_to_announces' topic.forum request.user as user_can_change_to_announces %}
 
 {% if user_can_add_post %}
-    <a href="{% url 'forum_conversation:post_create' forum.slug forum.pk topic.slug topic.pk %}" class="btn btn-primary btn-ico btn-sm mr-1">
+    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1">
         <i class="ri-question-answer-line"></i>
         <span>{% trans "Post reply" %}</span>
     </a>
@@ -24,7 +24,10 @@
         hx-target="#showmorepostsarea{{topic.pk}}"
         hx-swap="outerHTML"
         class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
-        data-matomo-category="engagement" data-matomo-action="showmore" data-matomo-option="posts"
+        data-matomo-category="engagement"
+        data-matomo-action="showmore"
+        data-matomo-option="posts"
+        onclick=HideMe("showmoreposts-button{{topic.pk}}")
     >
         <span>
             <i class="ri-eye-line font-weight-normal"></i>
@@ -37,7 +40,6 @@
             {%endif%}
         </span>
     </a>
-
 {% endif %}
 
 {% comment %}{% if user_can_subscribe_to_topic %}  note vincentporte temporarly deactivated
