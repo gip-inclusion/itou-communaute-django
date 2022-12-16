@@ -119,6 +119,54 @@ class TopicLikeViewTest(TestCase):
         self.assertEqual(1, TopicReadTrack.objects.count())
 
 
+class TopicContentView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory()
+        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.url = reverse(
+            "forum_conversation_extension:showmore_topic",
+            kwargs={
+                "forum_pk": cls.topic.forum.pk,
+                "forum_slug": cls.topic.forum.slug,
+                "pk": cls.topic.pk,
+                "slug": cls.topic.slug,
+            },
+        )
+
+    def test_cannot_read_topic(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_topic_doesnt_exist(self):
+        assign_perm("can_read_forum", self.user, self.topic.forum)
+        self.client.force_login(self.user)
+        response = self.client.get(
+            reverse(
+                "forum_conversation_extension:showmore_posts",
+                kwargs={
+                    "forum_pk": self.topic.forum.pk,
+                    "forum_slug": self.topic.forum.slug,
+                    "pk": self.topic.pk + 1,
+                    "slug": self.topic.slug,
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_topic_content(self):
+        assign_perm("can_read_forum", self.user, self.topic.forum)
+        post = PostFactory(topic=self.topic, poster=self.user)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, post.content)
+        self.assertEqual(1, ForumReadTrack.objects.count())
+
+
 class PostListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
