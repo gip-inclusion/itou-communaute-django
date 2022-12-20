@@ -32,6 +32,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 /.local/
+node_modules/
+.sass-cache/
 
 # Project specific
 lacommunaute/staticfiles/
