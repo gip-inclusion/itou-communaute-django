@@ -28,7 +28,7 @@ table#forum-permissions-table-dnd {
   tbody td {
     &.permission-scope-wrapper {
       padding: 10px 15px;
-      background: #f6f6f6;
+      background: $grayLighter;
       font-size: 12px;
       text-transform: uppercase;
       color: $grayLight;
