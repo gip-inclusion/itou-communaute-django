@@ -1,0 +1,37 @@
+{
+  "name": "django-machina-communaute",
+  "repository": "https://github.com/ellmetha/django-machina",
+  "private": true,
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
+    "bootstrap": ">=4.5.2",
+    "easymde": "^2.8.0",
+    "jquery": ">=3.5.0",
+    "lodash": ">=4.17.21",
+    "lodash.template": ">=4.5.0",
+    "popper.js": "^1.14.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/register": "^7.0.0",
+    "clean-css": ">=4.1.11",
+    "fstream": ">=1.0.12",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^1.5.4",
+    "tar": ">=4.4.18"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "build-js-packages": "build-js-packages",
+    "build-js-application": "build-js-application",
+    "build-css": "build-css"
+  }
+}
