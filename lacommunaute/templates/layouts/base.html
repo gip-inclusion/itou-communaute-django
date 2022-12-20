@@ -40,6 +40,8 @@
 
         {% block css %}
             <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
+            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.vendor.min.css' %}" />
+            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.min.css' %}" />
             {% import_static_CSS_theme_inclusion %}
         {% endblock %}
 
@@ -104,6 +106,13 @@
 
         {% block js %}
             {% import_static_JS_theme_inclusion %}
+            <script src="{% static 'machina/build/js/machina.min.js' %}" type="text/javascript" charset="utf-8"></script>
+            <script type="text/javascript">
+                $(function() {
+                    machina.init();
+                    {% block onbodyload %}{% endblock onbodyload %}
+                });
+            </script>
         {% endblock %}
 
         {% block extra_js %}

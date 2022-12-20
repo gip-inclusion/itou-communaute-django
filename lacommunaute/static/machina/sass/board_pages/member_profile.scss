@@ -3,41 +3,40 @@
 // --------------------------------------------------
 
 
-.profile-sidebar{
-  .card{
-    override: hidden;
+.profile-sidebar {
+  .card {
 
-    .profile-avatar{
-      .avatar.empty{
+    .profile-avatar {
+      .avatar.empty {
         display: block;
         height: 150px;
         background: $grayLighter;
         text-align: center;
         display: inline-block;
 
-        i.far{
+        i.far {
           margin-top: 50px;
         }
       }
 
-      .avatar{
+      .avatar {
         width: 100%;
       }
     }
   }
 }
 
-.recent-posts{
-  .card{
+.recent-posts {
+  .card {
     padding-top: 0;
     padding-bottom: 0;
 
-    .post{
+    .post {
       margin-bottom: 0;
       padding-top: 10px;
       border-bottom: 4px solid $grayLighter;
 
-      .post-title{
+      .post-title {
         font-size: 16px;
       }
     }

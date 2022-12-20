@@ -3,42 +3,43 @@
 // --------------------------------------------------
 
 
-.card.post{
-  .card-body{
-    .post-content-wrapper{
-      h4.subject{
-        &:hover{
-          a{
+.card.post {
+  .card-body {
+    .post-content-wrapper {
+      h4.subject {
+        &:hover {
+          a {
             display: inline-block;
           }
         }
 
-        a{
+        a {
           display: none;
 
-          &:hover, &:focus{
+          &:hover,
+          &:focus {
             text-decoration: none;
           }
         }
       }
 
-      .attachments{
-        .attachments-title{
+      .attachments {
+        .attachments-title {
           margin-top: 10px;
           display: inline-block;
           border-bottom: 1px solid $grayLight;
         }
 
-        .attachment{
+        .attachment {
           margin-top: 4px;
 
-          p{
+          p {
             margin: 0;
           }
         }
       }
 
-      .post-signature{
+      .post-signature {
         margin-top: 20px;
         margin-bottom: 20px;
         padding-top: 5px;
@@ -46,10 +47,10 @@
       }
     }
 
-    .post-sidebar{
+    .post-sidebar {
       border-left: 1px solid $grayLighter;
 
-      .avatar{
+      .avatar {
         margin-bottom: 6px;
         width: 100%;
       }

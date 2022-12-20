@@ -12,20 +12,25 @@
     table.table {
       margin: 0 auto;
 
-      td{
+      td {
         padding-top: 2px;
         padding-bottom: 2px;
         vertical-align: middle !important;
       }
 
-      td.post-name{width: 40%;}
-      td.post-content{width:60%;}
+      td.post-name {
+        width: 40%;
+      }
+
+      td.post-content {
+        width: 60%;
+      }
     }
 
     .post-name {
       .post-created {
         font-size: 11px;
-        color: #666;
+        color: &gray;
       }
     }
 
