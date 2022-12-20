@@ -14,7 +14,7 @@
                     <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Statistiques Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, magnam. Impedit, nulla labore animi veritatis similique necessitatibus nesciunt unde sint obcaecati ipsa molestiae repellendus. Consectetur laudantium recusandae quam quas quaerat.</li>
+                            <li class="breadcrumb-item active" aria-current="page">Statistiques</li>
                         </ol>
                     </nav>
                 </div>
@@ -36,29 +36,29 @@
 
     <section class="s-section">
         <div class="s-section__container container">
-          <div class="s-section__row row">
-            <div class="s-section__col col-12">
-                {% for forum_stats in forums_stats %}
-                <div class="card c-card mb-3 mb-md-5">
-                    <div class="card-header">
-                        <h2>{{ forum_stats.name }}</h2>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            {% if forum_stats.is_private %}<span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.members_count }} membre{{ forum_stats.members_count|pluralizefr }}</span>{% endif %}
-                            <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.topics_count }} sujet{{ forum_stats.topics_count|pluralizefr }}</span>
-                            <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.posts_count }} post{{ forum_stats.posts_count|pluralizefr }}</span>
-                        </p>
-                        <div>
-                            <canvas id="statChart{{ forloop.counter }}"></canvas>
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    {% for forum_stats in forums_stats %}
+                        <div class="card c-card mb-3 mb-md-5">
+                            <div class="card-header">
+                                <h2>{{ forum_stats.name }}</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    {% if forum_stats.is_private %}<span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.members_count }} membre{{ forum_stats.members_count|pluralizefr }}</span>{% endif %}
+                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.topics_count }} sujet{{ forum_stats.topics_count|pluralizefr }}</span>
+                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.posts_count }} post{{ forum_stats.posts_count|pluralizefr }}</span>
+                                </p>
+                                <div>
+                                    <canvas id="statChart{{ forloop.counter }}"></canvas>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 {% endblock %}
 
 {% block extra_js %}

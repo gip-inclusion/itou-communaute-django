@@ -13,9 +13,6 @@ ENV/
 # Django stuff:
 *.log
 
-# Project specific
-lacommunaute/static_collected/
-
 # Clever Cloud
 .clever.json
 
