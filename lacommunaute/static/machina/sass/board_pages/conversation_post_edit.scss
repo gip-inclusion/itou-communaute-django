@@ -4,38 +4,38 @@
 
 
 
-.topic-review{
-  .card-body{
+.topic-review {
+  .card-body {
     max-height: 300px;
     overflow-y: scroll;
 
-    .post-review{
+    .post-review {
       padding: 8px 0;
       border-bottom: 3px solid $grayLighter;
 
-      .post-content-wrapper{
-          h4.subject{
-            margin: 0;
-          }
+      .post-content-wrapper {
+        h4.subject {
+          margin: 0;
+        }
 
-        .attachments{
-          .attachments-title{
+        .attachments {
+          .attachments-title {
             margin-top: 10px;
             display: inline-block;
             border-bottom: 1px solid $grayLight;
           }
 
-          .attachment{
+          .attachment {
             margin-top: 4px;
 
-            p{
+            p {
               margin: 0;
             }
           }
         }
       }
 
-      .post-sidebar{
+      .post-sidebar {
         border-left: 1px solid $grayLighter;
       }
     }

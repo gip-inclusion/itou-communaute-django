@@ -5,7 +5,9 @@
 
 .card.forumlist {
   .card-header {
-    .forum-count-col, .forum-last-post-col {
+
+    .forum-count-col,
+    .forum-last-post-col {
       font-size: 0.9rem;
       text-transform: uppercase;
       color: $gray;
@@ -40,7 +42,9 @@
       }
     }
 
-    .forum-syndication, .forum-count, .forum-last-post {
+    .forum-syndication,
+    .forum-count,
+    .forum-last-post {
       font-size: 0.9rem;
       line-height: 1rem;
     }

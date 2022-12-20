@@ -4,8 +4,8 @@
 
 
 .card.postmoderationlist {
-  .card-header{
-    .moderation-col{
+  .card-header {
+    .moderation-col {
       font-size: 0.9rem;
       text-transform: uppercase;
       color: $gray;
@@ -13,21 +13,22 @@
   }
 
   .card-body {
-    .row{
+    .row {
       margin: 0;
       padding-top: 10px;
       padding-bottom: 5px;
       border-bottom: 1px solid $grayLighter;
     }
 
-    .post-name{
-      .post-created{
+    .post-name {
+      .post-created {
         font-size: 11px;
-        color: #666;
+        color: &gray;
       }
     }
 
-    .topic-name, .forum-name {
+    .topic-name,
+    .forum-name {
       font-size: 0.9rem;
       line-height: 1rem;
     }
