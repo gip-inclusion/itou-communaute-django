@@ -1,6 +1,7 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
@@ -46,3 +47,11 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["forum"] = self.forum
         return context
+
+
+class FunnelView(UserPassesTestMixin, DetailView):
+    model = Forum
+    template_name = "forum/funnel.html"
+
+    def test_func(self):
+        return self.request.user.is_staff
