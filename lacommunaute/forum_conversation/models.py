@@ -26,9 +26,3 @@ class Topic(AbstractTopic):
 
 class Post(AbstractPost):
     username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
-    upvoters = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="post_upvotes",
-        blank=True,
-        verbose_name=("Upvoters"),
-    )
