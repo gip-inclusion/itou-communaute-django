@@ -19,10 +19,6 @@
                 <div class="card-body">
                     {% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
                     {% for topic in topics %}
-                        {% if forloop.first %}
-                            {% get_permission 'can_edit_post' topic.first_post request.user as user_can_edit_post %}
-                        {% endif %}
-                        {{user_can_edit_post}}
                         <div class="row">
                             <div class="col-12">
                                 <div id="{{ topic.firt_post.id }}" class="card post mb-3">
