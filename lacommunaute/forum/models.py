@@ -21,6 +21,7 @@ class Forum(AbstractForum):
     invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
     is_highlighted = models.BooleanField(default=False, verbose_name="affichée sur la homepage")
     is_private = models.BooleanField(default=False, verbose_name="privée")
+    target_audience = models.IntegerField(default=0)
 
     def get_stats(self, days_back):
 
