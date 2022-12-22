@@ -39,37 +39,33 @@
         <div class="s-section__container container">
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
-                    Audience cible: {{object.target_audience}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12">
-                    Utilisateurs engagés : {{object.count_engaged_users.all_users}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 ml-4">
-                    Utilisateurs authentifiés : {{object.count_engaged_users.authenticated_users}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 ml-6">
-                    Posters : {{object.count_engaged_users.posters}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 ml-6">
-                    Likers : {{object.count_engaged_users.likers}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 ml-6">
-                    Voters : {{object.count_engaged_users.voters}}
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 ml-4">
-                    Posters anonymes : {{object.count_engaged_users.anonymous_posters}}
+                    <ul>
+                        <li>
+                            Audience cible : <strong>{{object.target_audience}}</strong>
+                        </li>
+                        <li>
+                            Utilisateurs engagés : <strong>{{object.count_engaged_users.all_users}}</strong>
+                            <ul>
+                                <li>
+                                    Utilisateurs authentifiés : <strong>{{object.count_engaged_users.authenticated_users}}</strong>
+                                    <ul>
+                                        <li>
+                                            Posters : <strong>{{object.count_engaged_users.posters}}</strong>
+                                        </li>
+                                        <li>
+                                            Likers : <strong>{{object.count_engaged_users.likers}}</strong>
+                                        </li>
+                                        <li>
+                                            Voters : <strong>{{object.count_engaged_users.voters}}</strong>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Posters anonymes : <strong>{{object.count_engaged_users.anonymous_posters}}</strong>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
