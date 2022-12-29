@@ -15,13 +15,12 @@ from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollOptionFactory
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 
 
 faker = Faker()
 
-Topic = get_model("forum_conversation", "Topic")
-Post = get_model("forum_conversation", "Post")
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
