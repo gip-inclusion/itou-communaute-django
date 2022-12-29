@@ -9,8 +9,8 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from machina.test.factories.conversation import create_topic
-from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -33,7 +33,7 @@ class ForumViewQuerysetTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = UserFactory()
-        cls.forum = create_forum()
+        cls.forum = ForumFactory()
         cls.view = ForumView()
         cls.view.kwargs = {"pk": cls.forum.pk}
         cls.view.request = RequestFactory().get("/")
@@ -89,7 +89,7 @@ class ForumViewTest(TestCase):
         cls.perm_handler = PermissionHandler()
 
         # Set up a top-level forum
-        cls.forum = create_forum()
+        cls.forum = ForumFactory()
 
         # Set up a topic and some posts
         cls.topic = TopicFactory(forum=cls.forum, poster=cls.user)
@@ -296,7 +296,7 @@ class ForumViewTest(TestCase):
 
 class ForumModelTest(TestCase):
     def test_invitation_token_is_unique(self):
-        forum = create_forum()
+        forum = ForumFactory()
 
         with self.assertRaises(IntegrityError):
             forum.id = None
@@ -307,7 +307,7 @@ class ForumModelTest(TestCase):
         poster = UserFactory()
 
         # create fake forum to ensure post and topic number is filter by forum
-        forum_fake = create_forum()
+        forum_fake = ForumFactory()
         forum_fake.members_group = Group.objects.create(name="members_forum_fake")
         forum_fake.members_group.user_set.add(poster)
         forum_fake.members_group.user_set.add(UserFactory())
@@ -315,7 +315,7 @@ class ForumModelTest(TestCase):
         PostFactory(topic=topic, poster=poster)
 
         # create forum to test stats on it
-        forum = create_forum()
+        forum = ForumFactory()
         forum.members_group = Group.objects.create(name="members_forum")
         forum.members_group.user_set.add(poster)
         forum.members_group.user_set.add(UserFactory())
