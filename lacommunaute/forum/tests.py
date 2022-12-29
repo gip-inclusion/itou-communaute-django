@@ -10,11 +10,11 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from machina.test.factories.conversation import create_topic
 from machina.test.factories.forum import create_forum
-from machina.test.factories.polls import TopicPollFactory, TopicPollOptionFactory, TopicPollVoteFactory
 
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollOptionFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -27,20 +27,6 @@ UserForumPermission = get_model("forum_permission", "UserForumPermission")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
-
-
-def createPostLikeVotesInForum(forum, like=False, vote=False):
-    poster = UserFactory()
-    post = PostFactory(topic=create_topic(forum=forum, poster=poster), poster=poster)
-
-    if like:
-        post.topic.likers.add(poster)
-        post.topic.save()
-
-    if vote:
-        TopicPollVoteFactory(poll_option__poll__topic=post.topic, voter=poster)
-
-    return post.topic
 
 
 class ForumViewQuerysetTest(TestCase):
@@ -363,21 +349,19 @@ class ForumModelTest(TestCase):
         self.assertEqual(stats["members"][-1], 3)
 
     def test_count_engaged_users(self):
-        forum = create_forum()
-
         # first user posts, likes, votes
-        _ = createPostLikeVotesInForum(forum, like=True, vote=True)
+        topic = TopicFactory(with_post=True, with_like=True, with_vote=True)
 
         # second user posts
-        topic = createPostLikeVotesInForum(forum)
+        PostFactory(topic=topic)
 
         # anonymous user posts
-        PostFactory(topic=topic, anonymous_key=faker.random_int(), username=faker.email(), poster=None)
+        PostFactory(topic=topic, anonymous=True)
 
         # post, like, vote in an other forum = ignored in count
-        createPostLikeVotesInForum(create_forum(), like=True, vote=True)
+        TopicFactory(with_post=True, with_like=True, with_vote=True)
 
         self.assertEqual(
-            forum.count_engaged_users,
+            topic.forum.count_engaged_users,
             {"posters": 2, "likers": 1, "voters": 1, "authenticated_users": 2, "anonymous_posters": 1, "all_users": 3},
         )
