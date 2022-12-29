@@ -39,7 +39,7 @@
                                 <div class="row post">
                                     <div class="col-md-12 post-content-wrapper">
                                         <div class="post-title">
-                                            <a href="{% url 'forum_conversation:topic' post.topic.forum.slug post.topic.forum.pk post.topic.slug post.topic.pk %}?post={{ post.pk }}#{{ post.pk }}">{{ post.subject }}</a>
+                                            <a href="{% url 'forum_conversation:topic' post.topic.forum.slug post.topic.forum.pk post.topic.slug post.topic.pk %}?post={{ post.pk }}#{{ post.pk }}">{{ post.topic.subject }}</a>
                                         </div>
                                         <p>
                                             <small class="text-muted">
