@@ -114,7 +114,7 @@ class Forum(AbstractForum):
             "voters": voters.count(),
             "authenticated_users": authenticated_users.count(),
             "anonymous_posters": anonymous_posters.count(),
-            "all_users": len(list(set(authenticated_users) | set(anonymous_posters))),
+            "all_users": len(set(authenticated_users) | set(anonymous_posters)),
         }
 
         # TODO vincentporte - to be added :
