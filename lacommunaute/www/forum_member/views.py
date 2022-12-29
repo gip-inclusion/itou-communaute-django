@@ -9,9 +9,10 @@ from machina.apps.forum_member.views import (
     ForumProfileDetailView as BaseForumProfileDetailView,
     ForumProfileUpdateView as BaseForumProfileUpdateView,
 )
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.models import Forum
+from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.utils.urls import get_safe_url
 from lacommunaute.www.forum_member.forms import JoinForumForm
 
@@ -19,8 +20,6 @@ from lacommunaute.www.forum_member.forms import JoinForumForm
 logger = logging.getLogger(__name__)
 
 
-ForumProfile = get_model("forum_member", "ForumProfile")
-Forum = get_model("forum", "Forum")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 
 
