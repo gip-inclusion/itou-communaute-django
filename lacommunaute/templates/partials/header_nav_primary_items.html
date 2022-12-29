@@ -28,7 +28,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item text-primary" href="{% url 'forum_member:profile_update' %}">Modifier mon profil</a>
+                        <a class="dropdown-item text-primary" href="{% url 'members:profile' user.id %}">Accéder à mon profil</a>
                     </li>
                     {% if user.is_superuser %}
                         <li>
