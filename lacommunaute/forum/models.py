@@ -100,6 +100,9 @@ class Forum(AbstractForum):
         )
         authenticated_users = posters | likers | voters
 
+        # Anonymous post are not linked to user. Legacy Machina `username` field is overriden to store
+        # the email of anonymous poster. As long we want to deduplicate email list between authenticated
+        # and anonymous users, `username` field is renamed `email` in this annoted queryset.
         anonymous_posters = (
             Post.objects.filter(topic__forum__in=forums)
             .exclude(username__isnull=True)
