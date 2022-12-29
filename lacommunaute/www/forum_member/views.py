@@ -5,6 +5,10 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.views.generic import FormView, ListView, TemplateView
+from machina.apps.forum_member.views import (
+    ForumProfileDetailView as BaseForumProfileDetailView,
+    ForumProfileUpdateView as BaseForumProfileUpdateView,
+)
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
@@ -18,6 +22,15 @@ logger = logging.getLogger(__name__)
 ForumProfile = get_model("forum_member", "ForumProfile")
 Forum = get_model("forum", "Forum")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
+
+
+class ForumProfileDetailView(BaseForumProfileDetailView):
+    pass
+
+
+class ForumProfileUpdateView(BaseForumProfileUpdateView):
+    def get_success_url(self):
+        return reverse("members:profile", kwargs={"pk": self.request.user.pk})
 
 
 class ForumProfileListView(ListView):

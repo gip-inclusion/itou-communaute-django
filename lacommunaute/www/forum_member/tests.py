@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import Group
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
@@ -9,10 +9,20 @@ from machina.test.factories.forum import create_forum
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
+from lacommunaute.www.forum_member.views import ForumProfileUpdateView
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
+
+
+class ForumProfileUpdateViewTest(TestCase):
+    def test_success_url(self):
+        forum_profiles = ForumProfileFactory()
+        view = ForumProfileUpdateView()
+        view.request = RequestFactory().get("/")
+        view.request.user = forum_profiles.user
+        self.assertEqual(view.get_success_url(), reverse("members:profile", kwargs={"pk": forum_profiles.user.pk}))
 
 
 class ForumProfileListViewTest(TestCase):
