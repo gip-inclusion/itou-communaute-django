@@ -3,16 +3,18 @@
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
 
-<div id="showmorepostsarea{{topic.pk}}" class="LIST">
+<div id="showmorepostsarea{{topic.pk}}">
     {% for post in posts %}
         <div class="card post mb-3 bg-light has-links-inside ml-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 post-content-wrapper">
-                        <p>
-                            {%include "forum_conversation/partials/poster.html" with post=post%}
-                        </p>
-
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="mb-0 flex-grow-1">
+                                {%include "forum_conversation/partials/poster.html" with post=post%}
+                            </span>
+                            {% include "forum_conversation/partials/post_upvotes.html"%}
+                        </div>
                         <div class="post-content">
                             {{ post.content.rendered|urlize }}
                             {% include "forum_conversation/forum_attachments/attachments_images.html" %}
