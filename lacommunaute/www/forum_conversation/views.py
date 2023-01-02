@@ -1,17 +1,19 @@
 import logging
 
+from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils.http import urlencode
 from django.views import View
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_upvote.models import UpVote
 
 
 logger = logging.getLogger(__name__)
 
-Topic = get_model("forum_conversation", "Topic")
-Post = get_model("forum_conversation", "Post")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 
@@ -103,6 +105,11 @@ class PostListView(PermissionRequiredMixin, View):
             .order_by("created")
             .select_related("poster", "poster__forum_profile")
             .prefetch_related("attachments")
+            .annotate(
+                upvotes_count=Count("upvotes"),
+                # using user.id instead of user, to manage anonymous user journey
+                has_upvoted=Exists(UpVote.objects.filter(post=OuterRef("pk"), voter__id=self.request.user.id)),
+            )
         )
 
         track_handler.mark_topic_read(topic, request.user)
@@ -114,8 +121,15 @@ class PostListView(PermissionRequiredMixin, View):
                 "topic": topic,
                 "posts": posts,
                 "form": PostForm(forum=self.topic.forum, user=request.user),
+                "inclusion_connect_url": self.get_inclusion_connect_url(),
             },
         )
+
+    def get_inclusion_connect_url(self):
+        params = {
+            "next_url": self.topic.get_absolute_url(),
+        }
+        return f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
     def get_controlled_object(self):
         return self.get_topic().forum
