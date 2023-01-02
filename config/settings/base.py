@@ -69,6 +69,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_conversation.forum_attachments",
     "lacommunaute.forum_conversation.forum_polls",
     "lacommunaute.forum_member",
+    "lacommunaute.forum_upvote",
     "lacommunaute.inclusion_connect",
     "lacommunaute.www",
 ]
