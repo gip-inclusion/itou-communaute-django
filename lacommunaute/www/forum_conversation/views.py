@@ -155,6 +155,8 @@ class PostFeedCreateView(PermissionRequiredMixin, View):
         form = PostForm(**kwargs)
         if form.is_valid():
             post = form.save()
+            # set count to zero by default. no need to annotate queryset when saving new post
+            post.upvotes_count = 0
 
             track_handler.mark_topic_read(self.topic, request.user)
 

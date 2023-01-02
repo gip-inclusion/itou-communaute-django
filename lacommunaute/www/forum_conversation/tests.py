@@ -312,3 +312,5 @@ class PostFeedCreateViewTest(TestCase):
         self.assertContains(response, content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>')
+        self.assertContains(response, "0 vote")
