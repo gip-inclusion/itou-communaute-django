@@ -11,7 +11,14 @@ from machina.test.factories.forum import create_forum
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.views import PostCreateView, PostDeleteView, TopicCreateView, TopicUpdateView
+from lacommunaute.forum_conversation.views import (
+    PostCreateView,
+    PostDeleteView,
+    TopicCreateView,
+    TopicUpdateView,
+    TopicView,
+)
+from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -364,3 +371,21 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertNotContains(response, url)
+
+    def test_upvote_annotations_in_get_queryset(self):
+        request = RequestFactory().get(self.url)
+        request.user = self.user
+        view = TopicView()
+        view.request = request
+        view.kwargs = self.kwargs
+
+        qs = view.get_queryset()
+        self.assertEqual(qs.first().upvotes_count, 0)
+        self.assertEqual(qs.first().has_upvoted, False)
+
+        UpVoteFactory(post=self.post, voter=UserFactory())
+        UpVoteFactory(post=self.post, voter=self.user)
+
+        qs = view.get_queryset()
+        self.assertEqual(qs.first().upvotes_count, 2)
+        self.assertEqual(qs.first().has_upvoted, True)
