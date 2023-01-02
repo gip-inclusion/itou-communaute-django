@@ -1,12 +1,14 @@
 import logging
 
 from django.contrib import messages
+from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_upvote.models import UpVote
 
 
 logger = logging.getLogger(__name__)
@@ -77,3 +79,11 @@ class TopicView(views.TopicView):
         context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
         context["form"] = PostForm(forum=self.topic.forum, user=self.request.user)
         return context
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.annotate(
+            upvotes_count=Count("upvotes"),
+            # using user.id instead of user, to manage anonymous user journey
+            has_upvoted=Exists(UpVote.objects.filter(post=OuterRef("pk"), voter__id=self.request.user.id)),
+        )
