@@ -7,10 +7,12 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 post-content-wrapper">
-                <p>
-                    {%include "forum_conversation/partials/poster.html" with post=post%}
-                </p>
-
+                <div class="d-flex align-items-center mb-1">
+                    <span class="mb-0 flex-grow-1">
+                        {%include "forum_conversation/partials/poster.html" with post=post%}
+                    </span>
+                    {% include "forum_conversation/partials/post_upvotes.html"%}
+                </div>
                 <div class="post-content">
                     {{ post.content.rendered|urlize }}
                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
