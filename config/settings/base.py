@@ -126,6 +126,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
+        "ATOMIC_REQUESTS": True,
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "HOST": os.getenv("POSTGRESQL_ADDON_HOST"),
         "PORT": os.getenv("POSTGRESQL_ADDON_PORT"),
