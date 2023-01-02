@@ -3,7 +3,6 @@ from django.urls import reverse
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.forum import create_forum
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -23,8 +22,8 @@ class TopicLikeViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.topic = TopicFactory()
+        cls.user = cls.topic.poster
         cls.url = reverse(
             "forum_conversation_extension:like_topic",
             kwargs={
@@ -122,8 +121,8 @@ class TopicLikeViewTest(TestCase):
 class TopicContentView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.topic = TopicFactory()
+        cls.user = cls.topic.poster
         cls.url = reverse(
             "forum_conversation_extension:showmore_topic",
             kwargs={
@@ -170,25 +169,26 @@ class TopicContentView(TestCase):
 class PostListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.topic = TopicFactory(with_post=True)
+        cls.user = cls.topic.poster
+        assign_perm("can_read_forum", cls.user, cls.topic.forum)
+        cls.kwargs = {
+            "forum_pk": cls.topic.forum.pk,
+            "forum_slug": cls.topic.forum.slug,
+            "pk": cls.topic.pk,
+            "slug": cls.topic.slug,
+        }
         cls.url = reverse(
             "forum_conversation_extension:showmore_posts",
-            kwargs={
-                "forum_pk": cls.topic.forum.pk,
-                "forum_slug": cls.topic.forum.slug,
-                "pk": cls.topic.pk,
-                "slug": cls.topic.slug,
-            },
+            kwargs=cls.kwargs,
         )
 
     def test_cannot_read_post(self):
-        self.client.force_login(self.user)
+        self.client.force_login(UserFactory())
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
 
     def test_topic_doesnt_exist(self):
-        assign_perm("can_read_forum", self.user, self.topic.forum)
         self.client.force_login(self.user)
         response = self.client.get(
             reverse(
@@ -204,16 +204,15 @@ class PostListViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_get_list_of_posts(self):
-        assign_perm("can_read_forum", self.user, self.topic.forum)
-        posts = PostFactory.create_batch(3, topic=self.topic, poster=self.user)
+        posts = PostFactory.create_batch(2, topic=self.topic, poster=self.user)
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, posts[0].content)  # original post content excluded
+        self.assertNotContains(response, self.topic.first_post.content)  # original post content excluded
+        self.assertContains(response, posts[0].content)
         self.assertContains(response, posts[1].content)
-        self.assertContains(response, posts[2].content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
 
@@ -221,8 +220,8 @@ class PostListViewTest(TestCase):
 class PostFeedCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        cls.topic = TopicFactory(forum=create_forum(), poster=cls.user)
+        cls.topic = TopicFactory()
+        cls.user = cls.topic.poster
         cls.url = reverse(
             "forum_conversation_extension:comment_topic",
             kwargs={

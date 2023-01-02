@@ -7,9 +7,9 @@ from django.urls import reverse
 from django.utils.http import urlencode
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.views import PostCreateView, PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.users.factories import UserFactory
@@ -22,8 +22,8 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 def build_post_in_forum():
-    poster = UserFactory()
-    return PostFactory(topic=create_topic(forum=create_forum(), poster=poster), poster=poster)
+    topic = TopicFactory(with_post=True)
+    return topic.first_post
 
 
 class TopicCreateViewTest(TestCase):
@@ -312,7 +312,13 @@ class TopicViewTest(TestCase):
         cls.post = build_post_in_forum()
         assign_perm("can_read_forum", cls.user, cls.post.topic.forum)
         assign_perm("can_see_forum", cls.user, cls.post.topic.forum)
-        cls.url = cls.post.topic.get_absolute_url()
+        cls.kwargs = {
+            "forum_pk": cls.post.topic.forum.pk,
+            "forum_slug": cls.post.topic.forum.slug,
+            "pk": cls.post.topic.pk,
+            "slug": cls.post.topic.slug,
+        }
+        cls.url = reverse("forum_conversation:topic", kwargs=cls.kwargs)
 
     def test_has_liked(self):
         topic = self.post.topic
