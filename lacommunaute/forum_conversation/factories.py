@@ -29,7 +29,9 @@ class TopicFactory(BaseTopicFactory):
     class Params:
         with_post = factory.Trait(
             post=factory.RelatedFactory(
-                PostFactory, factory_related_name="topic", poster=factory.SelfAttribute("topic.poster")
+                PostFactory,
+                factory_related_name="topic",
+                poster=factory.SelfAttribute("topic.poster"),
             )
         )
 
