@@ -74,7 +74,7 @@ msgstr "Sujets:"
 #: lacommunaute/templates/machina/forum_member/user_posts_list.html:67
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:117
 msgid "Posts:"
-msgstr "Posts:"
+msgstr "Messages :"
 
 #: lacommunaute/templates/admin/forum/forum/change_list_table.html:53
 msgid "Link:"
@@ -173,7 +173,7 @@ msgstr "Abonnements"
 
 #: lacommunaute/templates/machina/board_base.html:42
 msgid "View my posts"
-msgstr "Voir mes posts"
+msgstr "Voir mes messages"
 
 #: lacommunaute/templates/machina/board_base.html:46
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:5
@@ -186,11 +186,11 @@ msgstr "File d’attente de modération"
 
 #: lacommunaute/templates/machina/forum/forum_detail.html:39
 msgid "Members"
-msgstr "Membres"
+msgstr "Liste des membres"
 
 #: lacommunaute/templates/machina/forum/forum_detail.html:22
 msgid "Mark subforums read"
-msgstr "Marquer les sous-communautés lus"
+msgstr "Marquer les sous-communautés lues"
 
 #: lacommunaute/templates/machina/forum/forum_detail.html:34
 #: lacommunaute/templates/machina/forum/forum_detail.html:59
@@ -221,14 +221,14 @@ msgstr "Sujets"
 #: lacommunaute/templates/machina/forum/forum_list.html:39
 #: lacommunaute/templates/machina/forum/forum_list.html:207
 msgid "Posts"
-msgstr "Posts"
+msgstr "Messages"
 
 #: lacommunaute/templates/machina/forum/forum_list.html:22
 #: lacommunaute/templates/machina/forum/forum_list.html:40
 #: lacommunaute/templates/machina/forum/forum_list.html:208
 #: lacommunaute/templates/machina/forum_conversation/topic_list.html:15
 msgid "Last post"
-msgstr "Dernier post"
+msgstr "Dernier message"
 
 #: lacommunaute/templates/forum_conversation/topic_list.html:70
 msgid "+ show more"
@@ -261,7 +261,7 @@ msgstr "Par : %(poster_username)s"
 #: lacommunaute/templates/machina/forum/forum_list.html:89
 #: lacommunaute/templates/machina/forum/forum_list.html:162
 msgid "No posts"
-msgstr "Aucun post"
+msgstr "Aucun message"
 
 #: lacommunaute/templates/machina/forum/forum_list.html:108
 #: lacommunaute/templates/machina/forum/forum_list.html:181
@@ -289,13 +289,13 @@ msgstr "Index"
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:5
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:11
 msgid "Mark forums read"
-msgstr "Marquer les communautés comme lus"
+msgstr "Marquer les communautés comme lues"
 
 #: lacommunaute/templates/machina/forum/index.html:15
 #: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:4
 #: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:8
 msgid "View unread topics"
-msgstr "Afficher les sujets non lues"
+msgstr "Afficher les sujets non lus"
 
 #: lacommunaute/templates/machina/forum/index.html:22
 #: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:34
@@ -304,7 +304,7 @@ msgstr "Statistiques"
 
 #: lacommunaute/templates/machina/forum/index.html:23
 msgid "Total posts:"
-msgstr "Nombre de posts:"
+msgstr "Nombre de messages :"
 
 #: lacommunaute/templates/machina/forum/index.html:23
 msgid "Total topics:"
@@ -371,7 +371,7 @@ msgstr "Les résultats sont actuellement masqués."
 
 #: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_results.html:29
 msgid "Total votes:"
-msgstr "Total des votes :"
+msgstr "Nombre de réponses au sondage :"
 
 #: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_vote_form.html:35
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:108
@@ -392,7 +392,7 @@ msgstr "Options"
 
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:15
 msgid "Post reply"
-msgstr "Poster une réponse"
+msgstr "Répondre"
 
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:18
 msgid "Subscribe"
@@ -444,10 +444,10 @@ msgstr "Passer en sujet standard"
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:33
 #, python-format
 msgid "Show me the %(posts_count)s comments"
-msgstr "Voir les %(posts_count)s commentaires"
+msgstr "Voir les %(posts_count)s autres réponses"
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:36
 msgid "Show me the comment"
-msgstr "Voir le commentaire"
+msgstr "Voir la réponse"
 
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_form.html:23
 msgid "Poll"
@@ -462,7 +462,7 @@ msgstr "Aperçu"
 #: lacommunaute/templates/machina/forum_conversation/post_create.html:6
 #: lacommunaute/templates/machina/forum_conversation/post_create.html:21
 msgid "Post a reply"
-msgstr "Publier une réponse"
+msgstr "Répondre"
 
 #: lacommunaute/templates/machina/forum_conversation/post_create.html:39
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:133
@@ -536,7 +536,7 @@ msgstr "Non, ramenez-moi"
 #: lacommunaute/templates/machina/forum_conversation/topic_update.html:5
 #: lacommunaute/templates/machina/forum_conversation/topic_update.html:23
 msgid "Edit post"
-msgstr "Modifier le post"
+msgstr "Modifier le message"
 
 #: lacommunaute/templates/machina/forum_conversation/topic_create.html:5
 #: lacommunaute/templates/machina/forum_conversation/topic_create.html:23
@@ -577,7 +577,7 @@ msgstr "Utilisateur anonyme"
 
 #: lacommunaute/templates/machina/forum_conversation/topic_list.html:13
 msgid "Replies"
-msgstr "Réponses"
+msgstr "Réponses aux sujets"
 
 #: lacommunaute/templates/machina/forum_conversation/topic_list.html:14
 msgid "Views"
@@ -642,7 +642,7 @@ msgstr[1] ""
 
 #: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:60
 msgid "Recent posts"
-msgstr "Posts récents"
+msgstr "messages récents"
 
 #: lacommunaute/templates/machina/forum_member/forum_profile_detail.html:60
 msgid "View all"
@@ -701,18 +701,18 @@ msgstr "Mes messages"
 #: lacommunaute/templates/machina/forum_member/user_posts_list.html:10
 #, python-format
 msgid "%(username)s's posts"
-msgstr "Posts de %(username)s"
+msgstr "Messages de %(username)s"
 
 #: lacommunaute/templates/machina/forum_member/user_posts_list.html:17
 #, python-format
 msgid "%(counter)s post found"
 msgid_plural "%(counter)s posts found"
-msgstr[0] "%(counter)s post trouvé"
-msgstr[1] "%(counter)s posts trouvés"
+msgstr[0] "%(counter)s message trouvé"
+msgstr[1] "%(counter)s messages trouvés"
 
 #: lacommunaute/templates/machina/forum_member/user_posts_list.html:24
 msgid "No posts found"
-msgstr "Aucun post trouvé"
+msgstr "Aucun message trouvé"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:15
 msgid "Disapprove"
@@ -724,7 +724,7 @@ msgstr "Approuver"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:19
 msgid "New post"
-msgstr "Nouveau post"
+msgstr "Nouveau message"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:32
 msgid "<b>1</b> option may be selected"
@@ -738,7 +738,7 @@ msgstr "Jusqu'à <b>%(max_options)s</b> options peuvent être sélectionnées"
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:17
 #, python-format
 msgid "%(topic_length)s posts found"
-msgstr "%(topic_length)s posts trouvés"
+msgstr "%(topic_length)s messages trouvés"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:35
 msgid "Topic"
@@ -750,29 +750,29 @@ msgstr "Communauté"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:79
 msgid "No posts awaiting approval."
-msgstr "Aucun post en attente d’approbation."
+msgstr "Aucun message en attente d’approbation."
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:5
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:12
 msgid "Approve post"
-msgstr "Approuver le post"
+msgstr "Approuver le message"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_approve.html:15
 msgid "Are you sure you want to approve this post?"
-msgstr "Êtes-vous sûr de vouloir approuver cet post ?"
+msgstr "Êtes-vous sûr de vouloir approuver ce message ?"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:5
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:12
 msgid "Disapprove post"
-msgstr "Désapprouver le post"
+msgstr "Désapprouver le messages"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/post_disapprove.html:15
 msgid "Are you sure you want to disapprove this post? This post will be deleted."
-msgstr "Êtes-vous sûr de vouloir désapprouver ce post ? Ce post sera supprimé."
+msgstr "Êtes-vous sûr de vouloir désapprouver ce message ? Ce message sera supprimé."
 
 #: lacommunaute/templates/machina/forum_moderation/topic_delete.html:15
 msgid "Are you sure you want to delete this topic?"
-msgstr "Voulez-vous vraiment supprimer cet sujet ?"
+msgstr "Voulez-vous vraiment supprimer ce sujet ?"
 
 #: lacommunaute/templates/machina/forum_moderation/topic_lock.html:15
 msgid "Are you sure you want to lock this topic?"
@@ -812,7 +812,7 @@ msgstr "Aucun résultat."
 
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:13
 msgid "Are you sure you want to mark forums read?"
-msgstr "Êtes-vous sûr de vouloir marquer les communautés comme lus ?"
+msgstr "Êtes-vous sûr de vouloir marquer les communautés comme lues ?"
 
 #: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:13
 msgid "Are you sure you want to mark topics read?"
@@ -845,10 +845,6 @@ msgstr "S'inscrire"
 msgid "Login"
 msgstr "Se connecter"
 
-#: lacommunaute/templates/forum_conversation/topic_list.html
-msgid "Show me more posts"
-msgstr "Montrer plus de posts"
-
 #: lacommunaute/templates/forum_member/join_forum_form.html: 32
 #, python-format
 msgid "Join forum %(name)s"
@@ -857,6 +853,7 @@ msgstr "Vous êtes invité à rejoindre la communauté %(name)s"
 #: lacommunaute/templates/forum_member/join_forum_form.html: 60
 msgid "Join forum"
 msgstr "Rejoindre la communauté"
+
 #: lacommunaute/templates/pages/home.html:84
 msgid "Go to this forum"
 msgstr "Accéder à cette communauté"
@@ -865,6 +862,7 @@ msgstr "Accéder à cette communauté"
 msgid "Join this forum"
 msgstr "Rejoindre cette communauté"
 #: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:5
+
 msgid "Share this topics on "
 msgstr "Partager ce sujet sur "
 
@@ -876,3 +874,18 @@ msgstr "Regardez %(topic_subject)s dans la communauté %(forum_name)s !"
 #: lacommunaute/templates/forum/moderator_engagement.html:54
 msgid "Attached"
 msgstr "Fichiers"
+
+msgid "Funnel"
+msgstr "Utilisateurs engagés"
+
+msgid "Topics Engagement"
+msgstr "Engagement par sujet"
+
+msgid "Likes"
+msgstr "J'aime"
+
+msgid "Votes"
+msgstr "Réponses aux sondages"
+
+msgid "Forum Members"
+msgstr "Liste des membres de la communauté"
