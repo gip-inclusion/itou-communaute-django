@@ -8,6 +8,7 @@ from lacommunaute.www.forum import urls as forum_extension_urls
 from lacommunaute.www.forum_conversation import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_conversation.forum_polls import urls as forum_polls_extension_urls
 from lacommunaute.www.forum_member import urls as forum_member_urls
+from lacommunaute.www.forum_upvote import urls as forum_upvote_urls
 
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path("forum/", include(forum_conversation_extension_urls)),
     path("forum/", include(forum_extension_urls)),
     path("forum/", include(forum_polls_extension_urls)),
+    path("forum/", include(forum_upvote_urls)),
     # machina legacy
     path("forum/", include(machina_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,32 @@
+{% load str_filters %}
+
+<div id="upvotesarea{{post.pk}}">
+    {% with post.upvotes_count as counter %}
+        {% if user.is_authenticated %}
+            <form hx-post="{%  url 'forum_upvote:upvote' %}"
+                id="upvote-button{{post.pk}}"
+                hx-target="#upvotesarea{{post.pk}}"
+                hx-swap="outerHTML">
+                <input type='hidden' name='post_pk' value="{{post.pk}}"/>
+                <input type='hidden' name='pk' value="{{post.topic.pk}}"/>
+
+
+                <button type="submit"
+                    class="btn btn-ico btn-link pr-0 matomo-event"
+                    data-matomo-category="engagement"
+                    data-matomo-action="upvote"
+                    data-matomo-option="{% if post.has_upvoted %}disupvote{%else%}upvote{%endif%}"
+                >
+                    <i class="{% if post.has_upvoted %}ri-star-fill{%else%}ri-star-line{%endif%}" aria-hidden="true"></i>
+                    <span>{{counter}} vote{{ counter|pluralizefr }}</span>
+                </button>
+            </form>
+        {% else %}
+            {% comment %} TODO add next_url later {% endcomment %}
+            <a href="{{inclusion_connect_url}}" class="btn btn-ico btn-link pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
+                <i class="{% if post.has_upvoted %}ri-star-fill{%else%}ri-star-line{%endif%}" aria-hidden="true"></i>
+                <span>{{counter}} vote{{ counter|pluralizefr }}</span>
+            </a>
+        {% endif %}
+    {% endwith %}
+</div>
