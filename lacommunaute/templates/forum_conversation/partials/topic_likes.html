@@ -1,4 +1,4 @@
-{% load str_filters %}
+{% load i18n %}
 
 <div id="likesarea{{topic.pk}}">
     {% with topic.likes as counter %}
@@ -10,13 +10,13 @@
                 data-matomo-category="engagement" data-matomo-action="like" data-matomo-option="{% if topic.has_liked %}unlike{%else%}like{%endif%}"
             >
                 <i class="{% if topic.has_liked %}ri-heart-3-fill{%else%}ri-heart-3-line{%endif%}" aria-hidden="true"></i>
-                <span>{{counter}} like{{ counter|pluralizefr }}</span>
+                <span>{{counter}} {% trans "Likes" %}</span>
             </button>
         {% else %}
             {% comment %} TODO add next_url later {% endcomment %}
             <a href="{{inclusion_connect_url}}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
                 <i class="ri-heart-3-line" aria-hidden="true"></i>
-                <span>{{counter}} like{{ counter|pluralizefr }}</span>
+                <span>{{counter}} {% trans "Likes" %}</span>
             </a>
         {% endif %}
     {% endwith %}

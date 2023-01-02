@@ -336,7 +336,7 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         # icon: solid heart
         self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>1 like</span>")
+        self.assertContains(response, "<span>1 J'aime</span>")
 
     def test_has_not_liked(self):
         topic = self.post.topic
@@ -346,7 +346,7 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
         self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>0 like</span>")
+        self.assertContains(response, "<span>0 J'aime</span>")
 
     def test_pluralized_likes(self):
         topic = self.post.topic
@@ -358,7 +358,7 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
         self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>2 likes</span>")
+        self.assertContains(response, "<span>2 J'aime</span>")
 
     def test_anonymous_like(self):
         assign_perm("can_read_forum", AnonymousUser(), self.post.topic.forum)
