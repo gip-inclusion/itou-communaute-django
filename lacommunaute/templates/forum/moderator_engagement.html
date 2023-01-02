@@ -29,7 +29,7 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{{ forum.name }}: Engagement</strong></h1>
+                    <h1 class="s-title-01__title h1"><strong>{{ forum.name }}: {% trans "Topics Engagement" %}</strong></h1>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                     {% if user_can_access_stats %}
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
-                                <caption>{{ forum.name }}: Liste de statistiques</caption>
+                                <caption>{{ forum.name }}: {% trans "Topics Engagement" %}</caption>
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">{% trans "Topics" %}</th>
