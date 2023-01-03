@@ -18,6 +18,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2\n"
 
+msgid "This topic type has been changed successfully."
+msgstr "Le type du sujet a été modifié avec succès."
+
+msgid "Would you want to change this topic to a default topic?"
+msgstr "Voudriez-vous changer ce sujet en un sujet standard ?"
+
+msgid "Would you want to change this topic to a sticky topic?"
+msgstr "Voudriez-vous changer ce sujet en un sujet épinglé ?"
+
+msgid "Would you want to change this topic to an announce?"
+msgstr "Voudriez-vous changer ce sujet en annonce ?"
+
 #: lacommunaute/templates/admin/forum/forum/change_form.html:5
 #: lacommunaute/templates/admin/forum/forum/editpermissions_form.html:25
 #: lacommunaute/templates/admin/forum/forum/editpermissions_index.html:18
