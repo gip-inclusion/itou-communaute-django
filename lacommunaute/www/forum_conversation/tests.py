@@ -205,6 +205,24 @@ class PostListViewTest(TestCase):
         self.assertEqual(1, ForumReadTrack.objects.count())
         self.assertEqual(response.context["next_url"], self.topic.get_absolute_url())
 
+    def test_get_list_of_posts_linked_to_annonce_topic(self):
+        post = PostFactory(topic=self.topic, poster=self.user)
+        self.topic.type = Topic.TOPIC_ANNOUNCE
+        self.topic.save()
+
+        request = RequestFactory().get(self.url)
+        request.user = self.user
+        request.forum_permission_handler = PermissionHandler()
+
+        view = PostListView()
+        view.request = request
+        view.kwargs = self.kwargs
+
+        response = view.get(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.topic.first_post.content)  # original post content excluded
+        self.assertContains(response, post.content)
+
     def test_upvote_annotations(self):
         post = PostFactory(topic=self.topic, poster=self.user)
 

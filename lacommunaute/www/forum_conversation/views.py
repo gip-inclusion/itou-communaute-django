@@ -96,8 +96,7 @@ class PostListView(PermissionRequiredMixin, View):
     def get(self, request, **kwargs):
         topic = self.get_topic()
         posts = (
-            Post.objects.exclude(topic__type=Topic.TOPIC_ANNOUNCE)
-            .exclude(topic__approved=False)
+            Post.objects.exclude(topic__approved=False)
             .exclude(pk=topic.first_post.pk)
             .filter(topic=topic)
             .order_by("created")
