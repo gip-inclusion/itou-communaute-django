@@ -3,6 +3,7 @@ import random
 
 import factory
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
 from machina.core.db.models import get_model
 
 
@@ -14,6 +15,11 @@ DEFAULT_PASSWORD = "supercalifragilisticexpialidocious"
 @functools.cache
 def default_password():
     return make_password(DEFAULT_PASSWORD)
+
+
+class GroupFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Group
 
 
 class UserFactory(factory.django.DjangoModelFactory):

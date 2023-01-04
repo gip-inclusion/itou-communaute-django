@@ -43,7 +43,7 @@ class TopicFactory(BaseTopicFactory):
         self.likers.add(self.poster.id)
 
     @factory.post_generation
-    def with_vote(self, create, extracted, **kwargs):
+    def with_poll_vote(self, create, extracted, **kwargs):
         if not create or not extracted:
             return
 
