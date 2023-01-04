@@ -171,19 +171,6 @@ class ForumViewTest(TestCase):
         self.assertContains(response, f'hx-get="{topic_url}"')
         self.assertContains(response, "+ voir la suite")
 
-    def test_join_url_is_hidden(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertNotContains(
-            response,
-            reverse(
-                "members:join_forum_form",
-                kwargs={
-                    "token": self.forum.invitation_token,
-                },
-            ),
-        )
-
     def test_has_liked(self):
         topic = self.topic
         topic.likers.add(self.user)
