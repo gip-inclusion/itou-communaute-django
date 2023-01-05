@@ -21,7 +21,7 @@
                     {% for topic in topics %}
                         <div class="row">
                             <div class="col-12">
-                                <div id="{{ topic.firt_post.id }}" class="card post mb-3">
+                                <div id="{{ topic.pk }}" class="card post mb-3 anchor">
                                     <div class="card-header d-flex align-items-center mb-1">
                                         <div class="topic-thumbnail bg-light">
                                             {% if topic.poster.forum_profile.avatar %}
