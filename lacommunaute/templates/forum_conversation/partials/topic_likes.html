@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load str_filters %}
 
 <div id="likesarea{{topic.pk}}">
     {% with topic.likes as counter %}
@@ -13,8 +14,7 @@
                 <span>{{counter}} {% trans "Likes" %}</span>
             </button>
         {% else %}
-            {% comment %} TODO add next_url later {% endcomment %}
-            <a href="{{inclusion_connect_url}}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
+            <a href="{% inclusion_connect_url next_url topic.pk %}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
                 <i class="ri-heart-3-line" aria-hidden="true"></i>
                 <span>{{counter}} {% trans "Likes" %}</span>
             </a>
