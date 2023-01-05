@@ -3,7 +3,6 @@ import logging
 from django.conf import settings
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
-from django.utils.http import urlencode
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.db.models import get_model
 
@@ -41,9 +40,6 @@ class ForumView(BaseForumView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
-        params = {
-            "next_url": reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        }
-        context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+        context["next_url"] = reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         context["form"] = PostForm(forum=self.forum, user=self.request.user)
         return context

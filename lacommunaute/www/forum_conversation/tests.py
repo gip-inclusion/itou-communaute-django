@@ -1,6 +1,5 @@
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
-from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
@@ -195,7 +194,6 @@ class PostListViewTest(TestCase):
     def test_get_list_of_posts(self):
         posts = PostFactory.create_batch(2, topic=self.topic, poster=self.user)
         self.client.force_login(self.user)
-        params = {"next_url": self.topic.get_absolute_url()}
 
         response = self.client.get(self.url)
 
@@ -205,9 +203,7 @@ class PostListViewTest(TestCase):
         self.assertContains(response, posts[1].content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
-        self.assertEqual(
-            response.context["inclusion_connect_url"], f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
-        )
+        self.assertEqual(response.context["next_url"], self.topic.get_absolute_url())
 
     def test_upvote_annotations(self):
         post = PostFactory(topic=self.topic, poster=self.user)
