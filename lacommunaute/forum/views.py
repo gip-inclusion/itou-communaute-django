@@ -4,16 +4,13 @@ from django.conf import settings
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from machina.apps.forum.views import ForumView as BaseForumView
-from machina.core.db.models import get_model
 
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.models import User
 
 
 logger = logging.getLogger(__name__)
-
-Topic = get_model("forum_conversation", "Topic")
-Post = get_model("forum_conversation", "Post")
 
 
 class ForumView(BaseForumView):
