@@ -20,7 +20,9 @@
                         {% endblocktrans %}
                     {% endif %}
                 {% endif %}
+                <br />
             {% endif %}
+            <span class="text-muted">{% trans "Total votes:" %} <b>{{ poll.votes|length }}</b></span>
         </p>
         <div class="poll-options">
             {% if can_be_completed and not has_been_completed and not view_results_action %}
