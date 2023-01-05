@@ -2,6 +2,8 @@
 https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
 """
 from django import template
+from django.urls import reverse
+from django.utils.http import urlencode
 
 
 register = template.Library()
@@ -23,3 +25,11 @@ def pluralizefr(value, arg="s"):
         except TypeError:  # len() of unsized object.
             pass
     return ""
+
+
+@register.simple_tag
+def inclusion_connect_url(next_url, anchor=None):
+    if anchor:
+        next_url = f"{next_url}#{anchor}"
+    params = {"next_url": next_url}
+    return f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"

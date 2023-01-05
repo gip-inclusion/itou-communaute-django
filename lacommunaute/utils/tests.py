@@ -1,12 +1,18 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.template import Context, Template
 from django.test import TestCase, override_settings
+from django.urls import reverse
 from django.utils.encoding import force_bytes
+from django.utils.http import urlencode
+from faker import Faker
 from machina.test.factories.attachments import AttachmentFactory
 from machina.test.factories.conversation import PostFactory, create_topic
 from machina.test.factories.forum import create_forum
 
 from lacommunaute.users.factories import UserFactory
+
+
+faker = Faker()
 
 
 class AttachmentsTemplateTagTests(TestCase):
@@ -77,3 +83,17 @@ class UtilsTemplateTagsTestCase(TestCase):
         self.assertEqual(out, "Résultat")
         out = template.render(Context({"counter": 10}))
         self.assertEqual(out, "Résultats")
+
+    def test_inclusion_connect_url(self):
+        next_url = faker.uri()
+        anchor = faker.random_int()
+        inclusion_connect_url = reverse("inclusion_connect:authorize")
+        context = Context({"next_url": next_url, "anchor": anchor})
+
+        out = Template("{% load str_filters %}{% inclusion_connect_url next_url%}").render(context)
+        params = {"next_url": next_url}
+        self.assertEqual(out, f"{inclusion_connect_url}?{urlencode(params)}")
+
+        out = Template("{% load str_filters %}{% inclusion_connect_url next_url anchor %}").render(context)
+        params = {"next_url": f"{next_url}#{anchor}"}
+        self.assertEqual(out, f"{inclusion_connect_url}?{urlencode(params)}")
