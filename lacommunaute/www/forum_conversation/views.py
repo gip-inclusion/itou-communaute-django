@@ -2,8 +2,6 @@ import logging
 
 from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.utils.http import urlencode
 from django.views import View
 from machina.core.loading import get_class
 
@@ -121,15 +119,9 @@ class PostListView(PermissionRequiredMixin, View):
                 "topic": topic,
                 "posts": posts,
                 "form": PostForm(forum=self.topic.forum, user=request.user),
-                "inclusion_connect_url": self.get_inclusion_connect_url(),
+                "next_url": self.topic.get_absolute_url(),
             },
         )
-
-    def get_inclusion_connect_url(self):
-        params = {
-            "next_url": self.topic.get_absolute_url(),
-        }
-        return f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
     def get_controlled_object(self):
         return self.get_topic().forum

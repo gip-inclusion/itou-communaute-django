@@ -3,7 +3,6 @@ import logging
 from django.contrib import messages
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
-from django.utils.http import urlencode
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
@@ -73,10 +72,7 @@ class TopicView(views.TopicView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        params = {
-            "next_url": self.topic.get_absolute_url(),
-        }
-        context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
+        context["next_url"] = self.topic.get_absolute_url()
         context["form"] = PostForm(forum=self.topic.forum, user=self.request.user)
         return context
 
