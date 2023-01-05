@@ -23,9 +23,4 @@
         <input type="submit" class="btn btn-sm btn-secondary" value="{% trans "Submit" %}" />
         <a href="{% if change_vote_action %}.{% else %}?view_results=true{% endif %}" class="btn btn-sm btn-link ml-3">{% trans "View results" %}</a>
     </div>
-    <div class="mt-1">
-        <small class="text-muted">
-            {% trans "Total votes:" %}&nbsp;{{ poll.votes|length }}
-        </small>
-    </div>
 </form>
