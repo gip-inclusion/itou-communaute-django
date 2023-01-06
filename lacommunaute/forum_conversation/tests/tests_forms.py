@@ -5,11 +5,9 @@ from django.test import TestCase
 from faker import Faker
 from machina.conf import settings as machina_settings
 from machina.core.db.models import get_model
-from machina.test.factories.conversation import PostFactory, create_topic
-from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.users.factories import UserFactory
 
 
 faker = Faker()
@@ -18,10 +16,11 @@ Post = get_model("forum_conversation", "Post")
 
 
 class PostFormTest(TestCase):
-    def setUp(self) -> None:
-        self.user = UserFactory()
-        self.forum = create_forum()
-        self.topic = create_topic(forum=self.forum, poster=self.user)
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(with_post=True)
+        cls.user = cls.topic.poster
+        cls.forum = cls.topic.forum
 
     def test_subject_is_hidden(self):
         form = PostForm()

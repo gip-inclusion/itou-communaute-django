@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from django.contrib.auth.models import AnonymousUser, Group
+from django.contrib.auth.models import AnonymousUser
 from django.db import IntegrityError
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
@@ -8,13 +8,11 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.conversation import create_topic
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollOptionFactory
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 
@@ -65,9 +63,7 @@ class ForumViewQuerysetTest(TestCase):
         self.assertEqual(10, self.view.paginate_by)
 
     def test_has_liked(self):
-        topic = TopicFactory(forum=self.forum, poster=self.user)
-        topic.likers.add(self.user)
-        topic.save()
+        TopicFactory(forum=self.forum, poster=self.user, with_like=True)
 
         first_topic = self.view.get_queryset().first()
         self.assertEqual(first_topic.likes, 1)
@@ -84,17 +80,12 @@ class ForumViewQuerysetTest(TestCase):
 class ForumViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        cls.perm_handler = PermissionHandler()
-
-        # Set up a top-level forum
-        cls.forum = ForumFactory()
-
-        # Set up a topic and some posts
-        cls.topic = TopicFactory(forum=cls.forum, poster=cls.user)
-        cls.post = PostFactory.create(topic=cls.topic, poster=cls.user)
+        cls.topic = TopicFactory(with_post=True)
+        cls.user = cls.topic.poster
+        cls.forum = cls.topic.forum
 
         # Assign some permissions
+        cls.perm_handler = PermissionHandler()
         assign_perm("can_read_forum", cls.user, cls.forum)
         assign_perm("can_see_forum", cls.user, cls.forum)
         assign_perm("can_post_without_approval", cls.user, cls.forum)
@@ -153,15 +144,16 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "Voir les 2 autres réponses")
 
     def test_show_more_content(self):
-        self.post.content = faker.paragraph(nb_sentences=100)
-        self.post.save()
+        topic = TopicFactory(
+            with_post=True, poster=self.user, forum=self.forum, post__content=faker.paragraph(nb_sentences=100)
+        )
         topic_url = reverse(
             "forum_conversation_extension:showmore_topic",
             kwargs={
-                "forum_pk": self.forum.pk,
-                "forum_slug": self.forum.slug,
-                "pk": self.topic.pk,
-                "slug": self.topic.slug,
+                "forum_pk": topic.forum.pk,
+                "forum_slug": topic.forum.slug,
+                "pk": topic.pk,
+                "slug": topic.slug,
             },
         )
         self.client.force_login(self.user)
@@ -172,9 +164,7 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "+ voir la suite")
 
     def test_has_liked(self):
-        topic = self.topic
-        topic.likers.add(self.user)
-        topic.save()
+        TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
@@ -183,9 +173,6 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "<span>1 J'aime</span>")
 
     def test_has_not_liked(self):
-        topic = self.post.topic
-        topic.save()
-
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
@@ -193,8 +180,8 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "<span>0 J'aime</span>")
 
     def test_anonymous_like(self):
-        assign_perm("can_read_forum", AnonymousUser(), self.post.topic.forum)
-        params = {"next_url": f"{self.url}#{self.post.topic.pk}"}
+        assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
+        params = {"next_url": self.url}
         url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
         response = self.client.get(self.url)
@@ -240,7 +227,8 @@ class ForumViewTest(TestCase):
         )
 
     def test_poll_form(self):
-        poll_option = TopicPollOptionFactory(poll=TopicPollFactory(topic=self.topic))
+        topic = TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_poll_vote=True)
+        poll_option = topic.poll.options.first()
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
@@ -281,19 +269,17 @@ class ForumModelTest(TestCase):
         poster = UserFactory()
 
         # create fake forum to ensure post and topic number is filter by forum
-        forum_fake = ForumFactory()
-        forum_fake.members_group = Group.objects.create(name="members_forum_fake")
-        forum_fake.members_group.user_set.add(poster)
-        forum_fake.members_group.user_set.add(UserFactory())
-        topic = create_topic(forum=forum_fake, poster=poster)
-        PostFactory(topic=topic, poster=poster)
+        fake_topic = TopicFactory(poster=poster, with_post=True)
+        fake_topic.forum.members_group.user_set.add(poster)
+        fake_topic.forum.members_group.user_set.add(UserFactory())
+        fake_topic.forum.members_group.save()
 
         # create forum to test stats on it
         forum = ForumFactory()
-        forum.members_group = Group.objects.create(name="members_forum")
         forum.members_group.user_set.add(poster)
         forum.members_group.user_set.add(UserFactory())
         forum.members_group.user_set.add(UserFactory())
+        forum.members_group.save()
 
         # create topics and posts
         now = timezone.now()
@@ -301,13 +287,14 @@ class ForumModelTest(TestCase):
             day = now - relativedelta(days=i - 1)
 
             for _ in range(2):
-                # create topic and force topic created date (arg doesn't force created date)
-                topic = create_topic(forum=forum, poster=poster)
+                topic = TopicFactory(forum=forum, poster=poster)
+                # force topic created date (arg doesn't force created date)
                 topic.created = day
                 topic.save()
 
                 for _ in range(3):
                     post = PostFactory(topic=topic, poster=poster)
+                    # force post created date (arg doesn't force created date)
                     post.created = day
                     post.save()
 
@@ -324,7 +311,7 @@ class ForumModelTest(TestCase):
 
     def test_count_engaged_users(self):
         # first user posts, likes, votes
-        topic = TopicFactory(with_post=True, with_like=True, with_vote=True)
+        topic = TopicFactory(with_post=True, with_like=True, with_poll_vote=True)
 
         # second user posts
         PostFactory(topic=topic)
@@ -333,7 +320,7 @@ class ForumModelTest(TestCase):
         PostFactory(topic=topic, anonymous=True)
 
         # post, like, vote in an other forum = ignored in count
-        TopicFactory(with_post=True, with_like=True, with_vote=True)
+        TopicFactory(with_post=True, with_like=True, with_poll_vote=True)
 
         self.assertEqual(
             topic.forum.count_engaged_users,
