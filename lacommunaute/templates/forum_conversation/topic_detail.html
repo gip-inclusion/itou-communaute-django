@@ -1,6 +1,7 @@
 {% extends 'board_base.html' %}
 {% load i18n %}
 {% load forum_conversation_tags %}
+{% load str_filters %}
 
 {% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
 
@@ -37,7 +38,7 @@
                                     </div>
                                 {%endif%}
                                 <div class="post-content">
-                                    {{ post.content.rendered|urlize }}
+                                    {{ post.content.rendered|urlizetrunc_target_blank:30}}
                                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                                 </div>
 

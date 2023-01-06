@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load forum_markup_tags %}
+{% load str_filters %}
 
 <div class="mb-3 row preview">
     <div class="col-12">
@@ -13,7 +14,7 @@
                             {% if post_form.subject.value %}
                                 <p class="font-weight-bold">{{ post_form.subject.value }}</p>
                             {% endif %}
-                            {{ post_form.content.value|safe|rendered|urlize }}
+                            {{ post_form.content.value|safe|rendered|urlizetrunc_target_blank:30}}
                         </div>
                         {% include "forum_conversation/forum_attachments/attachments_preview.html" %}
                     </div>
