@@ -9,11 +9,9 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
 from faker import Faker
-from machina.test.factories.attachments import AttachmentFactory
-from machina.test.factories.conversation import PostFactory, create_topic
-from machina.test.factories.forum import create_forum
 
-from lacommunaute.users.factories import UserFactory
+from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 
 
 faker = Faker()
@@ -22,8 +20,8 @@ faker = Faker()
 class AttachmentsTemplateTagTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        poster = UserFactory()
-        cls.post = PostFactory(topic=create_topic(forum=create_forum(), poster=poster), poster=poster)
+        topic = TopicFactory(with_post=True)
+        cls.post = topic.posts.first()
 
     @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
     def test_is_an_image(self):

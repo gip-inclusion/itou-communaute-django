@@ -1,35 +1,31 @@
 from django.test import TestCase, override_settings
 from django.urls import reverse
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.attachments import AttachmentFactory
-from machina.test.factories.conversation import create_topic
-from machina.test.factories.forum import create_forum
-from machina.test.factories.polls import TopicPollFactory, TopicPollVoteFactory
 from machina.test.factories.tracking import TopicReadTrackFactory
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
+from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.users.factories import UserFactory
 
 
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
-Topic = get_model("forum_conversation", "Topic")
 
 
 class ModeratorEngagementViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserFactory()
-        # cls.perm_handler = PermissionHandler()
-        cls.post = PostFactory(topic=create_topic(forum=create_forum(), poster=cls.user), poster=cls.user)
+        cls.topic = TopicFactory(with_post=True)
+        cls.user = cls.topic.poster
         cls.url = reverse(
             "forum_extension:engagement",
-            kwargs={"pk": cls.post.topic.forum.pk, "slug": cls.post.topic.forum.slug},
+            kwargs={"pk": cls.topic.forum.pk, "slug": cls.topic.forum.slug},
         )
 
     @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
     def test_queryset(self):
-        assign_perm("can_approve_posts", self.user, self.post.topic.forum)
+        assign_perm("can_approve_posts", self.user, self.topic.forum)
         self.client.force_login(self.user)
 
         users = UserFactory.create_batch(3)
@@ -37,18 +33,18 @@ class ModeratorEngagementViewTest(TestCase):
         # count views
         # count likes
         for user in users:
-            TopicReadTrackFactory(topic=self.post.topic, user=user)
-            self.post.topic.likers.add(user)
-        self.post.topic.save()
+            TopicReadTrackFactory(topic=self.topic, user=user)
+            self.topic.likers.add(user)
+        self.topic.save()
 
         # count replies
-        PostFactory(topic=self.post.topic, poster=self.user)
+        PostFactory(topic=self.topic, poster=self.user)
 
         # count attachments
-        AttachmentFactory(post=self.post)
+        AttachmentFactory(post=self.topic.posts.first())
 
         # count votes
-        poll = TopicPollFactory(topic=self.post.topic)
+        poll = TopicPollFactory(topic=self.topic)
         TopicPollVoteFactory.create_batch(4, poll_option__poll=poll, voter=self.user)
 
         response = self.client.get(self.url)
@@ -58,29 +54,29 @@ class ModeratorEngagementViewTest(TestCase):
         )
 
         # exclued topic not approved
-        not_approved_topic = TopicFactory(forum=self.post.topic.forum, poster=self.user, approved=False)
+        not_approved_topic = TopicFactory(forum=self.topic.forum, poster=self.user, approved=False)
         response = self.client.get(self.url)
         self.assertNotIn(not_approved_topic, response.context["topics"])
 
         # order
-        new_topic = TopicFactory(forum=self.post.topic.forum, poster=self.user)
+        new_topic = TopicFactory(forum=self.topic.forum, poster=self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.context["topics"].first(), new_topic)
 
     def test_context(self):
-        assign_perm("can_approve_posts", self.user, self.post.topic.forum)
+        assign_perm("can_approve_posts", self.user, self.topic.forum)
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertEqual(response.context["forum"], self.post.topic.forum)
+        self.assertEqual(response.context["forum"], self.topic.forum)
         topic = response.context["topics"][0]
-        self.assertEqual(topic.id, self.post.topic.id)
+        self.assertEqual(topic.id, self.topic.id)
 
     def test_permission(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
 
-        assign_perm("can_approve_posts", self.user, self.post.topic.forum)
+        assign_perm("can_approve_posts", self.user, self.topic.forum)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(
@@ -88,10 +84,10 @@ class ModeratorEngagementViewTest(TestCase):
             reverse(
                 "forum_conversation:topic",
                 kwargs={
-                    "forum_pk": self.post.topic.forum.pk,
-                    "forum_slug": self.post.topic.forum.slug,
-                    "pk": self.post.topic.pk,
-                    "slug": self.post.topic.slug,
+                    "forum_pk": self.topic.forum.pk,
+                    "forum_slug": self.topic.forum.slug,
+                    "pk": self.topic.pk,
+                    "slug": self.topic.slug,
                 },
             ),
         )
@@ -101,7 +97,7 @@ class ModeratorEngagementViewTest(TestCase):
         response = self.client.get(
             reverse(
                 "forum_extension:engagement",
-                kwargs={"pk": 9999, "slug": self.post.topic.forum.slug},
+                kwargs={"pk": 9999, "slug": self.topic.forum.slug},
             )
         )
         self.assertEqual(response.status_code, 404)
@@ -110,7 +106,7 @@ class ModeratorEngagementViewTest(TestCase):
 class FunnelViewTest(TestCase):
     def test_access(self):
         user = UserFactory()
-        forum = create_forum()
+        forum = ForumFactory()
         url = reverse(
             "forum_extension:funnel",
             kwargs={"pk": forum.pk, "slug": forum.slug},
