@@ -5,6 +5,7 @@
 {% load forum_conversation_tags %}
 {% load forum_permission_tags %}
 {% load forum_tracking_tags %}
+{% load str_filters %}
 
 {% block sub_title %}{{ forum.name }}{% endblock sub_title %}
 {% block meta_description %}{{forum.description}}{% endblock meta_description %}"
@@ -14,7 +15,7 @@
         <div class="col-12">
             <h1 class="mb-1">{{ forum.name }}</h1>
             {%if forum.description %}
-                <p class="lead">{{forum.description}}</small>
+                <p class="lead">{{forum.description|urlizetrunc_target_blank:30}}</small>
             {%endif%}
         </div>
     </div>
