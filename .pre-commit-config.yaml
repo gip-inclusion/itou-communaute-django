@@ -3,7 +3,6 @@ repos:
     rev: '1.2'
     hooks:
       - id: poetry-check
-      - id: poetry-lock
       - id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev", "--without-hashes"]
       - id: poetry-export
