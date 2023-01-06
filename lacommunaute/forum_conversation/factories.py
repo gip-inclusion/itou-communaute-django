@@ -4,6 +4,7 @@ from machina.test.factories.conversation import PostFactory as BasePostFactory, 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -17,6 +18,13 @@ class PostFactory(BasePostFactory):
             anonymous_key=factory.fuzzy.FuzzyInteger(42),
             username=factory.fuzzy.FuzzyText(suffix="@neuralia.co"),
             poster=None,
+        )
+        with_upvote = factory.Trait(
+            upvote=factory.RelatedFactory(
+                UpVoteFactory,
+                factory_related_name="post",
+                voter=factory.SelfAttribute("post.poster"),
+            )
         )
 
 
