@@ -1,1 +1,3 @@
-{{topic.first_post.content.rendered|urlize}}
+{% load str_filters %}
+
+{{topic.first_post.content.rendered|urlizetrunc_target_blank:30}}

@@ -2,6 +2,7 @@
 
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
+{% load str_filters %}
 
 <div class="card post my-3 bg-light has-links-inside ml-3">
     <div class="card-body">
@@ -14,7 +15,7 @@
                     {% include "forum_conversation/partials/post_upvotes.html"%}
                 </div>
                 <div class="post-content">
-                    {{ post.content.rendered|urlize }}
+                    {{ post.content.rendered|urlizetrunc_target_blank:30}}
                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                 </div>
 
