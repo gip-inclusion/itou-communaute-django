@@ -4,6 +4,7 @@
 {% load forum_conversation_tags %}
 {% load forum_member_tags %}
 {% load forum_tracking_tags %}
+{% load str_filters %}
 
 <div class="row mb-3 mb-md-5">
     <div class="col-12">
@@ -64,7 +65,7 @@
                                             {% endif %}
                                             <td class="align-top">
                                                 <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}" class="forum-name-link h4 d-block mb-1">{{ node.obj.name }}</a>
-                                                <div class="fs-sm lh-sm">{{ node.obj.description.rendered }}</div>
+                                                <div class="fs-sm lh-sm">{{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}</div>
                                                 <div class="sub-forums"><p class="fs-sm mb-0">{{ children }}</p></div>
                                             </td>
                                         </tr>
