@@ -38,12 +38,21 @@ body {
 .card.topiclist .card-body {
 
   .topic-thumbnail {
+    display: flex;
+    align-items: end;
+    justify-content: center;
     width: 42px;
     height: 42px;
-    text-align: center;
     margin-right: 0.50rem;
     border-radius: 50%;
-    padding-top: 0.25rem;
+    overflow: hidden;
+
+    >img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+    }
   }
 
   .topic-icon {

@@ -25,7 +25,7 @@
                                     <div class="card-header d-flex align-items-center mb-1">
                                         <div class="topic-thumbnail bg-light">
                                             {% if topic.poster.forum_profile.avatar %}
-                                                <img class="img-thumbnail" src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}">
+                                                <img src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}" />
                                             {% else %}
                                                 <i class="ri-user-line ri-2x"></i>
                                             {% endif %}
