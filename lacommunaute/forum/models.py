@@ -95,7 +95,8 @@ class Forum(AbstractForum):
         voters = (
             User.objects.filter(poll_votes__poll_option__poll__topic__forum__in=forums).values_list("email").distinct()
         )
-        authenticated_users = posters | likers | voters
+        upvoters = User.objects.filter(upvotes__post__topic__forum__in=forums).values_list("email").distinct()
+        authenticated_users = posters | likers | voters | upvoters
 
         # Anonymous post are not linked to user. Legacy Machina `username` field is overriden to store
         # the email of anonymous poster. As long we want to deduplicate email list between authenticated
@@ -112,6 +113,7 @@ class Forum(AbstractForum):
             "posters": posters.count(),
             "likers": likers.count(),
             "voters": voters.count(),
+            "upvoters": upvoters.count(),
             "authenticated_users": authenticated_users.count(),
             "anonymous_posters": anonymous_posters.count(),
             "all_users": len(set(authenticated_users) | set(anonymous_posters)),
@@ -120,4 +122,3 @@ class Forum(AbstractForum):
         # TODO vincentporte - to be added :
         # - anonymous_voters after emails will be collected in anonymous votes
         # - read_tracks after read_tracks will be computed back
-        # - upvotes

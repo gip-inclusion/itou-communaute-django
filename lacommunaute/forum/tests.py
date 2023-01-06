@@ -314,7 +314,7 @@ class ForumModelTest(TestCase):
         topic = TopicFactory(with_post=True, with_like=True, with_poll_vote=True)
 
         # second user posts
-        PostFactory(topic=topic)
+        PostFactory(topic=topic, with_upvote=True)
 
         # anonymous user posts
         PostFactory(topic=topic, anonymous=True)
@@ -324,5 +324,13 @@ class ForumModelTest(TestCase):
 
         self.assertEqual(
             topic.forum.count_engaged_users,
-            {"posters": 2, "likers": 1, "voters": 1, "authenticated_users": 2, "anonymous_posters": 1, "all_users": 3},
+            {
+                "posters": 2,
+                "likers": 1,
+                "voters": 1,
+                "upvoters": 1,
+                "authenticated_users": 2,
+                "anonymous_posters": 1,
+                "all_users": 3,
+            },
         )
