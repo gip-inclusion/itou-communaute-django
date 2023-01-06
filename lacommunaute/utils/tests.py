@@ -116,3 +116,10 @@ class UtilsTemplateTagsTestCase(TestCase):
         d = datetime.now() - timedelta(days=10)
         out = template.render(Context({"date": d}))
         self.assertEqual(out, f"le {date(d)}, {time(d)}")
+
+    def test_urlizetrunc_target_blank(self):
+        template = Template("{% load str_filters %}{{ url|urlizetrunc_target_blank:16 }}")
+        out = template.render(Context({"url": "www.neuralia.co/mission"}))
+        self.assertEqual(
+            out, '<a target="_blank" href="http://www.neuralia.co/mission" rel="nofollow">www.neuralia.co…</a>'
+        )
