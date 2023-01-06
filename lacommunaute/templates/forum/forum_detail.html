@@ -23,7 +23,7 @@
         {% forum_list sub_forums %}
     {% endif %}
     {% if forum.is_forum %}
-        <div class="mt-4 row justify-content-between">
+        <div class="row justify-content-between mt-4">
             {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
             {% get_permission 'can_approve_posts' forum request.user as user_can_access_stats %}
             {% if user_can_add_topic or user_can_access_stats %}
@@ -57,7 +57,7 @@
         {% with topic_list_title=topics_title_trans unread_topics=unread_topics%}
             {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
         {% endwith %}
-        <div class="mt-5 mb-5 row">
+        <div class="row mt-5 mb-5">
             <div class="col-12">
                 {% with "justify-content-center" as pagination_size %}
                     {% include "partials/pagination.html" %}

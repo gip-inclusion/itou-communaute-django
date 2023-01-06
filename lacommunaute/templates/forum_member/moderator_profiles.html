@@ -29,19 +29,18 @@
                                     </h3>
                                 </div>
                             </div>
-
                         {% empty %}
                             <p>No body yet…</p>
                         {% endfor %}
                     </div>
-                    <div class="mt-5 mb-5 row">
+                    <div class="row mt-5 mb-5">
                         <div class="col-12">
                             {% with "justify-content-center" as pagination_size %}
                                 {% include "partials/pagination.html" %}
                             {% endwith %}
                         </div>
                     </div>
-                    <div class="mt-5 mb-5 row">
+                    <div class="row mt-5 mb-5">
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="validationLink01">Lier pour inviter de nouveaux membres</label>
