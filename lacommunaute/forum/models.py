@@ -9,12 +9,9 @@ from django.db.models.functions import Coalesce
 from django.utils import timezone
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
-from machina.core.db.models import get_model
 
-
-Topic = get_model("forum_conversation", "Topic")
-Post = get_model("forum_conversation", "Post")
-User = get_model("users", "User")
+from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.users.models import User
 
 
 class Forum(AbstractForum):
