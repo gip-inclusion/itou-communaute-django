@@ -1,10 +1,13 @@
 from datetime import datetime, timedelta
 
+from dateutil.relativedelta import relativedelta
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models.functions import TruncMonth, TruncWeek
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
@@ -12,6 +15,9 @@ from faker import Faker
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
+from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import User
+from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_objects_for_timeline_chart
 
 
 faker = Faker()
@@ -120,4 +126,34 @@ class UtilsTemplateTagsTestCase(TestCase):
         out = template.render(Context({"url": "www.neuralia.co/mission"}))
         self.assertEqual(
             out, '<a target="_blank" href="http://www.neuralia.co/mission" rel="nofollow">www.neuralia.co…</a>'
+        )
+
+
+class UtilsStatsTest(TestCase):
+    def test_count_objects_per_period(self):
+        now = timezone.now()
+        one_month_ago = now - relativedelta(months=1)
+        UserFactory(date_joined=one_month_ago)
+        UserFactory.create_batch(2, date_joined=now)
+
+        # test format month
+        self.assertEqual(
+            count_objects_per_period(User.objects.annotate(period=TruncMonth("date_joined")), "users"),
+            [{"period": one_month_ago.strftime("%b %Y"), "users": 1}, {"period": now.strftime("%b %Y"), "users": 2}],
+        )
+
+        # test format week
+        self.assertEqual(
+            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="week"),
+            [{"period": one_month_ago.strftime("%Y-%W"), "users": 1}, {"period": now.strftime("%Y-%W"), "users": 2}],
+        )
+
+    def test_format_counts_of_objects_for_timeline_chart(self):
+        datas = [{"period": "Dec 2022", "posts": 1}, {"period": "Feb 2023", "posts": 2}] + [
+            {"period": "Dec 2022", "users": 1},
+            {"period": "Jan 2023", "users": 2},
+        ]
+        self.assertEqual(
+            format_counts_of_objects_for_timeline_chart(datas),
+            {"period": ["Dec 2022", "Feb 2023", "Jan 2023"], "users": [1, 0, 2], "posts": [1, 2, 0]},
         )
