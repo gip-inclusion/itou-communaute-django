@@ -1,12 +1,17 @@
 import logging
 
+from django.db.models.functions import TruncMonth
 from django.shortcuts import render
 from django.views.generic import ListView
-from machina.core.db.models import get_model
-from machina.core.loading import get_class
+from django.views.generic.base import TemplateView
 
+from lacommunaute.forum.models import Forum
+from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
+from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.users.models import User
+from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_objects_for_timeline_chart
 
-Forum = get_model("forum", "Forum")
 
 logger = logging.getLogger(__name__)
 
@@ -21,31 +26,21 @@ def contact(request):
     return render(request, "pages/contact.html")
 
 
-def statistiques(request):
+class StatistiquesPageView(TemplateView):
+    template_name = "pages/statistiques.html"
 
-    # Visibility Tree is used to check forum permissions
-    ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
-    content_tree = ForumVisibilityContentTree.from_forums(
-        request.forum_permission_handler.forum_list_filter(
-            Forum.objects.all(),
-            request.user,
-        ),
-    )
+    def get_context_data(self, **kwargs):
+        datas = (
+            count_objects_per_period(User.objects.annotate(period=TruncMonth("date_joined")), "users")
+            + count_objects_per_period(Topic.objects.annotate(period=TruncMonth("created")), "topics")
+            + count_objects_per_period(Post.objects.annotate(period=TruncMonth("created")), "posts")
+            + count_objects_per_period(UpVote.objects.annotate(period=TruncMonth("created_at")), "upvotes")
+            + count_objects_per_period(TopicPollVote.objects.annotate(period=TruncMonth("timestamp")), "pollvotes")
+        )
 
-    forums_stats = []
-    for node in content_tree.top_nodes:
-        stats = node.obj.get_stats(7)
-        forum_stats = {
-            "name": node.obj.name,
-            "is_private": node.obj.is_private,  # add this because members counters make sense only if forum is private
-            "posts_count": node.posts_count,
-            "topics_count": node.topics_count,
-            "members_count": stats["members"][-1],
-            "stats": stats,
-        }
-        forums_stats.append(forum_stats)
-
-    return render(request, "pages/statistiques.html", context={"forums_stats": forums_stats})
+        context = super().get_context_data(**kwargs)
+        context["stats"] = format_counts_of_objects_for_timeline_chart(datas)
+        return context
 
 
 def accessibilite(request):
