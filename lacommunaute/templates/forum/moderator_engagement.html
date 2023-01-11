@@ -51,13 +51,12 @@
                     {% if user_can_access_stats %}
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
-                                <caption>{{ forum.name }}: {% trans "Topics Engagement" %}</caption>
+                                <caption>{{ forum.name }}: {% trans "Engagement" %}</caption>
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">{% trans "Topics" %}</th>
-                                        <th scope="col" class="text-center">{% trans "Views" %}</th>
                                         <th scope="col" class="text-center">{% trans "Likes" %}</th>
-                                        <th scope="col" class="text-center">{% trans "Replies" %}</th>
+                                        <th scope="col" class="text-center">{% trans "Posts" %}</th>
                                         <th scope="col" class="text-center">{% trans "Attached" %}</th>
                                         <th scope="col" class="text-center">{% trans "Votes" %}</th>
                                     </tr>
@@ -70,9 +69,8 @@
                                                 <br />
                                                 <small>{{ topic.created }}</small>
                                             </th>
-                                            <td class="text-center">{{topic.views}}</td>
                                             <td class="text-center">{{topic.likes}}</td>
-                                            <td class="text-center">{{topic.replies|add:"-1" }}</td>{% comment %}only count replies{% endcomment %}
+                                            <td class="text-center">{{topic.messages }}</td>
                                             <td class="text-center">{{topic.attached }}</td>
                                             <td class="text-center">{{topic.votes }}</td>
                                         </tr>
