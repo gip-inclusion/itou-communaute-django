@@ -49,8 +49,8 @@ class ModeratorEngagementViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(
-            response.context["topics"].values("likes", "views", "replies", "attached", "votes").first(),
-            {"likes": 3, "views": 3, "replies": 2, "attached": 1, "votes": 4},
+            response.context["topics"].values("likes", "messages", "attached", "votes").first(),
+            {"likes": 3, "messages": 2, "attached": 1, "votes": 4},
         )
 
         # exclued topic not approved
@@ -66,10 +66,12 @@ class ModeratorEngagementViewTest(TestCase):
     def test_context(self):
         assign_perm("can_approve_posts", self.user, self.topic.forum)
         self.client.force_login(self.user)
+
         response = self.client.get(self.url)
         self.assertEqual(response.context["forum"], self.topic.forum)
         topic = response.context["topics"][0]
         self.assertEqual(topic.id, self.topic.id)
+        self.assertEqual(response.context["stats"], self.topic.forum.get_stats(7))
 
     def test_permission(self):
         self.client.force_login(self.user)

@@ -26,13 +26,13 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         """Returns the list of items for this view."""
-        self.forum = self.get_forum()
         return (
-            self.forum.topics.exclude(approved=False)
+            self.get_forum()
+            .topics.exclude(approved=False)
             .annotate(
                 likes=Count("likers", distinct=True),
                 views=Count("tracks", distinct=True),
-                replies=Count("posts", distinct=True),
+                messages=Count("posts", distinct=True),
                 attached=Count("posts__attachments", distinct=True),
                 votes=Count("poll__options__votes", distinct=True),
             )
@@ -46,6 +46,7 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["forum"] = self.forum
+        context["stats"] = self.forum.get_stats(7)
         return context
 
 
