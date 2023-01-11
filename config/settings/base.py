@@ -293,3 +293,7 @@ if _sentry_dsn:
 # WIDGETS
 # ---------------------------------------
 MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextareaWidget"
+
+
+# STATISTIQUES
+DAYS_IN_A_PERIOD = 15
