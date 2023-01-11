@@ -28,7 +28,13 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item text-primary" href="{% url 'members:profile' user.id %}">Accéder à mon profil</a>
+                        <a href="{% url 'members:profile' user.id %}"
+                            class="dropdown-item text-primary matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="member">
+                            Accéder à mon profil
+                        </a>
                     </li>
                     {% if user.is_superuser %}
                         <li>

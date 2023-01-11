@@ -39,7 +39,7 @@ class ForumProfileListViewTest(TestCase):
                 self.assertContains(
                     response,
                     # legacy machina reversed url
-                    reverse("forum_member:profile", kwargs={"pk": forum_profile.user_id}),
+                    reverse("members:profile", kwargs={"pk": forum_profile.user_id}),
                 )
 
 
@@ -83,7 +83,7 @@ class ModeratorProfileListView(TestCase):
         self.client.force_login(self.profile.user)
         response = self.client.get(self.url)
         self.assertContains(response, forum_profile.user.get_full_name())
-        self.assertContains(response, reverse("forum_member:profile", kwargs={"pk": forum_profile.user_id}))
+        self.assertContains(response, reverse("members:profile", kwargs={"pk": forum_profile.user_id}))
 
     def test_ordering_and_count(self):
         self.forum.members_group.user_set.add(ForumProfileFactory(user__first_name="z").user)
