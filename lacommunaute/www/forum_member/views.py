@@ -32,12 +32,6 @@ class ForumProfileUpdateView(BaseForumProfileUpdateView):
         return reverse("members:profile", kwargs={"pk": self.request.user.pk})
 
 
-class ForumProfileListView(ListView):
-    model = ForumProfile
-    template_name = "forum_member/profiles.html"
-    context_object_name = "forum_profiles"
-
-
 class ModeratorProfileListView(PermissionRequiredMixin, ListView):
     model = ForumProfile
     template_name = "forum_member/moderator_profiles.html"

@@ -2,7 +2,6 @@ from django.urls import path
 
 from lacommunaute.www.forum_member.views import (
     ForumProfileDetailView,
-    ForumProfileListView,
     ForumProfileUpdateView,
     JoinForumFormView,
     JoinForumLandingView,
@@ -13,7 +12,6 @@ from lacommunaute.www.forum_member.views import (
 app_name = "members"
 
 urlpatterns = [
-    path("", ForumProfileListView.as_view(), name="profiles"),
     path("profile/edit/", ForumProfileUpdateView.as_view(), name="profile_update"),
     path("profile/<str:pk>/", ForumProfileDetailView.as_view(), name="profile"),
     path("forum/<str:slug>-<int:pk>/", ModeratorProfileListView.as_view(), name="forum_profiles"),
