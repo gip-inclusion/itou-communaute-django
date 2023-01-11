@@ -27,6 +27,10 @@
         {% endfor %}
     </ul>
     <div class="form-actions">
-        <input type="submit" class="btn btn-sm btn-secondary matomo-event" value="{% trans "Submit" %}" data-matomo-category="engagement" data-matomo-action="vote"/>
+        <input type="submit" class="btn btn-sm btn-secondary matomo-event"
+            value="{% trans "Submit" %}"
+            data-matomo-category="engagement"
+            data-matomo-action="vote"
+            data-matomo-option="poll"/>
     </div>
 </form>
