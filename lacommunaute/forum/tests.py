@@ -101,7 +101,7 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response,
             reverse(
-                "forum_conversation_extension:comment_topic",
+                "forum_conversation_extension:post_create",
                 kwargs={
                     "forum_pk": self.forum.pk,
                     "forum_slug": self.forum.slug,
