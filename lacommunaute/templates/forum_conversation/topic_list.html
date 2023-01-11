@@ -34,7 +34,11 @@
                                             <span class="topic-icon font-weight-normal {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
                                                 <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl"></i>
                                             </span>
-                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}">
+                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                                class="matomo-event"
+                                                data-matomo-category="engagement"
+                                                data-matomo-action="view"
+                                                data-matomo-option="topic">
                                                 {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
                                             </a>
                                         </p>
