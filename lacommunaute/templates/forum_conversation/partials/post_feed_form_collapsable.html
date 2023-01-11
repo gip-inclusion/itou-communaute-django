@@ -12,8 +12,10 @@
                         <form hx-post="{% url 'forum_conversation_extension:post_create' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                             hx-target="#postinfeedarea{{topic.pk}}"
                             hx-swap="outerHTML"
-                            class="majorpoints"
-                        >
+                            class="majorpoints matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="contribute"
+                            data-matomo-option="post">
                             {% csrf_token %}
 
                             {% if post_form.non_field_errors %}

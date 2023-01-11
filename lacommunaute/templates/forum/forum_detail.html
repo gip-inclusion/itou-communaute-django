@@ -29,7 +29,11 @@
             {% if user_can_add_topic or user_can_access_stats %}
                 <div class="col-12 col-sm-auto forum-actions-block">
                     {% if user_can_add_topic %}
-                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}" class="btn btn-primary btn-ico">
+                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                            class="btn btn-primary btn-ico matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="contribute"
+                            data-matomo-option="topic">
                             <i class="ri-chat-new-line ri-lg"></i>
                             <span>{% trans "New topic" %}</span>
                         </a>
