@@ -9,7 +9,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 post-content-wrapper">
-                        <form hx-post="{% url 'forum_conversation_extension:comment_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                        <form hx-post="{% url 'forum_conversation_extension:post_create' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                             hx-target="#postinfeedarea{{topic.pk}}"
                             hx-swap="outerHTML"
                             class="majorpoints"

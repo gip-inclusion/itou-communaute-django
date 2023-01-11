@@ -254,7 +254,7 @@ class PostFeedCreateViewTest(TestCase):
         cls.topic = TopicFactory()
         cls.user = cls.topic.poster
         cls.url = reverse(
-            "forum_conversation_extension:comment_topic",
+            "forum_conversation_extension:post_create",
             kwargs={
                 "forum_pk": cls.topic.forum.pk,
                 "forum_slug": cls.topic.forum.slug,
@@ -279,7 +279,7 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(
             reverse(
-                "forum_conversation_extension:comment_topic",
+                "forum_conversation_extension:post_create",
                 kwargs={
                     "forum_pk": self.topic.forum.pk,
                     "forum_slug": self.topic.forum.slug,
