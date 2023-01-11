@@ -14,7 +14,15 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Accueil</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'forum:index' %}">{% trans "Forum" %}</a></li>
-                            <li class="breadcrumb-item active"><a href="{% url 'forum:forum' forum.slug forum.id %}">{{ forum.name }}</a></li>
+                            <li class="breadcrumb-item active">
+                                <a href="{% url 'forum:forum' forum.slug forum.id %}"
+                                    class="matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="view"
+                                    data-matomo-option="forum">
+                                    {{ forum.name }}
+                                </a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">Engagement</li>{% comment %} TODO: Dynamiser la valeur engagement {% endcomment %}
                         </ol>
                     </nav>
