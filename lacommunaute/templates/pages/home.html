@@ -82,7 +82,11 @@
                             </div>
                             <div class="card-footer text-right">
                                 {% if user_can_read_forum %}
-                                    <a href="{% url 'forum:forum' forum.slug forum.id %}" class="btn btn-ico btn-link stretched-link">
+                                    <a href="{% url 'forum:forum' forum.slug forum.id %}"
+                                        class="btn btn-ico btn-link stretched-link matomo-event"
+                                        data-matomo-category="engagement"
+                                        data-matomo-action="view"
+                                        data-matomo-option="forum">
                                         <span>{% trans "Go to this forum" %}</span>
                                         <i class="ri-external-link-line ri-lg"></i>
                                     </a>
