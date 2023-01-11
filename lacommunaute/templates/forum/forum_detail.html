@@ -43,7 +43,7 @@
                             <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
-                            <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Topics Engagement" %}</a>
+                            <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Engagement" %}</a>
                             <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
                                 class="dropdown-item matomo-event"
                                 data-matomo-category="engagement"
