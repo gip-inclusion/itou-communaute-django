@@ -38,23 +38,16 @@
         <div class="s-section__container container">
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
-                    {% for forum_stats in forums_stats %}
-                        <div class="card c-card mb-3 mb-md-5">
-                            <div class="card-header">
-                                <h2>{{ forum_stats.name }}</h2>
-                            </div>
-                            <div class="card-body">
-                                <p>
-                                    {% if forum_stats.is_private %}<span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.members_count }} membre{{ forum_stats.members_count|pluralizefr }}</span>{% endif %}
-                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.topics_count }} sujet{{ forum_stats.topics_count|pluralizefr }}</span>
-                                    <span class="badge badge-base badge-pill badge-communaute text-white">{{ forum_stats.posts_count }} post{{ forum_stats.posts_count|pluralizefr }}</span>
-                                </p>
-                                <div>
-                                    <canvas id="statChart{{ forloop.counter }}"></canvas>
-                                </div>
+                    <div class="card c-card mb-3 mb-md-5">
+                        <div class="card-header">
+                            <h2>Activités mensuelles</h2>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <canvas id="statChart"></canvas>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,38 +57,42 @@
 {% block extra_js %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
-    {% for forum_stats in forums_stats %}
-        <script>
-            const ctx{{ forloop.counter }} = document.getElementById('statChart{{ forloop.counter }}');
-            new Chart(ctx{{ forloop.counter }}, {
-                type: 'line',
-                data: {
-                    labels: {{ forum_stats.stats.days|js }},
-                    datasets: [{
-                        label: 'Nombre de sujets',
-                        data: {{ forum_stats.stats.topics|js }},
+    <script>
+        const ctx_stats = document.getElementById('statChart');
+        new Chart(ctx_stats, {
+            type: 'line',
+            data: {
+                labels: {{ stats.period|js }},
+                datasets: [
+                    {
+                        label: 'Nombre de nouveaux utilisateurs',
+                        data: {{ stats.users|js }},
                     },
-                        {
-                            label: 'Nombre de posts',
-                            data: {{ forum_stats.stats.posts|js }},
-                        }
-                        {% if forum_stats.is_private %}
-                            ,
-                            {
-                                label: 'Nombre de membres',
-                                data: {{ forum_stats.stats.members|js }},
-                            }
-                        {% endif %}
-                    ]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                    {
+                        label: 'Nombre de sujets',
+                        data: {{ stats.topics|js }},
+                    },
+                    {
+                        label: 'Nombre de messages',
+                        data: {{ stats.posts|js }},
+                    },
+                    {
+                        label: 'Nombre de participations aux sondages',
+                        data: {{ stats.pollvotes|js }},
+                    },
+                    {
+                        label: 'Nombre de votes',
+                        data: {{ stats.upvotes|js }},
+                    },
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        </script>
-    {% endfor %}
+            }
+        });
+    </script>
 {% endblock %}
