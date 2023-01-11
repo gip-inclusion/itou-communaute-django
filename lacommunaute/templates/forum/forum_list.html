@@ -85,7 +85,6 @@
                                                 By: {{ poster_username }}
                                             {% endblocktrans %}
                                         {% endif %}
-                                        &nbsp;<a href="{% url 'forum_conversation:topic' node.obj.slug node.obj.pk node.last_post.topic.slug node.last_post.topic.pk %}?post={{ node.last_post.pk }}#{{ node.last_post.pk }}"></a>
                                         <br />
                                         <small>{{ node.last_post.created }}</small>
                                     {% else %}
@@ -161,7 +160,6 @@
                                                 By: {{ poster_username }}
                                             {% endblocktrans %}
                                         {% endif %}
-                                        &nbsp;<a href="{% url 'forum_conversation:topic' node.obj.slug node.obj.pk node.last_post.topic.slug node.last_post.topic.pk %}?post={{ node.last_post.pk }}#{{ node.last_post.pk }}"></a>
                                         <br />
                                         <small>{{ node.last_post.created }}</small>
                                     {% else %}
