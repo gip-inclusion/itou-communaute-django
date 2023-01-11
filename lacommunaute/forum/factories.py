@@ -8,3 +8,4 @@ from lacommunaute.users.factories import GroupFactory
 class ForumFactory(BaseForumFactory):
     type = Forum.FORUM_POST
     members_group = factory.SubFactory(GroupFactory, name=factory.SelfAttribute("..name"))
+    name = factory.Faker("name")
