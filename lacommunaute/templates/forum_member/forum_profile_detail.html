@@ -33,7 +33,6 @@
             <div class="row recent-posts">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">{% trans "Recent posts" %}{% if recent_posts %}&nbsp;(<a href="{% url 'forum_member:user_posts' profile.user_id %}">{% trans "View all" %}</a>){% endif %}</div>
                         <div class="card-body">
                             {% for post in recent_posts %}
                                 <div class="row post">
