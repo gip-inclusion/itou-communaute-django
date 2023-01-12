@@ -273,7 +273,7 @@ class ForumModelTest(TestCase):
         UpVoteFactory(post=topic.posts.first(), voter=topic.poster)
 
         # create old instance to ensure they are filtered
-        fifteen_days_ago = timezone.now() - relativedelta(days=20)
+        fifteen_days_ago = timezone.now() - relativedelta(days=15)
         old_topic = TopicFactory(forum=forum)
         old_topic.created = fifteen_days_ago
         old_topic.save()
