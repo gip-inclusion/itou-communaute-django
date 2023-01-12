@@ -8,6 +8,9 @@ from django.views.generic import FormView, ListView, TemplateView
 from machina.apps.forum_member.views import (
     ForumProfileDetailView as BaseForumProfileDetailView,
     ForumProfileUpdateView as BaseForumProfileUpdateView,
+    TopicSubscribeView as BaseTopicSubscribeView,
+    TopicSubscriptionListView as BaseTopicSubscriptionListView,
+    TopicUnsubscribeView as BaseTopicUnsubscribeView,
 )
 from machina.core.loading import get_class
 
@@ -131,3 +134,15 @@ class JoinForumFormView(LoginRequiredMixin, FormView):
                 "pk": self.forum.pk,
             },
         )
+
+
+class TopicSubscribeView(BaseTopicSubscribeView):
+    pass
+
+
+class TopicUnsubscribeView(BaseTopicUnsubscribeView):
+    pass
+
+
+class TopicSubscriptionListView(BaseTopicSubscriptionListView):
+    pass
