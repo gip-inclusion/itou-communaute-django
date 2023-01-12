@@ -34,7 +34,7 @@
                         </li>
                     </ul>
                     <p>
-                        <a href="{% url 'forum:index' %}" class="btn btn-primary">
+                        <a href="{% url 'forum_extension:index' %}" class="btn btn-primary">
                             <span>Accéder aux {% trans "Forums"|lower %}</span>
                         </a>
                     </p>
@@ -82,7 +82,7 @@
                             </div>
                             <div class="card-footer text-right">
                                 {% if user_can_read_forum %}
-                                    <a href="{% url 'forum:forum' forum.slug forum.id %}"
+                                    <a href="{% url 'forum_extension:forum' forum.slug forum.id %}"
                                         class="btn btn-ico btn-link stretched-link matomo-event"
                                         data-matomo-category="engagement"
                                         data-matomo-action="view"

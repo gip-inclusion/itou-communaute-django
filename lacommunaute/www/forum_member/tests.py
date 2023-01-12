@@ -152,7 +152,7 @@ class JoinForumFormViewTest(TestCase):
         self.assertRedirects(
             response,
             reverse(
-                "forum:forum",
+                "forum_extension:forum",
                 kwargs={
                     "slug": self.forum.slug,
                     "pk": self.forum.pk,

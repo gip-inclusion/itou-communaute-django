@@ -19,7 +19,7 @@ track_handler = TrackingHandler()
 class SuccessUrlMixin:
     def get_success_url(self):
         return reverse(
-            "forum:forum",
+            "forum_extension:forum",
             kwargs={
                 "pk": self.forum_post.topic.forum.pk,
                 "slug": self.forum_post.topic.forum.slug,
@@ -55,7 +55,7 @@ class PostDeleteView(views.PostDeleteView):
         messages.success(self.request, self.success_message)
 
         return reverse(
-            "forum:forum",
+            "forum_extension:forum",
             kwargs={
                 "slug": self.object.topic.forum.slug,
                 "pk": self.object.topic.forum.pk,

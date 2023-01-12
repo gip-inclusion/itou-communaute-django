@@ -27,7 +27,9 @@ class HomepageTest(TestCase):
         response = self.client.get(reverse("pages:home"))
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, reverse("forum:forum", kwargs={"slug": forum.slug, "pk": forum.id}), count=1)
+        self.assertContains(
+            response, reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}), count=1
+        )
 
     def test_is_not_highlighted(self):
         forum = create_forum(is_highlighted=False)
@@ -36,7 +38,7 @@ class HomepageTest(TestCase):
         response = self.client.get(reverse("pages:home"))
         self.assertEqual(response.status_code, 200)
 
-        self.assertNotContains(response, reverse("forum:forum", kwargs={"slug": forum.slug, "pk": forum.id}))
+        self.assertNotContains(response, reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}))
 
     def test_is_private(self):
         forum = create_forum(is_private=True, is_highlighted=True)
