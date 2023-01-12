@@ -42,11 +42,11 @@
     </a>
 {% endif %}
 
-{% comment %}{% if user_can_subscribe_to_topic %}  note vincentporte temporarly deactivated
-    <a href="{% url 'forum_member:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
+{% if user_can_subscribe_to_topic %}
+    <a href="{% url 'members:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
 {% elif user_can_unsubscribe_from_topic %}
-    <a href="{% url 'forum_member:topic_unsubscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-times">&nbsp;</i>{% trans "Unsubscribe" %}</a>
-{% endif %}{% endcomment %}
+    <a href="{% url 'members:topic_unsubscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-times">&nbsp;</i>{% trans "Unsubscribe" %}</a>
+{% endif %}
 {% if user_can_lock_topics and not topic.is_locked or user_can_move_topics or user_can_delete_topics %}
     <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="ri-more-line" aria-label="Plus d'actions"></i>
