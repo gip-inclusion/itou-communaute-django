@@ -14,6 +14,7 @@ from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
+from lacommunaute.utils.enums import PeriodAggregation
 from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_objects_for_timeline_chart
 
 
@@ -33,28 +34,28 @@ class Forum(AbstractForum):
             count_objects_per_period(
                 Topic.objects.filter(forum__in=forums, created__gte=start_date).annotate(period=TruncWeek("created")),
                 "topics",
-                "week",
+                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 Post.objects.filter(topic__forum__in=forums, created__gte=start_date).annotate(
                     period=TruncWeek("created")
                 ),
                 "posts",
-                "week",
+                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 UpVote.objects.filter(post__topic__forum__in=forums, created_at__gte=start_date).annotate(
                     period=TruncWeek("created_at")
                 ),
                 "upvotes",
-                "week",
+                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 TopicPollVote.objects.filter(
                     poll_option__poll__topic__forum__in=forums, timestamp__gte=start_date
                 ).annotate(period=TruncWeek("timestamp")),
                 "pollvotes",
-                "week",
+                PeriodAggregation.WEEK,
             )
         )
         return format_counts_of_objects_for_timeline_chart(datas)
