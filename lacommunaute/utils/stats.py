@@ -40,6 +40,6 @@ def format_counts_of_objects_for_timeline_chart(datas):
     # }
     chart_arrays = {}
     for name in names:
-        chart_arrays[name] = [merged_periods[k].get(name, 0) for k in merged_periods.keys()]
+        chart_arrays[name] = [merged_periods[k].get(name, 0) for k in sorted(merged_periods.keys())]
 
     return chart_arrays
