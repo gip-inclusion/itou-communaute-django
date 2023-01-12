@@ -144,9 +144,13 @@ class UtilsStatsTest(TestCase):
 
         # test format week
         self.assertEqual(
-            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="week"),
+            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="WEEK"),
             [{"period": one_month_ago.strftime("%Y-%W"), "users": 1}, {"period": now.strftime("%Y-%W"), "users": 2}],
         )
+
+        # test unknown format
+        with self.assertRaises(ValueError):
+            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="XXX")
 
     def test_format_counts_of_objects_for_timeline_chart(self):
         datas = [{"period": "Dec 2022", "posts": 1}, {"period": "Feb 2023", "posts": 2}] + [

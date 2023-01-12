@@ -2,12 +2,16 @@ from collections import ChainMap, defaultdict
 
 from django.db.models import Count
 
+from lacommunaute.utils.enums import PeriodAggregation
 
-def count_objects_per_period(qs, name, period="month"):
-    if period == "week":
+
+def count_objects_per_period(qs, name, period=PeriodAggregation.MONTH):
+    if period == PeriodAggregation.WEEK:
         ft = "%Y-%W"
-    else:
+    elif period == PeriodAggregation.MONTH:
         ft = "%b %Y"
+    else:
+        raise ValueError("unknown period")
 
     # [{'period': 'Dec 2022', '<model name>': 59}, {'period': 'Jan 2023', '<model name>': 25}]
     qs = qs.values("period").annotate(number=Count("id")).values("period", "number").order_by("period")
