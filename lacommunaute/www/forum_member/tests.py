@@ -1,4 +1,5 @@
 import uuid
+from unittest import mock
 
 from django.contrib.auth.models import Group
 from django.test import RequestFactory, TestCase
@@ -6,6 +7,7 @@ from django.urls import reverse
 from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
 from lacommunaute.www.forum_member.views import ForumProfileUpdateView
@@ -166,3 +168,32 @@ class JoinForumFormViewTest(TestCase):
         self.client.force_login(self.user)
         self.client.post(self.url)
         self.assertTrue(self.forum.members_group.user_set.filter(id=self.user.id).exists())
+
+
+@mock.patch("lacommunaute.www.forum_member.views.TopicSubscribeView.perform_permissions_check", return_value=True)
+class TopicSubscribeViewTest(TestCase):
+    def test_authentified_access(self, _mock):
+        topic = TopicFactory(with_post=True)
+        url = reverse("members:topic_subscribe", kwargs={"pk": topic.pk})
+
+        self.client.force_login(topic.poster)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+
+@mock.patch("lacommunaute.www.forum_member.views.TopicUnsubscribeView.perform_permissions_check", return_value=True)
+class TopicUnsubscribeViewTest(TestCase):
+    def test_authentified_access(self, _mock):
+        topic = TopicFactory(with_post=True)
+        url = reverse("members:topic_unsubscribe", kwargs={"pk": topic.pk})
+
+        self.client.force_login(topic.poster)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+
+class TopicSubscriptionListViewTest(TestCase):
+    def test_access(self):
+        self.client.force_login(UserFactory())
+        response = self.client.get(reverse("members:user_subscriptions"))
+        self.assertEqual(response.status_code, 200)
