@@ -2,12 +2,10 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.models import Forum
 
-Forum = get_model("forum", "Forum")
-Topic = get_model("forum_conversation", "Topic")
 
 ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
