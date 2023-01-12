@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from machina import urls as machina_urls
 
 from lacommunaute.www.forum import urls as forum_extension_urls
 from lacommunaute.www.forum_conversation import urls as forum_conversation_extension_urls
@@ -26,8 +25,6 @@ urlpatterns = [
     path("forum/", include(forum_extension_urls)),
     path("forum/", include(forum_polls_extension_urls)),
     path("forum/", include(forum_upvote_urls)),
-    # machina legacy
-    path("forum/", include(machina_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:

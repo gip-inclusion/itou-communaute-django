@@ -38,13 +38,12 @@ THIRD_PARTIES_APPS = [
     "storages",
     # Machina dependencies:
     "mptt",  # to handle the tree of forum instances
-    "haystack",  # search capabilities
+    # "haystack",  # search capabilities, to be setup later
     "widget_tweaks",
     # Machina apps:
     "machina",
-    "machina.apps.forum_feeds",
     "machina.apps.forum_moderation",
-    "machina.apps.forum_search",
+    # "machina.apps.forum_search", # to be setup later
     "machina.apps.forum_tracking",
     "machina.apps.forum_permission",
     # django-compressor
