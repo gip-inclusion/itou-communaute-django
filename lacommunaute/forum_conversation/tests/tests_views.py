@@ -50,7 +50,7 @@ class TopicCreateViewTest(TestCase):
         view.forum_post = topic.posts.first()
         self.assertEqual(
             view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
     def test_delete_button_is_hidden(self):
@@ -102,7 +102,7 @@ class TopicUpdateViewTest(TestCase):
         view.forum_post = self.topic.posts.first()
         self.assertEqual(
             view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
     def test_has_not_permission_to_delete_post(self):
@@ -187,7 +187,7 @@ class PostCreateViewTest(TestCase):
         view.forum_post = self.topic.posts.first()
         self.assertEqual(
             view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
     def test_topic_is_marked_as_read_when_post_is_created(self):
@@ -301,7 +301,7 @@ class PostDeleteViewTest(TestCase):
         view.request = request
         self.assertEqual(
             view.get_success_url(),
-            reverse("forum:forum", kwargs={"pk": topic.forum.pk, "slug": topic.forum.slug}),
+            reverse("forum_extension:forum", kwargs={"pk": topic.forum.pk, "slug": topic.forum.slug}),
         )
         msgs = get_messages(request)
         self.assertTrue(view.success_message, msgs._queued_messages[0].message)

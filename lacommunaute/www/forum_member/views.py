@@ -125,7 +125,7 @@ class JoinForumFormView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse(
-            "forum:forum",
+            "forum_extension:forum",
             kwargs={
                 "slug": self.forum.slug,
                 "pk": self.forum.pk,

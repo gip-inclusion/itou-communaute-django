@@ -16,7 +16,7 @@
                             <div class="p-0 card-header">
                                 <div class="row m-0 px-3 py-2">
                                     <div class="pl-0 col-md-8 col-12 forum-name-col">
-                                        <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                                        <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                                             class="text-muted text-uppercase fs-xs matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="view"
@@ -73,7 +73,7 @@
                                                 </td>
                                             {% endif %}
                                             <td class="align-top">
-                                                <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                                                <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                                                     class="forum-name-link h4 d-block mb-1 matomo-event"
                                                     data-matomo-category="engagement"
                                                     data-matomo-action="view"
@@ -118,7 +118,7 @@
                                         <tr>
                                             <td class="pt-1 pr-3 align-top forum-icon link"><i class="fas fa-link fa-2x"></i></td>
                                             <td class="align-top">
-                                                <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                                                <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                                                     class="forum-name-link h4 d-block mb-1 matomo-event"
                                                     data-matomo-category="engagement"
                                                     data-matomo-action="view"
@@ -166,7 +166,7 @@
                                                 </td>
                                             {% endif %}
                                             <td class="align-top">
-                                                <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                                                <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                                                     class="forum-name-link h4 d-block mb-1 matomo-event"
                                                     data-matomo-category="engagement"
                                                     data-matomo-action="view"
@@ -211,7 +211,7 @@
                                         <tr>
                                             <td class="pt-1 pr-3 align-top forum-icon link"><i class="fas fa-link fa-2x"></i></td>
                                             <td class="align-top">
-                                                <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                                                <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                                                     class="forum-name-link h4 d-block mb-1 matomo-event"
                                                     data-matomo-category="engagement"
                                                     data-matomo-action="view"
@@ -238,7 +238,7 @@
                         {% endif %}
                         <i class="fas fa-file"></i>
                         &nbsp;
-                        <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                        <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                             class="matomo-event"
                             data-matomo-category="engagement"
                             data-matomo-action="view"
@@ -253,7 +253,7 @@
                     {% endif %}
                     <i class="fas fa-file"></i>
                     &nbsp;
-                    <a href="{% url 'forum:forum' node.obj.slug node.obj.id %}"
+                    <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
                         class="matomo-event"
                         data-matomo-category="engagement"
                         data-matomo-action="view"
