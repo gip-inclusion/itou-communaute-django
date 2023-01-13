@@ -37,7 +37,7 @@
                         <div class="card-body">
                             {% for post in recent_posts %}
                                 <div class="row post">
-                                    <div class="col-md-12 post-content-wrapper">
+                                    <div class="col-12 post-content-wrapper">
                                         <div class="post-title">
                                             <a href="{% url 'forum_conversation:topic' post.topic.forum.slug post.topic.forum.pk post.topic.slug post.topic.pk %}?post={{ post.pk }}#{{ post.pk }}"
                                                 class="matomo-event"
