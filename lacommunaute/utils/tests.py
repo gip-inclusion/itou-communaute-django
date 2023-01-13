@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.functions import TruncMonth, TruncWeek
+from django.db.models.functions import TruncMonth
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
 from django.test import TestCase, override_settings
@@ -17,7 +17,12 @@ from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
-from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_objects_for_timeline_chart
+from lacommunaute.utils.enums import PeriodAggregation
+from lacommunaute.utils.stats import (
+    count_objects_per_period,
+    format_counts_of_objects_for_timeline_chart,
+    get_strftime,
+)
 
 
 faker = Faker()
@@ -130,34 +135,47 @@ class UtilsTemplateTagsTestCase(TestCase):
 
 
 class UtilsStatsTest(TestCase):
+    def test_get_strftime(self):
+        self.assertEqual(get_strftime(PeriodAggregation.WEEK), "%Y-%W")
+        self.assertEqual(get_strftime(PeriodAggregation.MONTH), "%b %Y")
+        with self.assertRaises(ValueError):
+            get_strftime("xxx")
+
     def test_count_objects_per_period(self):
-        now = timezone.now()
+        now = timezone.localtime()
         one_month_ago = now - relativedelta(months=1)
         UserFactory(date_joined=one_month_ago)
         UserFactory.create_batch(2, date_joined=now)
 
-        # test format month
         self.assertEqual(
             count_objects_per_period(User.objects.annotate(period=TruncMonth("date_joined")), "users"),
-            [{"period": one_month_ago.strftime("%b %Y"), "users": 1}, {"period": now.strftime("%b %Y"), "users": 2}],
+            [
+                {"period": one_month_ago.replace(day=1, hour=0, minute=0, second=0, microsecond=0), "users": 1},
+                {"period": now.replace(day=1, hour=0, minute=0, second=0, microsecond=0), "users": 2},
+            ],
         )
-
-        # test format week
-        self.assertEqual(
-            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="WEEK"),
-            [{"period": one_month_ago.strftime("%Y-%W"), "users": 1}, {"period": now.strftime("%Y-%W"), "users": 2}],
-        )
-
-        # test unknown format
-        with self.assertRaises(ValueError):
-            count_objects_per_period(User.objects.annotate(period=TruncWeek("date_joined")), "users", period="XXX")
 
     def test_format_counts_of_objects_for_timeline_chart(self):
-        datas = [{"period": "Dec 2022", "posts": 1}, {"period": "Feb 2023", "posts": 2}] + [
-            {"period": "Dec 2022", "users": 1},
-            {"period": "Jan 2023", "users": 2},
+        now = timezone.localtime()
+        one_month_ago = now - relativedelta(months=1)
+        two_month_ago = now - relativedelta(months=2)
+        datas = [{"period": one_month_ago, "posts": 1}, {"period": now, "posts": 2}] + [
+            {"period": two_month_ago, "users": 1},
+            {"period": now, "users": 2},
         ]
         self.assertEqual(
             format_counts_of_objects_for_timeline_chart(datas),
-            {"period": ["Dec 2022", "Feb 2023", "Jan 2023"], "users": [1, 0, 2], "posts": [1, 2, 0]},
+            {
+                "period": [two_month_ago.strftime("%b %Y"), one_month_ago.strftime("%b %Y"), now.strftime("%b %Y")],
+                "users": [1, 0, 2],
+                "posts": [0, 1, 2],
+            },
+        )
+        self.assertEqual(
+            format_counts_of_objects_for_timeline_chart(datas, period=PeriodAggregation.WEEK),
+            {
+                "period": [two_month_ago.strftime("%Y-%W"), one_month_ago.strftime("%Y-%W"), now.strftime("%Y-%W")],
+                "users": [1, 0, 2],
+                "posts": [0, 1, 2],
+            },
         )
