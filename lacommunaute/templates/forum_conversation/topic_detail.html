@@ -28,7 +28,7 @@
                     {% endif %}
                     <div class="card-body {% if forloop.first%} pt-0 {% else %} bg-light{%endif%}">
                         <div class="row">
-                            <div class="col-md-12 post-content-wrapper">
+                            <div class="col-12 post-content-wrapper">
                                 {% if not forloop.first %}
                                     <div class="d-flex align-items-center mb-1">
                                         <span class="mb-0 flex-grow-1">
@@ -37,11 +37,12 @@
                                         {% include "forum_conversation/partials/post_upvotes.html"%}
                                     </div>
                                 {%endif%}
-                                <div class="post-content">
-                                    {{ post.content.rendered|urlizetrunc_target_blank:30}}
-                                    {% include "forum_conversation/forum_attachments/attachments_images.html" %}
-                                </div>
-
+                            </div>
+                            <div class="col-12 col-lg-11 post-content">
+                                {{ post.content.rendered|urlizetrunc_target_blank:30}}
+                                {% include "forum_conversation/forum_attachments/attachments_images.html" %}
+                            </div>
+                            <div class="col-12 post-content-wrapper">
                                 {% if forloop.first and post.is_topic_head and poll %}
                                     {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                 {% endif %}

@@ -51,7 +51,7 @@
                                             <div class="col-12 post-content-wrapper">
                                                 {%include "forum_conversation/partials/poster.html" with post=topic.first_post%}
                                             </div>
-                                            <div class="col-12 post-content">
+                                            <div class="col-12 col-lg-11 post-content">
                                                 <div id="showmoretopicsarea{{topic.pk}}">
                                                     {{ topic.first_post.content.rendered|urlize|truncatechars:200 }}
                                                     {% if topic.first_post.content.rendered|length > 200 %}
