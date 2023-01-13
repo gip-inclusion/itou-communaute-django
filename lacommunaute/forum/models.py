@@ -34,31 +34,27 @@ class Forum(AbstractForum):
             count_objects_per_period(
                 Topic.objects.filter(forum__in=forums, created__gte=start_date).annotate(period=TruncWeek("created")),
                 "topics",
-                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 Post.objects.filter(topic__forum__in=forums, created__gte=start_date).annotate(
                     period=TruncWeek("created")
                 ),
                 "posts",
-                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 UpVote.objects.filter(post__topic__forum__in=forums, created_at__gte=start_date).annotate(
                     period=TruncWeek("created_at")
                 ),
                 "upvotes",
-                PeriodAggregation.WEEK,
             )
             + count_objects_per_period(
                 TopicPollVote.objects.filter(
                     poll_option__poll__topic__forum__in=forums, timestamp__gte=start_date
                 ).annotate(period=TruncWeek("timestamp")),
                 "pollvotes",
-                PeriodAggregation.WEEK,
             )
         )
-        return format_counts_of_objects_for_timeline_chart(datas)
+        return format_counts_of_objects_for_timeline_chart(datas, period=PeriodAggregation.WEEK)
 
     @cached_property
     def count_engaged_users(self):
