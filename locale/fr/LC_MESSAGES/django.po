@@ -901,3 +901,10 @@ msgstr "Réponses aux sondages"
 
 msgid "Forum Members"
 msgstr "Liste des membres de la communauté"
+
+msgid "Show me the subforum"
+msgstr "Voir la sous-communauté"
+
+#, python-format
+msgid "Show me the %(count)s subforums"
+msgstr "Voir les %(count)s sous-communautés"
