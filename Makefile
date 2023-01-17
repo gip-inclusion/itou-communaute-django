@@ -54,8 +54,16 @@ shell_on_postgres_container:
 # Postgres CLI.
 # =============================================================================
 
-.PHONY: psql
+.PHONY: psql postgres_restore_latest_backup
 
 # Connect to the `postgres` container as the POSTGRES_USER user.
 psql:
 	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) commu_postgres psql -U $(POSTGRES_USER)
+
+# Download last prod backup and inject it locally.
+# ----------------------------------------------------
+# Prerequisites:
+# - Clone the git `itou-backups` project first and run `make build`. https://github.com/betagouv/itou-backups
+# - Copy .env.template and set correct values.
+postgres_restore_latest_backup: ./scripts/import-latest-db-backup.sh
+	./scripts/import-latest-db-backup.sh
