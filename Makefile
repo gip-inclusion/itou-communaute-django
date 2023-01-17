@@ -48,8 +48,7 @@ pylint:
 .PHONY: shell_on_postgres_container
 
 shell_on_postgres_container:
-	docker exec -ti postgres /bin/bash
-
+	docker exec -ti commu_postgres /bin/bash
 
 # Postgres CLI.
 # =============================================================================
