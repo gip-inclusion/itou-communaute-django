@@ -22,7 +22,14 @@ PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRe
 
 
 class IndexView(BaseIndexView):
-    pass
+    def get_queryset(self):
+        """Returns the list of items for this view."""
+        return ForumVisibilityContentTree.from_forums(
+            self.request.forum_permission_handler.forum_list_filter(
+                Forum.objects.all().prefetch_related("members_group__user_set"),
+                self.request.user,
+            ),
+        )
 
 
 class ForumView(BaseForumView):
