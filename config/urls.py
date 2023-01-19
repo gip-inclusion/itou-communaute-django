@@ -10,6 +10,7 @@ from lacommunaute.www.forum_member_views import urls as forum_member_urls
 from lacommunaute.www.forum_upvote_views import urls as forum_upvote_urls
 from lacommunaute.www.forum_views import urls as forum_extension_urls
 from lacommunaute.www.inclusion_connect_views import urls as inclusion_connect_urls
+from lacommunaute.www.pages import urls as pages_urls
 
 
 conversation_urlpatterns_factory = get_class("forum_conversation.urls", "urlpatterns_factory")
@@ -21,7 +22,7 @@ urlpatterns = [
     # Inclusion Connect URLs.
     path("inclusion_connect/", include(inclusion_connect_urls)),
     # www.
-    path("", include("lacommunaute.www.pages.urls")),
+    path("", include(pages_urls)),
     path("", include("django.contrib.auth.urls")),
     path("members/", include(forum_member_urls)),
     path("", include(forum_conversation_extension_urls)),
