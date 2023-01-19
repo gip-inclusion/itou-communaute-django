@@ -39,8 +39,15 @@ class ForumView(BaseForumView):
                 "poster",
                 "poster__forum_profile",
                 "first_post",
+                "forum",
             )
-            .prefetch_related("poll", "poll__options", "poll__options__votes", "posts", "posts__attachments")
+            .prefetch_related(
+                "poll",
+                "poll__options",
+                "poll__options__votes",
+                "first_post__attachments",
+                "first_post__poster",
+            )
             .order_by("-last_post_on")
         )
         return qs
