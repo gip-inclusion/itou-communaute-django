@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from machina.core.loading import get_class
 
+from lacommunaute.www.forum_conversation_views import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_views import urls as forum_extension_urls
 
 
