@@ -1,6 +1,11 @@
 from django.urls import include, path
 
-from lacommunaute.www.forum_conversation.views import PostFeedCreateView, PostListView, TopicContentView, TopicLikeView
+from lacommunaute.www.forum_conversation_views.views import (
+    PostFeedCreateView,
+    PostListView,
+    TopicContentView,
+    TopicLikeView,
+)
 
 
 app_name = "forum_conversation_extension"
