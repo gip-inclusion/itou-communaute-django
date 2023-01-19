@@ -4,6 +4,8 @@
 {% load forum_permission_tags %}
 {% load str_filters %}
 
+{% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
+
 <div id="showmorepostsarea{{topic.pk}}">
     {% for post in posts %}
         <div class="card post mb-3 bg-light has-links-inside ml-3">
@@ -20,9 +22,7 @@
                             {{ post.content.rendered|urlizetrunc_target_blank:30}}
                             {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                         </div>
-
-                        {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
-
+                        {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=post user_can_download_files=user_can_download_files %}
                     </div>
                 </div>
             </div>

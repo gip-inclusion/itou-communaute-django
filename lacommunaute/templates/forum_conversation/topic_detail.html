@@ -1,7 +1,11 @@
 {% extends 'board_base.html' %}
+
 {% load i18n %}
 {% load forum_conversation_tags %}
+{% load forum_permission_tags %}
 {% load str_filters %}
+
+{% get_permission 'can_download_files' forum request.user as user_can_download_files %}
 
 {% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
 
@@ -47,7 +51,7 @@
                                     {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                 {% endif %}
 
-                                {% include "forum_conversation/forum_attachments/attachments_detail.html" %}
+                                {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=post user_can_download_files=user_can_download_files%}
 
                                 {% if post.enable_signature and post.poster.forum_profile.signature %}
                                     <div class="post-signature">
