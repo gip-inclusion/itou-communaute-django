@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.inclusion_connect import views
+from lacommunaute.www.inclusion_connect_views import views
 
 
 app_name = "inclusion_connect"
