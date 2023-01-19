@@ -5,11 +5,11 @@
 {% load forum_permission_tags %}
 {% load str_filters %}
 
-{% get_permission 'can_download_files' forum request.user as user_can_download_files %}
-
 {% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
 
 {% block content %}
+    {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
+
     <div class="row">
         <div class="col-12">
             <h1>{{ topic.subject }}</h1>
@@ -23,7 +23,7 @@
                         <div class="card-header d-flex align-items-center mb-1">
                             <p class="h4 mb-0 flex-grow-1">
                                 {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
-                                {%include "forum_conversation/partials/poster.html" with post=post%}
+                                {%include "forum_conversation/partials/poster.html" with post=post topic=topic forum=topic.forum is_topic_head=True%}
                             </p>
                             {% block htmx %}
                                 {% include "forum_conversation/partials/topic_likes.html"%}

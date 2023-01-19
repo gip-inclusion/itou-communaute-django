@@ -12,7 +12,7 @@
             <div class="col-12 post-content-wrapper">
                 <div class="d-flex align-items-center mb-1">
                     <span class="mb-0 flex-grow-1">
-                        {%include "forum_conversation/partials/poster.html" with post=post%}
+                        {%include "forum_conversation/partials/poster.html" with post=post topic=topic forum=topic.forum%}
                     </span>
                     {% include "forum_conversation/partials/post_upvotes.html"%}
                 </div>
