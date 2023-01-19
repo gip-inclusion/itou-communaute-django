@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.forum_member.views import (
+from lacommunaute.www.forum_member_views.views import (
     ForumProfileDetailView,
     ForumProfileUpdateView,
     JoinForumFormView,

@@ -10,7 +10,7 @@ from machina.test.factories.forum import create_forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
-from lacommunaute.www.forum_member.views import ForumProfileUpdateView
+from lacommunaute.www.forum_member_views.views import ForumProfileUpdateView
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
@@ -170,7 +170,9 @@ class JoinForumFormViewTest(TestCase):
         self.assertTrue(self.forum.members_group.user_set.filter(id=self.user.id).exists())
 
 
-@mock.patch("lacommunaute.www.forum_member.views.TopicSubscribeView.perform_permissions_check", return_value=True)
+@mock.patch(
+    "lacommunaute.www.forum_member_views.views.TopicSubscribeView.perform_permissions_check", return_value=True
+)
 class TopicSubscribeViewTest(TestCase):
     def test_authentified_access(self, _mock):
         topic = TopicFactory(with_post=True)
@@ -181,7 +183,9 @@ class TopicSubscribeViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@mock.patch("lacommunaute.www.forum_member.views.TopicUnsubscribeView.perform_permissions_check", return_value=True)
+@mock.patch(
+    "lacommunaute.www.forum_member_views.views.TopicUnsubscribeView.perform_permissions_check", return_value=True
+)
 class TopicUnsubscribeViewTest(TestCase):
     def test_authentified_access(self, _mock):
         topic = TopicFactory(with_post=True)
