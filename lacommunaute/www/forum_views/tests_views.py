@@ -13,7 +13,7 @@ from lacommunaute.forum_conversation.forum_attachments.factories import Attachme
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.www.forum.views import ForumView
+from lacommunaute.www.forum_views.views import ForumView
 
 
 faker = Faker()

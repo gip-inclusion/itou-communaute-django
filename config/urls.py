@@ -4,11 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from machina.core.loading import get_class
 
-from lacommunaute.www.forum import urls as forum_extension_urls
-from lacommunaute.www.forum_conversation import urls as forum_conversation_extension_urls
-from lacommunaute.www.forum_conversation.forum_polls import urls as forum_polls_extension_urls
-from lacommunaute.www.forum_member import urls as forum_member_urls
-from lacommunaute.www.forum_upvote import urls as forum_upvote_urls
+from lacommunaute.www.forum_views import urls as forum_extension_urls
 
 
 conversation_urlpatterns_factory = get_class("forum_conversation.urls", "urlpatterns_factory")
