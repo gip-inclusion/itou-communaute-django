@@ -5,6 +5,8 @@
 {% load forum_tracking_tags %}
 {% load forum_permission_tags %}
 
+{% get_permission 'can_download_files' forum request.user as user_can_download_files %}
+
 {% if topics or not hide_if_empty %}
     <div class="row mb-3">
         <div class="col-12">
@@ -70,7 +72,7 @@
                                                 </div>
                                                 {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
 
-                                                {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post %}
+                                                {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post user_can_download_files=user_can_download_files %}
 
                                                 {% if topic.poll %}
                                                     {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
