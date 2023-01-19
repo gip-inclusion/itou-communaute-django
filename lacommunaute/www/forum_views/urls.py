@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.forum.views import ForumView, FunnelView, IndexView, ModeratorEngagementView
+from lacommunaute.www.forum_views.views import ForumView, FunnelView, IndexView, ModeratorEngagementView
 
 
 app_name = "forum_extension"
