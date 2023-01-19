@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from lacommunaute.www.forum_conversation.forum_polls.views import TopicPollVoteView
+from lacommunaute.www.forum_conversation_views.forum_polls.views import TopicPollVoteView
 
 
 app_name = "forum_polls_extension"
