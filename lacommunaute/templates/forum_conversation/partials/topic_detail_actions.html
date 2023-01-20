@@ -12,7 +12,7 @@
 {% get_permission 'can_update_topics_to_announces' topic.forum request.user as user_can_change_to_announces %}
 
 {% if user_can_add_post %}
-    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1">
+    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
         <i class="ri-question-answer-line"></i>
         <span>{% trans "Post reply" %}</span>
     </a>

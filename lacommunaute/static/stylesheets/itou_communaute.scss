@@ -29,12 +29,6 @@
   }
 }
 
-body {
-  .main {
-    border-radius: 1px;
-  }
-}
-
 .card.topiclist .card-body {
 
   .topic-thumbnail {
@@ -77,4 +71,10 @@ body {
 
 .anchor {
   scroll-margin-top: 125px;
+}
+
+.btn-post-reply[aria-expanded="true"] {
+  color: #fff !important;
+  background-color: #b3b4c3 !important;
+  border-color: #b3b4c3 !important;
 }
