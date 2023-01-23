@@ -1,5 +1,8 @@
 import os
 
+# Enable django-debug-toolbar with Docker.
+import socket
+
 from .base import *  # pylint: disable=wildcard-import,unused-wildcard-import # noqa: F403 F401
 
 
@@ -33,9 +36,6 @@ INSTALLED_APPS += ["debug_toolbar"]  # noqa F405
 INTERNAL_IPS = ["127.0.0.1"]
 
 # Enable django-debug-toolbar with Docker.
-import socket
-
-
 _, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS += [ip[:-1] + "1" for ip in ips]
 
@@ -56,6 +56,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DATABASES = {
     "default": {
+        "ATOMIC_REQUESTS": True,
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "HOST": os.getenv("POSTGRESQL_ADDON_HOST"),
         "PORT": os.getenv("POSTGRES_PORT"),
