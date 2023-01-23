@@ -9,6 +9,7 @@
 🎢 Nouvelle fonctionnalité (changement non cassant qui ajoute une fonctionnalité).
 🥁 Changement de rupture (modification ou caractéristique qui empêcherait une fonctionnalité existante de fonctionner comme prévu)
 🎨 changement nécessitant une mise à jour de la documentation.
+🚧 technique
 
 ### Points d'attention
 
