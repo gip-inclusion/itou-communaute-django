@@ -391,7 +391,7 @@ msgstr "Nombre de réponses au sondage :"
 #: lacommunaute/templates/machina/forum_conversation/post_update.html:27
 #: lacommunaute/templates/machina/forum_member/forum_profile_update.html:35
 msgid "Submit"
-msgstr "Soumettre"
+msgstr "Publier"
 
 #: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_vote_form.html:36
 msgid "View results"
