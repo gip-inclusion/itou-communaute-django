@@ -252,6 +252,12 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, f'id="collapsePost{self.topic.pk}')
 
+    def test_queries(self):
+        TopicFactory.create_batch(20, with_post=True)
+        self.client.force_login(self.user)
+        with self.assertNumQueries(28):
+            self.client.get(self.url)
+
 
 class ModeratorEngagementViewTest(TestCase):
     @classmethod
