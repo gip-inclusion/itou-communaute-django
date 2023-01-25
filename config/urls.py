@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from machina.core.loading import get_class
 
+from lacommunaute.www.event_views import urls as event_urls
 from lacommunaute.www.forum_conversation_views import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_conversation_views.forum_polls import urls as forum_polls_extension_urls
 from lacommunaute.www.forum_member_views import urls as forum_member_urls
@@ -29,6 +30,7 @@ urlpatterns = [
     path("", include(forum_extension_urls)),
     path("", include(forum_polls_extension_urls)),
     path("", include(forum_upvote_urls)),
+    path("calendar/", include(event_urls)),
     # machina legacy
     path("", include(conversation_urlpatterns_factory.urlpatterns)),
     path("moderation/", include(moderation_urlpatterns_factory.urlpatterns)),
