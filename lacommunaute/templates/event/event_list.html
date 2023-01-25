@@ -1,0 +1,35 @@
+{% extends 'board_base.html' %}
+{% load i18n %}
+
+{% block sub_title %}{% trans "My Events" %}{% endblock sub_title %}
+
+{% block breadcrumb %}{% include "partials/breadcrumb_calendar.html" %}{% endblock breadcrumb %}
+
+{% block content %}
+
+    <div class="row mb-3 mb-md-5">
+        <div class="col">
+            <p class="h1">{% trans "My Events" %}</p>
+            <a href="{% url 'event:create' %}"
+                role="button" class="btn btn-primary matomo-event"
+                data-matomo-category="engagement"
+                data-matomo-action="create"
+                data-matomo-option="event">
+                {% trans "Post a new Event" %}
+            </a>
+        </div>
+    </div>
+    <div class="row mb-3 mb-md-5">
+        <div class="col">
+            <div class="list-group">
+                {% for event in object_list %}
+                    <a href="{% url 'event:update' pk=event.pk%}" class="list-group-item list-group-item-action">{{ event.date|date }} : {{event.name}}</a>
+                {% empty %}
+                    {% trans "No event yet" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
