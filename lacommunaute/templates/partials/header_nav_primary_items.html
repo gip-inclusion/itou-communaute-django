@@ -37,6 +37,15 @@
                             Accéder à mon profil
                         </a>
                     </li>
+                    <li>
+                        <a href="{% url 'event:myevents' %}"
+                            class="dropdown-item text-primary matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="events">
+                            Accéder à mes évènements
+                        </a>
+                    </li>
                     {% if user.is_superuser %}
                         <li>
                             <div class="dropdown-divider"></div>
