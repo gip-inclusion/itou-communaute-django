@@ -1,0 +1,161 @@
+/* Common */
+.hidden-fields {
+	display: none;
+}
+.cleardiv {
+	clear: both;
+}
+.loading {
+	text-align: center;
+	margin: 130px 0;
+}
+.tiva-events-calendar {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Bar */
+.events-calendar-bar {
+	margin-top: 20px;
+}
+.events-calendar-bar .bar-btn.active {
+	background: #5AA4A3;
+}
+.events-calendar-bar .bar-btn {
+	color: #fff;
+    background: #757575;
+    padding: 3px 10px 3px 28px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 14px;
+    border: 0;
+    margin-right: 10px;
+	line-height: 26px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+}
+.events-calendar-bar .bar-btn:hover {
+	background: #5AA4A3;
+}
+.events-calendar-bar .back-calendar {
+	padding: 3px 10px 3px 22px;
+	margin-right: 0;
+	float: right !important;
+}
+.events-calendar-bar .bar-btn i {
+	position: absolute;
+	left: 10px;
+}
+.events-calendar-bar .calendar-view i {
+	top: 7px;
+}
+.events-calendar-bar .list-view i {
+	top: 9px;
+}
+.events-calendar-bar .back-calendar i {
+	top: 9px;
+}
+
+/* Calendar */
+.tiva-calendar .calendar-table {
+	table-layout: auto;
+	box-sizing: content-box;
+	border-right: 0;
+}
+.tiva-calendar .calendar-table th, .tiva-calendar .calendar-table td {
+	border-bottom: none;
+	border-right: none;
+	padding: 8px;
+}
+.tiva-calendar .calendar-btn span {
+	font-size: 14px;
+	color: #fff;
+}
+
+/* Tooltip */
+.calendar-day-event {
+	position: relative;
+}
+.calendar-day-event .tiva-event-tooltip {
+	position: absolute;
+    z-index: 9999;
+    width: 180px;
+    left: 50%;
+	margin: 0 0 0 -100px;
+    bottom: 35px;
+    background: #f5f5f5;
+    opacity: 0;
+	border: 1px solid #cccccc;
+	box-shadow: 0 0 5px 2px rgba(145,145,145,.35);
+    border-radius: 6px;
+	pointer-events: none;
+	padding: 10px;
+	text-align: left;
+	-webkit-transform: translate3d(0,-10px,0);
+	transform: translate3d(0,-10px,0);
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+	transition: opacity 0.3s, transform 0.3s;
+}
+.calendar-day-event .tiva-event-tooltip::before, .calendar-day-event .tiva-event-tooltip::after {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.calendar-day-event .tiva-event-tooltip::after {
+	border-color: rgba(245, 245, 245, 0);
+	border-top-color: #f5f5f5;
+	border-width: 8px;
+	margin-left: -8px;
+}
+.calendar-day-event .tiva-event-tooltip::before {
+	border-color: rgba(204, 204, 204, 0);
+	border-top-color: #cccccc;
+	border-width: 9px;
+	margin-left: -9px;
+}
+.calendar-day-event .tiva-event-tooltip .event-tooltip-item {
+	border-bottom: 1px dotted #666;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+}
+.calendar-day-event .tiva-event-tooltip .event-tooltip-item:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+.calendar-day-event .tiva-event-tooltip .event-time {
+	display: inline-block;
+	font-size: 12px;
+	color: #fff;
+    background: #757575;
+    padding: 0 5px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border: 0;
+    margin-bottom: 5px;
+	line-height: 22px;
+}
+.calendar-day-event .tiva-event-tooltip .event-time i {
+	margin-right: 5px;
+}
+.calendar-day-event .tiva-event-tooltip .event-name {
+	font-size: 15px;
+	line-height: 20px;
+	margin-bottom: 6px;
+	color: #5AA4A3;
+}
+.calendar-day-event .tiva-event-tooltip .event-image  img {
+	width: 100%;
+	margin-bottom: 6px;
+	border: 1px solid #EEE;
+}
+.calendar-day-event .tiva-event-tooltip .event-intro {
+	font-size: 14px;
+}
