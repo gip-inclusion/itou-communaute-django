@@ -908,3 +908,17 @@ msgstr "Voir la sous-communauté"
 #, python-format
 msgid "Show me the %(count)s subforums"
 msgstr "Voir les %(count)s sous-communautés"
+msgid "Calendar"
+msgstr "Calendrier"
+
+msgid "My Events"
+msgstr "Mes évènements"
+
+msgid "Post a new Event"
+msgstr "Ajouter un évènement"
+
+msgid "Delete event"
+msgstr "Effacer cet évènement"
+
+msgid "No event yet"
+msgstr "Aucun évènement"
