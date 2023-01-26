@@ -11,24 +11,37 @@
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
 
 {% block content %}
-    <section class="s-page-menu-01 s-page-menu-01--communaute mt-md-6">
-        <div class="s-page-menu-01__container container">
-            <div class="s-page-menu-01__row row align-items-center">
-                <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                    <h1 class="h1-hero lh-sm font-weight-bold">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
-                    {% if user.is_authenticated %}
-                        <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
-                    {% endif %}
+
+    {% if user.is_authenticated %}
+        <section class="s-page-menu-01 s-page-menu-01--communaute mt-md-6">
+            <div class="s-page-menu-01__container container">
+                <div class="s-page-menu-01__row row align-items-center">
+                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
+                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    {% if not user.is_authenticated %}
-        <section class="s-page-menu-01 s-page-menu-01--communaute">
+        <section class="s-section">
+            <div class="s-section__container container">
+                <div class="s-section__row row mb-1 mb-md-3">
+                    <div class="s-section__col col-12">
+                        {% forum_list forums %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <section class="s-page-menu-01 s-page-menu-01--communaute mt-md-6">
             <div class="s-page-menu-01__container container">
+                <div class="s-page-menu-01__row row align-items-center">
+                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
+                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                    </div>
+                </div>
                 <div class="s-page-menu-01__row row">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-md-8">
+                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-md-8 mt-3 mt-md-5">
                         <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
 
                         <ul class="lead list-unstyled mb-md-5">
@@ -45,14 +58,18 @@
                                 <span class="ml-2">Participez à la construction des outils numériques de l'insertion</span>
                             </li>
                         </ul>
-                        <p>
-                            <a href="#community" class="btn btn-primary">
-                                <span>Accéder aux {% trans "Forums"|lower %}</span>
-                            </a>
-                            <a href="{% url 'event:calendar' %}" class="btn btn-primary">
-                                <span>Accéder aux évènements</span>
-                            </a>
-                        </p>
+                        <div class="row">
+                            <div class="col-12 col-md-auto">
+                                <a href="{% url 'forum_extension:index' %}" class="btn btn-primary btn-block">
+                                    Accéder aux {% trans "Forums"|lower %}
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-auto mt-3 mt-md-0">
+                                <a href="{% url 'event:calendar' %}" class="btn btn-primary btn-block">
+                                    Accéder aux évènements
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="s-page-menu-01__col col-12 d-none d-md-inline-flex col-md-4">
                         <div>
@@ -97,16 +114,5 @@
                 </div>
             </div>
         </section>
-    {% else %}
-        <section class="s-section">
-            <div class="s-section__container container">
-                <div class="s-section__row row mb-1 mb-md-3">
-                    <div class="s-section__col col-12">
-                        {% forum_list forums %}
-                    </div>
-                </div>
-            </div>
-        </section>
     {% endif %}
-
 {% endblock %}
