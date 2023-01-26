@@ -29,9 +29,9 @@
                 <div class="s-section__col col-12">
                     <ul class="list-group">
                         {% for event in object_list %}
-                        <li class="list-group-item list-group-item-action">
-                            <a href="{% url 'event:update' pk=event.pk%}">{{ event.date|date }} : {{event.name}}</a>
-                        </li>
+                            <li class="list-group-item list-group-item-action">
+                                <a href="{% url 'event:update' pk=event.pk%}">{{ event.date|date }} : {{event.name}}</a>
+                            </li>
                         {% empty %}
                             <li class="list-group-item">{% trans "No event yet" %}</li>
                         {% endfor %}
