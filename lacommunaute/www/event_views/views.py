@@ -65,6 +65,9 @@ class EventListView(LoginRequiredMixin, ListView):
         return Event.objects.filter(poster=self.request.user)
 
 
+# TODO vincentporte : factoriser les EventXXXView
+
+
 def calendar_data(request):
     data = {
         "items": list(
@@ -89,6 +92,10 @@ def calendar_data(request):
         )
     }
     return JsonResponse(data)
+
+
+# TODO vincentporte : supprimer ce pseudo endpoint au profit du passage en context des données
+# dans la méthode calendar (refactor js)
 
 
 def calendar(request):
