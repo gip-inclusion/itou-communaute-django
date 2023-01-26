@@ -1,4 +1,4 @@
-{% extends 'board_base.html' %}
+{% extends "layouts/base.html" %}
 {% load i18n %}
 {% load static %}
 
@@ -7,12 +7,25 @@
 {% block breadcrumb %}{% include "partials/breadcrumb_calendar.html" %}{% endblock breadcrumb %}
 
 {% block content %}
-    <div class="row">
-        <div class="col">
-            <div class="block-title">Les évènements de l'Inclusion à venir !</div>
-            <div class="tiva-events-calendar full" data-source="json"></div>
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Les évènements de l'Inclusion à venir !</strong></h1>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="tiva-events-calendar full" data-source="json"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock content %}
 
 {% block extra_css %}
