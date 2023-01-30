@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/python-poetry/poetry
-    rev: '1.2'
+    rev: '1.3.0'
     hooks:
       - id: poetry-check
       - id: poetry-export
@@ -8,16 +8,16 @@ repos:
       - id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/base.txt", "--without-hashes"]
   - repo: https://github.com/psf/black
-    rev: 22.8.0
+    rev: 22.12.0
     hooks:
       - id: black
         language_version: python3
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
   - repo: https://github.com/PyCQA/flake8
-    rev: 5.0.4
+    rev: 6.0.0
     hooks:
       - id: flake8
         language_version: python3
