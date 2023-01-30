@@ -1,5 +1,6 @@
 {% load forum_member_tags %}
 {% load i18n %}
+{% load theme_inclusion %}
 <ul>
     {% comment %} TODO : Ajouter la class .is-active sur l'item de menu actif {% endcomment %}
 
@@ -55,11 +56,8 @@
         </li>
     {% else %}
         <li>
-            <a href="{% url 'inclusion_connect:authorize' %}" class="btn {{ button_size }} btn-ico btn-primary">
-                <i class="ri-login-box-line ri-lg"></i>
-                <span>
-                    Se connecter | S'inscrire
-                </span>
+            <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-inclusion-connect">
+                <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
             </a>
         </li>
     {% endif %}
