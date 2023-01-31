@@ -41,7 +41,7 @@ def mock_oauth_dance(
     previous_url=None,
     next_url=None,
     assert_redirects=True,
-    expected_route="pages:home",
+    expected_route="forum_extension:home",
     user_info_email=None,
 ):
     respx.get(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE).respond(302)
@@ -175,11 +175,11 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
         response = self.client.post(reverse("inclusion_connect:logout"))
 
         # Then log in again.
-        response = self.client.get(reverse("pages:home"))
+        response = self.client.get(reverse("forum_extension:home"))
         self.assertContains(response, reverse("inclusion_connect:authorize"))
 
         response = mock_oauth_dance(self, assert_redirects=False)
-        expected_redirection = reverse("pages:home")
+        expected_redirection = reverse("forum_extension:home")
         self.assertRedirects(response, expected_redirection)
 
         # Make sure it was a login instead of a new signup.
@@ -194,13 +194,13 @@ class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
         respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
         logout_url = reverse("inclusion_connect:logout")
         response = self.client.get(logout_url)
-        self.assertRedirects(response, reverse("pages:home"))
+        self.assertRedirects(response, reverse("forum_extension:home"))
         self.assertFalse(auth.get_user(self.client).is_authenticated)
 
     @respx.mock
     def test_logout_with_redirection(self):
         mock_oauth_dance(self)
-        expected_redirection = reverse("pages:home")
+        expected_redirection = reverse("forum_extension:home")
         respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
 
         params = {"redirect_url": expected_redirection}
