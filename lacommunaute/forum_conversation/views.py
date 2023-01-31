@@ -42,8 +42,9 @@ class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):
     pass
 
 
-class PostCreateView(SuccessUrlMixin, FormValidMixin, views.PostCreateView):
-    pass
+class PostCreateView(views.PostCreateView):
+    def perform_permissions_check(self, user, obj, perms):
+        return False
 
 
 class PostUpdateView(SuccessUrlMixin, FormValidMixin, views.PostUpdateView):

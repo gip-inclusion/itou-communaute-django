@@ -168,10 +168,6 @@ class PostCreateViewTest(TestCase):
         cls.topic = TopicFactory(with_post=True)
         cls.forum = cls.topic.forum
         cls.poster = cls.topic.poster
-        cls.perm_handler = PermissionHandler()
-        assign_perm("can_read_forum", cls.poster, cls.topic.forum)
-        assign_perm("can_see_forum", cls.poster, cls.topic.forum)
-        assign_perm("can_reply_to_topics", cls.poster, cls.topic.forum)
         cls.url = reverse(
             "forum_conversation:post_create",
             kwargs={
@@ -182,18 +178,7 @@ class PostCreateViewTest(TestCase):
             },
         )
 
-    def test_redirection(self):
-        view = PostCreateView()
-        view.forum_post = self.topic.posts.first()
-        self.assertEqual(
-            view.get_success_url(),
-            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
-    def test_topic_is_marked_as_read_when_post_is_created(self):
-        # evaluating ForumReadTrack instead of TopicReadTrack
-        # because of django-machina logic
-        self.assertFalse(ForumReadTrack.objects.count())
+    def test_http_forbidden(self):
 
         self.client.force_login(self.poster)
 
@@ -203,14 +188,7 @@ class PostCreateViewTest(TestCase):
             post_data,
             follow=True,
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, ForumReadTrack.objects.count())
-
-    def test_postform_in_context(self):
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.context_data["post_form"], PostForm)
+        self.assertEqual(response.status_code, 403)
 
 
 class PostUpdateViewTest(TestCase):
