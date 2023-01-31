@@ -68,6 +68,13 @@
                                                 data-matomo-action="view"
                                                 data-matomo-option="forum">
                                                 <h5 class="mb-0">{{ child.obj.name }} </h5>
+                                                {% if child.obj in unread_forums %}
+                                                    <small class="float-right">
+                                                        <span class="badge badge-pill badge-info">
+                                                            Nouveaux messages
+                                                        </span>
+                                                    </small>
+                                                {%endif%}
                                                 <small class="text-muted ">
                                                     {% if node.obj.is_private%}
                                                         <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
