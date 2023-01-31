@@ -376,5 +376,5 @@ class FunnelViewTest(TestCase):
 
 class IndexViewTest(TestCase):
     def test_url(self):
-        response = self.client.get(reverse("forum_extension:index"))
+        response = self.client.get(reverse("forum_extension:home"))
         self.assertEqual(response.status_code, 200)
