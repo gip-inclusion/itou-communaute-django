@@ -2,10 +2,8 @@ import logging
 
 from django.db.models.functions import TruncMonth
 from django.shortcuts import render
-from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_upvote.models import UpVote
@@ -14,12 +12,6 @@ from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_
 
 
 logger = logging.getLogger(__name__)
-
-
-class HomeListView(ListView):
-    template_name = "pages/home.html"
-    queryset = Forum.objects.filter(is_highlighted=True)
-    context_object_name = "forums"
 
 
 def contact(request):
