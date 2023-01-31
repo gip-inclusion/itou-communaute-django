@@ -10,14 +10,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
-from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.views import (
-    PostCreateView,
-    PostDeleteView,
-    TopicCreateView,
-    TopicUpdateView,
-    TopicView,
-)
+from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView, TopicView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 

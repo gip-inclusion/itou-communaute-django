@@ -1,9 +1,7 @@
-from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from machina.core.loading import get_class
-from machina.test.factories.forum import create_forum
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
