@@ -22,6 +22,8 @@ PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRe
 
 
 class IndexView(BaseIndexView):
+    template_name = "pages/home.html"
+
     def get_queryset(self):
         """Returns the list of items for this view."""
         return ForumVisibilityContentTree.from_forums(
