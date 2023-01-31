@@ -7,107 +7,95 @@
 {% load str_filters %}
 {% load date_filters %}
 
-<div class="row mb-3 mb-md-5">
-    <div class="col-12">
-        {% if forum_contents.nodes %}
-            {% if root_level == 0 %}
-                {% for node in forum_contents.top_nodes %}
-                    <div class="card my-3">
-                        <div class="card-body">
-                            {% if node.obj in unread_forums %}
-                                <small class="float-right">
-                                    <span class="badge badge-pill badge-info">
-                                        Nouveaux messages
-                                    </span>
-                                </small>
-                            {% endif %}
-                            <table>
-                                <tr>
-                                    {% if node.obj.image %}
-                                        <td>
-                                            <div class="d-none d-md-block forum-image pr-2">
-                                                <img src="{{ node.obj.image.url }}" alt="" />
-                                            </div>
-                                        </td>
-                                    {% endif %}
-                                    <td>
-                                        <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
-                                            class="matomo-event h3"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="view"
-                                            data-matomo-option="forum">
-                                            {{ node.obj.name }}
-                                        </a>
-                                        <br>
-                                        <small class="text-muted">
-                                            {% if node.obj.is_private%}
-                                                <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
-                                            {% endif %}
-                                            {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
-                                        </small>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            {% if node.obj.description.rendered %}
-                                <p class="card-text">
-                                    {{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}
-                                </p>
-                            {% endif %}
-
-                            {% if node.children %}
-                                <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}">
-                                    <small class="text-muted">Voir les sous-communautés</small>
-                                </a>
-                                <div class="collapse" id="collapse{{node.obj.id}}">
-                                    <div class="list-group ">
-                                        {% for child in node.children  %}
+{% if forum_contents.nodes %}
+    {% if root_level == 0 %}
+        {% for node in forum_contents.top_nodes %}
+            <div class="c-card card mb-3">
+                <div class="card-header d-flex position-relative">
+                    {% if node.obj.image %}
+                        <div class="d-none d-md-flex-inline forum-image pr-2">
+                            <img src="{{ node.obj.image.url }}" alt="{{ node.obj.name }}" class="img-fluid" />
+                        </div>
+                    {% endif %}
+                    <div class="flex-grow-1">
+                        <h3 class="h3 mb-0">
+                            <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
+                                class="stretched-link matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="view"
+                                data-matomo-option="forum">
+                                {{ node.obj.name }}
+                            </a>
+                        </h3>
+                        <p class="small text-muted">
+                            {% if node.obj.is_private%}
+                                <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
+                            {%endif%}
+                            {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                        </p>
+                    </div>
+                    {% if node.obj in unread_forums %}
+                        <div>
+                            <span class="badge badge-pill badge-sm badge-info">
+                                Nouveaux messages
+                            </span>
+                        </div>
+                    {%endif%}
+                </div>
+                <div class="card-body">
+                    {%if node.obj.description.rendered%}
+                        {{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}
+                    {%endif%}
+                    {% if node.children %}
+                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pl-0">Voir les sous-communautés</a>
+                        <div class="collapse" id="collapse{{node.obj.id}}">
+                            <ul class="list-group my-3">
+                                {% for child in node.children  %}
+                                    <li class="list-group-item list-group-item-action">
+                                        <h4 class="h5 mb-0">
                                             <a href="{% url 'forum_extension:forum' child.obj.slug child.obj.id %}"
-                                                class="list-group-item  list-group-item-action matomo-event"
+                                                class="stretched-link matomo-event"
                                                 data-matomo-category="engagement"
                                                 data-matomo-action="view"
                                                 data-matomo-option="forum">
-                                                <h5 class="mb-0">{{ child.obj.name }} </h5>
-                                                {% if child.obj in unread_forums %}
-                                                    <small class="float-right">
-                                                        <span class="badge badge-pill badge-info">
-                                                            Nouveaux messages
-                                                        </span>
-                                                    </small>
-                                                {% endif %}
-                                                <small class="text-muted ">
-                                                    {% if node.obj.is_private%}
-                                                        <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
-                                                    {% endif %}
-                                                    {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
-                                                </small>
+                                                {{ child.obj.name }}
                                             </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
+                                        </h4>
+                                        <small class="text-muted">
+                                            {% if node.obj.is_private%}
+                                                <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
+                                            {%endif%}
+                                            {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
+                                        </small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="list-group ">
-                    {% for node in forum_contents.top_nodes %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <ul class="list-group mb-3 mb-md-5">
+            {% for node in forum_contents.top_nodes %}
+                <li class="list-group-item list-group-item-action">
+                    <h2 class="h4 mb-0">
                         <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
-                            class="list-group-item  list-group-item-action matomo-event"
+                            class="stretched-link matomo-event"
                             data-matomo-category="engagement"
                             data-matomo-action="view"
                             data-matomo-option="forum">
-                            <h5 class="mb-0">{{ node.obj.name }}</h5>
-                            <small class="text-muted">
-                                {% if node.obj.is_private%}
-                                    <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
-                                {% endif %}
-                                {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
-                            </small>
+                            {{ node.obj.name }}
                         </a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endif %}
-    </div>
-</div>
+                    </h2>
+                    <small class="text-muted">
+                        {% if node.obj.is_private%}
+                            <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
+                        {%endif%}
+                        {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+    {%endif%}
+{% endif %}

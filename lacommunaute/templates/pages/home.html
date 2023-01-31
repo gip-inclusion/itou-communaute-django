@@ -11,22 +11,16 @@
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
 
 {% block content %}
-    <section class="s-page-menu-01 s-page-menu-01--communaute">
+    <section class="s-page-menu-01 s-page-menu-01--communaute mt-md-6">
         <div class="s-page-menu-01__container container">
             <div class="s-page-menu-01__row row align-items-center">
                 <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
                     <h1 class="h1-hero lh-sm font-weight-bold">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                    {% if user.is_authenticated %}
+                        <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
+                    {% endif %}
                 </div>
             </div>
-
-            {% if user.is_authenticated %}
-                <div class="s-page-menu-01__row row">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-md-12">
-                        <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
-                        {% forum_list forums %}
-                    </div>
-                </div>
-            {% endif %}
         </div>
     </section>
 
@@ -63,7 +57,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -90,9 +83,7 @@
                         <h2>Les communautés publiques</h2>
                         {% forum_list forums %}
                     </div>
-                </div>
-                <div class="s-section__row row mb-1 mb-md-3">
-                    <div class="s-section__col col-12">
+                    <div class="s-section__col col-12 mt-3">
                         <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-ico btn-outline-primary">
                             <i class="ri-login-box-line ri-lg"></i>
                             <span>
@@ -103,13 +94,16 @@
                 </div>
             </div>
         </section>
+    {% else %}
+        <section class="s-section">
+            <div class="s-section__container container">
+                <div class="s-section__row row mb-1 mb-md-3">
+                    <div class="s-section__col col-12">
+                        {% forum_list forums %}
+                    </div>
+                </div>
+            </div>
+        </section>
     {% endif %}
-
-    <section >
-        <div class="s-section__container container">
-
-        </div>
-    </section>
-
 
 {% endblock %}
