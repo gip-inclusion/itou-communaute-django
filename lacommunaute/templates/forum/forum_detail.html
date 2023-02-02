@@ -14,9 +14,9 @@
     <div class="row">
         <div class="col-12">
             <h1 class="mb-1">{{ forum.name }}</h1>
-            {%if forum.description %}
+            {% if forum.description %}
                 <p class="lead">{{forum.description|urlizetrunc_target_blank:30}}</small>
-            {%endif%}
+            {% endif %}
         </div>
     </div>
     {% if sub_forums %}
@@ -37,7 +37,7 @@
                             <i class="ri-chat-new-line ri-lg"></i>
                             <span>{% trans "New topic" %}</span>
                         </a>
-                    {%endif%}
+                    {% endif %}
                     {% if user_can_access_stats %}
                         <button id="id_dropdown_moderators_stats_button" class="btn btn-outline-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
@@ -55,7 +55,7 @@
                                 <a href="{% url 'forum_extension:funnel' forum.slug forum.pk %}" class="dropdown-item">{% trans "Funnel" %}</a>
                             {% endif %}
                         </div>
-                    {%endif%}
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
