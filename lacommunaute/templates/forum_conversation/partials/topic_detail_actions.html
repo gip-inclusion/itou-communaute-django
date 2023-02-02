@@ -35,9 +35,9 @@
                 {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
                     Show me the {{ posts_count }} comments
                 {% endblocktrans %}
-            {%else%}
+            {% else %}
                 {% trans "Show me the comment" %}
-            {%endif%}
+            {% endif %}
         </span>
     </a>
 {% endif %}

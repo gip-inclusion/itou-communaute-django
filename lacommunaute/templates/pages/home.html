@@ -75,7 +75,7 @@
                         <div class="card c-card c-card--communaute has-one-link-inside h-100 w-100">
                             <div class="card-header">
                                 <h3 class="h3 mb-0">{{forum.name}}</h3>
-                                <p class="text-muted">{% trans "Forum" %} {%if forum.is_private%}privée{%else%}publique{%endif%}</p>
+                                <p class="text-muted">{% trans "Forum" %} {% if forum.is_private %}privée{% else %}publique{% endif %}</p>
                             </div>
                             <div class="card-body">
                                 <p>{{forum.description}}</p>
