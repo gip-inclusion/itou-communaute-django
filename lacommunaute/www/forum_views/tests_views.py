@@ -375,6 +375,27 @@ class FunnelViewTest(TestCase):
 
 
 class IndexViewTest(TestCase):
-    def test_url(self):
+    def setUp(self):
+        self.url = reverse("forum_extension:home")
+        self.forum = ForumFactory()
+        self.user = UserFactory()
+
+    def test_forum_is_not_visible_without_perms(self):
         response = self.client.get(reverse("forum_extension:home"))
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.forum.name)
+
+    def test_forum_is_visible_with_authenticated_perms(self):
+        assign_perm("can_see_forum", self.user, self.forum)
+        assign_perm("can_read_forum", self.user, self.forum)
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("forum_extension:home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.forum.name)
+
+    def test_forum_is_visible_with_anonymous_perms(self):
+        assign_perm("can_see_forum", AnonymousUser(), self.forum)
+        assign_perm("can_read_forum", AnonymousUser(), self.forum)
+        response = self.client.get(reverse("forum_extension:home"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.forum.name)
