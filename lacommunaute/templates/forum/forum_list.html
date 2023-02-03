@@ -27,7 +27,7 @@
                                 {{ node.obj.name }}
                             </a>
                         </h3>
-                        <p class="small text-muted">
+                        <p class="small text-muted mb-2">
                             {% if node.obj.is_private%}
                                 <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                             {% endif %}
@@ -42,14 +42,14 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="card-body">
+                <div class="card-body pt-0">
                     {%if node.obj.description.rendered%}
                         {{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}
                     {% endif %}
                     {% if node.children %}
-                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pl-0">Voir les sous-communautés</a>
+                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pt-0 pl-0">Voir les sous-communautés</a>
                         <div class="collapse" id="collapse{{node.obj.id}}">
-                            <ul class="list-group my-3">
+                            <ul class="list-group">
                                 {% for child in node.children  %}
                                     <li class="list-group-item list-group-item-action">
                                         <h4 class="h5 mb-0">
@@ -104,7 +104,6 @@
                         {% endif %}
                         {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
                     </small>
-
                 </li>
             {% endfor %}
         </ul>
