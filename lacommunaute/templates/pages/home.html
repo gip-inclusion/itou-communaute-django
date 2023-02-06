@@ -30,6 +30,13 @@
                         {% forum_list forums %}
                     </div>
                 </div>
+                <div class="s-section__row row mb-1 mb-md-3">
+                    <div class="s-section__col col-6">
+                        <a href="{% url 'event:calendar' %}" class="btn btn-primary btn-block">
+                            Accéder au calendrier des évènements
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     {% else %}
