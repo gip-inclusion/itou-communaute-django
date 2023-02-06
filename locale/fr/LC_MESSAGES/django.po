@@ -911,8 +911,8 @@ msgstr "Voir les %(count)s sous-communautés"
 msgid "Calendar"
 msgstr "Calendrier"
 
-msgid "My Events"
-msgstr "Mes évènements"
+msgid "Manage My Events"
+msgstr "Gérer mes évènements"
 
 msgid "Post a new Event"
 msgstr "Ajouter un évènement"
