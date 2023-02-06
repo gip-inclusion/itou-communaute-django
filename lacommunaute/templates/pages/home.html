@@ -123,3 +123,19 @@
         </section>
     {% endif %}
 {% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script async src="https://tally.so/widgets/embed.js"></script>
+    <script>
+      window.TallyConfig = {
+        "formId": "mODrpM",
+        "popup": {
+          "emoji": {
+            "text": "👋",
+            "animation": "wave"
+          }
+        }
+      };
+    </script>
+{% endblock %}
