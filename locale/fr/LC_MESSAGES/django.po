@@ -914,8 +914,8 @@ msgstr "Calendrier"
 msgid "Manage My Events"
 msgstr "Gérer mes évènements"
 
-msgid "Post a new Event"
-msgstr "Ajouter un évènement"
+msgid "Post a new Public Event"
+msgstr "Ajouter un évènement public"
 
 msgid "Delete event"
 msgstr "Effacer cet évènement"
