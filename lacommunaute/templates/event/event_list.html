@@ -8,19 +8,19 @@
 {% block content %}
     <section class="s-title-01">
         <div class="s-title-01__container container">
-            <div class="s-title-01__row row">
+            <div class="s-title-01__row row mb-3">
                 <div class="s-title-01__col col-12">
                     <h1 class="s-title-01__title h1"><strong>{% trans "Manage My Events" %}</strong></h1>
                 </div>
             </div>
-            <div class="row">
+            <div class="s-title-01__row row">
                 <div class="col-12 col-md-auto">
                     <a href="{% url 'event:create' %}"
                         role="button" class="btn btn-primary matomo-event"
                         data-matomo-category="engagement"
                         data-matomo-action="create"
                         data-matomo-option="event">
-                        {% trans "Post a new Event" %}
+                        {% trans "Post a new Public Event" %}
                     </a>
                 </div>
                 <div class="col-12 col-md-auto mt-3 mt-md-0">
