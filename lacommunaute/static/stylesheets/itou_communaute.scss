@@ -78,3 +78,58 @@
   background-color: #b3b4c3 !important;
   border-color: #b3b4c3 !important;
 }
+
+.funnel-container {
+  position: relative;
+}
+
+.number-overlay {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.target {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 30px;
+}
+
+.number-overlay-top {
+  top: 15%;
+}
+
+.number-overlay-middle {
+  top: 45%;
+  color: #fff;
+}
+
+.number-overlay-bottom {
+  top: 80%;
+  color: #fff;
+}
+
+.text-overlay {
+  position: absolute;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.text-overlay-top {
+  top: 20%;
+}
+
+.text-overlay-middle {
+  top: 50%;
+}
+
+.text-overlay-bottom {
+  top: 85%;
+}
