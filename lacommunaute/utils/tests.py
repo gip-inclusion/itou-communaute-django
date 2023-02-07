@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from unittest.mock import patch
 
 from dateutil.relativedelta import relativedelta
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -18,6 +19,7 @@ from lacommunaute.forum_conversation.forum_attachments.factories import Attachme
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.enums import PeriodAggregation
+from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
 from lacommunaute.utils.stats import (
     count_objects_per_period,
     format_counts_of_objects_for_timeline_chart,
@@ -179,3 +181,193 @@ class UtilsStatsTest(TestCase):
                 "posts": [0, 1, 2],
             },
         )
+
+
+class UtilsGetMatomoDataTest(TestCase):
+    def test_get_matomo_data(self):
+        nb_uniq_visitors = faker.random_int()
+        with patch("lacommunaute.utils.matomo.httpx.get") as mock_get:
+            mock_get.return_value.json.return_value = {"nb_uniq_visitors": nb_uniq_visitors}
+            mock_get.return_value.status_code = 200
+
+            data = get_matomo_data("day", datetime.now(), "method")
+        self.assertEqual(data, {"nb_uniq_visitors": nb_uniq_visitors})
+
+    def test_get_matomo_data_invalid_response(self):
+        with patch("lacommunaute.utils.matomo.httpx.get") as mock_get:
+            mock_get.return_value.status_code = 400
+            with self.assertRaises(Exception):
+                get_matomo_data("day", datetime.now(), "method")
+
+    def test_get_matomo_data_not_dict_response(self):
+        with patch("lacommunaute.utils.matomo.httpx.get") as mock_get:
+            mock_get.return_value.json.return_value = "not a dict"
+            with self.assertRaises(Exception):
+                get_matomo_data("day", datetime.now(), "method")
+
+
+class UtilsGetMatomoVisitsDataTest(TestCase):
+    def test_get_matomo_visits_data(self):
+        nb_uniq_visitors = faker.random_int()
+        today = datetime.now().date()
+        expected_res = [
+            {
+                "period": "day",
+                "date": today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_visitors",
+                "value": nb_uniq_visitors,
+            }
+        ]
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = {"nb_uniq_visitors": nb_uniq_visitors}
+            self.assertEqual(get_matomo_visits_data(period="day", search_date=today), expected_res)
+
+    def test_get_matomo_visits_data_without_nb_uniq_visitors(self):
+        today = datetime.now().date()
+        expected_res = [
+            {
+                "period": "day",
+                "date": today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_visitors",
+                "value": 0,
+            }
+        ]
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = {}
+            self.assertEqual(get_matomo_visits_data(period="day", search_date=today), expected_res)
+
+
+class UtilsGetMatomoEventsDataTest(TestCase):
+    def setUp(self):
+        self.today = datetime.now().date()
+        self.nb_uniq_visitors = faker.random_int()
+        self.empty_res = [
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_active_visitors",
+                "value": 0,
+            },
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_unique_contributors",
+                "value": 0,
+            },
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_engagment_events",
+                "value": 0,
+            },
+        ]
+        self.uniq_active_visitors_res = [
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_active_visitors",
+                "value": self.nb_uniq_visitors,
+            },
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_unique_contributors",
+                "value": 0,
+            },
+            {
+                "period": "day",
+                "date": self.today.strftime("%Y-%m-%d"),
+                "name": "nb_engagment_events",
+                "value": 0,
+            },
+        ]
+
+    def test_get_matomo_events_data_with_empty_datas(self):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = []
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                self.empty_res,
+            )
+
+    def test_get_matomo_events_data_without_nb_uniq_visitors(self):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [{}]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                self.empty_res,
+            )
+
+    def test_get_matomo_events_data_without_subtable(self):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [{"nb_uniq_visitors": self.nb_uniq_visitors}]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                self.uniq_active_visitors_res,
+            )
+
+    def test_get_matomo_events_data_with_empty_subtable(self):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [{"nb_uniq_visitors": self.nb_uniq_visitors, "subtable": []}]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                self.uniq_active_visitors_res,
+            )
+
+    def test_get_matomo_events_data_with_missing_nb_uniq_visitors_in_subtable(self):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [
+                {
+                    "nb_uniq_visitors": self.nb_uniq_visitors,
+                    "subtable": [{"label": "contribute"}],
+                }
+            ]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                self.uniq_active_visitors_res,
+            )
+
+    def test_get_matomo_events_data_without_like_vote_in_subtable(self):
+        nb_active_visitors = faker.random_int()
+        expected_res = self.uniq_active_visitors_res
+        expected_res[1]["value"] = nb_active_visitors
+
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [
+                {
+                    "nb_uniq_visitors": self.nb_uniq_visitors,
+                    "subtable": [{"label": "contribute", "nb_uniq_visitors": nb_active_visitors}],
+                }
+            ]
+
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                expected_res,
+            )
+
+    def test_get_matomo_events_data_with_all_expected_datas(self):
+        nb_events = faker.random_int()
+        nb_active_visitors = faker.random_int()
+        expected_res = self.uniq_active_visitors_res
+        expected_res[1]["value"] = nb_active_visitors
+        expected_res[2]["value"] = nb_events * 3
+
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [
+                {
+                    "nb_uniq_visitors": self.nb_uniq_visitors,
+                    "subtable": [
+                        {
+                            "label": "contribute",
+                            "nb_uniq_visitors": nb_active_visitors,
+                            "nb_events": nb_events,
+                        },
+                        {"label": "like", "nb_events": nb_events},
+                        {"label": "vote", "nb_events": nb_events},
+                    ],
+                }
+            ]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today),
+                expected_res,
+            )

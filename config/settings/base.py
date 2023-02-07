@@ -309,3 +309,8 @@ DAYS_IN_A_PERIOD = 15
 
 # Django sites framework
 SITE_ID = 1
+
+# MATOMO
+# ---------------------------------------
+MATOMO_SITE_ID = 268
+MATOMO_URL = "https://stats.data.gouv.fr/index.php"
