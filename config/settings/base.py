@@ -31,6 +31,8 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
+    "django.contrib.sites",
+    "django.contrib.redirects",
 ]
 
 THIRD_PARTIES_APPS = [
@@ -84,6 +86,7 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -303,3 +306,6 @@ MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextare
 
 # STATISTIQUES
 DAYS_IN_A_PERIOD = 15
+
+# Django sites framework
+SITE_ID = 1
