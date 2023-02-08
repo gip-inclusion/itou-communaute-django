@@ -73,6 +73,19 @@ class ForumView(BaseForumView):
         context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
         context["next_url"] = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         context["form"] = PostForm(forum=forum, user=self.request.user)
+        context["announces"] = list(
+            self.get_forum()
+            .topics.select_related(
+                "poster",
+                "poster__forum_profile",
+                "first_post",
+                "first_post__poster",
+                "forum",
+            )
+            .filter(type=Topic.TOPIC_ANNOUNCE)
+            .annotate(likes=Count("likers"))
+            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
+        )
         return context
 
 
