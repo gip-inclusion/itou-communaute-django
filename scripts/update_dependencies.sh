@@ -1,4 +1,7 @@
 #!/bin/sh
+echo "Hi, I'm going to update the dependencies and extract last PRS for the changelog"
+python ./scripts/changelog.py
+wait
 poetry lock
 wait
 poetry run poe export && poetry run poe export_dev
