@@ -51,6 +51,9 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
+                            <a class="dropdown-item text-primary" href="{% url 'admin:auth_group_changelist' %}">Gérer les groupes</a>
+                        </li>
+                        <li>
                             <a class="dropdown-item text-primary" href="{% url 'admin:index' %}">Accéder à l'admin</a>
                         </li>
                     {% endif %}
