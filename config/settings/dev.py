@@ -79,4 +79,3 @@ MEDIA_URL = "/media/"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 COMMU_ENVIRONMENT = "DEV"
-COMMU_PROTOCOL = "http"
