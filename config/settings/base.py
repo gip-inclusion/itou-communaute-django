@@ -238,7 +238,6 @@ HAYSTACK_CONNECTIONS = {
 # Environment, sets the type of env of the app (PROD, DEV…)
 COMMU_ENVIRONMENT = os.getenv("COMMU_ENVIRONMENT", "PROD")
 COMMU_PROTOCOL = "https"
-COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute-experimentation.inclusion.beta.gouv.fr")
 
 # S3 uploads
 # ------------------------------------------------------------------------------

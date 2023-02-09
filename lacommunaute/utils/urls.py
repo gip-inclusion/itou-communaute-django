@@ -36,9 +36,3 @@ def get_safe_url(request, param_name=None, fallback_url=None, url=None):
                 return url
 
     return fallback_url
-
-
-def get_absolute_url(path=""):
-    if path.startswith("/"):
-        path = path[1:]
-    return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}/{path}"
