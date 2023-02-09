@@ -28,7 +28,7 @@ class IndexView(BaseIndexView):
         """Returns the list of items for this view."""
         return ForumVisibilityContentTree.from_forums(
             self.request.forum_permission_handler.forum_list_filter(
-                Forum.objects.filter(level__lte=1).prefetch_related("members_group__user_set"),
+                Forum.objects.all().prefetch_related("members_group__user_set"),
                 self.request.user,
             ),
         )
