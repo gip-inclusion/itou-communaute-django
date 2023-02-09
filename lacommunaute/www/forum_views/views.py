@@ -2,11 +2,13 @@ import logging
 
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.models import Group
 from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 from machina.apps.forum.views import ForumView as BaseForumView, IndexView as BaseIndexView
+from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
@@ -19,6 +21,10 @@ logger = logging.getLogger(__name__)
 
 ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
+
+ForumPermission = get_model("forum_permission", "ForumPermission")
+UserForumPermission = get_model("forum_permission", "UserForumPermission")
+GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 
 
 class IndexView(BaseIndexView):
@@ -68,6 +74,97 @@ class ForumView(BaseForumView):
         context["next_url"] = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         context["form"] = PostForm(forum=forum, user=self.request.user)
         return context
+
+
+class ForumCreateView(UserPassesTestMixin, CreateView):
+    model = Forum
+    fields = ["name", "description"]
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+
+        moderators, _ = Group.objects.get_or_create(name=f"{instance.name} moderators")
+        members, _ = Group.objects.get_or_create(name=f"{instance.name} members")
+
+        instance.type = 0
+        instance.members_group = members
+        instance.save()
+
+        declined = [
+            "can_edit_posts",
+            "can_lock_topics",
+            "can_delete_posts",
+            "can_move_topics",
+            "can_approve_posts",
+            "can_reply_to_locked_topics",
+            "can_attach_file",
+            "can_create_polls",
+            "can_post_stickies",
+            "can_post_announcements",
+        ]
+
+        moderators_perms = [
+            GroupForumPermission(group=moderators, permission=permission, has_perm=True, forum=instance)
+            for permission in ForumPermission.objects.all()
+        ]
+        members_authorized_perms = [
+            GroupForumPermission(group=members, permission=permission, has_perm=False, forum=instance)
+            for permission in ForumPermission.objects.filter(codename__in=declined)
+        ]
+        members_declined_perms = [
+            GroupForumPermission(group=members, permission=permission, has_perm=True, forum=instance)
+            for permission in ForumPermission.objects.exclude(codename__in=declined)
+        ]
+        GroupForumPermission.objects.bulk_create(moderators_perms + members_authorized_perms + members_declined_perms)
+
+        anonymous_declined_perms = [
+            UserForumPermission(
+                anonymous_user=True,
+                authenticated_user=False,
+                permission=permission,
+                has_perm=False,
+                forum=instance,
+            )
+            for permission in ForumPermission.objects.filter(codename__in=declined)
+        ]
+        anonymous_authorized_perms = [
+            UserForumPermission(
+                anonymous_user=True, authenticated_user=False, permission=permission, has_perm=True, forum=instance
+            )
+            for permission in ForumPermission.objects.exclude(codename__in=declined)
+        ]
+        authentified_declined_perms = [
+            UserForumPermission(
+                anonymous_user=False,
+                authenticated_user=True,
+                permission=permission,
+                has_perm=False,
+                forum=instance,
+            )
+            for permission in ForumPermission.objects.filter(codename__in=declined)
+        ]
+
+        authentified_authorized_perms = [
+            UserForumPermission(
+                anonymous_user=False, authenticated_user=True, permission=permission, has_perm=True, forum=instance
+            )
+            for permission in ForumPermission.objects.exclude(codename__in=declined)
+        ]
+
+        UserForumPermission.objects.bulk_create(
+            anonymous_declined_perms
+            + anonymous_authorized_perms
+            + authentified_declined_perms
+            + authentified_authorized_perms
+        )
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("forum_extension:home")
 
 
 class ModeratorEngagementView(PermissionRequiredMixin, ListView):
