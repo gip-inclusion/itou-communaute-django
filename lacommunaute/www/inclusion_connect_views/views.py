@@ -12,7 +12,6 @@ from django.utils.http import urlencode
 
 from lacommunaute.inclusion_connect import constants
 from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
-from lacommunaute.utils.urls import get_absolute_url
 
 
 logger = logging.getLogger(__name__)
@@ -57,7 +56,7 @@ def inclusion_connect_authorize(request):
     request = ic_session.bind_to_request(request)
     ic_session = request.session[constants.INCLUSION_CONNECT_SESSION_KEY]
 
-    redirect_uri = get_absolute_url(reverse("inclusion_connect:callback"))
+    redirect_uri = request.build_absolute_uri(reverse("inclusion_connect:callback"))
     signed_csrf = InclusionConnectState.create_signed_csrf_token()
     data = {
         "response_type": "code",
@@ -83,7 +82,7 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
         return _redirect_to_login_page_on_error(error_msg="Missing code or invalid state.", request=request)
 
     ic_session = request.session[constants.INCLUSION_CONNECT_SESSION_KEY]
-    token_redirect_uri = get_absolute_url(reverse("inclusion_connect:callback"))
+    token_redirect_uri = request.build_absolute_uri(reverse("inclusion_connect:callback"))
 
     data = {
         "client_id": constants.INCLUSION_CONNECT_CLIENT_ID,
