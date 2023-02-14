@@ -41,7 +41,7 @@
                                                 data-matomo-category="engagement"
                                                 data-matomo-action="view"
                                                 data-matomo-option="topic">
-                                                {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" title="{% trans 'This topic is locked' %}"></i>{% endif %}
+                                                {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
                                             </a>
                                         </p>
                                         {% block htmx %}
