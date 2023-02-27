@@ -12,16 +12,15 @@ def get_json_data(file_name):
         return []
 
 
-def extract_values_in_list(datas):
-    values = {
-        "date": [],
-        "nb_unique_contributors": [],
-        "nb_uniq_visitors": [],
-        "nb_uniq_active_visitors": [],
-        "nb_engagment_events": [],
-    }
+def extract_values_in_list(datas, indicator_names):
+    values = {"date": []}
+
+    for name in indicator_names:
+        values[name] = []
+
     for data in datas:
         values[data["name"]].append(data["value"])
         if data["date"] not in values["date"]:
             values["date"].append(data["date"])
+
     return values
