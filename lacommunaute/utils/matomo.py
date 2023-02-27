@@ -1,9 +1,10 @@
-import json
 from datetime import date
 
 import httpx
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
+
+from lacommunaute.forum_stats.models import Stat
 
 
 def get_matomo_data(
@@ -161,5 +162,4 @@ def collect_stats_from_matomo_api(period="day", from_date=date(2022, 12, 5), to_
         else:
             from_date += relativedelta(months=1)
 
-    with open(f"./exports/stats_{period}.json", "w") as fp:
-        json.dump(stats, fp)
+    Stat.objects.bulk_create([Stat(**stat) for stat in stats])
