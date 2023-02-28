@@ -31,7 +31,9 @@
                             {% if node.obj.is_private%}
                                 <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                             {% endif %}
-                            {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                            {% if node.obj.is_forum %}
+                                {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                            {% endif %}
                         </p>
                     </div>
                     {% if node.obj in unread_forums %}
@@ -47,7 +49,13 @@
                         {{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}
                     {% endif %}
                     {% if node.children %}
-                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pt-0 pl-0">Voir les sous-communautés</a>
+                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pt-0 pl-0">
+                            {% if node.obj.is_forum %}
+                                Voir les sous-communautés
+                            {% else %}
+                                Afficher plus
+                            {% endif %}
+                        </a>
                         <div class="collapse" id="collapse{{node.obj.id}}">
                             <ul class="list-group">
                                 {% for child in node.children  %}
@@ -70,7 +78,9 @@
                                             {% if node.obj.is_private%}
                                                 <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                                             {% endif %}
-                                            {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
+                                            {% if child.obj.is_forum %}
+                                                {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
+                                            {% endif %}
                                         </small>
                                     </li>
                                 {% endfor %}
@@ -102,7 +112,9 @@
                         {% if node.obj.is_private%}
                             <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                         {% endif %}
-                        {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                        {% if node.obj.is_forum %}
+                            {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                        {% endif %}
                     </small>
                 </li>
             {% endfor %}
