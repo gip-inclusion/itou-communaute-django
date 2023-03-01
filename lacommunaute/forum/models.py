@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.db import models
 from django.db.models.functions import TruncWeek
 from django.utils import timezone
+from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
 
 from config.settings.base import DAYS_IN_A_PERIOD
@@ -51,3 +52,13 @@ class Forum(AbstractForum):
             )
         )
         return format_counts_of_objects_for_timeline_chart(datas, period=PeriodAggregation.WEEK)
+
+    @cached_property
+    def count_unanswered_topics(self):
+        return (
+            Topic.objects.exclude(type=Topic.TOPIC_ANNOUNCE)
+            .exclude(approved=False)
+            .exclude(status=Topic.TOPIC_LOCKED)
+            .filter(posts_count=1, forum__in=self.get_descendants(include_self=True))
+            .count()
+        )

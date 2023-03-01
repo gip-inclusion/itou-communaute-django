@@ -9,6 +9,7 @@ from machina.core.loading import get_class
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollVoteFactory
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 
 
@@ -65,3 +66,19 @@ class ForumModelTest(TestCase):
                 "topics": [1],
             },
         )
+
+    def test_count_unanswered_topics(self):
+        forum = ForumFactory()
+
+        TopicFactory(forum=forum, posts_count=0)
+        TopicFactory(forum=forum, posts_count=1)
+        TopicFactory(forum=forum, posts_count=2)
+
+        TopicFactory(forum=forum, posts_count=1, status=Topic.TOPIC_LOCKED)
+        TopicFactory(forum=forum, posts_count=1, type=Topic.TOPIC_ANNOUNCE)
+        TopicFactory(forum=forum, posts_count=1, approved=False)
+
+        subforum = ForumFactory(parent=forum)
+        TopicFactory(forum=subforum, posts_count=1)
+
+        self.assertEqual(forum.count_unanswered_topics, 2)
