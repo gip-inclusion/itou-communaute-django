@@ -128,14 +128,17 @@
     {{ block.super }}
     <script async src="https://tally.so/widgets/embed.js"></script>
     <script>
-      window.TallyConfig = {
-        "formId": "mVGEr6",
-        "popup": {
-          "emoji": {
-            "text": "👋",
-            "animation": "wave"
-          }
-        }
-      };
+        window.TallyConfig = {
+            "formId": "mVGEr6",
+            "popup": {
+                "emoji": {
+                    "text": "👋",
+                    "animation": "wave"
+                },
+                "autoClose": 3000,
+                "showOnce": true,
+                "doNotShowAfterSubmit": true
+            }
+        };
     </script>
 {% endblock %}
