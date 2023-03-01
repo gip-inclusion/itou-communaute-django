@@ -51,9 +51,6 @@
                                 data-matomo-option="directory">
                                 {% trans "Members" %}
                             </a>
-                            {% if request.user.is_staff %}
-                                <a href="{% url 'forum_extension:funnel' forum.slug forum.pk %}" class="dropdown-item">{% trans "Funnel" %}</a>
-                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
@@ -75,7 +72,4 @@
             </div>
         </div>
     {% endif %}
-
-
-
 {% endblock content %}
