@@ -280,6 +280,19 @@ class ForumViewTest(TestCase):
         with self.assertNumQueries(29):
             self.client.get(self.url)
 
+    def test_param_new_in_request(self):
+        topic_with_2_posts = TopicFactory(with_post=True, forum=self.forum)
+        topic_is_locked = TopicFactory(with_post=True, forum=self.forum, status=Topic.TOPIC_LOCKED)
+        PostFactory(topic=topic_with_2_posts)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url + "?new=1")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.topic, response.context_data["topics"])
+        self.assertNotIn(topic_with_2_posts, response.context_data["topics"])
+        self.assertNotIn(topic_is_locked, response.context_data["topics"])
+
 
 class ModeratorEngagementViewTest(TestCase):
     @classmethod

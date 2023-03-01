@@ -65,6 +65,10 @@ class ForumView(BaseForumView):
             )
             .order_by("-last_post_on")
         )
+
+        if self.request.GET.get("new", None):
+            qs = qs.filter(posts_count=1).exclude(status=Topic.TOPIC_LOCKED)
+
         return qs
 
     def get_context_data(self, **kwargs):
