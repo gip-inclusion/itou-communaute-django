@@ -373,29 +373,6 @@ class ModeratorEngagementViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-class FunnelViewTest(TestCase):
-    def test_access(self):
-        user = UserFactory()
-        forum = ForumFactory()
-        url = reverse(
-            "forum_extension:funnel",
-            kwargs={"pk": forum.pk, "slug": forum.slug},
-        )
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
-
-        self.client.force_login(user)
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 403)
-
-        user.is_staff = True
-        user.save()
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, forum.name)
-
-
 class IndexViewTest(TestCase):
     def setUp(self):
         self.url = reverse("forum_extension:home")
