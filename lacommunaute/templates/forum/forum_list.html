@@ -20,7 +20,7 @@
                     <div class="flex-grow-1">
                         <h3 class="h3 mb-0">
                             <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
-                                class="stretched-link matomo-event"
+                                class="matomo-event"
                                 data-matomo-category="engagement"
                                 data-matomo-action="view"
                                 data-matomo-option="forum">
@@ -31,13 +31,7 @@
                             {% include "forum/partials/topics_and_members_counts.html" %}
                         </p>
                     </div>
-                    {% if node.obj in unread_forums %}
-                        <div>
-                            <span class="badge badge-pill badge-sm badge-info">
-                                Nouveaux messages
-                            </span>
-                        </div>
-                    {% endif %}
+                    {% include "forum/partials/unanswered_topics_badge.html" %}
                 </div>
                 <div class="card-body pt-0">
                     {%if node.obj.description.rendered%}
@@ -57,17 +51,13 @@
                                     <li class="list-group-item list-group-item-action">
                                         <h4 class="h5 mb-0">
                                             <a href="{% url 'forum_extension:forum' child.obj.slug child.obj.id %}"
-                                                class="stretched-link matomo-event"
+                                                class="matomo-event"
                                                 data-matomo-category="engagement"
                                                 data-matomo-action="view"
                                                 data-matomo-option="forum">
                                                 {{ child.obj.name }}
                                             </a>
-                                            {% if child.obj in unread_forums %}
-                                                <span class="badge badge-pill badge-sm badge-info float-right">
-                                                    Nouveaux messages
-                                                </span>
-                                            {% endif %}
+                                            {% include "forum/partials/unanswered_topics_badge.html" with node=child%}
                                         </h4>
                                         {% include "forum/partials/topics_and_members_counts.html" with node=child %}
                                     </li>
@@ -84,17 +74,13 @@
                 <li class="list-group-item list-group-item-action">
                     <h2 class="h4 mb-0">
                         <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
-                            class="stretched-link matomo-event"
+                            class="matomo-event"
                             data-matomo-category="engagement"
                             data-matomo-action="view"
                             data-matomo-option="forum">
                             {{ node.obj.name }}
                         </a>
-                        {% if node.obj in unread_forums %}
-                            <span class="badge badge-pill badge-sm badge-info float-right">
-                                Nouveaux messages
-                            </span>
-                        {% endif %}
+                        {% include "forum/partials/unanswered_topics_badge.html" %}
                     </h2>
                     {% include "forum/partials/topics_and_members_counts.html" %}
                 </li>
