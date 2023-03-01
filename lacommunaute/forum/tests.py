@@ -65,29 +65,3 @@ class ForumModelTest(TestCase):
                 "topics": [1],
             },
         )
-
-    def test_count_engaged_users(self):
-        # first user posts, likes, votes
-        topic = TopicFactory(with_post=True, with_like=True, with_poll_vote=True)
-
-        # second user posts
-        PostFactory(topic=topic, with_upvote=True)
-
-        # anonymous user posts
-        PostFactory(topic=topic, anonymous=True)
-
-        # post, like, vote in an other forum = ignored in count
-        TopicFactory(with_post=True, with_like=True, with_poll_vote=True)
-
-        self.assertEqual(
-            topic.forum.count_engaged_users,
-            {
-                "posters": 2,
-                "likers": 1,
-                "voters": 1,
-                "upvoters": 1,
-                "authenticated_users": 2,
-                "anonymous_posters": 1,
-                "all_users": 3,
-            },
-        )

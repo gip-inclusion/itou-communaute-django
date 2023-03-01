@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group
 from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, ListView
 from machina.apps.forum.views import ForumView as BaseForumView, IndexView as BaseIndexView
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
@@ -215,11 +215,3 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
         context["forum"] = self.forum
         context["stats"] = self.forum.get_stats(7)
         return context
-
-
-class FunnelView(UserPassesTestMixin, DetailView):
-    model = Forum
-    template_name = "forum/funnel.html"
-
-    def test_func(self):
-        return self.request.user.is_staff
