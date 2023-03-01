@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load str_filters %}
+
+<small class="text-muted">
+    {% if node.obj.is_private%}
+        <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membre{{ node.obj.members_group.user_set.count|pluralizefr }}
+    {% endif %}
+    {% if node.obj.is_forum %}
+        {% if node.obj.is_private%} - {% endif %}
+        {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+    {% endif %}
+</small>
