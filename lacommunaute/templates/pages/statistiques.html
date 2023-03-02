@@ -48,28 +48,23 @@
                                 <div class="col funnel-container">
                                     <img src="{% static 'images/funnel.png' %}" alt="Entonnoir d'aquisition des utilisateurs">
                                     <span class="number-overlay number-overlay-top">10 000</span>
-                                    <span class="number-overlay number-overlay-middle">1148</span>
-                                    <span class="number-overlay number-overlay-middle target">11,48% du Potentiel</span>
-                                    <span class="number-overlay number-overlay-bottom">36</span>
-                                    <span class="number-overlay number-overlay-bottom target">3,1% des Actifs</span>
+                                    <span class="number-overlay number-overlay-middle">2362</span>
+                                    <span class="number-overlay number-overlay-middle target">23,62% du Potentiel</span>
+                                    <span class="number-overlay number-overlay-bottom">54</span>
+                                    <span class="number-overlay number-overlay-bottom target">2,3% des Actifs</span>
                                 </div>
                                 <div class="col ">
                                     <span class="text-overlay text-overlay-top">
                                         <h3 class="mb-1">Utilisateurs Potentiels</h3>estimation du nombre d'accompagnants pouvant potentiellement profiter des ressources de la communauté
                                     </span>
-                                    <span class="text-overlay text-overlay-middle">
-                                        <h3 class="mb-1">Utilisateurs Actifs (Cible : 5000)</h3>nombre d'utilisateurs uniques consultant les ressources de la communauté
-                                    </span>
-                                    <span class="text-overlay text-overlay-bottom">
-                                        <h3 class="mb-1">Utilisateurs Engagés (Cible : 1250)</h3>
-                                        nombre d'utilisateurs uniques ayant enrichi les ressources de la communauté
-                                    </span>
+                                    <span class="text-overlay text-overlay-middle"><h3 class="mb-1">Utilisateurs Actifs (Cible : 5000)</h3>visiteurs consultant les contenus de la communauté</span>
+                                    <span class="text-overlay text-overlay-bottom"><h3 class="mb-1">Utilisateurs Engagés (Cible : 1250)</h3>visiteurs contribuant aux contenus de la communauté</span>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">
-                                Période du 01 au 31 janvier 2023
+                                Période : Février 2023
                             </small>
                         </div>
                     </div>
@@ -93,9 +88,9 @@
                         <div class="card-footer">
                             <small class="text-muted">
                                 <ul>
-                                    <li>Visiteurs uniques : utilisateurs ayant au moins accédé à la page d'acceuil</li>
-                                    <li>Visiteurs uniques engagés : utilisateurs ayant au moins parcouru le fil d'actualités d'une communauté</li>
-                                    <li>Contributeurs : utilisateurs ayant au moins posté ou répondu à une question, voté sur une réponse, répondu à un sondage, créé un évènement</li>
+                                    <li>Utilisateurs : visiteurs uniques ayant au moins accédé à la page d'acceuil</li>
+                                    <li>Utilisateurs actifs : visiteurs uniques ayant au moins parcouru le fil d'actualités d'une communauté</li>
+                                    <li>Utilisateurs engagés : visiteurs uniques ayant au moins posté ou répondu à une question, voté sur une réponse, répondu à un sondage, créé un évènement</li>
                                     <li>Evènements d'engagement : nombre de questions, réponses, votes, réponse à un sondage, évènement et j'aime dans les fils d'actualités de la communauté</li>
                                 </ul>
                             </small>
@@ -118,19 +113,19 @@
                 labels: {{ stats.date | js }},
                 datasets: [
                     {
-                        label: 'Nombre de visiteurs uniques',
+                        label: 'Utilisateurs',
                         data: {{ stats.nb_uniq_visitors | js }},
                     },
                     {
-                        label: 'Nombre de visiteurs uniques actifs',
+                        label: 'Utilisateurs actifs',
                         data: {{ stats.nb_uniq_active_visitors | js }},
                     },
                     {
-                        label: 'Nombre de contributeurs',
+                        label: 'Utilisateurs engagés',
                         data: {{ stats.nb_unique_contributors | js }},
                     },
                     {
-                        label: 'Nombre d\'évènements d\'engagement',
+                        label: 'Évènements d\'engagement',
                         data: {{ stats.nb_engagment_events | js }},
                     },
                 ]
