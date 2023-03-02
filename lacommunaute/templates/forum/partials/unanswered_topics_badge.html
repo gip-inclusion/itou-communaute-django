@@ -2,13 +2,10 @@
 
 {% if node.obj.count_unanswered_topics > 0 %}
     <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}?new=1"
-        class="matomo-event text-white float-right"
+        class="matomo-event badge badge-xs badge-pill badge-communaute text-white text-decoration-none"
         data-matomo-category="engagement"
         data-matomo-action="view"
         data-matomo-option="unanswered">
-        <span class="badge badge-sm badge-pill badge-communaute text-white ml-0 ml-lg-2 mt-1 mt-lg-0">
-            <i class="ri-group-line"></i>
-            {{node.obj.count_unanswered_topics}} nouvelle{{ node.obj.count_unanswered_topics|pluralizefr }} question{{ node.obj.count_unanswered_topics|pluralizefr }}
-        </span>
+        {{node.obj.count_unanswered_topics}} nouvelle{{ node.obj.count_unanswered_topics|pluralizefr }} question{{ node.obj.count_unanswered_topics|pluralizefr }}
     </a>
 {% endif %}
