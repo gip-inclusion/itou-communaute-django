@@ -897,7 +897,7 @@ msgid "UpVotes"
 msgstr "Cette réponse est utile"
 
 msgid "Likes"
-msgstr "J'aime"
+msgstr "Ce sujet m'intéresse"
 
 msgid "Votes"
 msgstr "Réponses aux sondages"
