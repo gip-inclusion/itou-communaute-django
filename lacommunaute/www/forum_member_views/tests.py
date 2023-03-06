@@ -201,3 +201,16 @@ class TopicSubscriptionListViewTest(TestCase):
         self.client.force_login(UserFactory())
         response = self.client.get(reverse("members:user_subscriptions"))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Pas de sujet trouvé")
+
+    def test_show_subscribed_topics(self):
+        user = UserFactory()
+        topic = TopicFactory(with_post=True)
+        topic.subscribers.add(user)
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("members:user_subscriptions"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, topic.subject)

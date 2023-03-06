@@ -1,8 +1,38 @@
-{% extends "layouts/base.html" %}
+{% extends 'board_base.html' %}
 {% load i18n %}
 {% load static %}
 
 
+{% block sub_title %}{% trans "Topics that you are subscribed to" %}{% endblock sub_title %}
+
 {% block content %}
-    <a href="{% url 'forum_extension:home' %}">Accueil</a>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-1">{% trans "Topics that you are subscribed to" %}</h1>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-6 col-md-4 forum-actions-block">
+            {% if paginator.count > 0 %}
+                <p class="mt-1 mb-0 text-muted">
+                    {% blocktrans trimmed count counter=paginator.count %}
+                        {{ counter }} topic found
+                    {% plural %}
+                        {{ counter }} topics found
+                    {% endblocktrans %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    {% trans "Not topics found." as empty_message %}
+    {% with topic_list_title="Topics" empty_message=empty_message %}
+        {% include "forum_conversation/topic_list.html" %}
+    {% endwith %}
+    <div class="row mt-5 mb-5">
+        <div class="col-12">
+            {% with "justify-content-center" as pagination_size %}
+                {% include "partials/pagination.html" %}
+            {% endwith %}
+        </div>
+    </div>
 {% endblock content %}
