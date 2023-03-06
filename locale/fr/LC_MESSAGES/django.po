@@ -684,7 +684,7 @@ msgstr[1] "%(counter)s sujets trouvés"
 
 #: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:31
 msgid "Not topics found."
-msgstr "Pas de sujets trouvés."
+msgstr "Pas de sujet trouvé."
 
 #: lacommunaute/templates/machina/forum_member/topic_subscribe.html:5
 #: lacommunaute/templates/machina/forum_member/topic_subscribe.html:12
