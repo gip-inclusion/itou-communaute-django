@@ -893,6 +893,9 @@ msgstr "Utilisateurs engagés"
 msgid "Topics Engagement"
 msgstr "Engagement par sujet"
 
+msgid "UpVotes"
+msgstr "Cette réponse est utile"
+
 msgid "Likes"
 msgstr "J'aime"
 

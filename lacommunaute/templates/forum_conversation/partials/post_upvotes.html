@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load str_filters %}
 
 <div id="upvotesarea{{post.pk}}">
@@ -17,14 +18,14 @@
                     data-matomo-action="upvote"
                     data-matomo-option="{% if post.has_upvoted %}downvote{% else %}upvote{% endif %}"
                 >
-                    <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i>
-                    <span>{{counter}} vote{{ counter|pluralizefr }}</span>
+                    <span>{% trans "UpVotes" %}</span>
+                    <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i> {{counter}}
                 </button>
             </form>
         {% else %}
             <a href="{% inclusion_connect_url next_url post.id %}" class="btn btn-ico btn-link pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
-                <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i>
-                <span>{{counter}} vote{{ counter|pluralizefr }}</span>
+                <span>{% trans "UpVotes" %}</span>
+                <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i> {{counter}}
             </a>
         {% endif %}
     {% endwith %}
