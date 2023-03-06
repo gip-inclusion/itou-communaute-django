@@ -1,11 +1,13 @@
-<!-- template appelé par forum_detail.html -->
+<!-- template appelé par forum_detail.html et subscription_topic_list.html -->
 {% load i18n %}
 {% load forum_conversation_tags %}
 {% load forum_member_tags %}
 {% load forum_tracking_tags %}
 {% load forum_permission_tags %}
 
-{% get_permission 'can_download_files' forum request.user as user_can_download_files %}
+{% if forum %}
+    {% get_permission 'can_download_files' forum request.user as user_can_download_files %}
+{% endif %}
 
 {% if topics or not hide_if_empty %}
     <div class="row mb-3">
@@ -51,7 +53,11 @@
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-12 post-content-wrapper">
-                                                {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic forum=forum is_topic_head=True%}
+                                                {% if forum %}
+                                                    {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic forum=forum is_topic_head=True%}
+                                                {% else %}
+                                                    {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic forum=topic.forum is_topic_head=True%}
+                                                {% endif %}
                                             </div>
                                             <div class="col-12 col-lg-11 post-content">
                                                 <div id="showmoretopicsarea{{topic.pk}}">
@@ -72,6 +78,9 @@
                                                 </div>
                                                 {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
 
+                                                {% if not forum %}
+                                                    {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
+                                                {% endif %}
                                                 {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post user_can_download_files=user_can_download_files %}
 
                                                 {% if topic.poll %}
