@@ -38,6 +38,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'members:user_subscriptions' %}"
+                            class="dropdown-item text-primary matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="subscriptions">
+                            Accéder à mes abonnements
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'event:myevents' %}"
                             class="dropdown-item text-primary matomo-event"
                             data-matomo-category="engagement"
