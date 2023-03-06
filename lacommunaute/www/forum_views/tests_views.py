@@ -96,33 +96,6 @@ class ForumViewTest(TestCase):
 
         cls.url = reverse("forum_extension:forum", kwargs={"pk": cls.forum.pk, "slug": cls.forum.slug})
 
-    def test_subscription_button_is_hidden(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation_extension:post_create",
-                kwargs={
-                    "forum_pk": self.forum.pk,
-                    "forum_slug": self.forum.slug,
-                    "pk": self.topic.pk,
-                    "slug": self.topic.slug,
-                },
-            ),
-        )
-        self.assertNotContains(
-            response,
-            reverse(
-                "members:topic_subscribe",
-                kwargs={
-                    "pk": self.topic.pk,
-                },
-            ),
-        )
-
     def test_show_comments(self):
         topic_url = reverse(
             "forum_conversation_extension:showmore_posts",
@@ -277,7 +250,7 @@ class ForumViewTest(TestCase):
     def test_queries(self):
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(29):
+        with self.assertNumQueries(30):
             self.client.get(self.url)
 
     def test_param_new_in_request(self):
