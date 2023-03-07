@@ -19,13 +19,13 @@
                     data-matomo-option="{% if post.has_upvoted %}downvote{% else %}upvote{% endif %}"
                 >
                     <span>{% trans "UpVotes" %}</span>
-                    <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i> {{counter}}
+                    <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i>&nbsp;{{counter}}
                 </button>
             </form>
         {% else %}
             <a href="{% inclusion_connect_url next_url post.id %}" class="btn btn-ico btn-link pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
                 <span>{% trans "UpVotes" %}</span>
-                <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i> {{counter}}
+                <i class="{% if post.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i>&nbsp;{{counter}}
             </a>
         {% endif %}
     {% endwith %}
