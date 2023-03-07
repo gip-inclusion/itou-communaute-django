@@ -44,13 +44,15 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
                             <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Engagement" %}</a>
-                            <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
-                                class="dropdown-item matomo-event"
-                                data-matomo-category="engagement"
-                                data-matomo-action="view"
-                                data-matomo-option="directory">
-                                {% trans "Members" %}
-                            </a>
+                            {% if forum.members_group %}
+                                <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
+                                    class="dropdown-item matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="view"
+                                    data-matomo-option="directory">
+                                    {% trans "Members" %}
+                                </a>
+                            {% endif %}
                         </div>
                     {% endif %}
                 </div>
