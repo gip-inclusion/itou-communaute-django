@@ -17,7 +17,9 @@ from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_
 
 
 class Forum(AbstractForum):
-    members_group = models.ForeignKey(Group, null=True, on_delete=models.CASCADE, verbose_name=("Members Group"))
+    members_group = models.ForeignKey(
+        Group, blank=True, null=True, on_delete=models.CASCADE, verbose_name=("Members Group")
+    )
     invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
     is_private = models.BooleanField(default=False, verbose_name="privée")
     target_audience = models.IntegerField(default=0)
