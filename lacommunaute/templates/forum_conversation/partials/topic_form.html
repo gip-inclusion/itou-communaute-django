@@ -20,9 +20,8 @@
     <!-- Sub "forms" tabs -->
     {% if poll_option_formset or attachment_formset %}
         <ul class="nav nav-tabs nav-tabs--communaute border-bottom-0">
-            <li class="nav-item"><a href="#options" class="nav-link active" data-toggle="tab">{% trans "Options" %}</a></li>
-            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
             {% if attachment_formset %}<li class="nav-item"><a href="#attachments" class="nav-link" data-toggle="tab">{% trans "Attachments" %}</a></li>{% endif %}
+            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
         </ul>
     {% endif %}
 
@@ -40,8 +39,6 @@
                                 </div>
                             {% endwith %}
                         </div>
-                    {% else %}
-                        <p>Aucune option</p>
                     {% endif %}
                 </div>
             </div>
@@ -87,9 +84,6 @@
     </div>
     <hr class="mb-5">
     <div class="form-actions form-row">
-        <div class="form-group col-auto">
-            <input type="submit" name="preview" class="btn btn-outline-primary" value="{% trans "Preview" %}" />
-        </div>
         <div class="form-group col-auto">
             <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
                 data-matomo-category="engagement"
