@@ -208,6 +208,8 @@ class ForumViewTest(TestCase):
 
     def test_moderator_links(self):
         self.client.force_login(self.user)
+
+        # no permission
         response = self.client.get(self.url)
         self.assertNotContains(
             response,
@@ -224,6 +226,7 @@ class ForumViewTest(TestCase):
             ),
         )
 
+        # permission
         assign_perm("can_approve_posts", self.user, self.forum)
         response = self.client.get(self.url)
         self.assertContains(
@@ -234,6 +237,25 @@ class ForumViewTest(TestCase):
             ),
         )
         self.assertContains(
+            response,
+            reverse(
+                "members:forum_profiles",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
+
+        # permission but no members group
+        self.forum.members_group = None
+        self.forum.save()
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_extension:engagement",
+                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
+            ),
+        )
+        self.assertNotContains(
             response,
             reverse(
                 "members:forum_profiles",
