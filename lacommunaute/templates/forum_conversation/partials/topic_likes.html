@@ -13,13 +13,13 @@
                 data-matomo-option="{% if topic.has_liked %}unlike{% else %}like{% endif %}"
             >
                 <span>{% trans "Likes" %}</span>
-                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}" aria-hidden="true"></i> {{counter}}
+                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}" aria-hidden="true"></i>&nbsp;{{counter}}
 
             </button>
         {% else %}
             <a href="{% inclusion_connect_url next_url topic.pk %}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
                 <span>{% trans "Likes" %}</span>
-                <i class="ri-heart-3-line" aria-hidden="true"></i> {{counter}}
+                <i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;{{counter}}
             </a>
         {% endif %}
     {% endwith %}
