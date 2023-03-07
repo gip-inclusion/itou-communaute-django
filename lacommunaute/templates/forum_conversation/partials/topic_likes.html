@@ -7,19 +7,19 @@
             <button hx-post="{% url 'forum_conversation_extension:like_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" id="like-button{{topic.pk}}"
                 hx-target="#likesarea{{topic.pk}}"
                 hx-swap="outerHTML"
-                class="btn btn-ico btn-link btn-like pr-0 matomo-event"
+                class="btn btn-ico btn-link btn-like pr-0  text-nowrap matomo-event"
                 data-matomo-category="engagement"
                 data-matomo-action="like"
                 data-matomo-option="{% if topic.has_liked %}unlike{% else %}like{% endif %}"
             >
-                <span>{% trans "Likes" %}</span>
-                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}" aria-hidden="true"></i>&nbsp;{{counter}}
+                <span class="mr-1">{% trans "Likes" %}</span>
+                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
 
             </button>
         {% else %}
-            <a href="{% inclusion_connect_url next_url topic.pk %}" class="btn btn-ico btn-link btn-like pr-0" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
-                <span>{% trans "Likes" %}</span>
-                <i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;{{counter}}
+            <a href="{% inclusion_connect_url next_url topic.pk %}" class="btn btn-ico btn-link btn-like pr-0 text-nowrap" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
+                <span class="mr-1">{% trans "Likes" %}</span>
+                <i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
             </a>
         {% endif %}
     {% endwith %}
