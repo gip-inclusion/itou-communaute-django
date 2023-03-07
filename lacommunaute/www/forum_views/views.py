@@ -104,10 +104,9 @@ class ForumCreateView(UserPassesTestMixin, CreateView):
         instance = form.save(commit=False)
 
         moderators, _ = Group.objects.get_or_create(name=f"{instance.name} moderators")
-        members, _ = Group.objects.get_or_create(name=f"{instance.name} members")
 
         instance.type = 0
-        instance.members_group = members
+        instance.is_private = False
         instance.save()
 
         declined = [
@@ -127,15 +126,7 @@ class ForumCreateView(UserPassesTestMixin, CreateView):
             GroupForumPermission(group=moderators, permission=permission, has_perm=True, forum=instance)
             for permission in ForumPermission.objects.all()
         ]
-        members_authorized_perms = [
-            GroupForumPermission(group=members, permission=permission, has_perm=False, forum=instance)
-            for permission in ForumPermission.objects.filter(codename__in=declined)
-        ]
-        members_declined_perms = [
-            GroupForumPermission(group=members, permission=permission, has_perm=True, forum=instance)
-            for permission in ForumPermission.objects.exclude(codename__in=declined)
-        ]
-        GroupForumPermission.objects.bulk_create(moderators_perms + members_authorized_perms + members_declined_perms)
+        GroupForumPermission.objects.bulk_create(moderators_perms)
 
         anonymous_declined_perms = [
             UserForumPermission(

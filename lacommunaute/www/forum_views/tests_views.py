@@ -464,10 +464,6 @@ class CreateForumView(TestCase):
         self.assertEqual(
             UserForumPermission.objects.filter(authenticated_user=True).count(), ForumPermission.objects.count()
         )
-        self.assertEqual(
-            GroupForumPermission.objects.filter(group=Forum.objects.first().members_group).count(),
-            ForumPermission.objects.count(),
-        )
 
         self.assertEqual(Group.objects.filter(name=f"{name} moderators").count(), 1)
         self.assertEqual(
