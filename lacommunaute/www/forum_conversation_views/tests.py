@@ -59,14 +59,12 @@ class TopicLikeViewTest(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>1 J'aime</span>")
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>&nbsp;1')
 
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>0 J'aime</span>")
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;0')
 
     def test_post_topic_not_found(self):
         assign_perm("can_read_forum", self.user, self.topic.forum)

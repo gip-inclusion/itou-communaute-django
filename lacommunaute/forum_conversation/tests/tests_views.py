@@ -302,15 +302,13 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>1 J'aime</span>")
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>&nbsp;1')
 
     def test_has_not_liked(self):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>0 J'aime</span>")
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;0')
 
     def test_pluralized_likes(self):
         self.topic.likers.add(UserFactory())
@@ -320,8 +318,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>')
-        self.assertContains(response, "<span>2 J'aime</span>")
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;2')
 
     def test_anonymous_like(self):
         assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
