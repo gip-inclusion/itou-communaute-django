@@ -172,27 +172,27 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>&nbsp;1')
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
     def test_has_not_liked(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
     def test_has_liked_TOPIC_ANNOUNCE(self):
         TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True, type=Topic.TOPIC_ANNOUNCE)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>&nbsp;1')
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
     def test_has_not_liked_TOPIC_ANNOUNCE(self):
         TopicFactory(forum=self.forum, poster=self.user, with_post=True, type=Topic.TOPIC_ANNOUNCE)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
     def test_anonymous_like(self):
         assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)

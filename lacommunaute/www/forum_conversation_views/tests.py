@@ -59,12 +59,12 @@ class TopicLikeViewTest(TestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i>&nbsp;1')
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
     def test_post_topic_not_found(self):
         assign_perm("can_read_forum", self.user, self.topic.forum)
@@ -234,14 +234,14 @@ class PostListViewTest(TestCase):
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
         UpVoteFactory(post=post, voter=UserFactory())
         UpVoteFactory(post=post, voter=self.user)
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i>&nbsp;2')
+        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
 
 
 class PostFeedCreateViewTest(TestCase):
@@ -308,4 +308,4 @@ class PostFeedCreateViewTest(TestCase):
         self.assertContains(response, content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')

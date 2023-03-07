@@ -43,12 +43,12 @@ class PostUpvoteViewTest(TestCase):
 
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i>&nbsp;1')
+        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
         self.assertEqual(1, UpVote.objects.filter(voter_id=self.user.id, post_id=post.id).count())
 
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>&nbsp;0')
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
         self.assertEqual(0, UpVote.objects.filter(voter_id=self.user.id, post_id=post.id).count())
 
     def test_object_not_found(self):
