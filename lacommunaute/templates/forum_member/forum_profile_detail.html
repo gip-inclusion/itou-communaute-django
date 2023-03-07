@@ -2,12 +2,12 @@
 {% load i18n %}
 {% load forum_member_tags %}
 
-{% block sub_title %}{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}{% endblock sub_title %}
+{% block sub_title %}{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} Profile{% endblocktrans %}{% endblock sub_title %}
 
 {% block content %}
     <div class="mb-3 row">
         <div class="col-12">
-            <h1>{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}</h1>
+            <h1>{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} Profile{% endblocktrans %}</h1>
         </div>
     </div>
     <div class="row profile">
