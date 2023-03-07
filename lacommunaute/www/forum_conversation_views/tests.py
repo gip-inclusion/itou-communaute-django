@@ -234,16 +234,14 @@ class PostListViewTest(TestCase):
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>')
-        self.assertContains(response, "0 vote")
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>&nbsp;0')
 
         UpVoteFactory(post=post, voter=UserFactory())
         UpVoteFactory(post=post, voter=self.user)
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i>')
-        self.assertContains(response, "2 votes")
+        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i>&nbsp;2')
 
 
 class PostFeedCreateViewTest(TestCase):
@@ -310,5 +308,4 @@ class PostFeedCreateViewTest(TestCase):
         self.assertContains(response, content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>')
-        self.assertContains(response, "0 vote")
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i>&nbsp;0')
