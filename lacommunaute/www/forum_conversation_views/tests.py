@@ -377,3 +377,124 @@ class TopicJobOfferCreateViewTest(TestCase):
         # topic is marked as read
         self.assertEqual(1, TopicReadTrack.objects.count())
 
+
+class PostJobOfferCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(type=Topic.TOPIC_JOBOFFER)
+        cls.user = cls.topic.poster
+        assign_perm("can_reply_to_topics", cls.user, cls.topic.forum)
+        cls.url = reverse(
+            "forum_conversation_extension:joboffer_candidate",
+            kwargs={
+                "forum_pk": cls.topic.forum.pk,
+                "forum_slug": cls.topic.forum.slug,
+                "topic_pk": cls.topic.pk,
+                "topic_slug": cls.topic.slug,
+            },
+        )
+
+    def test_topic_doesnt_exist(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse(
+                "forum_conversation_extension:joboffer_candidate",
+                kwargs={
+                    "forum_pk": self.topic.forum.pk,
+                    "forum_slug": self.topic.forum.slug,
+                    "topic_pk": 999,
+                    "topic_slug": self.topic.slug,
+                },
+            ),
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_topic_is_not_a_job_offer(self):
+        self.client.force_login(self.user)
+        for type in [type for type in Topic.TYPE_CHOICES if type[0] != Topic.TOPIC_JOBOFFER]:
+            with self.subTest(type=type):
+                self.topic.type = type[0]
+                self.topic.save()
+
+                response = self.client.get(self.url)
+
+                self.assertEqual(response.status_code, 404)
+
+    def test_form_is_invalid(self):
+        assign_perm("can_reply_to_topics", AnonymousUser(), self.topic.forum)
+
+        response = self.client.post(self.url, data={})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context_data["post_form"].errors,
+            {
+                "username": ["Ce champ est obligatoire."],
+                "phone": ["Ce champ est obligatoire."],
+                "message": ["Ce champ est obligatoire."],
+                "__all__": ["Vous devez saisir une adresse email valide si vous ne vous êtes pas connecté"],
+            },
+        )
+
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data={})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context_data["post_form"].errors,
+            {"phone": ["Ce champ est obligatoire."], "message": ["Ce champ est obligatoire."]},
+        )
+
+    def test_form_is_valid_anonymous_user(self):
+        assign_perm("can_reply_to_topics", AnonymousUser(), self.topic.forum)
+        data = {
+            "username": faker.email(),
+            "phone": faker.phone_number(),
+            "message": faker.text(max_nb_chars=20),
+        }
+        redirection_url = reverse(
+            "forum_extension:forum", kwargs={"pk": self.topic.forum.pk, "slug": self.topic.forum.slug}
+        )
+
+        response = self.client.post(self.url, data=data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, redirection_url)
+        self.assertEqual(Post.objects.count(), 1)
+        self.assertEqual(
+            Post.objects.first().content.raw,
+            f"Message :\n{data['message']}\n\nTéléphone : {data['phone']}\nEmail : {data['username']}",
+        )
+        self.assertEqual(Post.objects.first().poster, None)
+        self.assertEqual(Post.objects.first().username, data["username"])
+        self.assertEqual(Post.objects.first().topic, self.topic)
+
+    def test_form_is_valid_authenticated_user(self):
+        data = {
+            "username": faker.email(),
+            "phone": faker.phone_number(),
+            "message": faker.text(max_nb_chars=20),
+        }
+        redirection_url = reverse(
+            "forum_extension:forum", kwargs={"pk": self.topic.forum.pk, "slug": self.topic.forum.slug}
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data=data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, redirection_url)
+        self.assertEqual(Post.objects.count(), 1)
+
+        self.assertEqual(
+            Post.objects.last().content.raw,
+            f"Message :\n{data['message']}\n\nTéléphone : {data['phone']}\nEmail : {self.user.email}",
+        )
+        self.assertEqual(Post.objects.first().poster, self.user)
+        self.assertEqual(Post.objects.first().username, None)
+        self.assertEqual(Post.objects.first().topic, self.topic)
+        # topic is marked as read
+        self.assertEqual(1, TopicReadTrack.objects.count())

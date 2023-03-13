@@ -195,3 +195,27 @@ class TopicJobOfferCreateView(LoginRequiredMixin, TopicCreateView):
         )
         return url
 
+
+class PostJobOfferCreateView(MachinaPostCreateView):
+    template_name = "forum_conversation/post_job_offer_create.html"
+    post_form_class = PostJobOfferForm
+    success_message = _("Your application has been sent to the recrutor.")
+
+    def get_topic(self):
+        if not hasattr(self, "topic"):
+            self.topic = get_object_or_404(Topic.objects.filter(type=Topic.TOPIC_JOBOFFER), pk=self.kwargs["topic_pk"])
+        return self.topic
+
+    def form_valid(self, post_form, attachment_formset, **kwargs):
+        valid = super().form_valid(post_form, attachment_formset, **kwargs)
+        track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
+        return valid
+
+    def get_success_url(self):
+        return reverse(
+            "forum_extension:forum",
+            kwargs={
+                "pk": self.forum_post.topic.forum.pk,
+                "slug": self.forum_post.topic.forum.slug,
+            },
+        )

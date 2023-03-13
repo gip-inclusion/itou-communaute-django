@@ -2,6 +2,7 @@ from django.urls import include, path
 
 from lacommunaute.www.forum_conversation_views.views import (
     PostFeedCreateView,
+    PostJobOfferCreateView,
     PostListView,
     TopicContentView,
     TopicJobOfferCreateView,
@@ -17,6 +18,11 @@ conversation_urlpatterns = [
     path("topic/<str:slug>-<int:pk>/showmore/posts", PostListView.as_view(), name="showmore_posts"),
     path("topic/<str:slug>-<int:pk>/comment", PostFeedCreateView.as_view(), name="post_create"),
     path("joboffer/create/", TopicJobOfferCreateView.as_view(), name="joboffer_create"),
+    path(
+        "joboffer/<str:topic_slug>-<int:topic_pk>/candidate/",
+        PostJobOfferCreateView.as_view(),
+        name="joboffer_candidate",
+    ),
 ]
 
 urlpatterns = [

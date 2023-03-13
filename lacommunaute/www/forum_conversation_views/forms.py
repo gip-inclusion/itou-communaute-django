@@ -40,3 +40,32 @@ class TopicJobOfferForm(TopicForm):
         self.instance.poster = self.user
         self.instance.forum = self.forum
         return super().save(commit, *args, **kwargs)
+
+
+class PostJobOfferForm(PostForm):
+    phone = forms.CharField(
+        label="Téléphone",
+        max_length=20,
+        required=True,
+        widget=forms.TextInput(attrs={"placeholder": "Numéro de téléphone"}),
+    )
+    message = forms.CharField(
+        label="message", required=True, widget=forms.Textarea(attrs={"placeholder": "Description du poste"})
+    )
+    username = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autocomplete": "email", "placeholder": "Adresse email"}),
+    )
+    content = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    def clean(self):
+        phone = self.cleaned_data.get("phone")
+        username = self.cleaned_data.get("username")
+        message = self.cleaned_data.get("message")
+        self.cleaned_data["content"] = f"Message :\n{message}\n\nTéléphone : {phone}"
+        if self.user.is_anonymous:
+            self.cleaned_data["content"] += f"\nEmail : {username}"
+        else:
+            self.cleaned_data["content"] += f"\nEmail : {self.user.email}"
+        return super().clean()
