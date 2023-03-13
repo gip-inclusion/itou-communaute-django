@@ -9,7 +9,8 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView, TopicView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
@@ -350,3 +351,40 @@ class TopicViewTest(TestCase):
         qs = view.get_queryset()
         self.assertEqual(qs.first().upvotes_count, 2)
         self.assertEqual(qs.first().has_upvoted, True)
+
+    def test_show_joboffer_applications(self):
+        self.topic.type = Topic.TOPIC_JOBOFFER
+        self.topic.save()
+        posts = PostFactory.create_batch(2, topic=self.topic, poster=self.poster)
+
+        # anonymous user is not topic poster cannot see applications
+        assign_perm("can_see_forum", AnonymousUser(), self.topic.forum)
+        assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
+        response = self.client.get(self.url)
+        self.assertContains(response, "déjà 2 candidatures")
+        for post in posts:
+            with self.subTest(post=post):
+                self.assertNotContains(response, post.content)
+
+        # user is not topic poster cannot see applications
+        user = UserFactory()
+        assign_perm("can_see_forum", user, self.topic.forum)
+        assign_perm("can_read_forum", user, self.topic.forum)
+        self.client.force_login(user)
+        response = self.client.get(self.url)
+        self.assertContains(response, "déjà 2 candidatures")
+        for post in posts:
+            with self.subTest(post=post):
+                self.assertNotContains(response, post.content)
+
+        # user is topic poster can see applications
+        self.client.force_login(self.poster)
+        response = self.client.get(self.url)
+        self.assertContains(response, "déjà 2 candidatures")
+        self.assertContains(
+            response,
+            "vous êtes la seule personne à pouvoir consulter les candidatures associées à cette offre d'emploi",
+        )
+        for post in posts:
+            with self.subTest(post=post):
+                self.assertContains(response, post.content)
