@@ -1,0 +1,96 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% load forum_permission_tags %}
+
+<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+    {% for error in post_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <i class="icon-exclamation-sign"></i> {{ error }}
+        </div>
+    {% endfor %}
+    {% include "partials/form_field.html" with field=post_form.jobname %}
+    {% include "partials/form_field.html" with field=post_form.company %}
+    {% include "partials/form_field.html" with field=post_form.jobdescription %}
+
+    {% if post_form.username %}
+        {% include "partials/form_field.html" with field=post_form.username %}
+    {% endif %}
+
+
+    <!-- Sub "forms" tabs -->
+    {% if poll_option_formset or attachment_formset %}
+        <ul class="nav nav-tabs nav-tabs--communaute border-bottom-0">
+            {% if attachment_formset %}<li class="nav-item"><a href="#attachments" class="nav-link" data-toggle="tab">{% trans "Attachments" %}</a></li>{% endif %}
+            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
+        </ul>
+    {% endif %}
+
+    <!-- Sub "forms" panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="options">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if post_form.lock_topic %}
+                        <div class="form-group">
+                            {% with field=post_form.lock_topic %}
+                                <div class="custom-control custom-checkbox mt-2">
+                                    {{ field | add_class:'custom-control-input' }}
+                                    <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                </div>
+                            {% endwith %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if poll_option_formset %}
+            <div class="tab-pane" id="poll">
+                {% if poll_options_validated and poll_option_formset.non_form_errors %}<div class="alert alert-danger">{{ poll_option_formset.non_form_errors|striptags }}</div>{% endif %}
+                <div class="row">
+                    <div class="col-md-6">
+                        {% include "partials/form_field.html" with field=post_form.poll_question %}
+                        {% include "partials/form_field.html" with field=post_form.poll_max_options %}
+                        {% include "partials/form_field.html" with field=post_form.poll_duration %}
+                        <div class="form-group{% if post_form.poll_user_changes.errors %} has-error{% endif %}">
+                            <div class="custom-control custom-checkbox mt-3">
+                                {{ post_form.poll_user_changes | add_class:'custom-control-input' }}
+                                <label class="custom-control-label" for="{{ post_form.poll_user_changes.auto_id }}">{{ post_form.poll_user_changes.label }}</label>
+                            </div>
+                        </div>
+                        {% if post_form.poll_hide_results %}
+                            <div class="form-group{% if post_form.poll_hide_results.errors %} has-error{% endif %}">
+                                <div class="custom-control custom-checkbox mt-3">
+                                    {{ post_form.poll_hide_results | add_class:'custom-control-input' }}
+                                    <label class="custom-control-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div id="poll_formset" class="col-md-6">
+                        {% include "forum_conversation/forum_polls/poll_option_formset.html" %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if attachment_formset %}
+            <div class="tab-pane" id="attachments">
+                <div class="row">
+                    <div id="attachment_formset" class="col-md-12">
+                        {% include "forum_conversation/forum_attachments/attachment_formset.html" %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <hr class="mb-5">
+    <div class="form-actions form-row">
+        <div class="form-group col-auto">
+            <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
+                data-matomo-category="engagement"
+                data-matomo-action="contribute"
+                data-matomo-option="joboffer" />
+        </div>
+
+    </div>
+</form>

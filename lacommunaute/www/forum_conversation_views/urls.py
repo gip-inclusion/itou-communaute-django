@@ -4,6 +4,7 @@ from lacommunaute.www.forum_conversation_views.views import (
     PostFeedCreateView,
     PostListView,
     TopicContentView,
+    TopicJobOfferCreateView,
     TopicLikeView,
 )
 
@@ -15,6 +16,7 @@ conversation_urlpatterns = [
     path("topic/<str:slug>-<int:pk>/showmore/topic", TopicContentView.as_view(), name="showmore_topic"),
     path("topic/<str:slug>-<int:pk>/showmore/posts", PostListView.as_view(), name="showmore_posts"),
     path("topic/<str:slug>-<int:pk>/comment", PostFeedCreateView.as_view(), name="post_create"),
+    path("joboffer/create/", TopicJobOfferCreateView.as_view(), name="joboffer_create"),
 ]
 
 urlpatterns = [

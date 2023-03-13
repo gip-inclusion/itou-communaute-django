@@ -1,12 +1,14 @@
+from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.www.forum_conversation_views.views import PostListView
@@ -309,3 +311,69 @@ class PostFeedCreateViewTest(TestCase):
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
         self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+
+
+class TopicJobOfferCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.forum = ForumFactory()
+        cls.user = UserFactory()
+        cls.url = reverse(
+            "forum_conversation_extension:joboffer_create",
+            kwargs={"forum_pk": cls.forum.pk, "forum_slug": cls.forum.slug},
+        )
+
+    def test_login_required(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("inclusion_connect:authorize") + "?next=" + self.url)
+
+    def test_cannot_post(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, 403)
+
+    def test_invalid_form(self):
+        assign_perm("can_start_new_topics", self.user, self.forum)
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context_data["post_form"].errors,
+            {
+                "jobname": ["Ce champ est obligatoire."],
+                "company": ["Ce champ est obligatoire."],
+                "jobdescription": ["Ce champ est obligatoire."],
+            },
+        )
+
+    def test_valid_form(self):
+        assign_perm("can_start_new_topics", self.user, self.forum)
+        self.client.force_login(self.user)
+
+        data = {
+            "jobname": faker.text(max_nb_chars=20),
+            "company": faker.text(max_nb_chars=20),
+            "jobdescription": faker.text(max_nb_chars=20),
+        }
+
+        response = self.client.post(self.url, data=data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url, reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        )
+        self.assertEqual(Topic.objects.count(), 1)
+        self.assertEqual(Post.objects.count(), 1)
+        self.assertEqual(Topic.objects.first().forum, self.forum)
+        self.assertEqual(Topic.objects.first().poster, self.user)
+        self.assertEqual(Topic.objects.first().type, Topic.TOPIC_JOBOFFER)
+        self.assertEqual(Post.objects.first().subject, data["jobname"])
+        self.assertEqual(
+            Post.objects.first().content.raw,
+            f"Structure : {data['company']}\n\nDescription du poste :\n{data['jobdescription']}",
+        )
+        # topic is marked as read
+        self.assertEqual(1, TopicReadTrack.objects.count())
+

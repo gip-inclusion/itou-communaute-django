@@ -1,13 +1,19 @@
 import logging
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views import View
+from machina.apps.forum_conversation.views import PostCreateView as MachinaPostCreateView
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_conversation.views import TopicCreateView
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.www.forum_conversation_views.forms import PostJobOfferForm, TopicJobOfferForm
 
 
 logger = logging.getLogger(__name__)
@@ -168,3 +174,24 @@ class PostFeedCreateView(PermissionRequiredMixin, View):
 
     def perform_permissions_check(self, user, obj, perms):
         return self.request.forum_permission_handler.can_add_post(obj, user)
+
+
+class TopicJobOfferCreateView(LoginRequiredMixin, TopicCreateView):
+    template_name = "forum_conversation/topic_job_offer_create.html"
+    post_form_class = TopicJobOfferForm
+
+    def form_valid(self, post_form, attachment_formset, poll_option_formset, **kwargs):
+        valid = super().form_valid(post_form, attachment_formset, poll_option_formset, **kwargs)
+        track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
+        return valid
+
+    def get_success_url(self):
+        url = reverse(
+            "forum_extension:forum",
+            kwargs={
+                "pk": self.forum_post.topic.forum.pk,
+                "slug": self.forum_post.topic.forum.slug,
+            },
+        )
+        return url
+
