@@ -925,3 +925,31 @@ msgstr "Effacer cet évènement"
 
 msgid "No event yet"
 msgstr "Aucun évènement"
+
+msgid "Post a new job offer"
+msgstr "Déposer une nouvelle offre d'emploi"
+
+msgid "New job offer"
+msgstr "Nouvelle offre d'emploi"
+
+msgid "Job Offer"
+msgstr "Offre d'emploi"
+
+msgid "Candidate"
+msgstr "Postuler"
+
+msgid "Send application"
+msgstr "Envoyer ma candidature"
+
+msgid "Your application has been sent to the recrutor."
+msgstr "Votre candidature est bien transmise au recruteur de l'annonce"
+
+msgid "A username must be specified if the poster is anonymous"
+msgstr "Vous devez saisir une adresse email valide si vous ne vous êtes pas connecté"
+
+msgid "Show me the application"
+msgstr "Voir la candidature"
+
+#, python-format
+msgid "Show me the %(posts_count)s applications"
+msgstr "Voir les %(posts_count)s candidatures"
