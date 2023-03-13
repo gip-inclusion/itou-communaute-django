@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 
 
@@ -10,6 +11,19 @@ class Topic(AbstractTopic):
         related_name="topic_likes",
         blank=True,
         verbose_name=("Likers"),
+    )
+
+    TOPIC_POST, TOPIC_STICKY, TOPIC_ANNOUNCE, TOPIC_JOBOFFER = 0, 1, 2, 3
+    TYPE_CHOICES = (
+        (TOPIC_POST, _("Default topic")),
+        (TOPIC_STICKY, _("Sticky")),
+        (TOPIC_ANNOUNCE, _("Announce")),
+        (TOPIC_JOBOFFER, _("Job offer")),
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=TYPE_CHOICES,
+        db_index=True,
+        verbose_name=_("Topic type"),
     )
 
     def get_absolute_url(self):
