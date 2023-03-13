@@ -127,18 +127,59 @@
 {% block extra_js %}
     {{ block.super }}
     <script async src="https://tally.so/widgets/embed.js"></script>
-    <script>
-        window.TallyConfig = {
-            "formId": "mVGEr6",
-            "popup": {
-                "emoji": {
-                    "text": "👋",
-                    "animation": "wave"
-                },
-                "autoClose": 3000,
-                "showOnce": true,
-                "doNotShowAfterSubmit": true
+    <script defer>
+        // Any given Tally popup will not be shown more than once every `minDaysBetweenDisplays` days.
+        const minDaysBetweenDisplays = 14;
+        const delayBeforeShowingPopupInSeconds = 45;
+        const formId = 'mVGEr6';
+        const key = 'statsTallyPopupLastShown-' + formId;
+        const todaysDate = new Date();
+
+        function supportsLocalStorage() {
+            try {
+                return 'localStorage' in window && window['localStorage'] !== null;
+            } catch (e) {
+                return false;
             }
+        };
+
+        function stopShowingPopupForAWhile() {
+            localStorage.setItem(key, JSON.stringify(todaysDate));
+        }
+
+        function displayTallyPopup() {
+            window.Tally.openPopup(formId, {
+                emoji: {
+                    text: "👋",
+                    animation: "wave"
+                },
+                onClose: () => {
+                    stopShowingPopupForAWhile();
+                },
+                onSubmit: () => {
+                    stopShowingPopupForAWhile();
+                }
+            });
+        };
+
+        function shouldDisplayTallyPopup() {
+            if (!supportsLocalStorage()) {
+                return true;
+            }
+            infoKey = localStorage.getItem(key);
+            if (infoKey) {
+                const lastShown = Date.parse(JSON.parse(localStorage.getItem(key)));
+                const milliSecondsElapsed = todaysDate - lastShown;
+                const daysElapsed = milliSecondsElapsed / (1000 * 3600 * 24);
+                if (daysElapsed <= minDaysBetweenDisplays) {
+                    return false;
+                };
+            };
+            return true;
+        };
+
+        if (shouldDisplayTallyPopup()) {
+            setTimeout(displayTallyPopup, delayBeforeShowingPopupInSeconds * 1000);
         };
     </script>
 {% endblock %}
