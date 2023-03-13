@@ -311,6 +311,140 @@ class ForumViewTest(TestCase):
         self.assertNotIn(topic_with_2_posts, response.context_data["topics"])
         self.assertNotIn(topic_is_locked, response.context_data["topics"])
 
+    def test_can_post_joboffer(self):
+        assign_perm("can_start_new_topics", self.user, self.forum)
+        self.client.force_login(self.user)
+        topic_create_url = reverse(
+            "forum_conversation:topic_create",
+            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+        )
+        joboffer_create_url = reverse(
+            "forum_conversation_extension:joboffer_create",
+            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+        )
+
+        # forum.job_offer_is_allowed = False
+        # user is not staff
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, topic_create_url)
+        self.assertNotContains(response, joboffer_create_url)
+
+        # forum.job_offer_is_allowed = True
+        # user is not staff
+        self.forum.job_offer_is_allowed = True
+        self.forum.save()
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, topic_create_url)
+        self.assertContains(response, joboffer_create_url)
+
+        # forum.job_offer_is_allowed = True
+        # user is staff
+        self.user.is_staff = True
+        self.user.save()
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, topic_create_url)
+        self.assertContains(response, joboffer_create_url)
+
+    def test_can_post_joboffer_with_anonymous_user(self):
+        self.forum.job_offer_is_allowed = True
+        self.forum.save()
+        assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
+        assign_perm("can_see_forum", AnonymousUser(), self.topic.forum)
+        assign_perm("can_start_new_topics", AnonymousUser(), self.topic.forum)
+        joboffer_create_url = reverse(
+            "forum_conversation_extension:joboffer_create",
+            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, joboffer_create_url)
+
+    def test_show_joboffer_applications(self):
+        user = UserFactory()
+        assign_perm("can_read_forum", user, self.forum)
+        assign_perm("can_see_forum", user, self.forum)
+        self.topic.type = Topic.TOPIC_JOBOFFER
+        self.topic.save()
+
+        topic_url = reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": self.forum.pk,
+                "forum_slug": self.forum.slug,
+                "pk": self.topic.pk,
+                "slug": self.topic.slug,
+            },
+        )
+
+        candidate_url = reverse(
+            "forum_conversation_extension:joboffer_candidate",
+            kwargs={
+                "forum_pk": self.forum.pk,
+                "forum_slug": self.forum.slug,
+                "topic_pk": self.topic.pk,
+                "topic_slug": self.topic.slug,
+            },
+        )
+
+        showmore_posts_url = reverse(
+            "forum_conversation_extension:showmore_posts",
+            kwargs={
+                "forum_pk": self.forum.pk,
+                "forum_slug": self.forum.slug,
+                "pk": self.topic.pk,
+                "slug": self.topic.slug,
+            },
+        )
+        collapse_answer_button = f'data-toggle="collapse" href="#collapsePost{self.topic.pk}"'
+
+        PostFactory.create_batch(2, topic=self.topic, poster=self.user)
+
+        # anonyous user cannot see applications
+        assign_perm("can_see_forum", AnonymousUser(), self.forum)
+        assign_perm("can_read_forum", AnonymousUser(), self.forum)
+        assign_perm("can_reply_to_topics", AnonymousUser(), self.forum)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'<a href="{topic_url}"', count=1)
+        self.assertContains(response, "déjà 2 candidatures")
+        self.assertContains(response, candidate_url)
+        self.assertNotContains(response, showmore_posts_url)
+        self.assertNotContains(response, collapse_answer_button)
+
+        # user is not topic author cannot see applications
+        user = UserFactory()
+        assign_perm("can_see_forum", user, self.forum)
+        assign_perm("can_read_forum", user, self.forum)
+        self.client.force_login(user)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "déjà 2 candidatures")
+        self.assertContains(response, f'<a href="{topic_url}"', count=1)
+        self.assertNotContains(response, showmore_posts_url)
+        self.assertNotContains(response, collapse_answer_button)
+
+        # user is topic author can see applications
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "déjà 2 candidatures")
+        self.assertContains(response, f'<a href="{topic_url}"', count=2)
+        self.assertNotContains(response, showmore_posts_url)
+        self.assertNotContains(response, collapse_answer_button)
+
 
 class ModeratorEngagementViewTest(TestCase):
     @classmethod

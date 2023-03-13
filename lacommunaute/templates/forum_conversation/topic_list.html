@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="card-body pt-0">
                                         <div class="row">
-                                            <div class="col-12 post-content-wrapper">
+                                            <div class="col-12 post-content-wrapper mb-3">
                                                 {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic forum=forum is_topic_head=True%}
                                             </div>
                                             <div class="col-12 col-lg-11 post-content">
@@ -83,6 +83,7 @@
                                                         {{ topic.poster.forum_profile.signature.rendered }}
                                                     </div>
                                                 {% endif %}
+                                                {% include "forum_conversation/partials/job_application_counts.html" %}
                                             </div>
                                         </div>
                                     </div>

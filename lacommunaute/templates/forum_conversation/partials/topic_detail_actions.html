@@ -12,40 +12,69 @@
 {% get_permission 'can_update_topics_to_announces' topic.forum request.user as user_can_change_to_announces %}
 
 {% if user_can_add_post %}
-    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
-        <i class="ri-question-answer-line"></i>
-        <span>{% trans "Post reply" %}</span>
-    </a>
+    {% if topic.type == topic.TOPIC_JOBOFFER %}
+        <a href="{% url 'forum_conversation_extension:joboffer_candidate' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+            class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
+            <i class="ri-question-answer-line"></i>
+            <span>{% trans "Candidate" %}</span>
+        </a>
+    {% else %}
+        <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
+            <i class="ri-question-answer-line"></i>
+            <span>{% trans "Post reply" %}</span>
+        </a>
+    {% endif %}
 {% endif %}
 
 {% if posts_count > 1 %}
-    <a hx-get="{% url 'forum_conversation_extension:showmore_posts' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-        id="showmoreposts-button{{topic.pk}}"
-        hx-target="#showmorepostsarea{{topic.pk}}"
-        hx-swap="outerHTML"
-        class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
-        data-matomo-category="engagement"
-        data-matomo-action="showmore"
-        data-matomo-option="posts"
-        onclick=DisabledMe("showmoreposts-button{{topic.pk}}")
-    >
-        <span>
-            <i class="ri-eye-line font-weight-normal"></i>
-            {% if posts_count > 2 %}
-                {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
-                    Show me the {{ posts_count }} comments
-                {% endblocktrans %}
-            {% else %}
-                {% trans "Show me the comment" %}
-            {% endif %}
-        </span>
-    </a>
+    {%if not topic.type == topic.TOPIC_JOBOFFER %}
+        <a hx-get="{% url 'forum_conversation_extension:showmore_posts' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+            id="showmoreposts-button{{topic.pk}}"
+            hx-target="#showmorepostsarea{{topic.pk}}"
+            hx-swap="outerHTML"
+            class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
+            data-matomo-category="engagement"
+            data-matomo-action="showmore"
+            data-matomo-option="posts"
+            onclick=DisabledMe("showmoreposts-button{{topic.pk}}")
+        >
+            <span>
+                <i class="ri-eye-line font-weight-normal"></i>
+                {% if posts_count > 2 %}
+                    {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
+                        Show me the {{ posts_count }} comments
+                    {% endblocktrans %}
+                {% else %}
+                    {% trans "Show me the comment" %}
+                {% endif %}
+            </span>
+        </a>
+    {% elif topic.poster == user%}
+        <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+            class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
+            data-matomo-category="engagement"
+            data-matomo-action="view"
+            data-matomo-option="applications">
+            <span>
+                <i class="ri-eye-line font-weight-normal"></i>
+                {% if posts_count > 2 %}
+                    {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
+                        Show me the {{ posts_count }} applications
+                    {% endblocktrans %}
+                {% else %}
+                    {% trans "Show me the application" %}
+                {% endif %}
+            </span>
+        </a>
+    {% endif %}
 {% endif %}
 
-{% if user_can_subscribe_to_topic %}
-    <a href="{% url 'members:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
-{% elif user_can_unsubscribe_from_topic %}
-    <a href="{% url 'members:topic_unsubscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-times">&nbsp;</i>{% trans "Unsubscribe" %}</a>
+{% if topic.is_topic or topic.is_sticky or topic.is_announce %}
+    {% if user_can_subscribe_to_topic %}
+        <a href="{% url 'members:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
+    {% elif user_can_unsubscribe_from_topic %}
+        <a href="{% url 'members:topic_unsubscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-times">&nbsp;</i>{% trans "Unsubscribe" %}</a>
+    {% endif %}
 {% endif %}
 {% if user_can_lock_topics and not topic.is_locked or user_can_move_topics or user_can_delete_topics %}
     <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -29,14 +29,27 @@
             {% if user_can_add_topic or user_can_access_stats %}
                 <div class="col-12 col-sm-auto forum-actions-block">
                     {% if user_can_add_topic %}
-                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                            class="btn btn-primary btn-ico matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="contribute"
-                            data-matomo-option="topic">
-                            <i class="ri-chat-new-line ri-lg"></i>
-                            <span>{% trans "New topic" %}</span>
-                        </a>
+
+                        {% if forum.job_offer_is_allowed %}
+                            <a href="{% url 'forum_conversation_extension:joboffer_create' forum.slug forum.pk %}"
+                                class="btn btn-primary btn-ico matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="contribute"
+                                data-matomo-option="job_offer">
+                                <i class="ri-chat-new-line ri-lg"></i>
+                                <span>{% trans "New job offer" %}</span>
+                            </a>
+                        {% endif %}
+                        {% if not forum.job_offer_is_allowed or user.is_staff %}
+                            <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                class="btn btn-primary btn-ico matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="contribute"
+                                data-matomo-option="topic">
+                                <i class="ri-chat-new-line ri-lg"></i>
+                                <span>{% trans "New topic" %}</span>
+                            </a>
+                        {% endif %}
                     {% endif %}
                     {% if user_can_access_stats %}
                         <button id="id_dropdown_moderators_stats_button" class="btn btn-ico-only btn-outline-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
