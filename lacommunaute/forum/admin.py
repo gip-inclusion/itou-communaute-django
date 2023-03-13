@@ -8,4 +8,5 @@ class ForumAdmin(BaseForumAdmin):
         "invitation_token",
         "is_private",
         "target_audience",
+        "job_offer_is_allowed",
     )
