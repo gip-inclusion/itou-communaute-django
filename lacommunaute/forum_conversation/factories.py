@@ -13,20 +13,6 @@ class PostFactory(BasePostFactory):
     content = factory.Faker("sentence", nb_words=40)
     poster = factory.SubFactory(UserFactory)
 
-    class Params:
-        anonymous = factory.Trait(
-            anonymous_key=factory.fuzzy.FuzzyInteger(42),
-            username=factory.fuzzy.FuzzyText(suffix="@neuralia.co"),
-            poster=None,
-        )
-        with_upvote = factory.Trait(
-            upvote=factory.RelatedFactory(
-                UpVoteFactory,
-                factory_related_name="post",
-                voter=factory.SelfAttribute("post.poster"),
-            )
-        )
-
 
 class TopicFactory(BaseTopicFactory):
     forum = factory.SubFactory(ForumFactory)
