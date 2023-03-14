@@ -67,14 +67,9 @@
                                             {{ post.poster.forum_profile.signature.rendered }}
                                         </div>
                                     {% endif %}
-                                    {% if forloop.first %}
-                                        {% include "forum_conversation/partials/job_application_counts.html" %}
-                                    {% endif %}
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 {% endif %}
             {% endfor %}

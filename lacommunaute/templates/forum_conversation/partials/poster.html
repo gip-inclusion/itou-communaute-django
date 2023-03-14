@@ -2,31 +2,35 @@
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
 {% load date_filters %}
+{% load str_filters %}
 
 {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
+
 <small class="text-muted">
     {% spaceless %}
-        <i class="fas fa-clock"></i>&nbsp;
         {% if post.poster %}
             {% url 'members:profile' post.poster_id as poster_url %}
             {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
-                By:
                 <a href="{{ poster_url }}"
                     class="matomo-event"
                     data-matomo-category="engagement"
                     data-matomo-action="view"
                     data-matomo-option="member">
                     {{ username }}
-                </a>,
+                </a>
             {% endblocktrans %}
         {% else %}
             {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
-                By: {{ poster_username }},
+                {{ poster_username }}
             {% endblocktrans %}
         {% endif %}
     {% endspaceless %}
-    {{post.created|relativetimesince_fr}}
+    {{post.created|relativetimesince_fr|capfirst}}
+
+    {% if topic.type == topic.TOPIC_JOBOFFER and topic.posts_count > 1 %}
+        &nbsp;-&nbsp;<b>Déjà {{ topic.posts_count|add:"-1" }} candidature{{topic.posts_count|add:"-1"|pluralizefr}}</b>
+    {% endif %}
     {% if user_can_edit_post %}
-        &nbsp;<a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
+        &nbsp;-&nbsp;<a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
     {% endif %}
 </small>

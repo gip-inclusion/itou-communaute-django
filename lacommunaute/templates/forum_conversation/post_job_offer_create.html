@@ -18,14 +18,13 @@
                     {% with post=topic.first_post %}
                         <div class="row post-review">
                             <div class="col-md-10 post-content-wrapper">
-                                <h3 class="subject">{{ post.subject }}</h3>
+                                <h3 class="subject">{{ post.subject }}</h3>
                                 <p><small class="text-muted">
                                     {% spaceless %}
-                                        <i class="fa fa-clock-o"></i>&nbsp;
                                         {% if post.poster %}
                                             {% url 'members:profile' post.poster_id as poster_url %}
                                             {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
-                                                By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
+                                                By: <a href="{{ poster_url }}">{{ username }}</a> on {{ creation_date }}
                                             {% endblocktrans %}
                                         {% else %}
                                             {% blocktrans trimmed with poster_username=post.username creation_date=post.created %}

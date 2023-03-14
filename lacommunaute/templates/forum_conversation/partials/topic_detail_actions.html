@@ -15,7 +15,7 @@
     {% if topic.type == topic.TOPIC_JOBOFFER %}
         <a href="{% url 'forum_conversation_extension:joboffer_candidate' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
             class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
-            <i class="ri-question-answer-line"></i>
+            <i class="ri-question-answer-fill"></i>
             <span>{% trans "Candidate" %}</span>
         </a>
     {% else %}
