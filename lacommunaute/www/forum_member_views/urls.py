@@ -6,9 +6,6 @@ from lacommunaute.www.forum_member_views.views import (
     JoinForumFormView,
     JoinForumLandingView,
     ModeratorProfileListView,
-    TopicSubscribeView,
-    TopicSubscriptionListView,
-    TopicUnsubscribeView,
 )
 
 
@@ -20,7 +17,4 @@ urlpatterns = [
     path("forum/<str:slug>-<int:pk>/", ModeratorProfileListView.as_view(), name="forum_profiles"),
     path("join-forum-landing/<uuid:token>/", JoinForumLandingView.as_view(), name="join_forum_landing"),
     path("join-forum/<uuid:token>/", JoinForumFormView.as_view(), name="join_forum_form"),
-    path("topic/<int:pk>/subscribe/", TopicSubscribeView.as_view(), name="topic_subscribe"),
-    path("topic/<int:pk>/unsubscribe/", TopicUnsubscribeView.as_view(), name="topic_unsubscribe"),
-    path("subscriptions/", TopicSubscriptionListView.as_view(), name="user_subscriptions"),
 ]
