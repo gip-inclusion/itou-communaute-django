@@ -2,8 +2,6 @@
 {% load forum_permission_tags %}
 
 {% get_permission 'can_add_post' topic request.user as user_can_add_post %}
-{% comment %}{% get_permission 'can_subscribe_to_topic' topic request.user as user_can_subscribe_to_topic %}
-{% get_permission 'can_unsubscribe_from_topic' topic request.user as user_can_unsubscribe_from_topic %} {% endcomment %}
 {% get_permission 'can_lock_topics' topic.forum request.user as user_can_lock_topics %}
 {% get_permission 'can_move_topics' topic.forum request.user as user_can_move_topics %}
 {% get_permission 'can_delete_topics' topic.forum request.user as user_can_delete_topics %}
@@ -42,11 +40,6 @@
     </a>
 {% endif %}
 
-{% if user_can_subscribe_to_topic %}
-    <a href="{% url 'members:topic_subscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-check">&nbsp;</i>{% trans "Subscribe" %}</a>
-{% elif user_can_unsubscribe_from_topic %}
-    <a href="{% url 'members:topic_unsubscribe' topic.pk %}" class="btn btn-info btn-sm btn-subscription"><i class="fas fa-times">&nbsp;</i>{% trans "Unsubscribe" %}</a>
-{% endif %}
 {% if user_can_lock_topics and not topic.is_locked or user_can_move_topics or user_can_delete_topics %}
     <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="ri-more-line" aria-label="Plus d'actions"></i>
