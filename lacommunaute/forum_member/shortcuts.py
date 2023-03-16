@@ -15,6 +15,6 @@ def get_forum_member_display_name(user):
         lastname = f"{user.last_name.capitalize()[0]}."
 
     if user.first_name:
-        firstname = user.first_name
+        firstname = user.first_name.capitalize()
 
     return " ".join([firstname, lastname]).strip()
