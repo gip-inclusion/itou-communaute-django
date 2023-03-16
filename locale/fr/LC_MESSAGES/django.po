@@ -456,7 +456,7 @@ msgstr "Passer en sujet standard"
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:33
 #, python-format
 msgid "Show me the %(posts_count)s comments"
-msgstr "Voir les %(posts_count)s autres réponses"
+msgstr "Voir les %(posts_count)s réponses"
 #: lacommunaute/templates/machina/forum_conversation/partials/topic_detail_actions.html:36
 msgid "Show me the comment"
 msgstr "Voir la réponse"
