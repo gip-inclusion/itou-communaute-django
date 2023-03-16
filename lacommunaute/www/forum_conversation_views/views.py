@@ -1,13 +1,12 @@
 import logging
 
-from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Post, Topic
-from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 
 
 logger = logging.getLogger(__name__)
@@ -95,19 +94,6 @@ class PostListView(PermissionRequiredMixin, View):
 
     def get(self, request, **kwargs):
         topic = self.get_topic()
-        posts = (
-            Post.objects.exclude(topic__approved=False)
-            .exclude(pk=topic.first_post.pk)
-            .filter(topic=topic)
-            .order_by("created")
-            .select_related("poster", "poster__forum_profile")
-            .prefetch_related("attachments")
-            .annotate(
-                upvotes_count=Count("upvotes"),
-                # using user.id instead of user, to manage anonymous user journey
-                has_upvoted=Exists(UpVote.objects.filter(post=OuterRef("pk"), voter__id=self.request.user.id)),
-            )
-        )
 
         track_handler.mark_topic_read(topic, request.user)
 
@@ -116,7 +102,7 @@ class PostListView(PermissionRequiredMixin, View):
             "forum_conversation/partials/posts_list.html",
             context={
                 "topic": topic,
-                "posts": posts,
+                "posts": get_posts_of_a_topic_except_first_one(topic, request.user),
                 "form": PostForm(forum=self.topic.forum, user=request.user),
                 "next_url": self.topic.get_absolute_url(),
             },
