@@ -15,39 +15,28 @@
             <h1>{{ topic.subject }}</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            {% for post in posts %}
-                <div id="{{ post.id }}" class="my-3 card has-links-inside post{% if not post.is_topic_head %} ml-3{% endif %} anchor">
-                    {% if forloop.first %}
-                        <div class="card-header d-flex align-items-center mb-1">
-                            <p class="h4 mb-0 flex-grow-1">
-                                {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
-                                {%include "forum_conversation/partials/poster.html" with post=post topic=topic forum=topic.forum is_topic_head=True%}
-                            </p>
-                            {% block htmx %}
-                                {% include "forum_conversation/partials/topic_likes.html"%}
-                            {% endblock %}
-                        </div>
-                    {% endif %}
-                    <div class="card-body {% if forloop.first%} pt-0 {% else %} bg-light{% endif %}">
+
+    {% with topic.first_post as post %}
+        <div class="row">
+            <div class="col-12" >
+                <div id="{{ post.id }}" class="my-3 card has-links-inside post anchor">
+                    <div class="card-header d-flex align-items-center mb-1">
+                        <p class="h4 mb-0 flex-grow-1">
+                            {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
+                            {%include "forum_conversation/partials/poster.html" with post=post topic=topic forum=topic.forum is_topic_head=True%}
+                        </p>
+                        {% block htmx %}
+                            {% include "forum_conversation/partials/topic_likes.html"%}
+                        {% endblock %}
+                    </div>
+                    <div class="card-body pt-0 ">
                         <div class="row">
-                            <div class="col-12 post-content-wrapper">
-                                {% if not forloop.first %}
-                                    <div class="d-flex align-items-center mb-1">
-                                        <span class="mb-0 flex-grow-1">
-                                            {%include "forum_conversation/partials/poster.html" with post=post%}
-                                        </span>
-                                        {% include "forum_conversation/partials/post_upvotes.html"%}
-                                    </div>
-                                {% endif %}
-                            </div>
                             <div class="col-12 col-lg-11 post-content">
                                 {{ post.content.rendered|urlizetrunc_target_blank:30}}
                                 {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                             </div>
                             <div class="col-12 post-content-wrapper">
-                                {% if forloop.first and post.is_topic_head and poll %}
+                                {% if post.is_topic_head and poll %}
                                     {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                 {% endif %}
 
@@ -62,16 +51,10 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-            <div id="postinfeedarea{{topic.pk}}">
-                {% if topic.posts_count == 1 %}
-                    {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form %}
-                {% else %}
-                    {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form inline=1 %}
-                {% endif %}
+                {% include "forum_conversation/partials/posts_list.html" %}
             </div>
         </div>
-    </div>
+    {% endwith %}
     <div class="row align-items-center mb-3">
         <div class="col-12 col-md">
             {% include "forum_conversation/partials/topic_detail_actions.html" %}
