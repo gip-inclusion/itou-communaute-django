@@ -89,6 +89,9 @@
                                 </div>
                                 <div id="showmorepostsarea{{topic.pk}}">
                                     <div id="postinfeedarea{{topic.pk}}">
+                                        {% if topic.is_certified %}
+                                            {% include "forum_conversation/partials/post_certified.html" with post=topic.certified_post.post certifier=topic.certified_post.user %}
+                                        {% endif %}
                                         {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form %}
                                     </div>
                                 </div>

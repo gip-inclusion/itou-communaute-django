@@ -50,12 +50,7 @@ class ForumView(BaseForumView):
             .exclude(approved=False)
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
-            .select_related(
-                "poster",
-                "poster__forum_profile",
-                "first_post",
-                "forum",
-            )
+            .select_related("poster", "poster__forum_profile", "first_post", "forum", "certified_post")
             .prefetch_related(
                 "poll",
                 "poll__options",

@@ -1,0 +1,19 @@
+{% load forum_member_tags %}
+
+{% if post.is_certified %}
+    <span class="badge badge-sm badge-pill bg-success text-white">
+        <i class="ri-award-line" aria-hidden="true"></i>
+        <a href="{% url 'members:profile' post.certified_post.user.id %}"
+            class="matomo-event text-white"
+            data-matomo-category="engagement"
+            data-matomo-action="view"
+            data-matomo-option="member">
+            Réponse certifiée par {{post.certified_post.user|forum_member_display_name}}
+        </a>
+    </span>
+{% endif %}
+
+
+
+
+

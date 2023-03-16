@@ -7,6 +7,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
 
 logger = logging.getLogger(__name__)
@@ -74,6 +75,7 @@ class TopicView(views.TopicView):
         context = super().get_context_data(**kwargs)
         context["next_url"] = self.topic.get_absolute_url()
         context["form"] = PostForm(forum=self.topic.forum, user=self.request.user)
+        context["can_certify_post"] = can_certify_post(self.topic.forum, self.request.user)
         return context
 
     def get_queryset(self):
