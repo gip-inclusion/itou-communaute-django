@@ -7,7 +7,8 @@ from machina.core.loading import get_class
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.www.forum_conversation_views.views import PostListView
 
@@ -242,6 +243,21 @@ class PostListViewTest(TestCase):
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
+
+    def test_certified_post_highlight(self):
+        post = PostFactory(topic=self.topic, poster=self.user)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Réponse certifiée par")
+
+        CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, f"Réponse certifiée par {get_forum_member_display_name(self.topic.certified_post.user)}"
+        )
 
 
 class PostFeedCreateViewTest(TestCase):

@@ -9,9 +9,10 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import TopicFactory
-from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView, TopicView
-from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -332,21 +333,45 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertNotContains(response, url)
 
-    def test_upvote_annotations_in_get_queryset(self):
-        post = self.topic.posts.first()
-        request = RequestFactory().get(self.url)
-        request.user = self.poster
-        view = TopicView()
-        view.request = request
-        view.kwargs = self.kwargs
+    def test_post_has_no_upvote(self):
+        PostFactory(topic=self.topic, poster=self.poster)
+        self.client.force_login(self.poster)
 
-        qs = view.get_queryset()
-        self.assertEqual(qs.first().upvotes_count, 0)
-        self.assertEqual(qs.first().has_upvoted, False)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
-        UpVoteFactory(post=post, voter=UserFactory())
-        UpVoteFactory(post=post, voter=self.poster)
+    def test_post_has_upvote_by_user(self):
+        PostFactory(topic=self.topic, poster=self.poster)
+        UpVoteFactory(post=self.topic.last_post, voter=self.poster)
+        self.client.force_login(self.poster)
 
-        qs = view.get_queryset()
-        self.assertEqual(qs.first().upvotes_count, 2)
-        self.assertEqual(qs.first().has_upvoted, True)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+
+    def test_certified_post_is_highlighted(self):
+        post = PostFactory(topic=self.topic, poster=self.poster)
+        self.client.force_login(self.poster)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Réponse certifiée par")
+
+        CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, f"Réponse certifiée par {get_forum_member_display_name(self.topic.certified_post.user)}"
+        )
+
+    def test_numqueries(self):
+        PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
+        UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
+        CertifiedPostFactory(topic=self.topic, post=self.topic.last_post, user=UserFactory())
+        self.client.force_login(self.poster)
+
+        # note vincentporte : to be optimized
+        with self.assertNumQueries(44):
+            response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)

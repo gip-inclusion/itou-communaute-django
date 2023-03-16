@@ -7,6 +7,7 @@ from machina.core.loading import get_class
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
 
 logger = logging.getLogger(__name__)
@@ -105,6 +106,7 @@ class PostListView(PermissionRequiredMixin, View):
                 "posts": get_posts_of_a_topic_except_first_one(topic, request.user),
                 "form": PostForm(forum=self.topic.forum, user=request.user),
                 "next_url": self.topic.get_absolute_url(),
+                "can_certify_post": can_certify_post(self.topic.forum, request.user),
             },
         )
 

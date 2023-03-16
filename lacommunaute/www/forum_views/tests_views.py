@@ -14,6 +14,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.www.forum_views.views import ForumView
 
@@ -310,6 +311,31 @@ class ForumViewTest(TestCase):
         self.assertIn(self.topic, response.context_data["topics"])
         self.assertNotIn(topic_with_2_posts, response.context_data["topics"])
         self.assertNotIn(topic_is_locked, response.context_data["topics"])
+
+    # test CertifiedPost display
+    def test_certified_post_display(self):
+        self.client.force_login(self.user)
+
+        # create a post which is not certified
+        post = PostFactory(topic=self.topic, poster=self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, post.content)
+        self.assertEqual(self.topic.posts.count(), 2)
+
+        # create a certified post
+        topic = TopicFactory(with_certified_post=True, forum=self.forum)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, topic.last_post.content)
+        self.assertContains(
+            response, f"Réponse certifiée par {get_forum_member_display_name(topic.certified_post.user)}"
+        )
+        self.assertEqual(topic.posts.count(), 2)
 
 
 class ModeratorEngagementViewTest(TestCase):
