@@ -14,6 +14,9 @@ env:
   CLEVER_CLI: clever-tools-latest_linux/clever
   CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
   CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
+  REVIEW_APPS_ORGANIZATION_NAME: ${{ secrets.CLEVER_REVIEW_APPS_ORG }}
+  CONFIGURATION_ADDON: ${{ secrets.CLEVER_REVIEW_APPS_CONFIGURATION_ADDON }}
+  S3_ADDON: ${{ secrets.CLEVER_REVIEW_APPS_S3_ADDON }}
   BRANCH: ${{ github.head_ref }}
   PYTHON_VERSION: "3.10"
 
@@ -53,27 +56,27 @@ jobs:
         curl $CLEVER_TOOLS_DOWNLOAD_URL > $CLEVER_TAR_FILE
         tar -xvf $CLEVER_TAR_FILE
         $CLEVER_CLI login --token $CLEVER_TOKEN --secret $CLEVER_SECRET
-        $CLEVER_CLI create $REVIEW_APP_NAME -t python --org itou_review_apps --region par --alias $REVIEW_APP_NAME
-        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI create $REVIEW_APP_NAME -t python --org $REVIEW_APPS_ORGANIZATION_NAME --region par --alias $REVIEW_APP_NAME
+        $CLEVER_CLI link $REVIEW_APP_NAME --org $REVIEW_APPS_ORGANIZATION_NAME
         $CLEVER_CLI domain add $DEPLOY_URL --alias $REVIEW_APP_NAME
 
     - name: 🗃 Create database addon
       run: |
-        $CLEVER_CLI addon create postgresql-addon $REVIEW_APP_DB_NAME --org itou_review_apps --plan xxs_sml --yes
+        $CLEVER_CLI addon create postgresql-addon $REVIEW_APP_DB_NAME --org $REVIEW_APPS_ORGANIZATION_NAME --plan xxs_sml --yes
         $CLEVER_CLI service link-addon $REVIEW_APP_DB_NAME
 
     - name: 🤝 Link addons & add environment variables
       run: |
-        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI link $REVIEW_APP_NAME --org $REVIEW_APPS_ORGANIZATION_NAME
         $CLEVER_CLI env set COMMU_ENVIRONMENT "REVIEW-APP"
         $CLEVER_CLI env set COMMU_FQDN "${{ env.DEPLOY_URL }}"
         $CLEVER_CLI env set S3_STORAGE_BUCKET_NAME c3-django-review-apps-bucket
-        $CLEVER_CLI service link-addon c3-django-s3
-        $CLEVER_CLI service link-addon c3-django-deployment-config
+        $CLEVER_CLI service link-addon $S3_ADDON
+        $CLEVER_CLI service link-addon $CONFIGURATION_ADDON
 
     - name: 🚀 Deploy to Clever Cloud
       run: |
-        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI link $REVIEW_APP_NAME --org $REVIEW_APPS_ORGANIZATION_NAME
         $CLEVER_CLI deploy --branch $BRANCH --force
 
     - name: 🍻 Add link to pull request
@@ -105,7 +108,7 @@ jobs:
         curl $CLEVER_TOOLS_DOWNLOAD_URL > $CLEVER_TAR_FILE
         tar -xvf $CLEVER_TAR_FILE
         $CLEVER_CLI login --token $CLEVER_TOKEN --secret $CLEVER_SECRET
-        $CLEVER_CLI link $REVIEW_APP_NAME --org itou_review_apps
+        $CLEVER_CLI link $REVIEW_APP_NAME --org $REVIEW_APPS_ORGANIZATION_NAME
 
     - name: ⏭ Skip fixtures
       run:
