@@ -15,6 +15,13 @@ class PostModelTest(TestCase):
         with self.assertRaisesMessage(ValidationError, "Saisissez une adresse de courriel valide."):
             post.full_clean()
 
+    def test_is_certified(self):
+        topic = TopicFactory(with_post=True)
+        self.assertFalse(topic.last_post.is_certified)
+
+        topic = TopicFactory(with_certified_post=True)
+        self.assertTrue(topic.last_post.is_certified)
+
 
 class TopicModelTest(TestCase):
     def test_get_absolute_url(self):
@@ -46,3 +53,10 @@ class TopicModelTest(TestCase):
 
         post = PostFactory(topic=topic, username="user@beta.gouv.fr")
         self.assertEqual(post.poster_display_name, "user")
+
+    def test_is_certified(self):
+        topic = TopicFactory(with_post=True)
+        self.assertFalse(topic.is_certified)
+
+        topic = TopicFactory(with_certified_post=True)
+        self.assertTrue(topic.is_certified)

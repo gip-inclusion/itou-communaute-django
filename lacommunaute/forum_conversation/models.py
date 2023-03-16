@@ -29,6 +29,10 @@ class Topic(AbstractTopic):
     def poster_email(self):
         return self.first_post.username or self.first_post.poster.email
 
+    @property
+    def is_certified(self):
+        return hasattr(self, "certified_post")
+
 
 class Post(AbstractPost):
     username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
@@ -39,3 +43,7 @@ class Post(AbstractPost):
         if self.username:
             return self.username.split("@")[0]
         return get_forum_member_display_name(self.poster)
+
+    @property
+    def is_certified(self):
+        return hasattr(self, "certified_post")
