@@ -2,8 +2,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
-from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 
 
 class PostModelTest(TestCase):
@@ -30,3 +31,18 @@ class TopicModelTest(TestCase):
                 },
             ),
         )
+
+    def test_poster_email(self):
+        topic = TopicFactory(with_post=True)
+        self.assertEqual(topic.poster_email, topic.first_post.poster.email)
+
+        topic = TopicFactory()
+        post = PostFactory(topic=topic, username="user@beta.gouv.fr")
+        self.assertEqual(topic.poster_email, post.username)
+
+    def test_poster_display_name(self):
+        topic = TopicFactory(with_post=True)
+        self.assertEqual(topic.first_post.poster_display_name, get_forum_member_display_name(topic.first_post.poster))
+
+        post = PostFactory(topic=topic, username="user@beta.gouv.fr")
+        self.assertEqual(post.poster_display_name, "user")
