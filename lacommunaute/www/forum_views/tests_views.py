@@ -145,7 +145,7 @@ class ForumViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f'hx-get="{topic_url}"')
-        self.assertContains(response, "Voir les 2 autres réponses")
+        self.assertContains(response, "Voir les 2 réponses")
 
     def test_show_more_content(self):
         topic = TopicFactory(
