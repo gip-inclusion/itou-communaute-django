@@ -72,6 +72,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_member",
     "lacommunaute.forum_upvote",
     "lacommunaute.forum_stats",
+    "lacommunaute.notification",
     "lacommunaute.event",
     "lacommunaute.inclusion_connect",
     "lacommunaute.www.forum_views",
@@ -238,6 +239,8 @@ HAYSTACK_CONNECTIONS = {
 
 # Environment, sets the type of env of the app (PROD, DEV…)
 COMMU_ENVIRONMENT = os.getenv("COMMU_ENVIRONMENT", "PROD")
+COMMU_PROTOCOL = "https"
+COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.beta.gouv.fr")
 
 # S3 uploads
 # ------------------------------------------------------------------------------
@@ -313,3 +316,9 @@ SITE_ID = 1
 # ---------------------------------------
 MATOMO_SITE_ID = 268
 MATOMO_URL = "https://stats.data.gouv.fr/index.php"
+
+# SENDINBLUE
+# ---------------------------------------
+SIB_URL = "https://api.sendinblue.com/v3/smtp/email"
+SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.beta.gouv.fr")
