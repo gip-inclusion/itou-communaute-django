@@ -894,7 +894,7 @@ msgid "Topics Engagement"
 msgstr "Engagement par sujet"
 
 msgid "UpVotes"
-msgstr "Cette réponse est utile"
+msgstr "Ça m'est utile"
 
 msgid "Likes"
 msgstr "Ce sujet m'intéresse"

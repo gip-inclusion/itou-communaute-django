@@ -332,9 +332,7 @@ class ForumViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, topic.last_post.content)
-        self.assertContains(
-            response, f"Réponse certifiée par {get_forum_member_display_name(topic.certified_post.user)}"
-        )
+        self.assertContains(response, f"Certifié par {get_forum_member_display_name(topic.certified_post.user)}")
         self.assertEqual(topic.posts.count(), 2)
 
 
