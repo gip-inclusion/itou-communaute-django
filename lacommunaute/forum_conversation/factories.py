@@ -4,7 +4,7 @@ from machina.test.factories.conversation import PostFactory as BasePostFactory, 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.forum_upvote.factories import CertifiedPostFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -42,3 +42,10 @@ class TopicFactory(BaseTopicFactory):
             return
 
         TopicPollVoteFactory(poll_option__poll__topic=self, voter=self.poster)
+
+    @factory.post_generation
+    def with_certified_post(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+        PostFactory(topic=self, poster=self.poster)
+        CertifiedPostFactory(topic=self, post=PostFactory(topic=self, poster=self.poster), user=self.poster)
