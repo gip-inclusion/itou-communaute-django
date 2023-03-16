@@ -250,14 +250,12 @@ class PostListViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Réponse certifiée par")
+        self.assertNotContains(response, "Certifié par")
 
         CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response, f"Réponse certifiée par {get_forum_member_display_name(self.topic.certified_post.user)}"
-        )
+        self.assertContains(response, f"Certifié par {get_forum_member_display_name(self.topic.certified_post.user)}")
 
 
 class PostFeedCreateViewTest(TestCase):

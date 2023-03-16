@@ -356,14 +356,12 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Réponse certifiée par")
+        self.assertNotContains(response, "Certifié par")
 
         CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response, f"Réponse certifiée par {get_forum_member_display_name(self.topic.certified_post.user)}"
-        )
+        self.assertContains(response, f"Certifié par {get_forum_member_display_name(self.topic.certified_post.user)}")
 
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
