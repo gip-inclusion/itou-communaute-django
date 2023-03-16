@@ -1,10 +1,7 @@
 from django.test import TestCase
-from machina.core.loading import get_class
 
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.users.factories import UserFactory
-
-
-get_forum_member_display_name = get_class("forum_member.shortcuts", "get_forum_member_display_name")
 
 
 class TestGetForumMemberDisplayNameShortcut(TestCase):
