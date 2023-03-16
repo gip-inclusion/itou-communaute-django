@@ -1,13 +1,12 @@
 import logging
 
 from django.contrib import messages
-from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 
 
 logger = logging.getLogger(__name__)
@@ -78,9 +77,4 @@ class TopicView(views.TopicView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.annotate(
-            upvotes_count=Count("upvotes"),
-            # using user.id instead of user, to manage anonymous user journey
-            has_upvoted=Exists(UpVote.objects.filter(post=OuterRef("pk"), voter__id=self.request.user.id)),
-        )
+        return get_posts_of_a_topic_except_first_one(self.topic, self.request.user)
