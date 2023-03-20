@@ -1,5 +1,5 @@
-from lacommunaute.forum_conversation.utils import collect_first_replies
 from lacommunaute.notification.emails import send_email
+from lacommunaute.notification.utils import collect_first_replies
 
 
 def send_notifs_when_first_reply():
