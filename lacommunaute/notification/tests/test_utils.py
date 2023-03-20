@@ -2,8 +2,8 @@ from django.conf import settings
 from django.test import TestCase
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.forum_conversation.utils import collect_first_replies
 from lacommunaute.notification.factories import EmailSentTrackFactory
+from lacommunaute.notification.utils import collect_first_replies
 
 
 class CollectFirstRepliesTestCase(TestCase):
