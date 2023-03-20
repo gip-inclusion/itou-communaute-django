@@ -36,12 +36,12 @@ class CollectFirstRepliesTestCase(TestCase):
 
     def test_no_reply_since_last_notification(self):
         PostFactory(topic=self.topic)
-        EmailSentTrackFactory()
+        EmailSentTrackFactory(kind="first_reply")
 
         self.assertEqual(len(collect_first_replies()), 0)
 
     def test_replies_since_last_notification(self):
-        EmailSentTrackFactory()
+        EmailSentTrackFactory(kind="first_reply")
         post = PostFactory(topic=self.topic)
 
         self.assertEqual(
@@ -58,4 +58,14 @@ class CollectFirstRepliesTestCase(TestCase):
 
     def test_unapproved_reply_in_previous_hour(self):
         PostFactory(topic=self.topic, approved=False)
+        self.assertEqual(len(collect_first_replies()), 0)
+
+    def test_last_emailsenttrack_with_kind(self):
+        PostFactory(topic=self.topic)
+        EmailSentTrackFactory(kind="other")
+
+        self.assertEqual(len(collect_first_replies()), 1)
+
+        EmailSentTrackFactory(kind="first_reply")
+
         self.assertEqual(len(collect_first_replies()), 0)
