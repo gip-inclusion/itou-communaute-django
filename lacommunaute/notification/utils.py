@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.timezone import now, timedelta
 
 from lacommunaute.forum_conversation.models import Post
+from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import EmailSentTrack
 
 
@@ -18,7 +19,7 @@ def collect_first_replies():
             post.poster_display_name,
         )
         for post in Post.objects.filter(
-            created__gte=last_notification(),
+            created__gte=last_notification(kind=EmailSentTrackKind.FIRST_REPLY),
             approved=True,
         )
         if post.position == 2

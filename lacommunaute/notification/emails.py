@@ -3,6 +3,7 @@ import logging
 import httpx
 
 from config.settings.base import DEFAULT_FROM_EMAIL, SIB_API_KEY, SIB_SMTP_URL
+from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import EmailSentTrack
 
 
@@ -20,4 +21,6 @@ def send_email(to, params, template_id):
 
     response = httpx.post(SIB_SMTP_URL, headers=headers, json=payload)
 
-    EmailSentTrack.objects.create(status_code=response.status_code, response=response.text, datas=payload)
+    EmailSentTrack.objects.create(
+        status_code=response.status_code, response=response.text, datas=payload, kind=EmailSentTrackKind.FIRST_REPLY
+    )
