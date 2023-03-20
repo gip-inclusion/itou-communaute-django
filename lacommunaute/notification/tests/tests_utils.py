@@ -3,7 +3,16 @@ from django.test import TestCase
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.factories import EmailSentTrackFactory
-from lacommunaute.notification.utils import collect_first_replies
+from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.notification.utils import collect_first_replies, last_notification
+
+
+class LastNotificationTestCase(TestCase):
+    def test_email_sent_track_with_kind(self):
+        EmailSentTrackFactory(kind="first_reply")
+        EmailSentTrackFactory(kind="other")
+        self.assertEqual(last_notification(kind="first_reply"), EmailSentTrack.objects.first().created)
+        self.assertEqual(last_notification(kind="other"), EmailSentTrack.objects.last().created)
 
 
 class CollectFirstRepliesTestCase(TestCase):
