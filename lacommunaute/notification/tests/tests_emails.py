@@ -5,7 +5,7 @@ import respx
 from django.test import TestCase
 from faker import Faker
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_URL
+from config.settings.base import DEFAULT_FROM_EMAIL, SIB_SMTP_URL
 from lacommunaute.notification.emails import send_email
 from lacommunaute.notification.models import EmailSentTrack
 
@@ -16,7 +16,7 @@ faker = Faker()
 class SendEmailTestCase(TestCase):
     def setUp(self):
         super().setUp()
-        respx.post(SIB_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_send_email(self):

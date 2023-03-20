@@ -5,7 +5,7 @@ import respx
 from django.conf import settings
 from django.test import TestCase
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_URL
+from config.settings.base import DEFAULT_FROM_EMAIL, SIB_SMTP_URL
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.tasks import send_notifs_when_first_reply
@@ -14,7 +14,7 @@ from lacommunaute.notification.tasks import send_notifs_when_first_reply
 class SendNotifsWhenFirstReplyTestCase(TestCase):
     def setUp(self):
         super().setUp()
-        respx.post(SIB_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_send_notifs_when_first_reply(self):
