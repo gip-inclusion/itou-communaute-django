@@ -5,8 +5,8 @@ import respx
 from django.test import TestCase
 from faker import Faker
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_SMTP_URL
-from lacommunaute.notification.emails import send_email
+from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
+from lacommunaute.notification.emails import add_user_to_list, send_email
 from lacommunaute.notification.models import EmailSentTrack
 
 
@@ -17,6 +17,7 @@ class SendEmailTestCase(TestCase):
     def setUp(self):
         super().setUp()
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_send_email(self):
@@ -38,3 +39,32 @@ class SendEmailTestCase(TestCase):
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
         self.assertEqual(email_sent_track.datas, payload)
+        self.assertEqual(email_sent_track.kind, "first_reply")
+
+    @respx.mock
+    def test_add_user_to_list(self):
+        email = faker.email()
+        firstname = faker.first_name()
+        lastname = faker.last_name()
+        list_id = faker.random_int()
+
+        payload = {
+            "email": email,
+            "attributes": {
+                "FNAME": firstname,
+                "LNAME": lastname,
+            },
+            "emailBlacklisted": False,
+            "smsBlacklisted": False,
+            "listIds": [list_id],
+            "updateEnabled": True,
+        }
+
+        add_user_to_list(email, firstname, lastname, list_id)
+
+        self.assertEqual(EmailSentTrack.objects.count(), 1)
+        email_sent_track = EmailSentTrack.objects.first()
+        self.assertEqual(email_sent_track.status_code, 200)
+        self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
+        self.assertEqual(email_sent_track.datas, payload)
+        self.assertEqual(email_sent_track.kind, "onboarding")
