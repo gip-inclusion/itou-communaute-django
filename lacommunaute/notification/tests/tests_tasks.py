@@ -3,7 +3,7 @@ import json
 import httpx
 import respx
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from config.settings.base import DEFAULT_FROM_EMAIL, SIB_SMTP_URL
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
@@ -11,6 +11,9 @@ from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.tasks import send_notifs_when_first_reply
 
 
+@override_settings(
+    SIB_CONTACTS_URL="https://sendinblue.contacts.fake",
+)
 class SendNotifsWhenFirstReplyTestCase(TestCase):
     def setUp(self):
         super().setUp()

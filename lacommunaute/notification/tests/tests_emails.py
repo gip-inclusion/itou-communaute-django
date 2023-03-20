@@ -2,7 +2,7 @@ import json
 
 import httpx
 import respx
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from faker import Faker
 
 from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
@@ -13,6 +13,9 @@ from lacommunaute.notification.models import EmailSentTrack
 faker = Faker()
 
 
+@override_settings(
+    SIB_CONTACTS_URL="https://sendinblue.contacts.fake",
+)
 class SendEmailTestCase(TestCase):
     def setUp(self):
         super().setUp()
