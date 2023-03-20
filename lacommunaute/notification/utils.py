@@ -5,8 +5,8 @@ from lacommunaute.forum_conversation.models import Post
 from lacommunaute.notification.models import EmailSentTrack
 
 
-def last_notification():
-    return getattr(EmailSentTrack.objects.last(), "created", now() - timedelta(days=1))
+def last_notification(kind=None):
+    return getattr(EmailSentTrack.objects.filter(kind=kind).last(), "created", now() - timedelta(days=1))
 
 
 def collect_first_replies():
