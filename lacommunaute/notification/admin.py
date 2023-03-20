@@ -4,7 +4,8 @@ from lacommunaute.notification.models import EmailSentTrack
 
 
 class EmailSentTrackAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("kind", "created", "status_code")
+    list_filter = ("kind",)
 
 
 admin.site.register(EmailSentTrack, EmailSentTrackAdmin)
