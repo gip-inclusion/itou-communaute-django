@@ -5,14 +5,16 @@ import respx
 from django.conf import settings
 from django.test import TestCase, override_settings
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_SMTP_URL
+from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_ONBOARDING_LIST, SIB_SMTP_URL
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.models import EmailSentTrack
-from lacommunaute.notification.tasks import send_notifs_when_first_reply
+from lacommunaute.notification.tasks import add_user_to_list_when_register, send_notifs_when_first_reply
+from lacommunaute.users.factories import UserFactory
 
 
 @override_settings(
     SIB_CONTACTS_URL="https://sendinblue.contacts.fake",
+    SIB_SMTP_URL="https://sendinblue.smtp.fake",
 )
 class SendNotifsWhenFirstReplyTestCase(TestCase):
     def setUp(self):
@@ -40,6 +42,35 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         }
 
         send_notifs_when_first_reply()
+
+        self.assertEqual(EmailSentTrack.objects.count(), 1)
+        email_sent_track = EmailSentTrack.objects.first()
+        self.assertEqual(email_sent_track.status_code, 200)
+        self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
+        self.assertEqual(email_sent_track.datas, payload)
+
+
+class AddUserToListWhenRegister(TestCase):
+    def setUp(self):
+        super().setUp()
+        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+
+    @respx.mock
+    def test_add_user_to_list_when_register(self):
+        user = UserFactory()
+
+        payload = {
+            "email": user.email,
+            "attributes": {
+                "FNAME": user.first_name,
+                "LNAME": user.last_name,
+            },
+            "emailBlacklisted": False,
+            "smsBlacklisted": False,
+            "listIds": [SIB_ONBOARDING_LIST],
+            "updateEnabled": True,
+        }
+        add_user_to_list_when_register()
 
         self.assertEqual(EmailSentTrack.objects.count(), 1)
         email_sent_track = EmailSentTrack.objects.first()
