@@ -10,6 +10,7 @@ from faker import Faker
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.event.models import Event
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.templatetags.str_filters import inclusion_connect_url
 from lacommunaute.www.event_views.forms import EventModelForm
 
 
@@ -233,3 +234,8 @@ class calendar_test(TestCase):
     def test_template(self):
         response = self.client.get(reverse("event:calendar"))
         self.assertTemplateUsed(response, "event/event_calendar.html")
+        self.assertContains(response, inclusion_connect_url(reverse("event:create")))
+
+        self.client.force_login(UserFactory())
+        response = self.client.get(reverse("event:calendar"))
+        self.assertContains(response, reverse("event:create"))
