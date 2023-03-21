@@ -7,7 +7,7 @@ from lacommunaute.notification.models import EmailSentTrack
 
 
 def last_notification(kind=None):
-    return getattr(EmailSentTrack.objects.filter(kind=kind).last(), "created", now() - timedelta(days=1))
+    return getattr(EmailSentTrack.objects.filter(kind=kind).last(), "created", now() - timedelta(days=5))
 
 
 def collect_first_replies():
