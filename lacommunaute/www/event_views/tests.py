@@ -17,15 +17,6 @@ faker = Faker()
 
 
 class EventModelFormTest(TestCase):
-    # test name is required
-    # test date is required
-    # test time is required
-    # test end_date is required
-    # test end_time is required
-    # test date is not in the past
-    # test end_date is not in the past
-    # test end_date is after date
-    # test end_time is after time
     def test_required_fields(self):
         form = EventModelForm(data={})
         self.assertFalse(form.is_valid())
@@ -61,11 +52,6 @@ class EventModelFormTest(TestCase):
         self.assertEqual(form.errors["end_date"], ["La date de fin doit être après la date de début."])
 
     def test_end_time_is_after_time(self):
-        # substract 1 hour to timezone.now().time() to make sure end_time is after time and save it in a variable
-        # create a form with date, time, end_date and end_time
-        # assert form is not valid
-        # assert error message is "L'heure de fin doit être après l'heure de début."
-
         end_time = datetime.now() - timedelta(hours=1)
         form = EventModelForm(
             data={
@@ -84,11 +70,6 @@ class EventCreateViewTest(TestCase):
     def setUpTestData(cls):
         cls.user = UserFactory()
         cls.url = reverse("event:create")
-
-    # test login is required, else redirect to inclusion connect login page
-    # test event is created
-    # test event is not created with invalid data
-    # test poster is set to request.user
 
     def test_login_is_required(self):
         response = self.client.get(self.url)
@@ -124,12 +105,6 @@ class EventCreateViewTest(TestCase):
 
 
 class EventUpdateViewTest(TestCase):
-    # test login is required
-    # test event does not exist
-    # test event is not mine
-    # test event is mine
-    # test event is updated
-
     @classmethod
     def setUpTestData(cls):
         cls.event = EventFactory()
