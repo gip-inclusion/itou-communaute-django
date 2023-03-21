@@ -99,4 +99,4 @@ def calendar_data(request):
 
 
 def calendar(request):
-    return TemplateResponse(request, "event/event_calendar.html")
+    return TemplateResponse(request, "event/event_calendar.html", {"next_url": reverse("event:create")})
