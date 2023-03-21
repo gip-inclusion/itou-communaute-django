@@ -4,7 +4,8 @@ from django.test import TestCase
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.factories import EmailSentTrackFactory
 from lacommunaute.notification.models import EmailSentTrack
-from lacommunaute.notification.utils import collect_first_replies, last_notification
+from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding, last_notification
+from lacommunaute.users.factories import UserFactory
 
 
 class LastNotificationTestCase(TestCase):
@@ -69,3 +70,25 @@ class CollectFirstRepliesTestCase(TestCase):
         EmailSentTrackFactory(kind="first_reply")
 
         self.assertEqual(len(collect_first_replies()), 0)
+
+
+class CollectNewUsersForOnBoardingTestCase(TestCase):
+    def test_no_onboarding_notification_ever(self):
+        user = UserFactory()
+        self.assertEqual(collect_new_users_for_onboarding(), [(user.email, user.first_name, user.last_name)])
+
+    def test_user_against_last_notification(self):
+        EmailSentTrackFactory(kind="onboarding")
+        user = UserFactory()
+        self.assertEqual(collect_new_users_for_onboarding(), [(user.email, user.first_name, user.last_name)])
+
+        EmailSentTrackFactory(kind="onboarding")
+        self.assertEqual(len(collect_new_users_for_onboarding()), 0)
+
+    def test_last_emailsenttrack_with_kind(self):
+        UserFactory()
+        EmailSentTrackFactory(kind="first_reply")
+        self.assertEqual(len(collect_new_users_for_onboarding()), 1)
+
+        EmailSentTrackFactory(kind="onboarding")
+        self.assertEqual(len(collect_new_users_for_onboarding()), 0)
