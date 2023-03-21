@@ -21,8 +21,11 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         topic = TopicFactory(with_post=True)
         post = PostFactory(topic=topic)
 
+        url = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}"
+        url += "?mtm_campaign=firstreply&mtm_medium=email"
+
         params = {
-            "url": f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}",
+            "url": url,
             "topic_subject": topic.subject,
             "display_name": post.poster_display_name,
         }

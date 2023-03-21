@@ -9,7 +9,7 @@ def send_notifs_when_first_reply():
 
     for url, subject, to, display_name in first_replies:
         params = {
-            "url": url,
+            "url": f"{url}?mtm_campaign=firstreply&mtm_medium=email",
             "topic_subject": subject,
             "display_name": display_name,
         }
