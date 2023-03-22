@@ -26,17 +26,16 @@ def send_email(to, params, template_id):
     )
 
 
-def add_user_to_list(email, firstname, lastname, list_id):
+def bulk_send_user_to_list(users, list_id):
     payload = {
-        "email": email,
-        "attributes": {
-            "FNAME": firstname,
-            "LNAME": lastname,
-        },
-        "emailBlacklisted": False,
-        "smsBlacklisted": False,
+        "jsonBody": [
+            {"email": user.email, "attributes": {"NOM": user.last_name, "PRENOM": user.first_name}} for user in users
+        ],
+        "emailBlacklist": False,
+        "smsBlacklist": False,
         "listIds": [list_id],
-        "updateEnabled": True,
+        "updateExistingContacts": True,
+        "emptyContactsAttributes": True,
     }
     headers = {"accept": "application/json", "content-type": "application/json", "api-key": SIB_API_KEY}
     response = httpx.post(SIB_CONTACTS_URL, headers=headers, json=payload)
