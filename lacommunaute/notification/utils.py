@@ -28,7 +28,4 @@ def collect_first_replies():
 
 
 def collect_new_users_for_onboarding():
-    return [
-        (user.email, user.first_name, user.last_name)
-        for user in User.objects.filter(date_joined__gte=last_notification(kind=EmailSentTrackKind.ONBOARDING))
-    ]
+    return User.objects.filter(date_joined__gte=last_notification(kind=EmailSentTrackKind.ONBOARDING))
