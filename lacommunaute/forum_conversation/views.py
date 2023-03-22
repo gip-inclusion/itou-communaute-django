@@ -35,7 +35,11 @@ class FormValidMixin:
 
 
 class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
-    pass
+    # add poster to likers list when creating a topic
+    def form_valid(self, *args, **kwargs):
+        valid = super().form_valid(*args, **kwargs)
+        self.forum_post.topic.likers.add(self.request.user)
+        return valid
 
 
 class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):

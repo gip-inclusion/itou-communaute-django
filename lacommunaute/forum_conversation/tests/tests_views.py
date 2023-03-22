@@ -10,6 +10,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
@@ -70,6 +71,19 @@ class TopicCreateViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, TopicReadTrack.objects.count())
+
+    def test_topic_poster_is_added_to_likers_list(self):
+        assign_perm("can_start_new_topics", self.poster, self.forum)
+        self.client.force_login(self.poster)
+
+        post_data = {"subject": "s", "content": "c"}
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, Topic.objects.first().likers.count())
 
 
 class TopicUpdateViewTest(TestCase):
