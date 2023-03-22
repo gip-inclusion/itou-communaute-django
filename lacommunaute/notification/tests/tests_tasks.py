@@ -57,18 +57,18 @@ class AddUserToListWhenRegister(TestCase):
 
     @respx.mock
     def test_add_user_to_list_when_register(self):
-        user = UserFactory()
+        users = UserFactory.create_batch(3)
 
         payload = {
-            "email": user.email,
-            "attributes": {
-                "FNAME": user.first_name,
-                "LNAME": user.last_name,
-            },
-            "emailBlacklisted": False,
-            "smsBlacklisted": False,
+            "jsonBody": [
+                {"email": user.email, "attributes": {"NOM": user.last_name, "PRENOM": user.first_name}}
+                for user in users
+            ],
+            "emailBlacklist": False,
+            "smsBlacklist": False,
             "listIds": [SIB_ONBOARDING_LIST],
-            "updateEnabled": True,
+            "updateExistingContacts": True,
+            "emptyContactsAttributes": True,
         }
         add_user_to_list_when_register()
 

@@ -1,5 +1,5 @@
 from config.settings.base import SIB_FIRST_REPLY_TEMPLATE, SIB_ONBOARDING_LIST
-from lacommunaute.notification.emails import add_user_to_list, send_email
+from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
 from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding
 
 
@@ -17,6 +17,4 @@ def send_notifs_when_first_reply():
 
 
 def add_user_to_list_when_register():
-
-    for email, first_name, last_name in collect_new_users_for_onboarding():
-        add_user_to_list(email, first_name, last_name, SIB_ONBOARDING_LIST)
+    bulk_send_user_to_list(collect_new_users_for_onboarding(), SIB_ONBOARDING_LIST)
