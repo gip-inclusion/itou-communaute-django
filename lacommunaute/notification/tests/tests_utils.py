@@ -6,6 +6,7 @@ from lacommunaute.notification.factories import EmailSentTrackFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding, last_notification
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import User
 
 
 class LastNotificationTestCase(TestCase):
@@ -74,13 +75,13 @@ class CollectFirstRepliesTestCase(TestCase):
 
 class CollectNewUsersForOnBoardingTestCase(TestCase):
     def test_no_onboarding_notification_ever(self):
-        user = UserFactory()
-        self.assertEqual(collect_new_users_for_onboarding(), [(user.email, user.first_name, user.last_name)])
+        UserFactory()
+        self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all()))
 
     def test_user_against_last_notification(self):
         EmailSentTrackFactory(kind="onboarding")
-        user = UserFactory()
-        self.assertEqual(collect_new_users_for_onboarding(), [(user.email, user.first_name, user.last_name)])
+        UserFactory()
+        self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all()))
 
         EmailSentTrackFactory(kind="onboarding")
         self.assertEqual(len(collect_new_users_for_onboarding()), 0)
@@ -88,7 +89,7 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
     def test_last_emailsenttrack_with_kind(self):
         UserFactory()
         EmailSentTrackFactory(kind="first_reply")
-        self.assertEqual(len(collect_new_users_for_onboarding()), 1)
+        self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all()))
 
         EmailSentTrackFactory(kind="onboarding")
         self.assertEqual(len(collect_new_users_for_onboarding()), 0)
