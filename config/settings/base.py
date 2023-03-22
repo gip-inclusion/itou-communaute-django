@@ -321,7 +321,7 @@ MATOMO_URL = "https://stats.data.gouv.fr/index.php"
 # ---------------------------------------
 SIB_URL = "https://api.sendinblue.com/v3/"
 SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
-SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts")
+SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
 
 SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.beta.gouv.fr")
