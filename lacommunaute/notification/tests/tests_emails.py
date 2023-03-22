@@ -6,8 +6,9 @@ from django.test import TestCase, override_settings
 from faker import Faker
 
 from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
-from lacommunaute.notification.emails import add_user_to_list, send_email
+from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
 from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.users.factories import UserFactory
 
 
 faker = Faker()
@@ -45,25 +46,23 @@ class SendEmailTestCase(TestCase):
         self.assertEqual(email_sent_track.kind, "first_reply")
 
     @respx.mock
-    def test_add_user_to_list(self):
-        email = faker.email()
-        firstname = faker.first_name()
-        lastname = faker.last_name()
+    def test_bulk_send_user_to_list(self):
+        users = UserFactory.create_batch(3)
         list_id = faker.random_int()
 
         payload = {
-            "email": email,
-            "attributes": {
-                "FNAME": firstname,
-                "LNAME": lastname,
-            },
-            "emailBlacklisted": False,
-            "smsBlacklisted": False,
+            "jsonBody": [
+                {"email": user.email, "attributes": {"NOM": user.last_name, "PRENOM": user.first_name}}
+                for user in users
+            ],
+            "emailBlacklist": False,
+            "smsBlacklist": False,
             "listIds": [list_id],
-            "updateEnabled": True,
+            "updateExistingContacts": True,
+            "emptyContactsAttributes": True,
         }
 
-        add_user_to_list(email, firstname, lastname, list_id)
+        bulk_send_user_to_list(users, list_id)
 
         self.assertEqual(EmailSentTrack.objects.count(), 1)
         email_sent_track = EmailSentTrack.objects.first()
