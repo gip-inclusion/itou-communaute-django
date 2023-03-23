@@ -9,19 +9,19 @@
         <i class="fas fa-clock"></i>&nbsp;
         {% if post.poster %}
             {% url 'members:profile' post.poster_id as poster_url %}
-            {% blocktrans trimmed with poster_url=poster_url username=post.poster|forum_member_display_name creation_date=post.created %}
+            {% blocktrans trimmed with poster_url=poster_url poster=post.poster_display_name creation_date=post.created %}
                 By:
                 <a href="{{ poster_url }}"
                     class="matomo-event"
                     data-matomo-category="engagement"
                     data-matomo-action="view"
                     data-matomo-option="member">
-                    {{ username }}
+                    {{ poster }}
                 </a>,
             {% endblocktrans %}
         {% else %}
-            {% blocktrans trimmed with poster_username="Utilisateur anonyme" creation_date=post.created %}
-                By: {{ poster_username }},
+            {% blocktrans trimmed with poster=post.poster_display_name creation_date=post.created %}
+                By: {{ poster }},
             {% endblocktrans %}
         {% endif %}
     {% endspaceless %}

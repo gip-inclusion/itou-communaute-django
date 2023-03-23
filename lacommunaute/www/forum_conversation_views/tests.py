@@ -200,9 +200,20 @@ class PostListViewTest(TestCase):
         self.assertNotContains(response, self.topic.first_post.content)  # original post content excluded
         self.assertContains(response, posts[0].content)
         self.assertContains(response, posts[1].content)
+        self.assertContains(response, posts[0].poster_display_name)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
         self.assertEqual(response.context["next_url"], self.topic.get_absolute_url())
+
+    def test_get_list_of_posts_posted_by_anonymous_user(self):
+        username = faker.email()
+        post = PostFactory(topic=self.topic, poster=None, username=username)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, post.poster_display_name)
 
     def test_get_list_of_posts_linked_to_annonce_topic(self):
         post = PostFactory(topic=self.topic, poster=self.user)
