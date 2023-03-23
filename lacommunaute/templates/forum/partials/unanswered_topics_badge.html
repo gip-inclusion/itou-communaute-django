@@ -2,7 +2,7 @@
 
 {% if node.obj.count_unanswered_topics > 0 %}
     <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}?new=1"
-        class="matomo-event badge badge-xs badge-pill badge-communaute text-white text-decoration-none"
+        class="matomo-event badge badge-xs badge-pill badge-info-lighter text-info text-decoration-none"
         data-matomo-category="engagement"
         data-matomo-action="view"
         data-matomo-option="unanswered">
