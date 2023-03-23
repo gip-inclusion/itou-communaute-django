@@ -1,6 +1,5 @@
 import uuid
 
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import Group
 from django.db import models
 from django.db.models.functions import TruncWeek
@@ -26,7 +25,7 @@ class Forum(AbstractForum):
 
     def get_stats(self, period_back):
 
-        start_date = timezone.localdate() - relativedelta(days=period_back * DAYS_IN_A_PERIOD - 1)
+        start_date = timezone.now() - timezone.timedelta(days=period_back * DAYS_IN_A_PERIOD - 1)
         forums = self.get_family()
 
         datas = (
