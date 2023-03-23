@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.contrib.flatpages import views
+from django.urls import include, path, re_path
 from machina.core.loading import get_class
 
 from lacommunaute.www.event_views import urls as event_urls
@@ -35,7 +36,13 @@ urlpatterns = [
     path("", include(conversation_urlpatterns_factory.urlpatterns)),
     path("moderation/", include(moderation_urlpatterns_factory.urlpatterns)),
     path("tracking/", include(tracking_urlpatterns_factory.urlpatterns)),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r"^(?P<url>.*/)$", views.flatpage),
+]
 
 if settings.DEBUG and "debug_toolbar" in settings.INSTALLED_APPS:
     import debug_toolbar

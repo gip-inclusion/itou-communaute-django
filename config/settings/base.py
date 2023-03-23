@@ -33,6 +33,7 @@ DJANGO_APPS = [
     "django.contrib.postgres",
     "django.contrib.sites",
     "django.contrib.redirects",
+    "django.contrib.flatpages",
 ]
 
 THIRD_PARTIES_APPS = [

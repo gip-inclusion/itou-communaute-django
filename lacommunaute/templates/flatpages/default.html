@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ flatpage.title }}{{ block.super }}{% endblock %}
+{% block body_class %}{{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'forum_extension:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ flatpage.title }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    {{ flatpage.content }}
+{% endblock %}
