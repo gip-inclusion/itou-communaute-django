@@ -5,6 +5,7 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.http import urlencode
+from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
@@ -16,6 +17,8 @@ from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
+
+faker = Faker()
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
@@ -83,7 +86,31 @@ class TopicCreateViewTest(TestCase):
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, Topic.objects.count())
         self.assertEqual(1, Topic.objects.first().likers.count())
+
+    def test_topic_create_as_anonymous_user(self):
+        assign_perm("can_start_new_topics", AnonymousUser(), self.forum)
+        assign_perm("can_read_forum", AnonymousUser(), self.forum)
+
+        post_data = {
+            "subject": faker.text(max_nb_chars=5),
+            "content": faker.text(max_nb_chars=5),
+            "username": faker.email(),
+        }
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, Topic.objects.count())
+        topic = Topic.objects.first()
+        self.assertEqual(post_data["subject"], topic.subject)
+        self.assertEqual(post_data["subject"], topic.first_post.subject)
+        self.assertEqual(post_data["content"], topic.first_post.content.raw)
+        self.assertEqual(post_data["username"], topic.first_post.username)
+        self.assertEqual(0, topic.likers.count())
 
 
 class TopicUpdateViewTest(TestCase):
