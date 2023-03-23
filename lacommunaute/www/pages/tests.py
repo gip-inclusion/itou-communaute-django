@@ -5,6 +5,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum_stats.enums import Period
 from lacommunaute.forum_stats.factories import StatFactory
+from lacommunaute.users.factories import UserFactory
 
 
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
@@ -44,3 +45,23 @@ class StatistiquesPageTest(TestCase):
 
         # undesired values
         self.assertNotIn(other_period_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
+
+
+class LandingPagesListViewTest(TestCase):
+    def test_context_data(self):
+        url = reverse("pages:landing_pages")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+        self.client.force_login(UserFactory())
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        self.client.force_login(UserFactory(is_staff=True))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        self.client.force_login(UserFactory(is_superuser=True))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/landing_pages.html")
