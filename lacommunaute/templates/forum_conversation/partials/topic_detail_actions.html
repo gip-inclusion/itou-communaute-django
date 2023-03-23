@@ -27,8 +27,8 @@
         data-matomo-option="posts"
         onclick=DisabledMe("showmoreposts-button{{topic.pk}}")
     >
+        <i class="ri-eye-line font-weight-normal"></i>
         <span>
-            <i class="ri-eye-line font-weight-normal"></i>
             {% if posts_count > 2 %}
                 {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
                     Show me the {{ posts_count }} comments

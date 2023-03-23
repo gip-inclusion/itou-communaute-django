@@ -1,21 +1,23 @@
 {%if can_certify_post %}
     {% if not topic.is_certified or post.is_certified %}
+        - <i class="ri-award-line small" aria-hidden="true"></i>
         <form hx-post="{%  url 'forum_upvote:certify' %}"
             id="certifiedpost-button{{post.pk}}"
+            class="d-inline-block"
             hx-target="#showmorepostsarea{{topic.pk}}"
-            hx-confirm="Êtes-vous sûr de vouloir {% if post.is_certified %}retirer la certification de {% else %}certifier {% endif %} cette réponse ?"
+            hx-confirm="Êtes-vous sûr de vouloir {% if post.is_certified %}retirer la certification de{% else %}certifier{% endif %} cette réponse ?"
             hx-swap="outerHTML">
             <input type='hidden' name='post_pk' value="{{post.pk}}"/>
             <button type="submit"
-                class="btn btn-ico btn-link pr-0  text-nowrap matomo-event"
+                class="btn-poster small text-muted text-nowrap text-decoration-underline matomo-event"
                 data-matomo-category="engagement"
                 data-matomo-action="certifiedpost"
                 data-matomo-option="{% if post.is_certified %}uncertify{% else %}certify{% endif %}"
             >
                 {% if post.is_certified %}
-                    <small> (retirer la certification)</small>
+                Retirer la certification
                 {% else %}
-                    <small> (<i class="ri-award-line" aria-hidden="true"></i> certifier cette réponse)</small>
+                Certifier cette réponse
                 {% endif %}
             </button>
         </form>

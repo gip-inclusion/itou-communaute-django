@@ -7,7 +7,7 @@
             <button hx-post="{% url 'forum_conversation_extension:like_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}" id="like-button{{topic.pk}}"
                 hx-target="#likesarea{{topic.pk}}"
                 hx-swap="outerHTML"
-                class="btn btn-ico btn-link btn-like pr-0  text-nowrap matomo-event"
+                class="btn btn-ico btn-link btn-like px-0 text-nowrap matomo-event"
                 data-matomo-category="engagement"
                 data-matomo-action="like"
                 data-matomo-option="{% if topic.has_liked %}unlike{% else %}like{% endif %}"
