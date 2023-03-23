@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import CharField
 from django.db.models.functions import Cast
 from django.shortcuts import render
@@ -32,6 +33,13 @@ class StatistiquesPageView(TemplateView):
         context["stats"] = extract_values_in_list(datas, indicator_names)
 
         return context
+
+
+class LandingPagesListView(UserPassesTestMixin, TemplateView):
+    template_name = "pages/landing_pages.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 def accessibilite(request):

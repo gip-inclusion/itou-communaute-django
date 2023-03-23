@@ -1,0 +1,51 @@
+{% extends "layouts/base.html" %}
+{% load flatpages %}
+
+
+{% block title %}{{ flatpage.title }}{{ block.super }}{% endblock %}
+{% block body_class %}{{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'forum_extension:home' %}">Accueil</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Liste des landing pages</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    {% get_flatpages as flatpages %}
+    <section class="s-title-01">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>Liste des landing pages actives sur le site</strong></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-cms">
+        <div class="s-cms__container container container-max-lg">
+            <div class="s-cms__row row">
+                <div class="s-cms__col col-12">
+                    <article>
+                        <ul>
+                            {% for page in flatpages %}
+                                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
