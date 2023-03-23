@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load str_filters %}
 
-<div id="upvotesarea{{post.pk}}">
+<div id="upvotesarea{{post.pk}}" class="d-inline-block">
     {% with post.upvotes_count as counter %}
         {% if user.is_authenticated %}
             <form hx-post="{%  url 'forum_upvote:upvote' %}"
@@ -11,9 +11,8 @@
                 <input type='hidden' name='post_pk' value="{{post.pk}}"/>
                 <input type='hidden' name='pk' value="{{post.topic.pk}}"/>
 
-
                 <button type="submit"
-                    class="btn btn-ico btn-link pr-0  text-nowrap matomo-event"
+                    class="btn btn-ico btn-link px-0 text-nowrap matomo-event"
                     data-matomo-category="engagement"
                     data-matomo-action="upvote"
                     data-matomo-option="post"

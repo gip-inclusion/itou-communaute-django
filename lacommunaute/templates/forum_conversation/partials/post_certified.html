@@ -10,11 +10,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 post-content-wrapper">
-                    <div class="d-flex align-items-center mb-1">
-                        <span class="mb-0 flex-grow-1">
+                    <div class="mb-1 d-flex flex-column flex-md-row">
+                        <div class="mb-1 flex-grow-1">
                             {%include "forum_conversation/partials/poster.html" with post=post topic=topic forum=topic.forum%}
-                        </span>
-                        {%include "forum_conversation/partials/post_certified_badge.html"%}
+                        </div>
+                        <div>
+                            {%include "forum_conversation/partials/post_certified_badge.html"%}
+                        </div>
                     </div>
                     <div class="post-content">
                         {{ post.content.rendered|urlizetrunc_target_blank:30}}

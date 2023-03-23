@@ -27,6 +27,6 @@
     {% endspaceless %}
     {{post.created|relativetimesince_fr}}
     {% if user_can_edit_post %}
-        &nbsp;<a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
+        - <a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' forum.slug forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' forum.slug forum.pk topic.slug topic.pk post.pk %}{% endif %}" aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
     {% endif %}
 </small>
