@@ -88,10 +88,9 @@
                         <div class="card-footer">
                             <small class="text-muted">
                                 <ul>
-                                    <li>Utilisateurs : visiteurs uniques ayant au moins accédé à la page d'acceuil</li>
+                                    <li>Utilisateurs : visiteurs uniques ayant au moins accédé à la page d'accueil</li>
                                     <li>Utilisateurs actifs : visiteurs uniques ayant au moins parcouru le fil d'actualités d'une communauté</li>
-                                    <li>Utilisateurs engagés : visiteurs uniques ayant au moins posté ou répondu à une question, voté sur une réponse, répondu à un sondage, créé un évènement</li>
-                                    <li>Evènements d'engagement : nombre de questions, réponses, votes, réponse à un sondage, évènement et j'aime dans les fils d'actualités de la communauté</li>
+                                    <li>Utilisateurs engagés : visiteurs uniques ayant posé une question, cherché ou posté une réponse</li>
                                 </ul>
                             </small>
                         </div>
@@ -122,12 +121,9 @@
                     },
                     {
                         label: 'Utilisateurs engagés',
-                        data: {{ stats.nb_unique_contributors | js }},
+                        data: {{ stats.nb_uniq_engaged_visitors | js }},
                     },
-                    {
-                        label: 'Évènements d\'engagement',
-                        data: {{ stats.nb_engagment_events | js }},
-                    },
+
                 ]
             },
             options: {
