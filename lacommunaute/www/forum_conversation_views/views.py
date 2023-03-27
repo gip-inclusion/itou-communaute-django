@@ -53,6 +53,7 @@ class TopicLikeView(PermissionRequiredMixin, View):
 
 
 class TopicContentView(PermissionRequiredMixin, View):
+    template = "forum_conversation/partials/topic_content.html"
     permission_required = [
         "can_read_forum",
     ]
@@ -72,7 +73,7 @@ class TopicContentView(PermissionRequiredMixin, View):
 
         return render(
             request,
-            "forum_conversation/partials/topic_content.html",
+            self.template,
             context={"topic": topic},
         )
 
