@@ -105,7 +105,7 @@ class TopicLikeViewTest(TestCase):
         self.assertEqual(1, TopicReadTrack.objects.count())
 
 
-class TopicContentView(TestCase):
+class TopicContentViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.topic = TopicFactory()
