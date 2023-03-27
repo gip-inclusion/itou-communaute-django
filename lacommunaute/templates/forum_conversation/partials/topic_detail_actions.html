@@ -9,9 +9,10 @@
 {% get_permission 'can_update_topics_to_sticky_topics' topic.forum request.user as user_can_change_to_sticky_topics %}
 {% get_permission 'can_update_topics_to_announces' topic.forum request.user as user_can_change_to_announces %}
 
+
 {% if user_can_add_post %}
-    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm mr-1 btn-post-reply">
-        <i class="ri-question-answer-line"></i>
+    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm btn-post-reply justify-content-center w-100 w-sm-auto mr-sm-1 mb-2 mb-sm-0">
+        <i class="ri-question-answer-line" aria-hidden="true"></i>
         <span>{% trans "Post reply" %}</span>
     </a>
 {% endif %}
@@ -21,13 +22,15 @@
         id="showmoreposts-button{{topic.pk}}"
         hx-target="#showmorepostsarea{{topic.pk}}"
         hx-swap="outerHTML"
-        class="btn btn-secondary btn-sm btn-ico mr-1 matomo-event"
+        class="btn btn-secondary btn-sm btn-ico matomo-event justify-content-center w-100 w-sm-auto mr-sm-1 mb-2 mb-sm-0"
         data-matomo-category="engagement"
         data-matomo-action="showmore"
         data-matomo-option="post"
         onclick=DisabledMe("showmoreposts-button{{topic.pk}}")
+        aria-label="{% trans "Show me the comment" %}"
+        role="button"
     >
-        <i class="ri-eye-line font-weight-normal"></i>
+        <i class="ri-eye-line font-weight-normal" aria-hidden="true"></i>
         <span>
             {% if posts_count > 2 %}
                 {% blocktrans trimmed with posts_count=topic.posts_count|add:"-1" %}
@@ -41,8 +44,8 @@
 {% endif %}
 
 {% if user_can_lock_topics and not topic.is_locked or user_can_move_topics or user_can_delete_topics %}
-    <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="ri-more-line" aria-label="Plus d'actions"></i>
+    <button id="id_dropdown_moderation_menu_button" class="btn btn-outline-primary btn-ico-only btn-sm mb-2 mb-sm-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Plus d'actions">
+        <i class="ri-more-line" aria-hidden="true"></i>
     </button>
     <div class="dropdown-menu" aria-labelledby="id_dropdown_moderation_menu_button">
         {% if user_can_lock_topics and not topic.is_locked %}<a href="{% url 'forum_moderation:topic_lock' slug=topic.slug pk=topic.pk %}" class="dropdown-item">{% trans "Lock topic" %}</a>{% endif %}
