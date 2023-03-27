@@ -4,8 +4,8 @@
     <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}?new=1"
         class="matomo-event badge badge-xs badge-pill badge-communaute text-white text-decoration-none"
         data-matomo-category="engagement"
-        data-matomo-action="view"
-        data-matomo-option="unanswered">
+        data-matomo-action="filter"
+        data-matomo-option="topic">
         {{node.obj.count_unanswered_topics}} nouvelle{{ node.obj.count_unanswered_topics|pluralizefr }} question{{ node.obj.count_unanswered_topics|pluralizefr }}
     </a>
 {% endif %}

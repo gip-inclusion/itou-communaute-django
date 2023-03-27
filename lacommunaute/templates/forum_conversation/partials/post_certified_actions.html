@@ -9,8 +9,8 @@
             <button type="submit"
                 class="btn btn-ico btn-link pr-0  text-nowrap matomo-event"
                 data-matomo-category="engagement"
-                data-matomo-action="certifiedpost"
-                data-matomo-option="{% if post.is_certified %}uncertify{% else %}certify{% endif %}"
+                data-matomo-action="certify"
+                data-matomo-option="post"
             >
                 {% if post.is_certified %}
                     <small> (retirer la certification)</small>
