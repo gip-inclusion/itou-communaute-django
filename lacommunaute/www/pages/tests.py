@@ -23,11 +23,14 @@ class StatistiquesPageTest(TestCase):
     def test_context_data(self):
         url = reverse("pages:statistiques")
         date = timezone.now()
-        names = ["nb_unique_contributors", "nb_uniq_visitors", "nb_uniq_active_visitors", "nb_engagment_events"]
+        names = ["nb_uniq_engaged_visitors", "nb_uniq_visitors", "nb_uniq_active_visitors"]
         for name in names:
             StatFactory(name=name, date=date)
-        other_period_stat = StatFactory(
-            period=Period.WEEK, date=date - timezone.timedelta(days=7), name="nb_unique_contributors"
+        undesired_period_stat = StatFactory(
+            period=Period.WEEK, date=date - timezone.timedelta(days=7), name="nb_uniq_engaged_visitors"
+        )
+        undesired_date_stat = StatFactory(
+            period=Period.DAY, date=date - timezone.timedelta(days=91), name="nb_uniq_engaged_visitors"
         )
 
         response = self.client.get(url)
@@ -37,14 +40,14 @@ class StatistiquesPageTest(TestCase):
         # expected values
         self.assertIn("stats", response.context)
         self.assertIn("date", response.context["stats"])
-        self.assertIn("nb_unique_contributors", response.context["stats"])
+        self.assertIn("nb_uniq_engaged_visitors", response.context["stats"])
         self.assertIn("nb_uniq_visitors", response.context["stats"])
         self.assertIn("nb_uniq_active_visitors", response.context["stats"])
-        self.assertIn("nb_engagment_events", response.context["stats"])
         self.assertEqual(response.context["stats"]["date"][0], date.strftime("%Y-%m-%d"))
 
         # undesired values
-        self.assertNotIn(other_period_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
+        self.assertNotIn(undesired_period_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
+        self.assertNotIn(undesired_date_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
 
 
 class LandingPagesListViewTest(TestCase):
