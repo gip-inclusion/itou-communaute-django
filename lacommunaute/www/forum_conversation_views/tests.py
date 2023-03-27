@@ -153,6 +153,29 @@ class TopicContentViewTest(TestCase):
         self.assertEqual(1, ForumReadTrack.objects.count())
 
 
+class TopicCertifiedPostViewTest(TestCase):
+    def test_get_topic_certified_post(self):
+        topic = TopicFactory(with_certified_post=True)
+        user = topic.poster
+        assign_perm("can_read_forum", user, topic.forum)
+        url = reverse(
+            "forum_conversation_extension:showmore_certified",
+            kwargs={
+                "forum_pk": topic.forum.pk,
+                "forum_slug": topic.forum.slug,
+                "pk": topic.pk,
+                "slug": topic.slug,
+            },
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, topic.certified_post.post.content)
+        self.assertEqual(1, ForumReadTrack.objects.count())
+
+
 class PostListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
