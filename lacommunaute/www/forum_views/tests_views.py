@@ -14,7 +14,6 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.www.forum_views.views import ForumView
 
@@ -305,7 +304,7 @@ class ForumViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, topic.last_post.content)
-        self.assertContains(response, f"Certifié par {get_forum_member_display_name(topic.certified_post.user)}")
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
         self.assertEqual(topic.posts.count(), 2)
 
 

@@ -13,7 +13,6 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
-from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
@@ -397,12 +396,12 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Certifié par")
+        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
         CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f"Certifié par {get_forum_member_display_name(self.topic.certified_post.user)}")
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
@@ -411,6 +410,6 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(43):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
