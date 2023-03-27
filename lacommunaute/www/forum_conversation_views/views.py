@@ -81,6 +81,10 @@ class TopicContentView(PermissionRequiredMixin, View):
         return self.get_topic().forum
 
 
+class TopicCertifiedPostView(TopicContentView):
+    template = "forum_conversation/partials/topic_certified_post.html"
+
+
 class PostListView(PermissionRequiredMixin, View):
     permission_required = [
         "can_read_forum",
