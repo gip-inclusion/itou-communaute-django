@@ -14,6 +14,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_upvote.factories import CertifiedPostFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.www.forum_views.views import ForumView
 
@@ -294,18 +295,16 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, post.content)
-        self.assertEqual(self.topic.posts.count(), 2)
+        self.assertNotContains(response, post.content.rendered)
 
-        # create a certified post
-        topic = TopicFactory(with_certified_post=True, forum=self.forum)
+        # certify post
+        CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, topic.last_post.content)
+        self.assertContains(response, post.content.rendered)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
-        self.assertEqual(topic.posts.count(), 2)
 
 
 class ModeratorEngagementViewTest(TestCase):
