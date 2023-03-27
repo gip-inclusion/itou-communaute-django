@@ -55,8 +55,8 @@
                                 <div class="form-group col-auto">
                                     <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
                                         data-matomo-category="engagement"
-                                        data-matomo-action="event"
-                                        data-matomo-option="post">
+                                        data-matomo-action="contribute"
+                                        data-matomo-option="event">
                                     {% if event %}
                                         <a href="{% url 'event:delete' pk=event.pk %}" role="button" class="btn btn-outline-danger" value="{% trans "Delete" %}">{% trans "Delete" %}</a>
                                     {% endif %}
