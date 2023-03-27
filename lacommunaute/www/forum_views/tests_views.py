@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AnonymousUser, Group
+from django.template.defaultfilters import truncatechars
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from django.utils.http import urlencode
@@ -287,15 +288,26 @@ class ForumViewTest(TestCase):
 
     # test CertifiedPost display
     def test_certified_post_display(self):
+        topic_certified_post_url = reverse(
+            "forum_conversation_extension:showmore_certified",
+            kwargs={
+                "forum_pk": self.forum.pk,
+                "forum_slug": self.forum.slug,
+                "pk": self.topic.pk,
+                "slug": self.topic.slug,
+            },
+        )
         self.client.force_login(self.user)
 
         # create a post which is not certified
-        post = PostFactory(topic=self.topic, poster=self.user)
+        post = PostFactory(topic=self.topic, poster=self.user, content=faker.paragraph(nb_sentences=100))
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, post.content.rendered)
+        self.assertNotContains(response, truncatechars(post.content.rendered, 200))
+        self.assertNotContains(response, topic_certified_post_url)
+        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
         # certify post
         CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
@@ -303,7 +315,8 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, post.content.rendered)
+        self.assertContains(response, truncatechars(post.content.rendered, 200))
+        self.assertContains(response, topic_certified_post_url)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
 
