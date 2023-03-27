@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## v1.7 - 2023.03.27
+- Mise à jour de l'affichage du nom de l'auteur d'un post (#203)
+- FIX : Ne pas ajouter un poster non authentifié à la liste des likers d'un Sujet (#202)
+- Gérer les landing pages sur le site (#201)
+- Ajouter l'auteur d'un sujet dans la liste des "likers" du sujet (#200)
+- Notification : ajout *par lot* des nouveaux utilisateurs dans la sequence d'onboarding  (#199)
+- Gérer la redirection lors de l'authentification pour créer un nouvel évènement (#198)
+- Afficher le bouton d'ajout d'évènement pour tous les visiteurs (#197)
+- Evaluer la performance des notification de première réponse (#196)
+- Notification : ajout des nouveaux utilisateurs dans la sequence d'onboarding (#195)
+- Notification : rationnalisation du code (#194)
+
 ## v1.6 - 2023.03.20
 - Mise à jour des dépendances (#192)
 - CRON : automatisation des notifications sur la première reponse (#191)
