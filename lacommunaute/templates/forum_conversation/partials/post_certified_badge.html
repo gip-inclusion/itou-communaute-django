@@ -1,14 +1,9 @@
 {% load forum_member_tags %}
 
 {% if post.is_certified %}
-    <a href="{% url 'members:profile' post.certified_post.user.id %}"
-        class="matomo-event badge badge-xs badge-pill bg-communaute text-white text-decoration-none"
-        data-matomo-category="engagement"
-        data-matomo-action="view"
-        data-matomo-option="member">
-        <i class="ri-award-line" aria-hidden="true"></i>
-        Certifié par {{post.certified_post.user|forum_member_display_name}}
-    </a>
+    <span class="badge badge-xs badge-pill bg-communaute text-white text-decoration-none">
+        Certifié par la Plateforme de l'Inclusion
+    </span>
 {% endif %}
 
 
