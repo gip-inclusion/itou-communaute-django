@@ -77,13 +77,7 @@ def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_vi
             {
                 "period": period,
                 "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_unique_contributors",
-                "value": 0,
-            },
-            {
-                "period": period,
-                "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_engagment_events",
+                "name": "nb_uniq_engaged_visitors",
                 "value": 0,
             },
         ]
@@ -91,51 +85,33 @@ def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_vi
     stats = []
 
     for data in datas:
+        nb_uniq_active_visitors = data.get(nb_uniq_visitors_key, 0)
         stat = {
             "period": period,
             "date": search_date.strftime("%Y-%m-%d"),
             "name": "nb_uniq_active_visitors",
-            "value": data.get(nb_uniq_visitors_key, 0),
+            "value": nb_uniq_active_visitors,
         }
         stats.append(stat)
 
         subtable = data.get("subtable", None)
 
         if subtable:
-            nb_unique_contributors = sum(
-                [item.get(nb_uniq_visitors_key, 0) for item in subtable if item["label"] == "contribute"]
+            nb_uniq_engaged_visitors = nb_uniq_active_visitors - sum(
+                [item.get(nb_uniq_visitors_key, 0) for item in subtable if item["label"] == "view"]
             )
             stat = {
                 "period": period,
                 "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_unique_contributors",
-                "value": nb_unique_contributors,
-            }
-            stats.append(stat)
-
-            nb_engagment_events = sum(
-                [item.get("nb_events", 0) for item in subtable if item["label"] in ["contribute", "like", "vote"]]
-            )
-            stat = {
-                "period": period,
-                "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_engagment_events",
-                "value": nb_engagment_events,
+                "name": "nb_uniq_engaged_visitors",
+                "value": nb_uniq_engaged_visitors,
             }
             stats.append(stat)
         else:
             stat = {
                 "period": period,
                 "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_unique_contributors",
-                "value": 0,
-            }
-            stats.append(stat)
-
-            stat = {
-                "period": period,
-                "date": search_date.strftime("%Y-%m-%d"),
-                "name": "nb_engagment_events",
+                "name": "nb_uniq_engaged_visitors",
                 "value": 0,
             }
             stats.append(stat)

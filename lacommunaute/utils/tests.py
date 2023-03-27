@@ -251,13 +251,7 @@ class UtilsGetMatomoEventsDataTest(TestCase):
             {
                 "period": "day",
                 "date": self.today.strftime("%Y-%m-%d"),
-                "name": "nb_unique_contributors",
-                "value": 0,
-            },
-            {
-                "period": "day",
-                "date": self.today.strftime("%Y-%m-%d"),
-                "name": "nb_engagment_events",
+                "name": "nb_uniq_engaged_visitors",
                 "value": 0,
             },
         ]
@@ -271,13 +265,7 @@ class UtilsGetMatomoEventsDataTest(TestCase):
             {
                 "period": "day",
                 "date": self.today.strftime("%Y-%m-%d"),
-                "name": "nb_unique_contributors",
-                "value": 0,
-            },
-            {
-                "period": "day",
-                "date": self.today.strftime("%Y-%m-%d"),
-                "name": "nb_engagment_events",
+                "name": "nb_uniq_engaged_visitors",
                 "value": 0,
             },
         ]
@@ -315,42 +303,25 @@ class UtilsGetMatomoEventsDataTest(TestCase):
             )
 
     def test_get_matomo_events_data_with_missing_nb_uniq_visitors_in_subtable(self):
-        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
-            mock_get_matomo_data.return_value = [
-                {
-                    "nb_uniq_visitors": self.nb_uniq_visitors,
-                    "subtable": [{"label": "contribute"}],
-                }
-            ]
-            self.assertEqual(
-                get_matomo_events_data(period="day", search_date=self.today),
-                self.uniq_active_visitors_res,
-            )
-
-    def test_get_matomo_events_data_without_like_vote_in_subtable(self):
-        nb_active_visitors = faker.random_int()
         expected_res = self.uniq_active_visitors_res
-        expected_res[1]["value"] = nb_active_visitors
-
+        expected_res[1]["value"] = self.nb_uniq_visitors
         with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
             mock_get_matomo_data.return_value = [
                 {
                     "nb_uniq_visitors": self.nb_uniq_visitors,
-                    "subtable": [{"label": "contribute", "nb_uniq_visitors": nb_active_visitors}],
+                    "subtable": [{"label": "view"}],
                 }
             ]
-
             self.assertEqual(
                 get_matomo_events_data(period="day", search_date=self.today),
                 expected_res,
             )
 
     def test_get_matomo_events_data_with_all_expected_datas(self):
-        nb_events = faker.random_int()
+
         nb_active_visitors = faker.random_int()
         expected_res = self.uniq_active_visitors_res
-        expected_res[1]["value"] = nb_active_visitors
-        expected_res[2]["value"] = nb_events * 3
+        expected_res[1]["value"] = self.nb_uniq_visitors - nb_active_visitors
 
         with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
             mock_get_matomo_data.return_value = [
@@ -358,12 +329,9 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                     "nb_uniq_visitors": self.nb_uniq_visitors,
                     "subtable": [
                         {
-                            "label": "contribute",
+                            "label": "view",
                             "nb_uniq_visitors": nb_active_visitors,
-                            "nb_events": nb_events,
                         },
-                        {"label": "like", "nb_events": nb_events},
-                        {"label": "vote", "nb_events": nb_events},
                     ],
                 }
             ]
