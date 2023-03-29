@@ -15,4 +15,4 @@ fi
 # $APP_HOME is set by default by clever cloud.
 cd $APP_HOME
 
-python manage.py collect_matomo_stats
+python manage.py collect_matomo_stats --period month
