@@ -20,7 +20,12 @@ class Command(BaseCommand):
         from_date = Stat.objects.filter(period=period).order_by("-date").first()
 
         if from_date:
-            from_date = from_date.date + relativedelta(days=1)
+            if period == "day":
+                from_date = from_date.date + relativedelta(days=1)
+            elif period == "week":
+                from_date = from_date.date + relativedelta(days=7)
+            else:
+                from_date = from_date.date + relativedelta(months=1)
         else:
             from_date = date(2022, 12, 1)
 
