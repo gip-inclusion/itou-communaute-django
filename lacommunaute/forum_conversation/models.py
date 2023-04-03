@@ -6,6 +6,15 @@ from machina.apps.forum_conversation.abstract_models import AbstractPost, Abstra
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 
 
+class TopicQuerySet(models.QuerySet):
+    def unanswered(self):
+        return (
+            self.exclude(approved=False)
+            .exclude(status=Topic.TOPIC_LOCKED)
+            .filter(posts_count=1, type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
+        )
+
+
 class Topic(AbstractTopic):
     likers = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -32,6 +41,8 @@ class Topic(AbstractTopic):
     @property
     def is_certified(self):
         return hasattr(self, "certified_post")
+
+    objects = TopicQuerySet().as_manager()
 
 
 class Post(AbstractPost):

@@ -2,8 +2,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 
 
@@ -21,6 +22,22 @@ class PostModelTest(TestCase):
 
         topic = TopicFactory(with_certified_post=True)
         self.assertTrue(topic.last_post.is_certified)
+
+
+class TopicManagerTest(TestCase):
+    def test(self):
+        forum = ForumFactory()
+
+        TopicFactory(forum=forum, posts_count=0)
+        topic = TopicFactory(forum=forum, posts_count=1)
+        TopicFactory(forum=forum, posts_count=2)
+
+        TopicFactory(forum=forum, posts_count=1, status=Topic.TOPIC_LOCKED)
+        TopicFactory(forum=forum, posts_count=1, type=Topic.TOPIC_ANNOUNCE)
+        TopicFactory(forum=forum, posts_count=1, approved=False)
+
+        self.assertEqual(Topic.objects.unanswered().count(), 1)
+        self.assertIn(topic, Topic.objects.unanswered())
 
 
 class TopicModelTest(TestCase):
