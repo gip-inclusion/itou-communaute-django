@@ -39,6 +39,18 @@ class IndexView(BaseIndexView):
             ),
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["topics"] = Topic.objects.unanswered().filter(forum__in=Forum.objects.public())
+        context["form"] = PostForm(user=self.request.user)
+
+        if self.request.GET.get("new", None):
+            context["pending_topics_tab"] = True
+        else:
+            context["forums_tab"] = True
+
+        return context
+
 
 class ForumView(BaseForumView):
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE

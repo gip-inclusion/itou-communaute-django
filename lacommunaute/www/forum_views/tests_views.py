@@ -438,6 +438,35 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.forum.name)
 
+    def test_form_is_in_context(self):
+        response = self.client.get(self.url)
+        self.assertIsInstance(response.context_data["form"], PostForm)
+
+    def test_unaswered_topics_visibility(self):
+        unanswered_private_topic = TopicFactory(forum=ForumFactory(is_private=True), with_post=True)
+        unanswered_public_topic = TopicFactory(forum=ForumFactory(is_private=False), with_post=True)
+
+        response = self.client.get(self.url)
+
+        self.assertNotIn(unanswered_private_topic, response.context["topics"])
+        self.assertIn(unanswered_public_topic, response.context["topics"])
+
+    def test_parameters_in_url(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="nav-link" id="pending-topics-tab"')
+        self.assertContains(response, 'class="tab-pane fade" id="pending-topics"')
+        self.assertContains(response, 'class="nav-link active" id="forums_tab"')
+        self.assertContains(response, 'class="tab-pane fade show active" id="forums"')
+
+        url = self.url + "?new=1"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="nav-link active" id="pending-topics-tab"')
+        self.assertContains(response, 'class="tab-pane fade show active" id="pending-topics"')
+        self.assertContains(response, 'class="nav-link" id="forums_tab"')
+        self.assertContains(response, 'class="tab-pane fade" id="forums"')
+
 
 class CreateForumView(TestCase):
     def setUp(self):
