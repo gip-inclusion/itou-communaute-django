@@ -15,6 +15,11 @@ from lacommunaute.utils.enums import PeriodAggregation
 from lacommunaute.utils.stats import count_objects_per_period, format_counts_of_objects_for_timeline_chart
 
 
+class ForumQuerySet(models.QuerySet):
+    def public(self):
+        return self.filter(is_private=False)
+
+
 class Forum(AbstractForum):
     members_group = models.ForeignKey(
         Group, blank=True, null=True, on_delete=models.CASCADE, verbose_name=("Members Group")
@@ -22,6 +27,8 @@ class Forum(AbstractForum):
     invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
     is_private = models.BooleanField(default=False, verbose_name="privée")
     target_audience = models.IntegerField(default=0)
+
+    objects = ForumQuerySet().as_manager()
 
     def get_stats(self, period_back):
 
@@ -54,12 +61,9 @@ class Forum(AbstractForum):
         )
         return format_counts_of_objects_for_timeline_chart(datas, period=PeriodAggregation.WEEK)
 
+    def get_unanswered_topics(self):
+        return Topic.objects.unanswered().filter(forum__in=self.get_descendants(include_self=True))
+
     @cached_property
     def count_unanswered_topics(self):
-        return (
-            Topic.objects.exclude(type=Topic.TOPIC_ANNOUNCE)
-            .exclude(approved=False)
-            .exclude(status=Topic.TOPIC_LOCKED)
-            .filter(posts_count=1, forum__in=self.get_descendants(include_self=True))
-            .count()
-        )
+        return self.get_unanswered_topics().count()
