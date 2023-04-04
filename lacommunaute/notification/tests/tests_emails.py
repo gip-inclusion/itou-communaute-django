@@ -22,18 +22,19 @@ class SendEmailTestCase(TestCase):
 
     @respx.mock
     def test_send_email(self):
-        to = faker.email()
+        to = [{"email": faker.email()}]
         params = faker.text()
         template_id = faker.random_int()
+        kind = "first_reply"
 
         payload = {
             "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "to": [{"email": to}],
+            "to": to,
             "params": params,
             "templateId": template_id,
         }
 
-        send_email(to, params, template_id)
+        send_email(to, params, template_id, kind)
 
         self.assertEqual(EmailSentTrack.objects.count(), 1)
         email_sent_track = EmailSentTrack.objects.first()
