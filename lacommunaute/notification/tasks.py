@@ -1,4 +1,5 @@
-from config.settings.base import SIB_FIRST_REPLY_TEMPLATE, SIB_ONBOARDING_LIST
+from django.conf import settings
+
 from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
 from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding
 
@@ -13,8 +14,8 @@ def send_notifs_when_first_reply():
             "topic_subject": subject,
             "display_name": display_name,
         }
-        send_email(to, params, SIB_FIRST_REPLY_TEMPLATE)
+        send_email(to, params, settings.SIB_FIRST_REPLY_TEMPLATE)
 
 
 def add_user_to_list_when_register():
-    bulk_send_user_to_list(collect_new_users_for_onboarding(), SIB_ONBOARDING_LIST)
+    bulk_send_user_to_list(collect_new_users_for_onboarding(), settings.SIB_ONBOARDING_LIST)
