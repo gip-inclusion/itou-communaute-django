@@ -329,4 +329,5 @@ SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.beta.gouv.fr")
 
 SIB_FIRST_REPLY_TEMPLATE = 2
+SIB_UNANSWERED_QUESTION_TEMPLATE = 10
 SIB_ONBOARDING_LIST = 5
