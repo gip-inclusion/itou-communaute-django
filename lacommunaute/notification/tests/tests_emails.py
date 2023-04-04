@@ -5,8 +5,8 @@ import respx
 from django.test import TestCase
 from faker import Faker
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
-from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
+from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACT_LIST_URL, SIB_CONTACTS_URL, SIB_SMTP_URL
+from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.users.factories import UserFactory
 
@@ -19,6 +19,24 @@ class SendEmailTestCase(TestCase):
         super().setUp()
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
         respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+
+        self.contact_list_response = {
+            "contacts": [
+                {
+                    "email": faker.email(),
+                    "emailBlacklisted": False,
+                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
+                },
+                {
+                    "email": faker.email(),
+                    "emailBlacklisted": True,
+                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
+                },
+            ]
+        }
+        respx.get(SIB_CONTACT_LIST_URL + "/1/contacts").mock(
+            return_value=httpx.Response(200, json=self.contact_list_response)
+        )
 
     @respx.mock
     def test_send_email(self):
@@ -68,3 +86,20 @@ class SendEmailTestCase(TestCase):
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
         self.assertEqual(email_sent_track.datas, payload)
         self.assertEqual(email_sent_track.kind, "onboarding")
+
+    def test_collect_users_from_list_bad_status_code(self):
+        self.assertIsNone(collect_users_from_list(faker.random_int()))
+
+    @respx.mock
+    def test_collect_users_from_list(self):
+        expected_contact = self.contact_list_response["contacts"][0]
+        contacts = collect_users_from_list(1)
+        self.assertEqual(
+            contacts,
+            [
+                {
+                    "email": expected_contact["email"],
+                    "name": f'{expected_contact["attributes"]["PRENOM"]} {expected_contact["attributes"]["NOM"]}',
+                }
+            ],
+        )
