@@ -41,7 +41,21 @@ class IndexView(BaseIndexView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["topics"] = Topic.objects.unanswered().filter(forum__in=Forum.objects.public())
+        context["topics"] = (
+            Topic.objects.unanswered()
+            .filter(forum__in=Forum.objects.public())
+            .annotate(likes=Count("likers"))
+            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
+            .select_related("poster", "poster__forum_profile", "first_post", "forum", "certified_post")
+            .prefetch_related(
+                "poll",
+                "poll__options",
+                "poll__options__votes",
+                "first_post__attachments",
+                "first_post__poster",
+            )
+            .order_by("-last_post_on")
+        )
         context["form"] = PostForm(user=self.request.user)
 
         if self.request.GET.get("new", None):

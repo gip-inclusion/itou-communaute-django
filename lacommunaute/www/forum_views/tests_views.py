@@ -467,6 +467,14 @@ class IndexViewTest(TestCase):
         self.assertContains(response, 'class="nav-link" id="forums_tab"')
         self.assertContains(response, 'class="tab-pane fade" id="forums"')
 
+    def test_has_liked(self):
+        TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True)
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: solid heart
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+
 
 class CreateForumView(TestCase):
     def setUp(self):
