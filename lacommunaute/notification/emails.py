@@ -46,3 +46,15 @@ def bulk_send_user_to_list(users, list_id):
     EmailSentTrack.objects.create(
         status_code=response.status_code, response=response.text, datas=payload, kind=EmailSentTrackKind.ONBOARDING
     )
+
+
+def collect_users_from_list(list_id: int) -> list | None:
+    headers = {"api-key": settings.SIB_API_KEY, "Content-Type": "application/json", "Accept": "application/json"}
+    response = httpx.get(f"{settings.SIB_CONTACT_LIST_URL}/{list_id}/contacts", headers=headers)
+    if response.status_code == 200:
+        return [
+            {"email": contact["email"], "name": f'{contact["attributes"]["PRENOM"]} {contact["attributes"]["NOM"]}'}
+            for contact in response.json()["contacts"]
+            if not contact["emailBlacklisted"]
+        ]
+    return None
