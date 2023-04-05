@@ -33,8 +33,13 @@ def get_human_readable_delay(delay: timedelta) -> str:
 def min_median_max_values(queryset: QuerySet, term: str) -> Dict[str, str]:
     count = queryset.count()
     ordered_list = queryset.values_list(term, flat=True).order_by(term)
-    values = {"min": ordered_list[0], "median": ordered_list[int(round(count / 2))], "max": ordered_list[count - 1]}
-    return {k: get_human_readable_delay(v) for k, v in values.items()}
+    fortyheight_percent = round(queryset.filter(time_diff_seconds__lte=timedelta(hours=48)).count() / count, 2)
+    return {
+        "min": get_human_readable_delay(ordered_list[0]),
+        "median": get_human_readable_delay(ordered_list[int(round(count / 2))]),
+        "max": get_human_readable_delay(ordered_list[count - 1]),
+        "48h%": f"{fortyheight_percent} %",
+    }
 
 
 class Command(BaseCommand):
