@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 from machina.core.loading import get_class
@@ -41,6 +42,10 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["forum"] = self.get_forum()
+        context["loadmoretopic_url"] = reverse(
+            "forum_conversation_extension:topic_list",
+            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+        )
         return context
 
     def get_controlled_object(self):
