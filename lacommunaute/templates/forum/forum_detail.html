@@ -58,14 +58,61 @@
                 </div>
             {% endif %}
         </div>
-        {% trans "Announcements" as announcements_title_trans %}
-        {% with topic_list_title=announcements_title_trans topics=announces hide_if_empty=True unread_topics=unread_topics %}
-            {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
-        {% endwith %}
-        {% trans "Topics" as topics_title_trans %}
-        {% with topic_list_title=topics_title_trans unread_topics=unread_topics%}
-            {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
-        {% endwith %}
+        <div class="s-tabs-01">
+            <div class="s-tabs-01__container ">
+                <div class="s-tabs-01__row row">
+                    <div class="s-tabs-01__col col-12">
+                        <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="topics-tab"
+                                    data-toggle="tab"
+                                    href="#topics"
+                                    role="tab"
+                                    aria-controls="topics"
+                                    aria-selected="true">
+                                    Sujets
+                                </a>
+                            </li>
+                            {% if announces %}
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="announces-tab"
+                                        data-toggle="tab"
+                                        href="#announces"
+                                        role="tab"
+                                        aria-controls="announces"
+                                        aria-selected="false">
+                                        Annonces
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item-dropdown dropdown">
+                                <!-- for responsive needs -->
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="topics"
+                                role="tabpanel"
+                                aria-labelledby="topics-tab">
+                                {% with unread_topics=unread_topics%}
+                                    {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
+                                {% endwith %}
+                            </div>
+                            {% if announces %}
+                                <div class="tab-pane fade" id="announces"
+                                    role="tabpanel"
+                                    aria-labelledby="announces-tab">
+                                    {% with topics=announces hide_if_empty=True unread_topics=unread_topics %}
+                                        {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
+                                    {% endwith %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row mt-5 mb-5">
             <div class="col-12">
                 {% with "justify-content-center" as pagination_size %}
