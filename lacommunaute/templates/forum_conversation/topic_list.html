@@ -111,4 +111,24 @@
             </div>
         </div>
     {% endfor %}
+    {% if link and is_paginated and page_obj.has_next%}
+        <div id="loadmoretopicsarea" class="row mt-3 mb-3" >
+            <div class="col-12">
+                <ul class="m-0 pagination justify-content-center">
+                    <li class="page-item">
+                        <a hx-get="{{ link }}?page={{ page_obj.next_page_number }}"
+                            id="loadmoretopics-button"
+                            hx-target="#loadmoretopicsarea"
+                            hx-swap="outerHTML"
+                            class="btn btn-link p-0 mh-auto matomo-event"
+                            data-matomo-category="engagement"
+                            data-matomo-action="loadmore"
+                            data-matomo-option="topic">
+                            {% trans "charger plus de sujets" %}<i class="ri-arrow-right-s-line"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 {% endif %}

@@ -97,6 +97,9 @@ class ForumView(BaseForumView):
         context = super().get_context_data(**kwargs)
         context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
         context["next_url"] = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
+        context["loadmoretopic_url"] = reverse(
+            "forum_conversation_extension:topic_list", kwargs={"forum_pk": forum.pk, "forum_slug": self.forum.slug}
+        )
         context["form"] = PostForm(forum=forum, user=self.request.user)
         context["announces"] = list(
             self.get_forum()
