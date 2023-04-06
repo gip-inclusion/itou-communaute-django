@@ -31,9 +31,6 @@
                             {% include "forum/partials/topics_and_members_counts.html" %}
                         </p>
                     </div>
-                    <div>
-                        {% include "forum/partials/unanswered_topics_badge.html" %}
-                    </div>
                 </div>
                 <div class="card-body pt-0">
                     {%if node.obj.description.rendered%}
@@ -66,9 +63,6 @@
                                                 {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
                                             </small>
                                         </div>
-                                        <div>
-                                            {% include "forum/partials/unanswered_topics_badge.html" with node=child%}
-                                        </div>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -95,9 +89,6 @@
                             {% endif %}
                             {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
                         </small>
-                    </div>
-                    <div>
-                        {% include "forum/partials/unanswered_topics_badge.html" %}
                     </div>
                 </li>
             {% endfor %}
