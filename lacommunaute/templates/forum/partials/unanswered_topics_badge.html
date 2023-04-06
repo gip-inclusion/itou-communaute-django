@@ -1,6 +1,6 @@
 {% load str_filters %}
 
-{% if node.obj.count_unanswered_topics > 0 %}
+{% comment %}{% if node.obj.count_unanswered_topics > 0 %}
     <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}?new=1"
         class="matomo-event badge badge-xs badge-pill badge-info-lighter text-info text-decoration-none"
         data-matomo-category="engagement"
@@ -9,3 +9,4 @@
         {{node.obj.count_unanswered_topics}} nouvelle{{ node.obj.count_unanswered_topics|pluralizefr }} question{{ node.obj.count_unanswered_topics|pluralizefr }}
     </a>
 {% endif %}
+{% endcomment %}
