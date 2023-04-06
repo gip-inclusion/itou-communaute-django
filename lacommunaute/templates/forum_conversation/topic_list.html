@@ -11,119 +11,105 @@
 {% endif %}
 
 {% if topics or not hide_if_empty %}
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="card topiclist mt-3">
-                <div class="card-header bg-light p-0">
-                    <div class="row m-0 px-3 py-2">
-                        <div class="pl-0 col-md-8 col-sm-9 col-12 topic-name-col">
-                            <h2 class="m-0 font-weight-normal fs-xs text-uppercase text-muted"><i class="ri-chat-4-line ri-lg"></i> {% trans topic_list_title %}</h2>
+
+    {% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
+    {% for topic in topics %}
+        <div class="row">
+            <div class="col-12">
+                <div id="{{ topic.pk }}" class="card post mb-3 anchor">
+                    <div class="card-header mb-1 d-flex flex-column flex-md-row align-items-md-center">
+                        <div class="topic-thumbnail bg-light d-none d-md-block">
+                            {% if topic.poster.forum_profile.avatar %}
+                                <img src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}" />
+                            {% else %}
+                                <i class="ri-user-line ri-2x"></i>
+                            {% endif %}
                         </div>
+                        <p class="h4 mb-0 flex-grow-1">
+                            <span class="topic-icon font-weight-normal {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
+                                <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl"></i>
+                            </span>
+                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                class="matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="view"
+                                data-matomo-option="topic">
+                                {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
+                            </a>
+                        </p>
+                        {% block htmx %}
+                            {% include "forum_conversation/partials/topic_likes.html"%}
+                        {% endblock %}
                     </div>
-                </div>
-                <div class="card-body">
-                    {% if not force_all_unread and unread_topics == None %}{% get_unread_topics topics request.user as unread_topics %}{% endif %}
-                    {% for topic in topics %}
+                    <div class="card-body pt-0">
                         <div class="row">
-                            <div class="col-12">
-                                <div id="{{ topic.pk }}" class="card post mb-3 anchor">
-                                    <div class="card-header mb-1 d-flex flex-column flex-md-row align-items-md-center">
-                                        <div class="topic-thumbnail bg-light d-none d-md-block">
-                                            {% if topic.poster.forum_profile.avatar %}
-                                                <img src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}" />
-                                            {% else %}
-                                                <i class="ri-user-line ri-2x"></i>
-                                            {% endif %}
-                                        </div>
-                                        <p class="h4 mb-0 flex-grow-1">
-                                            <span class="topic-icon font-weight-normal {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
-                                                <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl"></i>
-                                            </span>
-                                            <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                                class="matomo-event"
-                                                data-matomo-category="engagement"
-                                                data-matomo-action="view"
-                                                data-matomo-option="topic">
-                                                {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
-                                            </a>
-                                        </p>
-                                        {% block htmx %}
-                                            {% include "forum_conversation/partials/topic_likes.html"%}
-                                        {% endblock %}
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <div class="row">
-                                            <div class="col-12 post-content-wrapper mb-3">
-                                                {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True%}
-                                            </div>
-                                            <div class="col-12 post-content">
-                                                <div id="showmoretopicsarea{{topic.pk}}">
-                                                    {{ topic.first_post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
-                                                    {% if topic.first_post.content.rendered|length > 200 %}
-                                                        <a hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                                            id="showmoretopic-button{{topic.pk}}"
-                                                            hx-target="#showmoretopicsarea{{topic.pk}}"
-                                                            hx-swap="outerHTML"
-                                                            class="btn btn-link p-0 mh-auto matomo-event"
-                                                            data-matomo-category="engagement"
-                                                            data-matomo-action="showmore"
-                                                            data-matomo-option="topic"
-                                                        >
-                                                            {% trans "+ show more" %}
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                                {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
-
-                                                {% if not forum %}
-                                                    {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
-                                                {% endif %}
-                                                {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post user_can_download_files=user_can_download_files %}
-
-                                                {% if topic.poll %}
-                                                    {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
-                                                {% endif %}
-
-                                                {% if topic.first_post.enable_signature and topic.poster.forum_profile.signature %}
-                                                    <div class="post-signature">
-                                                        {{ topic.poster.forum_profile.signature.rendered }}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="col-12 post-content-wrapper mb-3">
+                                {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True%}
+                            </div>
+                            <div class="col-12 post-content">
+                                <div id="showmoretopicsarea{{topic.pk}}">
+                                    {{ topic.first_post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
+                                    {% if topic.first_post.content.rendered|length > 200 %}
+                                        <a hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                            id="showmoretopic-button{{topic.pk}}"
+                                            hx-target="#showmoretopicsarea{{topic.pk}}"
+                                            hx-swap="outerHTML"
+                                            class="btn btn-link p-0 mh-auto matomo-event"
+                                            data-matomo-category="engagement"
+                                            data-matomo-action="showmore"
+                                            data-matomo-option="topic"
+                                        >
+                                            {% trans "+ show more" %}
+                                        </a>
+                                    {% endif %}
                                 </div>
-                                <div id="showmorepostsarea{{topic.pk}}">
-                                    <div id="postinfeedarea{{topic.pk}}">
-                                        {% if topic.is_certified %}
-                                            {% include "forum_conversation/partials/post_certified.html" with post=topic.certified_post.post certifier=topic.certified_post.user %}
-                                        {% endif %}
-                                        {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form %}
+                                {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
+
+                                {% if not forum %}
+                                    {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
+                                {% endif %}
+                                {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post user_can_download_files=user_can_download_files %}
+
+                                {% if topic.poll %}
+                                    {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
+                                {% endif %}
+
+                                {% if topic.first_post.enable_signature and topic.poster.forum_profile.signature %}
+                                    <div class="post-signature">
+                                        {{ topic.poster.forum_profile.signature.rendered }}
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row align-items-sm-center mb-3">
-                            <div class="col-12 col-sm">
-                                {% include "forum_conversation/partials/topic_detail_actions.html" with posts_count=topic.posts_count %}
-                            </div>
-                            <div class="col-12 col-sm-auto">
-                                {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div class="row m-0 p-3">
-                            <div class="col-12 pl-0">
-                                {% if empty_message %}
-                                    {{ empty_message }}
-                                {% else %}
-                                    {% trans "There are no topics in this forum." %}
                                 {% endif %}
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                </div>
+                <div id="showmorepostsarea{{topic.pk}}">
+                    <div id="postinfeedarea{{topic.pk}}">
+                        {% if topic.is_certified %}
+                            {% include "forum_conversation/partials/post_certified.html" with post=topic.certified_post.post certifier=topic.certified_post.user %}
+                        {% endif %}
+                        {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row align-items-sm-center mb-3">
+            <div class="col-12 col-sm">
+                {% include "forum_conversation/partials/topic_detail_actions.html" with posts_count=topic.posts_count %}
+            </div>
+            <div class="col-12 col-sm-auto">
+                {% include "forum_conversation/partials/social_share_buttons.html" with topic=topic %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="row m-0 p-3">
+            <div class="col-12 pl-0">
+                {% if empty_message %}
+                    {{ empty_message }}
+                {% else %}
+                    {% trans "There are no topics in this forum." %}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
 {% endif %}
