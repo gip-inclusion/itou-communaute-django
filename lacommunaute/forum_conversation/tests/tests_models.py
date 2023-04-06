@@ -25,7 +25,7 @@ class PostModelTest(TestCase):
 
 
 class TopicManagerTest(TestCase):
-    def test(self):
+    def test_unanswered(self):
         forum = ForumFactory()
 
         TopicFactory(forum=forum, posts_count=0)
@@ -38,6 +38,49 @@ class TopicManagerTest(TestCase):
 
         self.assertEqual(Topic.objects.unanswered().count(), 1)
         self.assertIn(topic, Topic.objects.unanswered())
+
+    def test_optimized_for_topics_list_disapproved(self):
+        TopicFactory(approved=False)
+        self.assertEqual(Topic.objects.optimized_for_topics_list(1).count(), 0)
+
+    def test_optimized_for_topics_list_type(self):
+        annonce = TopicFactory(type=Topic.TOPIC_ANNOUNCE)
+        sticky = TopicFactory(type=Topic.TOPIC_STICKY)
+        topic = TopicFactory(type=Topic.TOPIC_POST)
+
+        qs = Topic.objects.optimized_for_topics_list(1)
+
+        self.assertNotIn(annonce, qs)
+        self.assertIn(sticky, qs)
+        self.assertIn(topic, qs)
+
+    def test_optimized_for_topics_list_likes(self):
+        topic = TopicFactory(with_post=True)
+
+        instance = Topic.objects.optimized_for_topics_list(topic.poster.id).first()
+
+        self.assertEqual(instance.likes, 0)
+        self.assertEqual(False, instance.has_liked)
+
+        topic.likers.add(topic.poster)
+
+        instance = Topic.objects.optimized_for_topics_list(topic.poster.id).first()
+
+        self.assertEqual(instance.likes, 1)
+        self.assertEqual(True, instance.has_liked)
+
+    def test_optimized_for_topics_list_order(self):
+        topic1 = TopicFactory(with_post=True)
+        topic2 = TopicFactory(with_post=True)
+
+        qs = Topic.objects.optimized_for_topics_list(1)
+
+        self.assertEqual(qs.first(), topic2)
+        self.assertEqual(qs.last(), topic1)
+
+        PostFactory(topic=topic1)
+        self.assertEqual(qs.first(), topic1)
+        self.assertEqual(qs.last(), topic2)
 
 
 class TopicModelTest(TestCase):
