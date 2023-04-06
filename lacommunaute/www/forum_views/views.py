@@ -42,19 +42,9 @@ class IndexView(BaseIndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["topics"] = (
-            Topic.objects.unanswered()
-            .filter(forum__in=Forum.objects.public())
-            .annotate(likes=Count("likers"))
-            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
-            .select_related("poster", "poster__forum_profile", "first_post", "forum", "certified_post")
-            .prefetch_related(
-                "poll",
-                "poll__options",
-                "poll__options__votes",
-                "first_post__attachments",
-                "first_post__poster",
-            )
-            .order_by("-last_post_on")
+            Topic.objects.filter(forum__in=Forum.objects.public())
+            .unanswered()
+            .optimized_for_topics_list(self.request.user.id)
         )
         context["form"] = PostForm(user=self.request.user)
 
@@ -71,30 +61,7 @@ class ForumView(BaseForumView):
 
     def get_queryset(self):
         forum = self.get_forum()
-        qs = (
-            forum.topics.exclude(type=Topic.TOPIC_ANNOUNCE)
-            .exclude(approved=False)
-            .annotate(likes=Count("likers"))
-            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
-            .select_related(
-                "poster",
-                "poster__forum_profile",
-                "first_post",
-                "first_post__poster",
-                "forum",
-                "certified_post",
-                "certified_post__post",
-                "certified_post__post__poster",
-            )
-            .prefetch_related(
-                "poll",
-                "poll__options",
-                "poll__options__votes",
-                "first_post__attachments",
-                "certified_post__post__attachments",
-            )
-            .order_by("-last_post_on")
-        )
+        qs = forum.topics.optimized_for_topics_list(self.request.user.id)
 
         if self.request.GET.get("new", None):
             qs = qs.filter(posts_count=1).exclude(status=Topic.TOPIC_LOCKED)
