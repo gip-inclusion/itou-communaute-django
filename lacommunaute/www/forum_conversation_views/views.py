@@ -32,7 +32,7 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
     context_object_name = "topics"
 
     def get_queryset(self):
-        return Topic.objects.filter(forum=self.get_forum()).order_by("-created")
+        return Topic.objects.filter(forum=self.get_forum()).optimized_for_topics_list(self.request.user.id)
 
     def get_forum(self):
         if not hasattr(self, "forum"):
