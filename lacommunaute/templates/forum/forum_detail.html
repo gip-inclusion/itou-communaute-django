@@ -95,7 +95,7 @@
                             <div class="tab-pane fade show active" id="topics"
                                 role="tabpanel"
                                 aria-labelledby="topics-tab">
-                                {% with unread_topics=unread_topics%}
+                                {% with unread_topics=unread_topics link=loadmoretopic_url %}
                                     {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
                                 {% endwith %}
                             </div>
@@ -111,13 +111,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row mt-5 mb-5">
-            <div class="col-12">
-                {% with "justify-content-center" as pagination_size %}
-                    {% include "partials/pagination.html" %}
-                {% endwith %}
             </div>
         </div>
     {% endif %}

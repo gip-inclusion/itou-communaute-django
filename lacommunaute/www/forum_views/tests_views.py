@@ -255,6 +255,18 @@ class ForumViewTest(TestCase):
         self.assertIsInstance(response.context_data["form"], PostForm)
         self.assertContains(response, f'id="collapsePost{self.topic.pk}')
 
+    def test_loadmoretopic_url_in_context(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context_data["loadmoretopic_url"],
+            reverse(
+                "forum_conversation_extension:topic_list",
+                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+            ),
+        )
+
     def test_cannot_submit_post(self):
         user = UserFactory()
         assign_perm("can_read_forum", user, self.forum)
@@ -318,6 +330,46 @@ class ForumViewTest(TestCase):
         self.assertContains(response, truncatechars_html(post.content.rendered, 200))
         self.assertContains(response, topic_certified_post_url)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+
+    def test_loadmoretopic_url(self):
+        TopicFactory.create_batch(9, with_post=True, forum=self.forum)
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            reverse(
+                "forum_conversation_extension:topic_list",
+                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+            )
+            + "?page=2",
+        )
+
+        TopicFactory(with_post=True, forum=self.forum)
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_conversation_extension:topic_list",
+                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+            )
+            + "?page=2",
+        )
+
+        TopicFactory.create_batch(10, with_post=True, forum=self.forum)
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            reverse(
+                "forum_conversation_extension:topic_list",
+                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+            )
+            + "?page=2",
+        )
 
 
 class ModeratorEngagementViewTest(TestCase):
