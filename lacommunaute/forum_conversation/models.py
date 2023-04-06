@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.users.models import User
 
 
 class TopicQuerySet(models.QuerySet):
@@ -12,6 +14,23 @@ class TopicQuerySet(models.QuerySet):
             self.exclude(approved=False)
             .exclude(status=Topic.TOPIC_LOCKED)
             .filter(posts_count=1, type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
+        )
+
+    def optimized_for_topics_list(self, user_id):
+        return (
+            self.exclude(approved=False)
+            .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
+            .annotate(likes=Count("likers"))
+            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=user_id)))
+            .select_related("poster", "poster__forum_profile", "first_post", "forum", "certified_post")
+            .prefetch_related(
+                "poll",
+                "poll__options",
+                "poll__options__votes",
+                "first_post__attachments",
+                "first_post__poster",
+            )
+            .order_by("-last_post_on")
         )
 
 
