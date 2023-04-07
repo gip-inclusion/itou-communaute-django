@@ -22,12 +22,12 @@
                             {% if topic.poster.forum_profile.avatar %}
                                 <img src="{{ topic.poster.forum_profile.avatar.url }}" alt="{{ topic.poster.forum_profile.user.get_full_name }}" />
                             {% else %}
-                                <i class="ri-user-line ri-2x"></i>
+                                <i class="ri-user-line ri-2x" aria-hidden="true"></i>
                             {% endif %}
                         </div>
                         <p class="h4 mb-0 flex-grow-1">
                             <span class="topic-icon font-weight-normal {% if topic in unread_topics or force_all_unread %}unread{% endif %}">
-                                <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl"></i>
+                                <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl aria-hidden="true""></i>
                             </span>
                             <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                                 class="matomo-event"
