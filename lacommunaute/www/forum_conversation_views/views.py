@@ -52,6 +52,31 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
         return self.get_forum()
 
 
+class CertifiedPublicTopicListView(ListView):
+    template_name = "forum_conversation/topic_list.html"
+
+    paginate_by = paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+    context_object_name = "topics"
+
+    def get_queryset(self):
+        return (
+            Topic.objects.filter(forum__in=Forum.objects.public(), certified_post__isnull=False)
+            .optimized_for_topics_list(self.request.user.id)
+            .prefetch_related(
+                "certified_post",
+                "certified_post__post",
+                "certified_post__post__attachments",
+                "certified_post__post__poster",
+            )
+            .order_by("-last_post_on")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:certified_public_topic_list")
+        return context
+
+
 class TopicLikeView(PermissionRequiredMixin, View):
     permission_required = [
         "can_read_forum",
