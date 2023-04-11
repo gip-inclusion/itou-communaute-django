@@ -1,5 +1,19 @@
 # Journal des modifications
 
+## v1.8 - 2023.04.11
+- Désambigüer les actions dans matomo lors de la creation d'un sujet (#221)
+- [STATS] : calculer le taux de réponses inférieures à 48h sur le mois (#217)
+- [STATS] : calculer les délais de réponses sur un mois (#216)
+- [STATS] : compter les evenements (#215)
+- FIX: ajout du contexte des questions en attente sur la homepage (#214)
+- [STATS]Statistiques mensuelles : mars 2023 (#213)
+- Notification par email des questions en attentes de réponse (#212)
+- [STATS] automatiser la collecte des stats mensuelles (fixes) (#211)
+- Afficher les questions en attentes de réponse (#210)
+- [STATS] automatiser la collecte des stats mensuelles (#209)
+- [STATS] Mise à jour des statistiques quotidiennes (#208)
+- Ajout du lien "voir plus" sur les réponses certifiées (#207)
+
 ## v1.7 - 2023.03.27
 - Mise à jour de l'affichage du nom de l'auteur d'un post (#203)
 - FIX : Ne pas ajouter un poster non authentifié à la liste des likers d'un Sujet (#202)
