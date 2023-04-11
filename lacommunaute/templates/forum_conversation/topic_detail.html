@@ -23,7 +23,7 @@
                     <div class="card-header mb-1 d-flex flex-column flex-md-row align-items-md-center">
                         <p class="h4 mb-0 flex-grow-1">
                             {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
-                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True %}
+                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True actions=True %}
                         </p>
                         {% block htmx %}
                             {% include "forum_conversation/partials/topic_likes.html" %}
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                {% include "forum_conversation/partials/posts_list.html" %}
+                {% include "forum_conversation/partials/posts_list.html" with actions=True %}
             </div>
         </div>
     {% endwith %}
