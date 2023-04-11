@@ -76,13 +76,22 @@ class ForumView(BaseForumView):
             .exclude(approved=False)
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
-            .select_related("poster", "poster__forum_profile", "first_post", "forum", "certified_post")
+            .select_related(
+                "poster",
+                "poster__forum_profile",
+                "first_post",
+                "first_post__poster",
+                "forum",
+                "certified_post",
+                "certified_post__post",
+                "certified_post__post__poster",
+            )
             .prefetch_related(
                 "poll",
                 "poll__options",
                 "poll__options__votes",
                 "first_post__attachments",
-                "first_post__poster",
+                "certified_post__post__attachments",
             )
             .order_by("-last_post_on")
         )
