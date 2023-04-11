@@ -88,7 +88,7 @@
             <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
                 data-matomo-category="engagement"
                 data-matomo-action="contribute"
-                data-matomo-option="topic" />
+                data-matomo-option="submit_topic" />
         </div>
         {% if post %}
             {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
