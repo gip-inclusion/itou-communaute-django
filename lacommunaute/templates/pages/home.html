@@ -123,7 +123,10 @@
                                 href="#pending-topics"
                                 role="tab"
                                 aria-controls="pending-topics"
-                                aria-selected="{% if pending_topics_tab %}true{% else %}false{% endif %}">
+                                aria-selected="{% if pending_topics_tab %}true{% else %}false{% endif %}"
+                                data-matomo-category="engagement"
+                                data-matomo-action="view"
+                                data-matomo-option="pending_topics">
                                 Questions en attente
                             </a>
                         </li>
