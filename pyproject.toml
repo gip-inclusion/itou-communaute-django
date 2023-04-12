@@ -23,6 +23,7 @@ django-libsass = "^0.9"
 sentry-sdk = "^1.10.1"
 django-social-share = "^2.3.0"
 django-htmx = "^1.12.2"
+django-taggit = "^3.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
