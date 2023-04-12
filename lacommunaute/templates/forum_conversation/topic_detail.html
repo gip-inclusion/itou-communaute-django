@@ -20,18 +20,21 @@
         <div class="row">
             <div class="col-12">
                 <div id="{{ post.id }}" class="my-3 card has-links-inside post anchor">
-                    <div class="card-header mb-1 d-flex flex-column flex-md-row align-items-md-center">
-                        <p class="h4 mb-0 flex-grow-1">
+                    <div class="card-header mb-3 d-flex flex-column flex-md-row align-items-md-center">
+                        <div class="h4 mb-0 flex-grow-1">
                             {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
-                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True actions=True %}
-                        </p>
+                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True %}
+                            <div class="mt-1">
+                                {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
+                            </div>
+                        </div>
                         {% block htmx %}
                             {% include "forum_conversation/partials/topic_likes.html" %}
                         {% endblock %}
                     </div>
-                    <div class="card-body pt-0 ">
+                    <div class="card-body pt-0">
                         <div class="row">
-                            <div class="col-12 col-lg-11 post-content">
+                            <div class="col-12 post-content mb-3">
                                 {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid}}
                                 {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                             </div>
