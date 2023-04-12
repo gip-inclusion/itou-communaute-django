@@ -282,7 +282,7 @@ class ForumViewTest(TestCase):
     def test_queries(self):
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(26):
+        with self.assertNumQueries(27):
             self.client.get(self.url)
 
     def test_param_new_in_request(self):
@@ -298,7 +298,6 @@ class ForumViewTest(TestCase):
         self.assertNotIn(topic_with_2_posts, response.context_data["topics"])
         self.assertNotIn(topic_is_locked, response.context_data["topics"])
 
-    # test CertifiedPost display
     def test_certified_post_display(self):
         topic_certified_post_url = reverse(
             "forum_conversation_extension:showmore_certified",
@@ -370,6 +369,19 @@ class ForumViewTest(TestCase):
             )
             + "?page=2",
         )
+
+    def test_topic_has_tags(self):
+        tag = f"tag_{faker.word()}"
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, tag)
+
+        self.topic.tags.add(tag)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, tag)
 
 
 class ModeratorEngagementViewTest(TestCase):
