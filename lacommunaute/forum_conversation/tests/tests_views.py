@@ -403,6 +403,20 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
+    def test_has_tags(self):
+        tag = f"tag_{faker.word()}"
+        self.client.force_login(self.poster)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, tag)
+
+        self.topic.tags.add(tag)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, tag)
+
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
         UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
