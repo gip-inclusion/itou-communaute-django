@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
+from taggit.managers import TaggableManager
 
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.users.models import User
@@ -50,6 +51,8 @@ class Topic(AbstractTopic):
         blank=True,
         verbose_name=("Likers"),
     )
+
+    tags = TaggableManager()
 
     def get_absolute_url(self):
         return reverse(
