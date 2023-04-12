@@ -93,18 +93,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.110"
+version = "1.26.111"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.110-py3-none-any.whl", hash = "sha256:8972a5e0a04ea6f477c41e390765a46ec7bcffb62f99d4a0774ce70fb87bea59"},
-    {file = "boto3-1.26.110.tar.gz", hash = "sha256:97d942d958cac28687187b89ee88ac760e0fa3007094cb1d6b16e241144306f3"},
+    {file = "boto3-1.26.111-py3-none-any.whl", hash = "sha256:6cb601c4232537aca2dd216282ff4383a7277f6a150b2c8947eda0c3933d0223"},
+    {file = "boto3-1.26.111.tar.gz", hash = "sha256:db8733f0a723c4548b6565d8665b876e93f28837d8d6bae40cc03a6e597cd6a6"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.110,<1.30.0"
+botocore = ">=1.29.111,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -113,14 +113,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.110"
+version = "1.29.111"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.110-py3-none-any.whl", hash = "sha256:39879fcc3d263513f9ba92cc5060b5a4dbe54f758a917be29c7a71132e34f399"},
-    {file = "botocore-1.29.110.tar.gz", hash = "sha256:9d5054159782b19f27bff3e5a65bc494dc323255e889ea3abec002711a1fb0c0"},
+    {file = "botocore-1.29.111-py3-none-any.whl", hash = "sha256:baa6442df9b539c5c4e622bd22b47bc3594a0428f280587a359a9298e73a6e48"},
+    {file = "botocore-1.29.111.tar.gz", hash = "sha256:c3a51d80ceac0945969f94894651c4728525c7cf2df7d7838063c3516f5ee9e3"},
 ]
 
 [package.dependencies]
@@ -744,6 +744,21 @@ dropbox = ["dropbox (>=7.2.1)"]
 google = ["google-cloud-storage (>=1.27.0)"]
 libcloud = ["apache-libcloud"]
 sftp = ["paramiko (>=1.10.0)"]
+
+[[package]]
+name = "django-taggit"
+version = "3.1.0"
+description = "django-taggit is a reusable Django application for simple tagging."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "django-taggit-3.1.0.tar.gz", hash = "sha256:c8f2e4eae387939089b3d75d1d8649e008880970c068ce9d0e82f87fd5e29508"},
+    {file = "django_taggit-3.1.0-py3-none-any.whl", hash = "sha256:543218ac346fbe02a65733e0341c91b57a3e0f7a41568966b26f1cea9edc4805"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
 
 [[package]]
 name = "django-widget-tweaks"
@@ -2129,4 +2144,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "29e5364fa2e2f2220a0cf5a2f00475a9e1983b6cdf2e2cc001851ad88a3199c6"
+content-hash = "207424e610355b902dd9a1f73ceed723a3095919081af3702ccb9c68a8012447"
