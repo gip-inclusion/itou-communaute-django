@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="post-content" id="showmorecertifiedpostsarea{{topic.pk}}">
-                        {{ post.content.rendered|urlizetrunc_target_blank:30|truncatechars:200 }}
+                        {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
                         {% if post.content.rendered|length > 200 %}
                             <a hx-get="{% url 'forum_conversation_extension:showmore_certified' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                                 id="showmorecertified-button{{topic.pk}}"
