@@ -25,6 +25,7 @@ from lacommunaute.utils.stats import (
     format_counts_of_objects_for_timeline_chart,
     get_strftime,
 )
+from lacommunaute.utils.urls import urlize
 
 
 faker = Faker()
@@ -86,6 +87,18 @@ class SettingsContextProcessorsTest(TestCase):
         response = self.client.get("/", headers=headers)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(hasattr(response.wsgi_request, "htmx"))
+
+
+class UtilsUrlsTestCase(TestCase):
+    def test_urlize(self):
+        url = f"{faker.url()}/long_string_to_truncate/"
+        self.assertEqual(urlize(url, trim_url_limit=10), f'<a href="{url}">{url[:9]}…</a>')
+
+        link = f'<a href="{faker.url()}">{faker.name()}</a>'
+        self.assertEqual(urlize(link), link)
+
+        img = f'<img src="{faker.url()}">'
+        self.assertEqual(urlize(img), img)
 
 
 class UtilsTemplateTagsTestCase(TestCase):
