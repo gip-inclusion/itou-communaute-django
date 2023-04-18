@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AnonymousUser, Group
-from django.template.defaultfilters import truncatechars
+from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from django.utils.http import urlencode
@@ -305,7 +305,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, truncatechars(post.content.rendered, 200))
+        self.assertNotContains(response, truncatechars_html(post.content.rendered, 200))
         self.assertNotContains(response, topic_certified_post_url)
         self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
@@ -315,7 +315,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, truncatechars(post.content.rendered, 200))
+        self.assertContains(response, truncatechars_html(post.content.rendered, 200))
         self.assertContains(response, topic_certified_post_url)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
