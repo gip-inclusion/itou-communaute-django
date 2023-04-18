@@ -4,9 +4,10 @@ https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.urls import reverse
-from django.utils.html import urlize as _urlize
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
+
+from lacommunaute.utils.urls import urlize
 
 
 register = template.Library()
@@ -47,7 +48,7 @@ def urlizetrunc_target_blank(value, limit, autoescape=True):
 
     Argument: Length to truncate URLs to.
     """
-    urlized = _urlize(value, trim_url_limit=int(limit), nofollow=True, autoescape=autoescape)
+    urlized = urlize(value, trim_url_limit=int(limit), nofollow=True, autoescape=autoescape)
     return mark_safe(urlized.replace("<a ", '<a target="_blank" '))
 
 

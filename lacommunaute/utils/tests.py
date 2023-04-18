@@ -142,11 +142,14 @@ class UtilsTemplateTagsTestCase(TestCase):
         self.assertEqual(out, f"le {date(d)}, {time(d)}")
 
     def test_urlizetrunc_target_blank(self):
-        template = Template("{% load str_filters %}{{ url|urlizetrunc_target_blank:16 }}")
-        out = template.render(Context({"url": "www.neuralia.co/mission"}))
+        template = Template("{% load str_filters %}{{ str|urlizetrunc_target_blank:16 }}")
+        out = template.render(Context({"str": "www.neuralia.co/mission"}))
         self.assertEqual(
             out, '<a target="_blank" href="http://www.neuralia.co/mission" rel="nofollow">www.neuralia.co…</a>'
         )
+
+        out = template.render(Context({"str": 'src="www.neuralia.co/image.png"'}))
+        self.assertEqual(out, "src=&quot;www.neuralia.co/image.png&quot;")
 
     def test_img_fluid(self):
         template = Template("{% load str_filters %}{{ html|img_fluid }}")
