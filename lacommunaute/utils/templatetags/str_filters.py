@@ -49,3 +49,9 @@ def urlizetrunc_target_blank(value, limit, autoescape=True):
     """
     urlized = _urlize(value, trim_url_limit=int(limit), nofollow=True, autoescape=autoescape)
     return mark_safe(urlized.replace("<a ", '<a target="_blank" '))
+
+
+@register.filter(is_safe=True)
+@stringfilter
+def img_fluid(value):
+    return mark_safe(value.replace("<img ", '<img class="img-fluid" '))

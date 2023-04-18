@@ -135,6 +135,11 @@ class UtilsTemplateTagsTestCase(TestCase):
             out, '<a target="_blank" href="http://www.neuralia.co/mission" rel="nofollow">www.neuralia.co…</a>'
         )
 
+    def test_img_fluid(self):
+        template = Template("{% load str_filters %}{{ html|img_fluid }}")
+        out = template.render(Context({"html": '<img src="image.png">'}))
+        self.assertEqual(out, '<img class="img-fluid" src="image.png">')
+
 
 class UtilsStatsTest(TestCase):
     def test_get_strftime(self):
