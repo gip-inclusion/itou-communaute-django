@@ -4,6 +4,7 @@ from lacommunaute.www.forum_conversation_views.views import (
     ForumTopicListView,
     PostFeedCreateView,
     PostListView,
+    TopicCertifiedListView,
     TopicCertifiedPostView,
     TopicContentView,
     TopicLikeView,
@@ -21,9 +22,17 @@ conversation_urlpatterns = [
     path("topic/", ForumTopicListView.as_view(), name="topic_list"),
 ]
 
+public_topics_urlpatterns = [
+    path("topic/certified/", TopicCertifiedListView.as_view(), name="public_certified_topics_list"),
+]
+
 urlpatterns = [
     path(
         "forum/<str:forum_slug>-<int:forum_pk>/",
         include(conversation_urlpatterns),
+    ),
+    path(
+        "public/",
+        include(public_topics_urlpatterns),
     ),
 ]
