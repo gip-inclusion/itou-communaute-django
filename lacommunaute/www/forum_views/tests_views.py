@@ -527,6 +527,11 @@ class IndexViewTest(TestCase):
         # icon: solid heart
         self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
+    def test_certified_topics_list_is_preloaded(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'hx-trigger="load"')
+
 
 class CreateForumView(TestCase):
     def setUp(self):

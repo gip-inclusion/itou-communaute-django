@@ -130,6 +130,24 @@
                                 Questions en attente
                             </a>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <a id="certified-topics-tab"
+                                data-toggle="tab"
+                                href="#certified-topics"
+                                role="tab"
+                                aria-controls="certified-topics"
+                                aria-selected="false"
+                                hx-target="#certifiedtopicsarea"
+                                hx-swap="outerHTML"
+                                hx-get="{% url 'forum_conversation_extension:public_certified_topics_list' %}"
+                                hx-trigger="load"
+                                class="nav-link matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="loadmore"
+                                data-matomo-option="certified_topic">
+                                Réponses certifiées
+                            </a>
+                        </li>
                         <li class="nav-item-dropdown dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
@@ -147,6 +165,13 @@
                             {% with topics=topics topic_list_title="Questions en attente" %}
                                 {% include "forum_conversation/topic_list.html" %}
                             {% endwith %}
+                        </div>
+                        <div class="tab-pane fade" id="certified-topics"
+                            role="tabpanel"
+                            aria-labelledby="certified-topics-tab">
+                            <div id="certifiedtopicsarea">
+                                chargement en cours...
+                            </div>
                         </div>
                     </div>
                 </div>
