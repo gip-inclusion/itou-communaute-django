@@ -53,6 +53,6 @@ jobs:
       #- name: 🚧 Check pending migrations
       #  run: python manage.py makemigrations --check --dry-run --noinput
       - name: 🤹‍ Django tests
-        run: django-admin test --noinput --failfast --parallel
+        run: pytest --numprocesses=logical --create-db
         env:
           DJANGO_DEBUG: True
