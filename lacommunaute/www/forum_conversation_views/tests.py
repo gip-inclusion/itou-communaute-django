@@ -4,6 +4,7 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
@@ -208,6 +209,61 @@ class TopicContentViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, post.content)
         self.assertEqual(1, ForumReadTrack.objects.count())
+
+
+class TopicCertifiedListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = reverse("forum_conversation_extension:public_certified_topics_list")
+
+    def test_get_view(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+        self.assertEqual(response.context_data["loadmoretopic_url"], self.url)
+
+    def test_get_topic_certified_list(self):
+        certified_private_topic = TopicFactory(with_certified_post=True, forum=ForumFactory(is_private=True))
+        certified_public_topic = TopicFactory(with_certified_post=True)
+        topic = TopicFactory(with_post=True)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, certified_public_topic.first_post.subject)
+        self.assertContains(response, str(certified_public_topic.first_post.content)[:100])
+        self.assertContains(response, str(certified_public_topic.certified_post.post.content)[:100])
+
+        self.assertNotContains(response, certified_private_topic.first_post.subject)
+        self.assertNotContains(response, str(certified_private_topic.first_post.content)[:100])
+        self.assertNotContains(response, str(certified_private_topic.certified_post.post.content)[:100])
+
+        self.assertNotContains(response, topic.first_post.subject)
+        self.assertNotContains(response, str(topic.first_post.content)[:100])
+
+    def test_pagination(self):
+        TopicFactory.create_batch(10, with_certified_post=True)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertNotContains(response, self.url + "?page=2")
+
+        TopicFactory.create_batch(11, with_certified_post=True)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, self.url + "?page=2")
+
+    def test_likes(self):
+        topic = TopicFactory(with_certified_post=True, with_like=True)
+        self.client.force_login(topic.poster)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span')
 
 
 class TopicCertifiedPostViewTest(TestCase):

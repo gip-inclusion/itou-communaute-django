@@ -115,6 +115,23 @@ class TopicContentView(PermissionRequiredMixin, View):
         return self.get_topic().forum
 
 
+class TopicCertifiedListView(ListView):
+    template_name = "forum_conversation/topic_list.html"
+
+    paginate_by = paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+    context_object_name = "topics"
+
+    def get_queryset(self):
+        return Topic.objects.filter(
+            forum__in=Forum.objects.public(), certified_post__isnull=False
+        ).optimized_for_topics_list(self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:public_certified_topics_list")
+        return context
+
+
 class TopicCertifiedPostView(TopicContentView):
     template = "forum_conversation/partials/topic_certified_post.html"
 
