@@ -26,7 +26,7 @@ dependencies:
 # The following rules can be used to check code quality, import sorting, etc.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: quality fix pylint
+.PHONY: quality fix pylint tests
 quality:
 	black --check lacommunaute
 	isort --check --profile black lacommunaute
@@ -40,6 +40,9 @@ fix:
 
 pylint:
 	pylint lacommunaute
+
+tests:
+	pytest --numprocesses=logical --create-db
 
 
 # Docker shell.
