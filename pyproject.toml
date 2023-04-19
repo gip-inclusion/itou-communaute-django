@@ -44,6 +44,7 @@ debugpy = "^1.6.3"
 factory-boy = "^3.2.1"
 respx = "^0.20.0"
 pygithub = "^1.57"
+pytest-xdist = "^3.2.1"
 
 [build-system]
 requires = ["poetry-core"]
