@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## v1.9 - 2023.05.02
+- [FIX] affichage de l'avatar dans la liste des questions en attente (#227)
+- [FIX] rendre le markdown et les url cliquables compatibles (#226)
+- [TAGS] etape 0 - ajout des Tags sur les Topics (#225)
+- Ajout d'un tag matomo sur la liste des questions en attente (#224)
+- Liste des dernières réponses certifiées (#223)
+
 ## v1.8 - 2023.04.11
 - Désambigüer les actions dans matomo lors de la creation d'un sujet (#221)
 - [STATS] : calculer le taux de réponses inférieures à 48h sur le mois (#217)
