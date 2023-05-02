@@ -45,9 +45,11 @@
                             <div class="col-12 post-content-wrapper mb-1">
                                 {%include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True%}
                             </div>
-                            <div class="col-12 post-content mb-3">
-                                {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
-                            </div>
+                            {% if topic.tags.all %}
+                                <div class="col-12 post-content mb-3">
+                                    {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
+                                </div>
+                            {% endif %}
                             <div class="col-12 post-content">
                                 <div id="showmoretopicsarea{{topic.pk}}">
                                     {{ topic.first_post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}

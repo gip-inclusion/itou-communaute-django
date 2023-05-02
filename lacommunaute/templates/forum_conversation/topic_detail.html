@@ -24,9 +24,11 @@
                         <div class="h4 mb-0 flex-grow-1">
                             {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
                             {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True %}
-                            <div class="mt-1">
-                                {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
-                            </div>
+                            {% if topic.tags.all %}
+                                <div class="mt-1">
+                                    {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
+                                </div>
+                            {% endif %}
                         </div>
                         {% block htmx %}
                             {% include "forum_conversation/partials/topic_likes.html" %}
