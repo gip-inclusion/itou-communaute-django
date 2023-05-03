@@ -5,8 +5,8 @@ from django.contrib.flatpages import views
 from django.urls import include, path, re_path
 from machina.core.loading import get_class
 
+from lacommunaute.event import urls as event_urls
 from lacommunaute.pages import urls as pages_urls
-from lacommunaute.www.event_views import urls as event_urls
 from lacommunaute.www.forum_conversation_views import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_conversation_views.forum_polls import urls as forum_polls_extension_urls
 from lacommunaute.www.forum_member_views import urls as forum_member_urls

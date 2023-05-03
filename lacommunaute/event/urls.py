@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.event_views.views import (
+from lacommunaute.event.views import (
     EventCreateView,
     EventDeleteView,
     EventListView,
