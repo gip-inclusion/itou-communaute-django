@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.pages import views
+from lacommunaute.pages import views
 
 
 app_name = "pages"
