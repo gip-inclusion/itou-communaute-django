@@ -4,15 +4,13 @@ from django.forms import HiddenInput
 from django.test import TestCase
 from faker import Faker
 from machina.conf import settings as machina_settings
-from machina.core.db.models import get_model
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Post
 
 
 faker = Faker()
-
-Post = get_model("forum_conversation", "Post")
 
 
 class PostFormTest(TestCase):
