@@ -10,8 +10,8 @@ from django.urls import reverse
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from lacommunaute.event.forms import EventModelForm
 from lacommunaute.event.models import Event
-from lacommunaute.www.event_views.forms import EventModelForm
 
 
 logger = logging.getLogger(__name__)

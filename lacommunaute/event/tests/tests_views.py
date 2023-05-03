@@ -8,10 +8,10 @@ from django.utils import timezone
 from faker import Faker
 
 from lacommunaute.event.factories import EventFactory
+from lacommunaute.event.forms import EventModelForm
 from lacommunaute.event.models import Event
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.templatetags.str_filters import inclusion_connect_url
-from lacommunaute.www.event_views.forms import EventModelForm
 
 
 faker = Faker()
