@@ -77,12 +77,12 @@ LOCAL_APPS = [
     "lacommunaute.notification",
     "lacommunaute.event",
     "lacommunaute.inclusion_connect",
+    "lacommunaute.pages",
     "lacommunaute.www.forum_views",
     "lacommunaute.www.forum_conversation_views",
     "lacommunaute.www.forum_member_views",
     "lacommunaute.www.forum_upvote_views",
     "lacommunaute.www.inclusion_connect_views",
-    "lacommunaute.www.pages",
     "lacommunaute.www.event_views",
 ]
 
