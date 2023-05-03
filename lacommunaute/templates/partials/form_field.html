@@ -3,7 +3,18 @@
 
 <div id="div_id_{{ field.html_name }}" class="form-group{% if field.errors %} has-error{% endif %}">
     {% if field.label %}<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}{% if not field.field.required %} <span class="text-muted">{% trans "(optional)" %}</span>{% endif %}</label>{% endif %}
-    {{ field | add_class:'form-control' }}
+    {%if field|widget_type == "checkboxselectmultiple"%}
+        {% for checkbox in field %}
+            <div class="custom-control custom-checkbox custom-control-inline">
+                <input id="{{ checkbox.id_for_label }}" class="custom-control-input" type="checkbox" name="{{ checkbox.data.name }}" value="{{ checkbox.data.value }}"{% if checkbox.data.selected %} checked=""{% endif %}>
+                <label class="custom-control-label" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label }}
+                </label>
+            </div>
+        {% endfor %}
+    {% else %}
+        {{ field | add_class:'form-control' }}
+    {% endif %}
     {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
     {% for error in field.errors %}<span class="text-danger error">{{ error }}</span>{% endfor %}
     {% if field.auto_id == 'id_content' %}
