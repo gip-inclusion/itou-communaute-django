@@ -8,6 +8,7 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+from taggit.models import Tag
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
@@ -111,6 +112,39 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(post_data["username"], topic.first_post.username)
         self.assertEqual(0, topic.likers.count())
 
+    def test_tags_checkbox_are_displayed(self):
+        Tag.objects.create(name=faker.word())
+        Tag.objects.create(name=faker.word())
+        assign_perm("can_start_new_topics", self.poster, self.forum)
+        self.client.force_login(self.poster)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, Tag.objects.first().name)
+        self.assertContains(response, Tag.objects.last().name)
+
+    def test_checked_tags_are_saved(self):
+        Tag.objects.create(name=faker.word())
+        Tag.objects.create(name=faker.word())
+        Tag.objects.create(name=faker.word())
+        assign_perm("can_start_new_topics", self.poster, self.forum)
+        self.client.force_login(self.poster)
+
+        post_data = {
+            "subject": faker.text(max_nb_chars=5),
+            "content": faker.text(max_nb_chars=5),
+            "tags": [Tag.objects.first().pk, Tag.objects.last().pk],
+        }
+        response = self.client.post(
+            self.url,
+            post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, Topic.objects.count())
+        topic = Topic.objects.first()
+        self.assertEqual(2, topic.tags.count())
+        self.assertEqual(list(topic.tags.all()), [Tag.objects.first(), Tag.objects.last()])
+
 
 class TopicUpdateViewTest(TestCase):
     @classmethod
@@ -194,6 +228,24 @@ class TopicUpdateViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, ForumReadTrack.objects.count())
+
+    def test_selected_tags_are_checked(self):
+        assign_perm("can_edit_own_posts", self.poster, self.forum)
+        self.client.force_login(self.poster)
+
+        tag = Tag.objects.create(name=faker.word())
+
+        linked_tag = Tag.objects.create(name=faker.word())
+        self.topic.tags.add(linked_tag)
+        self.topic.save()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        checked_box = f'type="checkbox" name="tags" value="{linked_tag.id}" checked="">'
+        self.assertContains(response, checked_box)
+        not_checked_box = f'type="checkbox" name="tags" value="{tag.id}">'
+        self.assertContains(response, not_checked_box)
 
 
 class PostCreateViewTest(TestCase):
