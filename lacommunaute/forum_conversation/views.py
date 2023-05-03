@@ -5,7 +5,7 @@ from django.urls import reverse
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
-from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
@@ -35,6 +35,8 @@ class FormValidMixin:
 
 
 class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
+    post_form_class = TopicForm
+
     def form_valid(self, *args, **kwargs):
         valid = super().form_valid(*args, **kwargs)
         if self.request.user.is_authenticated:
@@ -43,7 +45,7 @@ class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
 
 
 class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):
-    pass
+    post_form_class = TopicForm
 
 
 class PostCreateView(views.PostCreateView):
