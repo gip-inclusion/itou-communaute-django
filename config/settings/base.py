@@ -80,7 +80,6 @@ LOCAL_APPS = [
     "lacommunaute.pages",
     "lacommunaute.www.forum_views",
     "lacommunaute.www.forum_conversation_views",
-    "lacommunaute.www.forum_member_views",
     "lacommunaute.www.forum_upvote_views",
 ]
 

@@ -7,8 +7,8 @@ from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
 
 from lacommunaute.forum_member.factories import ForumProfileFactory
+from lacommunaute.forum_member.views import ForumProfileUpdateView
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
-from lacommunaute.www.forum_member_views.views import ForumProfileUpdateView
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
