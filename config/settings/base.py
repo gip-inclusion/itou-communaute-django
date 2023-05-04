@@ -80,7 +80,6 @@ LOCAL_APPS = [
     "lacommunaute.pages",
     "lacommunaute.www.forum_views",
     "lacommunaute.www.forum_conversation_views",
-    "lacommunaute.www.forum_upvote_views",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
