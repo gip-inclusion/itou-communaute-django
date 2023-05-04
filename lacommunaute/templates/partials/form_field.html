@@ -7,7 +7,7 @@
         {% for checkbox in field %}
             <div class="custom-control custom-checkbox custom-control-inline">
                 <input id="{{ checkbox.id_for_label }}" class="custom-control-input" type="checkbox" name="{{ checkbox.data.name }}" value="{{ checkbox.data.value }}"{% if checkbox.data.selected %} checked=""{% endif %}>
-                <label class="custom-control-label" for="{{ checkbox.id_for_label }}">
+                <label class="custom-control-label badge badge-sm badge-pill badge-info-lighter text-info" for="{{ checkbox.id_for_label }}">
                     {{ checkbox.choice_label }}
                 </label>
             </div>
