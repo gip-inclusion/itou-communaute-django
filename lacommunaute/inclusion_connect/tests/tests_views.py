@@ -9,10 +9,10 @@ from django.urls import reverse
 
 from lacommunaute.inclusion_connect import constants
 from lacommunaute.inclusion_connect.models import InclusionConnectState
+from lacommunaute.inclusion_connect.views import InclusionConnectSession
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.testing import reload_module
-from lacommunaute.www.inclusion_connect_views.views import InclusionConnectSession
 
 
 OIDC_USERINFO = {
