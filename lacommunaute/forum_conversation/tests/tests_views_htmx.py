@@ -8,9 +8,9 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.views_htmx import PostListView
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.www.forum_conversation_views.views import PostListView
 
 
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")

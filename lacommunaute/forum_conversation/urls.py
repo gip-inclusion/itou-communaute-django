@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from lacommunaute.www.forum_conversation_views.views import (
+from lacommunaute.forum_conversation.views_htmx import (
     ForumTopicListView,
     PostFeedCreateView,
     PostListView,
