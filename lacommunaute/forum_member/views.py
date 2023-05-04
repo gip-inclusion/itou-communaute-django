@@ -12,9 +12,9 @@ from machina.apps.forum_member.views import (
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
+from lacommunaute.forum_member.forms import JoinForumForm
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.utils.urls import get_safe_url
-from lacommunaute.www.forum_member_views.forms import JoinForumForm
 
 
 logger = logging.getLogger(__name__)

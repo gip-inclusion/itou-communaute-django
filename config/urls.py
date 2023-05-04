@@ -6,11 +6,11 @@ from django.urls import include, path, re_path
 from machina.core.loading import get_class
 
 from lacommunaute.event import urls as event_urls
+from lacommunaute.forum_member import urls as forum_member_urls
 from lacommunaute.inclusion_connect import urls as inclusion_connect_urls
 from lacommunaute.pages import urls as pages_urls
 from lacommunaute.www.forum_conversation_views import urls as forum_conversation_extension_urls
 from lacommunaute.www.forum_conversation_views.forum_polls import urls as forum_polls_extension_urls
-from lacommunaute.www.forum_member_views import urls as forum_member_urls
 from lacommunaute.www.forum_upvote_views import urls as forum_upvote_urls
 from lacommunaute.www.forum_views import urls as forum_extension_urls
 
