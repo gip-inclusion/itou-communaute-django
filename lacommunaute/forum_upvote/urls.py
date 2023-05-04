@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lacommunaute.www.forum_upvote_views.views import CertifiedPostView, PostUpvoteView
+from lacommunaute.forum_upvote.views import CertifiedPostView, PostUpvoteView
 
 
 app_name = "forum_upvote"
