@@ -10,6 +10,7 @@ from machina.test.factories.tracking import TopicReadTrackFactory
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
+from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
@@ -17,7 +18,6 @@ from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFacto
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.www.forum_views.views import ForumView
 
 
 faker = Faker()
