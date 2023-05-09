@@ -2,11 +2,9 @@
 {% load i18n %}
 {% load theme_inclusion %}
 <ul>
-    {% comment %} TODO : Ajouter la class .is-active sur l'item de menu actif {% endcomment %}
-
     {% if user.is_authenticated %}
         <li class="dropdown">
-            <button type="button" class="btn {{ button_size }} btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
                 Mon espace
             </button>
             <div class="dropdown-menu" id="dashboardUserDropdown">

@@ -19,7 +19,7 @@
     {% with topic.first_post as post %}
         <div class="row">
             <div class="col-12">
-                <div id="{{ post.id }}" class="my-3 card has-links-inside post anchor">
+                <div id="{{ post.id }}" class="my-3 card has-links-inside post">
                     <div class="card-header mb-3 d-flex flex-column flex-md-row align-items-md-center">
                         <div class="h4 mb-0 flex-grow-1">
                             {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
