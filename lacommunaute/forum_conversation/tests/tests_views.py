@@ -469,6 +469,14 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, tag)
 
+    def test_edit_link_is_visible(self):
+        self.client.force_login(self.poster)
+        assign_perm("can_edit_own_posts", self.poster, self.forum)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs))
+
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
         UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
@@ -476,6 +484,6 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(43):
+        with self.assertNumQueries(44):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

@@ -23,7 +23,7 @@
                     <div class="card-header mb-3 d-flex flex-column flex-md-row align-items-md-center">
                         <div class="h4 mb-0 flex-grow-1">
                             {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
-                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True %}
+                            {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True actions=True %}
                             {% if topic.tags.all %}
                                 <div class="mt-1">
                                     {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
