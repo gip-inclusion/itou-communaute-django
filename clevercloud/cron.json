@@ -4,5 +4,8 @@
     "5 7-21 * * * $ROOT/clevercloud/send_notifs_when_first_reply.sh",
     "10 6-22 * * * $ROOT/clevercloud/add_user_to_list_when_register.sh",
     "30 13 * * 1 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 8",
-    "30 13 * * 4 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 9"
+    "30 13 * * 2 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 9",
+    "30 13 * * 3 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 10",
+    "30 13 * * 4 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 11",
+    "30 13 * * 5 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 12"
 ]
