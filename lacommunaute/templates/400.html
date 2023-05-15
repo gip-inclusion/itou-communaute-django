@@ -3,23 +3,6 @@
 {% block title %}Erreur 400{{ block.super }}{% endblock %}
 {% block body_class %}p-error{{ block.super }}{% endblock %}
 
-{% block breadcrumb %}
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="c-breadcrumb c-breadcrumb--communaute" aria-label="Fil d'ariane">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'forum_extension:home' %}">Accueil</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Erreur 400</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endblock %}
-
 {% block content %}
     <section class="s-title-01">
         <div class="s-title-01__container container">
