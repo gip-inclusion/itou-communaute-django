@@ -1,5 +1,18 @@
 # Journal des modifications
 
+## v1.10 - 2023-05-15
+- [Notification] sujets non réponds, planification quotidienne des experts volontaires (#259)
+- [FIX] rétablir le lien d'édition dans la vue de détail d'un sujet (#254)
+- [Landing Pages] maj header, footer et ajout d'images statiques (#251)
+- [STATS] stats mensuelles avril 2023 (#250)
+- [rollback WWW] forum_conversation & forum_poll apps (#247)
+- [rollback WWW] forum app (#245)
+- [rollback WWW] forum_upvote app (#243)
+- [rollback WWW] forum_member app (#241)
+- [rollback WWW] inclusion_connect app (#239)
+- [rollback WWW] event app (#237)
+- [rollback WWW] pages app (#235)
+
 ## v1.9 - 2023.05.02
 - [FIX] affichage de l'avatar dans la liste des questions en attente (#227)
 - [FIX] rendre le markdown et les url cliquables compatibles (#226)
