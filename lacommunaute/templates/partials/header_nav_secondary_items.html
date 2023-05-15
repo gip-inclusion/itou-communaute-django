@@ -3,48 +3,36 @@
 {% load theme_inclusion %}
 {% comment %} TODO : Ajouter la class .is-active sur le lien de l'item de menu actif {% endcomment %}
 <ul>
-	<li class="col-12 col-lg-auto mt-3 mt-lg-0">
-		<a href="{% url 'forum_extension:home' %}">
-				Accueil
-		</a>
-	</li>
-	{% if request.path == '/' and not user.is_authenticated %}
-		<li class="col-12 col-lg-auto">
-			<a href="#community">
-					Accéder aux {% trans "Forums"|lower %}
-			</a>
-		</li>
-	{% else %}
-	{% comment %} TODO : Si user connecté, liste de ses forums et sous-forums {% endcomment %}
-	<li>
-		<a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="communautesDropdown" aria-expanded="false">Accéder aux {% trans "Forums"|lower %}</a>
-		<div class="dropdown-menu" id="communautesDropdown">
-			<ul class="list-unstyled">
-				<li>
-					<a class="dropdown-header" href="">Communauté 01</a>
-				</li>
-				<li>
-					<a class="dropdown-item" href="">Sous-communauté 01 de Communauté 01</a>
-				</li>
-				<li>
-					<a class="dropdown-item" href="">Sous-communauté 02 de Communauté 01</a>
-				</li>
-				<li>
-					<a class="dropdown-item" href="">Sous-communauté 03 de Communauté 01</a>
-				</li>
-				<li>
-					<a class="dropdown-header" href="">Communauté 02</a>
-				</li>
-				<li>
-					<a class="dropdown-item" href="">Sous-communauté 01 de Communauté 02</a>
-				</li>
-			</ul>
-		</div>
-	</li>
-	{% endif %}
-	<li class="col-12 col-lg-auto mt-3 mt-lg-0">
-			<a href="{% url 'event:calendar' %}">
-					Accéder aux évènements publics
-			</a>
-	</li>
+    <li class="col-12 col-lg-auto mt-3 mt-lg-0">
+        <a href="{% url 'forum_extension:home' %}">
+            Accueil
+        </a>
+    </li>
+    {% if request.path == '/' and not user.is_authenticated %}
+        <li class="col-12 col-lg-auto">
+            <a href="#community">
+                Accéder aux {% trans "Forums"|lower %}
+            </a>
+        </li>
+    {% else %}
+        {% comment %} TODO : Si user connecté, liste de ses forums et sous-forums {% endcomment %}
+        <li>
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="communautesDropdown" aria-expanded="false">Accéder aux {% trans "Forums"|lower %}</a>
+            <div class="dropdown-menu" id="communautesDropdown">
+                <ul class="list-unstyled">
+                    {% for forum in request.session.upper_visible_forums %}
+                        <li>
+                            <a class="{% if forum.level == 0 %}dropdown-header{% else %}dropdown-item{% endif %}" href="{{ forum.url }}">{{ forum.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+    {% endif %}
+    <li class="col-12 col-lg-auto mt-3 mt-lg-0">
+        <a href="{% url 'event:calendar' %}">
+            Accéder aux évènements publics
+        </a>
+    </li>
 </ul>
+
