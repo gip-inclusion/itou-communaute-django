@@ -211,6 +211,9 @@ msgstr "Marquer les sous-communautés lues"
 msgid "New topic"
 msgstr "Nouveau sujet"
 
+msgid "New news"
+msgstr "Nouvelle actualités"
+
 #: lacommunaute/templates/machina/forum/forum_detail.html:40
 #: lacommunaute/templates/machina/forum/forum_detail.html:65
 #: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:5
