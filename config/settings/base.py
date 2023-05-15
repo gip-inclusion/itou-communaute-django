@@ -93,6 +93,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
+    "lacommunaute.utils.middleware.VisibleForumsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

@@ -2,24 +2,28 @@ from datetime import datetime, timedelta
 from unittest.mock import patch
 
 from dateutil.relativedelta import relativedelta
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models.functions import TruncMonth
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
-from django.test import TestCase, override_settings
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
 from faker import Faker
+from machina.core.loading import get_class
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.enums import PeriodAggregation
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
+from lacommunaute.utils.middleware import store_upper_visible_forums
 from lacommunaute.utils.stats import (
     count_objects_per_period,
     format_counts_of_objects_for_timeline_chart,
@@ -29,6 +33,9 @@ from lacommunaute.utils.urls import urlize
 
 
 faker = Faker()
+
+PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
+assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 class AttachmentsTemplateTagTests(TestCase):
@@ -360,3 +367,61 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                 get_matomo_events_data(period="day", search_date=self.today),
                 expected_res,
             )
+
+
+class UtilsMiddlewareStoreUpperVisibleForumTest(TestCase):
+    def test_store_upper_visible_forums(self):
+        request = RequestFactory().get("/")
+        middleware = SessionMiddleware(lambda x: x)
+        middleware.process_request(request)
+        request.session.save()
+        request.user = UserFactory()
+        request.forum_permission_handler = PermissionHandler()
+
+        upper_forums = ForumFactory.create_batch(3)
+        descendant_visible_forum = ForumFactory(parent=upper_forums[1])
+        ForumFactory(parent=upper_forums[2])
+        upper_visible_forums = [
+            {
+                "name": forum.name,
+                "level": forum.level,
+                "url": reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}),
+            }
+            for forum in [upper_forums[1], descendant_visible_forum]
+        ]
+
+        assign_perm("can_see_forum", request.user, upper_forums[1])
+        assign_perm("can_read_forum", request.user, upper_forums[1])
+        assign_perm("can_see_forum", request.user, descendant_visible_forum)
+        assign_perm("can_read_forum", request.user, descendant_visible_forum)
+
+        store_upper_visible_forums(request)
+
+        self.assertEqual(request.session["upper_visible_forums"], upper_visible_forums)
+
+
+class UtilsMiddlewareVisibleForumsMiddlewareTest(TestCase):
+    def test_upper_visible_forums_key_in_request_session(self):
+        user = UserFactory()
+        self.client.force_login(user)
+
+        visible_forum = ForumFactory()
+        assign_perm("can_see_forum", user, visible_forum)
+        assign_perm("can_read_forum", user, visible_forum)
+
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("upper_visible_forums", response.wsgi_request.session.keys())
+        self.assertEqual(
+            response.wsgi_request.session["upper_visible_forums"],
+            [
+                {
+                    "name": visible_forum.name,
+                    "level": visible_forum.level,
+                    "url": reverse(
+                        "forum_extension:forum", kwargs={"slug": visible_forum.slug, "pk": visible_forum.id}
+                    ),
+                }
+            ],
+        )
