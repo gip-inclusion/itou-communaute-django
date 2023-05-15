@@ -38,14 +38,14 @@ tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
 
 [[package]]
 name = "astroid"
-version = "2.15.4"
+version = "2.15.5"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
-    {file = "astroid-2.15.4-py3-none-any.whl", hash = "sha256:a1b8543ef9d36ea777194bc9b17f5f8678d2c56ee6a45b2c2f17eec96f242347"},
-    {file = "astroid-2.15.4.tar.gz", hash = "sha256:c81e1c7fbac615037744d067a9bb5f9aeb655edf59b63ee8b59585475d6f80d8"},
+    {file = "astroid-2.15.5-py3-none-any.whl", hash = "sha256:078e5212f9885fa85fbb0cf0101978a336190aadea6e13305409d099f71b2324"},
+    {file = "astroid-2.15.5.tar.gz", hash = "sha256:1039262575027b441137ab4a62a793a9b43defb42c32d5670f38686207cd780f"},
 ]
 
 [package.dependencies]
@@ -93,18 +93,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.26.125"
+version = "1.26.133"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "boto3-1.26.125-py3-none-any.whl", hash = "sha256:6648aff15d19927cd26db47eb56362ccd313a1ddbd7aaa3235ef05d05d398252"},
-    {file = "boto3-1.26.125.tar.gz", hash = "sha256:fe8248b80c4f0fdaed8b8779467c4431a5e52177e02ccd137d51ec51194ebb00"},
+    {file = "boto3-1.26.133-py3-none-any.whl", hash = "sha256:62285ecee7629a4388d55ae369536f759622d68d5b9a0ced7c58a0c1a409c0f7"},
+    {file = "boto3-1.26.133.tar.gz", hash = "sha256:8ff0af0b25266a01616396abc19eb34dc3d44bd867fa4158985924128b9034fb"},
 ]
 
 [package.dependencies]
-botocore = ">=1.29.125,<1.30.0"
+botocore = ">=1.29.133,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -113,14 +113,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.125"
+version = "1.29.133"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.125-py3-none-any.whl", hash = "sha256:ac87b63e9aa4231cd28941945024a0c4470c184c60334ebe5e1cae3544c785ed"},
-    {file = "botocore-1.29.125.tar.gz", hash = "sha256:3005a7ffee083315e69938acdf1bfeaf9e21fe1fe1643d6573ee817721f4ffcd"},
+    {file = "botocore-1.29.133-py3-none-any.whl", hash = "sha256:b266185d7414a559952569005009a400de50af91fd3da44f05cf05b00946c4a7"},
+    {file = "botocore-1.29.133.tar.gz", hash = "sha256:7b38e540f73c921d8cb0ac72794072000af9e10758c04ba7f53d5629cc52fa87"},
 ]
 
 [package.dependencies]
@@ -133,14 +133,14 @@ crt = ["awscrt (==0.16.9)"]
 
 [[package]]
 name = "certifi"
-version = "2022.12.7"
+version = "2023.5.7"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
-    {file = "certifi-2022.12.7.tar.gz", hash = "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"},
+    {file = "certifi-2023.5.7-py3-none-any.whl", hash = "sha256:c6c2e98f5c7869efca1f8916fed228dd91539f9f1b444c314c06eef02980c716"},
+    {file = "certifi-2023.5.7.tar.gz", hash = "sha256:0f0d56dc5a6ad56fd4ba36484d6cc34451e1c6548c61daad8c320169f91eddc7"},
 ]
 
 [[package]]
@@ -837,14 +837,14 @@ doc = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
 
 [[package]]
 name = "faker"
-version = "18.6.1"
+version = "18.7.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "Faker-18.6.1-py3-none-any.whl", hash = "sha256:6f882f5a3303c0690b3fb2dd3418839935a2dca155d38f1b2931b0079f3ce622"},
-    {file = "Faker-18.6.1.tar.gz", hash = "sha256:3aabe5b8c4ab50103a0c05c15e31a24b22045968d1ac0b7fb48d1c6244400495"},
+    {file = "Faker-18.7.0-py3-none-any.whl", hash = "sha256:38dbc3b80e655d7301e190426ab30f04b6b7f6ca4764c5dd02772ffde0fa6dcd"},
+    {file = "Faker-18.7.0.tar.gz", hash = "sha256:f02c6d3fdb5bc781f80b440cf2bdec336ed47ecfb8d620b20c3d4188ed051831"},
 ]
 
 [package.dependencies]
@@ -943,14 +943,14 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
 name = "identify"
-version = "2.5.23"
+version = "2.5.24"
 description = "File identification library for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "identify-2.5.23-py2.py3-none-any.whl", hash = "sha256:17d9351c028a781456965e781ed2a435755cac655df1ebd930f7186b54399312"},
-    {file = "identify-2.5.23.tar.gz", hash = "sha256:50b01b9d5f73c6b53e5fa2caf9f543d3e657a9d0bbdeb203ebb8d45960ba7433"},
+    {file = "identify-2.5.24-py2.py3-none-any.whl", hash = "sha256:986dbfb38b1140e763e413e6feb44cd731faf72d1909543178aa79b0e258265d"},
+    {file = "identify-2.5.24.tar.gz", hash = "sha256:0aac67d5b4812498056d28a9a512a483f5085cc28640b02b258a59dac34301d4"},
 ]
 
 [package.extras]
@@ -1174,14 +1174,14 @@ files = [
 
 [[package]]
 name = "nodeenv"
-version = "1.7.0"
+version = "1.8.0"
 description = "Node.js virtual environment builder"
 category = "dev"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*"
 files = [
-    {file = "nodeenv-1.7.0-py2.py3-none-any.whl", hash = "sha256:27083a7b96a25f2f5e1d8cb4b6317ee8aeda3bdd121394e5ac54e498028a042e"},
-    {file = "nodeenv-1.7.0.tar.gz", hash = "sha256:e0e7f7dfb85fc5394c6fe1e8fa98131a2473e04311a45afb6508f7cf1836fa2b"},
+    {file = "nodeenv-1.8.0-py2.py3-none-any.whl", hash = "sha256:df865724bb3c3adc86b3876fa209771517b0cfe596beff01a92700e0e8be4cec"},
+    {file = "nodeenv-1.8.0.tar.gz", hash = "sha256:d51e0c37e64fbf47d017feac3145cdbb58836d7eee8c6f6d3b6880c5456227d2"},
 ]
 
 [package.dependencies]
@@ -1305,18 +1305,18 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "platformdirs"
-version = "3.5.0"
+version = "3.5.1"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "platformdirs-3.5.0-py3-none-any.whl", hash = "sha256:47692bc24c1958e8b0f13dd727307cff1db103fca36399f457da8e05f222fdc4"},
-    {file = "platformdirs-3.5.0.tar.gz", hash = "sha256:7954a68d0ba23558d753f73437c55f89027cf8f5108c19844d4b82e5af396335"},
+    {file = "platformdirs-3.5.1-py3-none-any.whl", hash = "sha256:e2378146f1964972c03c085bb5662ae80b2b8c06226c54b2ff4aa9483e8a13a5"},
+    {file = "platformdirs-3.5.1.tar.gz", hash = "sha256:412dae91f52a6f84830f39a8078cecd0e866cb72294a5c66808e74d5e88d251f"},
 ]
 
 [package.extras]
-docs = ["furo (>=2023.3.27)", "proselint (>=0.13)", "sphinx (>=6.1.3)", "sphinx-autodoc-typehints (>=1.23,!=1.23.4)"]
+docs = ["furo (>=2023.3.27)", "proselint (>=0.13)", "sphinx (>=6.2.1)", "sphinx-autodoc-typehints (>=1.23,!=1.23.4)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
 
 [[package]]
@@ -1483,14 +1483,14 @@ files = [
 
 [[package]]
 name = "pygithub"
-version = "1.58.1"
+version = "1.58.2"
 description = "Use the full Github API v3"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "PyGithub-1.58.1-py3-none-any.whl", hash = "sha256:4e7fe9c3ec30d5fde5b4fbb97f18821c9dbf372bf6df337fe66f6689a65e0a83"},
-    {file = "PyGithub-1.58.1.tar.gz", hash = "sha256:7d528b4ad92bc13122129fafd444ce3d04c47d2d801f6446b6e6ee2d410235b3"},
+    {file = "PyGithub-1.58.2-py3-none-any.whl", hash = "sha256:f435884af617c6debaa76cbc355372d1027445a56fbc39972a3b9ed4968badc8"},
+    {file = "PyGithub-1.58.2.tar.gz", hash = "sha256:1e6b1b7afe31f75151fb81f7ab6b984a7188a852bdb123dbb9ae90023c3ce60f"},
 ]
 
 [package.dependencies]
@@ -1501,14 +1501,14 @@ requests = ">=2.14.0"
 
 [[package]]
 name = "pyjwt"
-version = "2.6.0"
+version = "2.7.0"
 description = "JSON Web Token implementation in Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "PyJWT-2.6.0-py3-none-any.whl", hash = "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"},
-    {file = "PyJWT-2.6.0.tar.gz", hash = "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd"},
+    {file = "PyJWT-2.7.0-py3-none-any.whl", hash = "sha256:ba2b425b15ad5ef12f200dc67dd56af4e26de2331f965c5439994dad075876e1"},
+    {file = "PyJWT-2.7.0.tar.gz", hash = "sha256:bd6ca4a3c4285c1a2d4349e5a035fdf8fb94e04ccd0fcbe6ba289dae9cc3e074"},
 ]
 
 [package.dependencies]
@@ -1522,14 +1522,14 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pylint"
-version = "2.17.3"
+version = "2.17.4"
 description = "python code static checker"
 category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
-    {file = "pylint-2.17.3-py3-none-any.whl", hash = "sha256:a6cbb4c6e96eab4a3c7de7c6383c512478f58f88d95764507d84c899d656a89a"},
-    {file = "pylint-2.17.3.tar.gz", hash = "sha256:761907349e699f8afdcd56c4fe02f3021ab5b3a0fc26d19a9bfdc66c7d0d5cd5"},
+    {file = "pylint-2.17.4-py3-none-any.whl", hash = "sha256:7a1145fb08c251bdb5cca11739722ce64a63db479283d10ce718b2460e54123c"},
+    {file = "pylint-2.17.4.tar.gz", hash = "sha256:5dcf1d9e19f41f38e4e85d10f511e5b9c35e1aa74251bf95cdd8cb23584e2db1"},
 ]
 
 [package.dependencies]
@@ -1571,14 +1571,14 @@ with-django = ["Django"]
 
 [[package]]
 name = "pylint-plugin-utils"
-version = "0.7"
+version = "0.8.1"
 description = "Utilities and helpers for writing Pylint plugins"
 category = "dev"
 optional = false
-python-versions = ">=3.6.2"
+python-versions = ">=3.7,<4.0"
 files = [
-    {file = "pylint-plugin-utils-0.7.tar.gz", hash = "sha256:ce48bc0516ae9415dd5c752c940dfe601b18fe0f48aa249f2386adfa95a004dd"},
-    {file = "pylint_plugin_utils-0.7-py3-none-any.whl", hash = "sha256:b3d43e85ab74c4f48bb46ae4ce771e39c3a20f8b3d56982ab17aa73b4f98d535"},
+    {file = "pylint_plugin_utils-0.8.1-py3-none-any.whl", hash = "sha256:8d753118eb4189b0f5d07483ab6bbc5770dcd52799ceb6456b0e96309218c80c"},
+    {file = "pylint_plugin_utils-0.8.1.tar.gz", hash = "sha256:a595517d238d2ebe586fd867325cc656d4fac8d22b99421ff4cfb51b8c823a93"},
 ]
 
 [package.dependencies]
@@ -1655,14 +1655,14 @@ testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
 name = "pytest-xdist"
-version = "3.2.1"
+version = "3.3.0"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest-xdist-3.2.1.tar.gz", hash = "sha256:1849bd98d8b242b948e472db7478e090bf3361912a8fed87992ed94085f54727"},
-    {file = "pytest_xdist-3.2.1-py3-none-any.whl", hash = "sha256:37290d161638a20b672401deef1cba812d110ac27e35d213f091d15b8beb40c9"},
+    {file = "pytest-xdist-3.3.0.tar.gz", hash = "sha256:d42c9efb388da35480878ef4b2993704c6cea800c8bafbe85a8cdc461baf0748"},
+    {file = "pytest_xdist-3.3.0-py3-none-any.whl", hash = "sha256:76f7683d4f993eaff91c9cb0882de0465c4af9c6dd3debc903833484041edc1a"},
 ]
 
 [package.dependencies]
@@ -1789,21 +1789,21 @@ files = [
 
 [[package]]
 name = "requests"
-version = "2.29.0"
+version = "2.30.0"
 description = "Python HTTP for Humans."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "requests-2.29.0-py3-none-any.whl", hash = "sha256:e8f3c9be120d3333921d213eef078af392fba3933ab7ed2d1cba3b56f2568c3b"},
-    {file = "requests-2.29.0.tar.gz", hash = "sha256:f2e34a75f4749019bb0e3effb66683630e4ffeaf75819fb51bebef1bf5aef059"},
+    {file = "requests-2.30.0-py3-none-any.whl", hash = "sha256:10e94cc4f3121ee6da529d358cdaeaff2f1c409cd377dbc72b825852f2f7e294"},
+    {file = "requests-2.30.0.tar.gz", hash = "sha256:239d7d4458afcb28a692cdd298d87542235f4ca8d36d03a15bfc128a6559a2f4"},
 ]
 
 [package.dependencies]
 certifi = ">=2017.4.17"
 charset-normalizer = ">=2,<4"
 idna = ">=2.5,<4"
-urllib3 = ">=1.21.1,<1.27"
+urllib3 = ">=1.21.1,<3"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
@@ -1877,14 +1877,14 @@ files = [
 
 [[package]]
 name = "s3transfer"
-version = "0.6.0"
+version = "0.6.1"
 description = "An Amazon S3 Transfer Manager"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "s3transfer-0.6.0-py3-none-any.whl", hash = "sha256:06176b74f3a15f61f1b4f25a1fc29a4429040b7647133a463da8fa5bd28d5ecd"},
-    {file = "s3transfer-0.6.0.tar.gz", hash = "sha256:2ed07d3866f523cc561bf4a00fc5535827981b117dd7876f036b0c1aca42c947"},
+    {file = "s3transfer-0.6.1-py3-none-any.whl", hash = "sha256:3c0da2d074bf35d6870ef157158641178a4204a6e689e82546083e31e0311346"},
+    {file = "s3transfer-0.6.1.tar.gz", hash = "sha256:640bb492711f4c0c0905e1f62b6aaeb771881935ad27884852411f8e9cacbca9"},
 ]
 
 [package.dependencies]
@@ -1895,19 +1895,19 @@ crt = ["botocore[crt] (>=1.20.29,<2.0a.0)"]
 
 [[package]]
 name = "sentry-sdk"
-version = "1.21.1"
+version = "1.23.0"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sentry-sdk-1.21.1.tar.gz", hash = "sha256:99c15556a23621be9f18c2955f7ce63321713bf1c0ad396b27b61399bac5f458"},
-    {file = "sentry_sdk-1.21.1-py2.py3-none-any.whl", hash = "sha256:092888f3abf7a2ea78f0bfcefc3e0465caee2b6f0efb26f538ccc60f95dca179"},
+    {file = "sentry-sdk-1.23.0.tar.gz", hash = "sha256:58f4ff9e76c21bc7172eeec9f1bccb3ff2247c74c71d5590438ce36c803f46ea"},
+    {file = "sentry_sdk-1.23.0-py2.py3-none-any.whl", hash = "sha256:01b56a276642d31cf9b4aaf0b55938677265d7006be4785a10ef6330d0f5bba9"},
 ]
 
 [package.dependencies]
 certifi = "*"
-urllib3 = {version = ">=1.26.11", markers = "python_version >= \"3.6\""}
+urllib3 = {version = ">=1.26.11,<2.0.0", markers = "python_version >= \"3.6\""}
 
 [package.extras]
 aiohttp = ["aiohttp (>=3.5)"]
@@ -1919,10 +1919,11 @@ chalice = ["chalice (>=1.16.0)"]
 django = ["django (>=1.8)"]
 falcon = ["falcon (>=1.4)"]
 fastapi = ["fastapi (>=0.79.0)"]
-flask = ["blinker (>=1.1)", "flask (>=0.11)"]
+flask = ["blinker (>=1.1)", "flask (>=0.11)", "markupsafe"]
 grpcio = ["grpcio (>=1.21.1)"]
 httpx = ["httpx (>=0.16.0)"]
 huey = ["huey (>=2)"]
+loguru = ["loguru (>=0.5)"]
 opentelemetry = ["opentelemetry-distro (>=0.35b0)"]
 pure-eval = ["asttokens", "executing", "pure-eval"]
 pymongo = ["pymongo (>=3.1)"]
@@ -2081,14 +2082,14 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.3)", "coverage-enable-subprocess
 
 [[package]]
 name = "werkzeug"
-version = "2.3.3"
+version = "2.3.4"
 description = "The comprehensive WSGI web application library."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Werkzeug-2.3.3-py3-none-any.whl", hash = "sha256:4866679a0722de00796a74086238bb3b98d90f423f05de039abb09315487254a"},
-    {file = "Werkzeug-2.3.3.tar.gz", hash = "sha256:a987caf1092edc7523edb139edb20c70571c4a8d5eed02e0b547b4739174d091"},
+    {file = "Werkzeug-2.3.4-py3-none-any.whl", hash = "sha256:48e5e61472fee0ddee27ebad085614ebedb7af41e88f687aaf881afb723a162f"},
+    {file = "Werkzeug-2.3.4.tar.gz", hash = "sha256:1d5a58e0377d1fe39d061a5de4469e414e78ccb1e1e59c0f5ad6fa1c36c52b76"},
 ]
 
 [package.dependencies]
