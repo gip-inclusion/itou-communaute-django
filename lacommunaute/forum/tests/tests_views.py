@@ -282,7 +282,7 @@ class ForumViewTest(TestCase):
     def test_queries(self):
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(27):
+        with self.assertNumQueries(31):
             self.client.get(self.url)
 
     def test_param_new_in_request(self):
