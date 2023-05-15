@@ -12,6 +12,7 @@ from django.utils.http import urlencode
 
 from lacommunaute.inclusion_connect import constants
 from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
+from lacommunaute.utils.middleware import store_upper_visible_forums
 
 
 logger = logging.getLogger(__name__)
@@ -144,6 +145,8 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
         return HttpResponseRedirect(next_url)
 
     login(request, user)
+    store_upper_visible_forums(request)
+
     next_url = ic_session["next_url"] or reverse("forum_extension:home")
     return HttpResponseRedirect(next_url)
 

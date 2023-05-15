@@ -186,6 +186,8 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
         users_count = User.objects.filter(email=OIDC_USERINFO["email"]).count()
         self.assertEqual(users_count, 1)
 
+        self.assertIn("upper_visible_forums", response.wsgi_request.session.keys())
+
 
 class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
     @respx.mock
