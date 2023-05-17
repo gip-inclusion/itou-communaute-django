@@ -120,3 +120,9 @@ class TopicModelTest(TestCase):
 
         topic = TopicFactory(with_certified_post=True)
         self.assertTrue(topic.is_certified)
+
+    def test_topic_types(self):
+        self.assertEqual(0, Topic.TOPIC_POST)
+        self.assertEqual(1, Topic.TOPIC_STICKY)
+        self.assertEqual(2, Topic.TOPIC_ANNOUNCE)
+        self.assertEqual(3, Topic.TOPIC_NEWS)
