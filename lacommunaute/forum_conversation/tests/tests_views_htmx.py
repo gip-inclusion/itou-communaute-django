@@ -77,6 +77,7 @@ class ForumTopicListViewTest(TestCase):
                 kwargs={"forum_pk": self.topic.forum.pk, "forum_slug": self.topic.forum.slug},
             ),
         )
+        self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
 
     def test_numqueries_vs_tags(self):
 
@@ -234,6 +235,7 @@ class TopicCertifiedListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
         self.assertEqual(response.context_data["loadmoretopic_url"], self.url)
+        self.assertEqual(response.context_data["loadmoretopic_suffix"], "certified")
 
     def test_get_topic_certified_list(self):
         certified_private_topic = TopicFactory(with_certified_post=True, forum=ForumFactory(is_private=True))

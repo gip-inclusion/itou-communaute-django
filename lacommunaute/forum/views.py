@@ -76,6 +76,7 @@ class ForumView(BaseForumView):
         context["loadmoretopic_url"] = reverse(
             "forum_conversation_extension:topic_list", kwargs={"forum_pk": forum.pk, "forum_slug": self.forum.slug}
         )
+        context["loadmoretopic_suffix"] = "topicsinforum"
         context["form"] = PostForm(forum=forum, user=self.request.user)
         context["announces"] = list(
             self.get_forum()

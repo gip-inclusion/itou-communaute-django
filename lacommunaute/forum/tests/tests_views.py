@@ -140,6 +140,7 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, f'hx-get="{topic_url}"')
         self.assertContains(response, "+ voir la suite")
+        self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
 
     def test_has_liked(self):
         TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True)
