@@ -117,11 +117,11 @@
         </div>
     {% endfor %}
     {% if loadmoretopic_url and is_paginated and page_obj.has_next%}
-        <div id="loadmoretopicsarea" class="row mx-3 mt-md-5 justify-content-center">
+        <div id="loadmoretopicsarea{{ loadmoretopic_suffix }}" class="row mx-3 mt-md-5 justify-content-center">
             <div class="col-12 col-md-auto">
                 <a hx-get="{{ loadmoretopic_url }}?page={{ page_obj.next_page_number }}"
                     id="loadmoretopics-button"
-                    hx-target="#loadmoretopicsarea"
+                    hx-target="#loadmoretopicsarea{{ loadmoretopic_suffix }}"
                     hx-swap="outerHTML"
                     class="btn btn-link btn-ico btn-block justify-content-center matomo-event"
                     data-matomo-category="engagement"

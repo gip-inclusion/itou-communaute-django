@@ -46,6 +46,7 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
             "forum_conversation_extension:topic_list",
             kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
         )
+        context["loadmoretopic_suffix"] = "topicsinforum"
         return context
 
     def get_controlled_object(self):
@@ -129,6 +130,7 @@ class TopicCertifiedListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["loadmoretopic_url"] = reverse("forum_conversation_extension:public_certified_topics_list")
+        context["loadmoretopic_suffix"] = "certified"
         return context
 
 
