@@ -7,5 +7,4 @@ class ForumAdmin(BaseForumAdmin):
         "members_group",
         "invitation_token",
         "is_private",
-        "target_audience",
     )

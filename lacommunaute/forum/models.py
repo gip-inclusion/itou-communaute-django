@@ -26,7 +26,6 @@ class Forum(AbstractForum):
     )
     invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
     is_private = models.BooleanField(default=False, verbose_name="privée")
-    target_audience = models.IntegerField(default=0)
 
     objects = ForumQuerySet().as_manager()
 
