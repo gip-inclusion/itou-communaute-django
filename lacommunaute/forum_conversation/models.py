@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from taggit.managers import TaggableManager
 
@@ -20,7 +21,7 @@ class TopicQuerySet(models.QuerySet):
     def optimized_for_topics_list(self, user_id):
         return (
             self.exclude(approved=False)
-            .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
+            .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY, Topic.TOPIC_NEWS])
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=user_id)))
             .select_related(
@@ -54,6 +55,9 @@ class Topic(AbstractTopic):
     )
 
     tags = TaggableManager()
+
+    TOPIC_NEWS = 3
+    TYPE_CHOICES = AbstractTopic.TYPE_CHOICES + ((3, _("News")),)
 
     def get_absolute_url(self):
         return reverse(
