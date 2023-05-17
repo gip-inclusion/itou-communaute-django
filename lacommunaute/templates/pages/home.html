@@ -148,6 +148,24 @@
                                 Réponses certifiées
                             </a>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <a id="newsfeed-topics-tab"
+                                data-toggle="tab"
+                                href="#newsfeed-topics"
+                                role="tab"
+                                aria-controls="newsfeed-topics"
+                                aria-selected="false"
+                                hx-target="#newsfeedtopicsarea"
+                                hx-swap="outerHTML"
+                                hx-get="{% url 'forum_conversation_extension:newsfeed_topics_list' %}"
+                                hx-trigger="load"
+                                class="nav-link matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="loadmore"
+                                data-matomo-option="newsfeed_topic">
+                                Actualités
+                            </a>
+                        </li>
                         <li class="nav-item-dropdown dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
@@ -170,6 +188,13 @@
                             role="tabpanel"
                             aria-labelledby="certified-topics-tab">
                             <div id="certifiedtopicsarea">
+                                chargement en cours...
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="newsfeed-topics"
+                            role="tabpanel"
+                            aria-labelledby="newsfeed-topics-tab">
+                            <div id="newsfeedtopicsarea">
                                 chargement en cours...
                             </div>
                         </div>
