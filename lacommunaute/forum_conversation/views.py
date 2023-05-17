@@ -6,6 +6,7 @@ from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
@@ -41,6 +42,9 @@ class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
         valid = super().form_valid(*args, **kwargs)
         if self.request.user.is_authenticated:
             self.forum_post.topic.likers.add(self.request.user)
+        if self.forum_post.topic.forum.is_newsfeed:
+            self.forum_post.topic.type = Topic.TOPIC_NEWS
+            self.forum_post.topic.save()
         return valid
 
 

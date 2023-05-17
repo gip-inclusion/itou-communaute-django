@@ -35,7 +35,7 @@
                             data-matomo-action="contribute"
                             data-matomo-option="new_topic">
                             <i class="ri-chat-new-line ri-lg"></i>
-                            <span>{% trans "New topic" %}</span>
+                            <span>{% if forum.is_newsfeed %}{% trans "New news" %}{% else %}{% trans "New topic" %}{% endif %}</span>
                         </a>
                     {% endif %}
                     {% if user_can_access_stats %}
