@@ -3,6 +3,7 @@ from django.urls import reverse
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+from taggit.models import Tag
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
@@ -76,6 +77,17 @@ class ForumTopicListViewTest(TestCase):
                 kwargs={"forum_pk": self.topic.forum.pk, "forum_slug": self.topic.forum.slug},
             ),
         )
+
+    def test_numqueries_vs_tags(self):
+
+        tags = Tag.objects.bulk_create([Tag(name=f"tag{i}", slug=f"tag{i}") for i in range(5)])
+        for topic in TopicFactory.create_batch(20, forum=self.topic.forum, with_post=True):
+            topic.tags.add(", ".join(tag.name for tag in tags))
+        assign_perm("can_read_forum", self.user, self.topic.forum)
+        self.client.force_login(self.user)
+
+        with self.assertNumQueries(15):
+            self.client.get(self.url)
 
 
 class TopicLikeViewTest(TestCase):

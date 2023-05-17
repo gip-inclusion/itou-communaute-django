@@ -39,6 +39,7 @@ class TopicQuerySet(models.QuerySet):
                 "poll__options__votes",
                 "first_post__attachments",
                 "certified_post__post__attachments",
+                "tags",
             )
             .order_by("-last_post_on")
         )
