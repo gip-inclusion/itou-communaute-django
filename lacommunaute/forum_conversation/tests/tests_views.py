@@ -113,8 +113,7 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(0, topic.likers.count())
 
     def test_tags_checkbox_are_displayed(self):
-        Tag.objects.create(name=faker.word())
-        Tag.objects.create(name=faker.word())
+        Tag.objects.bulk_create([Tag(name=f"tag_x{i}", slug=f"tag_x{i}") for i in range(2)])
         assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
@@ -123,9 +122,7 @@ class TopicCreateViewTest(TestCase):
         self.assertContains(response, Tag.objects.last().name)
 
     def test_checked_tags_are_saved(self):
-        Tag.objects.create(name=faker.word())
-        Tag.objects.create(name=faker.word())
-        Tag.objects.create(name=faker.word())
+        Tag.objects.bulk_create([Tag(name=f"tag_y{i}", slug=f"tag_y{i}") for i in range(3)])
         assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
 
