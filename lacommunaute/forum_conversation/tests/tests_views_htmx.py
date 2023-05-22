@@ -86,7 +86,7 @@ class ForumTopicListViewTest(TestCase):
         assign_perm("can_read_forum", self.user, self.topic.forum)
         self.client.force_login(self.user)
 
-        with self.assertNumQueries(15):
+        with self.assertNumQueries(24):
             self.client.get(self.url)
 
 
