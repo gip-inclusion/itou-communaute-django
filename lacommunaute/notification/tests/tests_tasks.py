@@ -140,3 +140,9 @@ class SendNotifsOnUnansweredTopics(TestCase):
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
         self.assertEqual(email_sent_track.datas, payload)
+
+    @respx.mock
+    def test_send_notifs_on_unanswered_topics_with_no_topic(self):
+        send_notifs_on_unanswered_topics(self.list_id)
+
+        self.assertEqual(EmailSentTrack.objects.count(), 0)

@@ -43,9 +43,10 @@ def send_notifs_on_unanswered_topics(list_id: int) -> None:
 
         params = {"count": count, "link": link}
 
-        send_email(
-            to=contacts,
-            params=params,
-            template_id=settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
-            kind=EmailSentTrackKind.PENDING_TOPIC,
-        )
+        if count > 0:
+            send_email(
+                to=contacts,
+                params=params,
+                template_id=settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
+                kind=EmailSentTrackKind.PENDING_TOPIC,
+            )
