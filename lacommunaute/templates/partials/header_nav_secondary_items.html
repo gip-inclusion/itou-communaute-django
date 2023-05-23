@@ -1,13 +1,7 @@
 {% load forum_member_tags %}
 {% load i18n %}
 {% load theme_inclusion %}
-{% comment %} TODO : Ajouter la class .is-active sur le lien de l'item de menu actif {% endcomment %}
 <ul>
-    <li class="col-12 col-lg-auto mt-3 mt-lg-0">
-        <a href="{% url 'forum_extension:home' %}">
-            Accueil
-        </a>
-    </li>
     {% if request.path == '/' and not user.is_authenticated %}
         <li class="col-12 col-lg-auto">
             <a href="#community">
