@@ -252,7 +252,7 @@ msgstr "+ voir la suite"
 #: lacommunaute/templates/machina/forum/forum_list.html:36
 #: lacommunaute/templates/machina/forum/forum_list.html:204
 msgid "Forums"
-msgstr "Communautés"
+msgstr "Thématiques"
 
 #: lacommunaute/templates/machina/forum/forum_list.html:70
 #: lacommunaute/templates/machina/forum/forum_list.html:143
@@ -286,15 +286,15 @@ msgstr "Nombre total de redirections :"
 #: lacommunaute/templates/machina/forum/forum_list.html:188
 #: lacommunaute/templates/machina/forum/forum_list.html:194
 msgid "Subforums:"
-msgstr "Sous-communautés :"
+msgstr "Sous-thématiques :"
 
 #: lacommunaute/templates/machina/forum/forum_list.html:37
 msgid "Subforums"
-msgstr "Sous-communautés"
+msgstr "Sous-thématiques"
 
 #: lacommunaute/templates/machina/forum/forum_list.html:213
 msgid "No forums."
-msgstr "Pas de communautés."
+msgstr "Aucune thématique."
 
 #: lacommunaute/templates/machina/forum/index.html:6
 msgid "Index"
@@ -304,7 +304,7 @@ msgstr "Index"
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:5
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:11
 msgid "Mark forums read"
-msgstr "Marquer les communautés comme lues"
+msgstr "Marquer les thématiques comme lues"
 
 #: lacommunaute/templates/machina/forum/index.html:15
 #: lacommunaute/templates/machina/forum_tracking/unread_topic_list.html:4
@@ -373,7 +373,7 @@ msgstr "Ajouter une option de sondage"
 
 #: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_option_formset.html:30
 msgid "<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the associated votes."
-msgstr "<b>Note:</b> La suppression des options de sondage d’un sondage existant supprimera les votes associés."
+msgstr "<b>Note:</b> La suppression des options de sondage d’un sondage existant supprimera les votes associés."
 
 #: lacommunaute/templates/machina/forum_conversation/forum_polls/poll_preview.html:9
 #: lacommunaute/templates/machina/forum_conversation/post_preview.html:10
@@ -604,7 +604,7 @@ msgstr "Ce sujet est verrouillé"
 
 #: lacommunaute/templates/machina/forum_conversation/topic_list.html:74
 msgid "There are no topics in this forum."
-msgstr "Il n’y a pas de sujets dans cette communauté."
+msgstr "Il n’y a pas de sujets dans cette thématique."
 
 #: lacommunaute/templates/machina/forum_conversation/topic_pages_inline_list.html:5
 msgid "Go to the page:"
@@ -671,7 +671,7 @@ msgstr "Le %(creation_date)s"
 #: lacommunaute/templates/machina/forum_member/forum_profile_update.html:4
 #: lacommunaute/templates/machina/forum_member/forum_profile_update.html:11
 msgid "Edit forum profile"
-msgstr "Modifier le profil de la communauté"
+msgstr "Modifier le profil de la thématique"
 
 #: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:4
 #: lacommunaute/templates/machina/forum_member/subscription_topic_list.html:10
@@ -761,7 +761,7 @@ msgstr "Sujet"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:36
 msgid "Forum"
-msgstr "Communauté"
+msgstr "Thématique"
 
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:79
 msgid "No posts awaiting approval."
@@ -804,7 +804,7 @@ msgstr "Modifier le type de sujet"
 
 #: lacommunaute/templates/machina/forum_search/search.html:18
 msgid "Search forums"
-msgstr "Chercher dans les communautés"
+msgstr "Chercher dans les thématiques"
 
 #: lacommunaute/templates/machina/forum_search/search.html:44
 msgid "New search"
@@ -827,7 +827,7 @@ msgstr "Aucun résultat."
 
 #: lacommunaute/templates/machina/forum_tracking/mark_forums_read.html:13
 msgid "Are you sure you want to mark forums read?"
-msgstr "Êtes-vous sûr de vouloir marquer les communautés comme lues ?"
+msgstr "Êtes-vous sûr de vouloir marquer les thématiques comme lues ?"
 
 #: lacommunaute/templates/machina/forum_tracking/mark_topics_read.html:13
 msgid "Are you sure you want to mark topics read?"
@@ -848,7 +848,7 @@ msgstr "Il n'y a pas de sujets non lus."
 #: lacommunaute/templates/partials/breadcrumb.html:9
 #: lacommunaute/templates/registration/login.html:14
 msgid "Forum index"
-msgstr "Index des communautés"
+msgstr "Index des thématiques"
 
 #: lacommunaute/templates/registration/login.html:4
 #: lacommunaute/templates/registration/login.html:15
@@ -863,19 +863,19 @@ msgstr "Se connecter"
 #: lacommunaute/templates/forum_member/join_forum_form.html: 32
 #, python-format
 msgid "Join forum %(name)s"
-msgstr "Vous êtes invité à rejoindre la communauté %(name)s"
+msgstr "Vous êtes invité à rejoindre la thématique %(name)s"
 
 #: lacommunaute/templates/forum_member/join_forum_form.html: 60
 msgid "Join forum"
-msgstr "Rejoindre la communauté"
+msgstr "Rejoindre la thématique"
 
 #: lacommunaute/templates/pages/home.html:84
 msgid "Go to this forum"
-msgstr "Accéder à cette communauté"
+msgstr "Accéder à cette thématique"
 
 #: lacommunaute/templates/pages/home.html:89
 msgid "Join this forum"
-msgstr "Rejoindre cette communauté"
+msgstr "Rejoindre cette thématique"
 #: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:5
 
 msgid "Share this topics on "
@@ -884,7 +884,7 @@ msgstr "Partager ce sujet sur "
 #: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:4
 #, python-format
 msgid "%(forum_name)s - %(topic_subject)s: Check it out!"
-msgstr "Regardez %(topic_subject)s dans la communauté %(forum_name)s !"
+msgstr "Regardez %(topic_subject)s dans la thématique %(forum_name)s !"
 
 #: lacommunaute/templates/forum/moderator_engagement.html:54
 msgid "Attached"
@@ -909,14 +909,14 @@ msgid "Forum Members"
 msgstr "Liste des membres de la communauté"
 
 msgid "Show me the subforum"
-msgstr "Voir la sous-communauté"
+msgstr "Voir la sous-thématique"
 
 msgid "load more topics"
 msgstr "Charger plus de sujets"
 
 #, python-format
 msgid "Show me the %(count)s subforums"
-msgstr "Voir les %(count)s sous-communautés"
+msgstr "Voir les %(count)s sous-thématiques"
 msgid "Calendar"
 msgstr "Calendrier"
 
