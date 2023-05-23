@@ -16,7 +16,13 @@
                 <ul class="list-unstyled">
                     {% for forum in request.session.upper_visible_forums %}
                         <li>
-                            <a class="{% if forum.level == 0 %}dropdown-header{% else %}dropdown-item{% endif %}" href="{{ forum.url }}">{{ forum.name }}</a>
+                            <a href="{{ forum.url }}"
+                                class="dropdown-header matomo-event"
+                                data-matomo-category="engagement"
+                                data-matomo-action="view"
+                                data-matomo-option="forum">
+                                {{ forum.name }}
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
