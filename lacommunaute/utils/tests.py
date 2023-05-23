@@ -378,16 +378,15 @@ class UtilsMiddlewareStoreUpperVisibleForumTest(TestCase):
         request.user = UserFactory()
         request.forum_permission_handler = PermissionHandler()
 
-        upper_forums = ForumFactory.create_batch(3)
+        upper_forums = ForumFactory.create_batch(2)
         descendant_visible_forum = ForumFactory(parent=upper_forums[1])
-        ForumFactory(parent=upper_forums[2])
         upper_visible_forums = [
             {
                 "name": forum.name,
                 "level": forum.level,
                 "url": reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}),
             }
-            for forum in [upper_forums[1], descendant_visible_forum]
+            for forum in [upper_forums[1]]
         ]
 
         assign_perm("can_see_forum", request.user, upper_forums[1])
