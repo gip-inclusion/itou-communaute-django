@@ -133,3 +133,8 @@
   background-color: transparent !important;
   border: 0 !important;
 }
+
+#communautesDropdown.dropdown-menu {
+  max-height: 75vh;
+  overflow-y: auto;
+}
