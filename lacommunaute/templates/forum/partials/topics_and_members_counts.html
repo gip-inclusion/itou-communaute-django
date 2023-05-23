@@ -7,6 +7,16 @@
     {% endif %}
     {% if node.obj.is_forum %}
         {% if node.obj.is_private%} - {% endif %}
-        {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+        {% if node.topics_count > 1 %}
+            {{ node.topics_count }} {% trans "Topics" %}
+        {% else %}
+            {{ node.topics_count }} {% trans "Topic" %}
+        {% endif %}
+        -
+        {% if node.posts_count > 1 %}
+            {{ node.posts_count }} {% trans "Posts" %}
+        {% else %}
+            {{ node.posts_count }} {% trans "Post" %}
+        {% endif %}
     {% endif %}
 </small>

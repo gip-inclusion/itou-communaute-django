@@ -57,10 +57,20 @@
                                                 {{ child.obj.name }}
                                             </a>
                                             <small class="text-muted">
-                                                {% if node.obj.is_private%}
-                                                    <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
+                                                {% if node.obj.is_private %}
+                                                    <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} Membres -
                                                 {% endif %}
-                                                {{child.topics_count}} {% trans "Topics" %} - {{child.posts_count}} {% trans "Posts" %}
+                                                {% if child.topics_count > 1 %}
+                                                    {{ child.topics_count }} {% trans "Topics" %}
+                                                {% else %}
+                                                    {{ child.topics_count }} {% trans "Topic" %}
+                                                {% endif %}
+                                                -
+                                                {% if child.posts_count > 1 %}
+                                                    {{ child.posts_count }} {% trans "Posts" %}
+                                                {% else %}
+                                                    {{ child.posts_count }} {% trans "Post" %}
+                                                {% endif %}
                                             </small>
                                         </div>
                                     </li>
@@ -87,7 +97,17 @@
                             {% if node.obj.is_private%}
                                 <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                             {% endif %}
-                            {{node.topics_count}} {% trans "Topics" %} - {{node.posts_count}} {% trans "Posts" %}
+                            {% if node.topics_count > 1 %}
+                                {{ node.topics_count }} {% trans "Topics" %}
+                            {% else %}
+                                {{ node.topics_count }} {% trans "Topic" %}
+                            {% endif %}
+                            -
+                            {% if node.posts_count > 1 %}
+                                {{ node.posts_count }} {% trans "Posts" %}
+                            {% else %}
+                                {{ node.posts_count }} {% trans "Post" %}
+                            {% endif %}
                         </small>
                     </div>
                 </li>
