@@ -14,7 +14,7 @@ UPPER_VISIBLE_FORUMS = "upper_visible_forums"
 
 def store_upper_visible_forums(request):
     forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
-        request.forum_permission_handler.forum_list_filter(Forum.objects.all(), request.user)
+        request.forum_permission_handler.forum_list_filter(Forum.objects.filter(level=0), request.user)
     )
     request.session[UPPER_VISIBLE_FORUMS] = [
         {
@@ -23,7 +23,6 @@ def store_upper_visible_forums(request):
             "url": reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}),
         }
         for forum in forum_visibility_content_tree.visible_forums
-        if forum.level <= 1
     ]
 
 
