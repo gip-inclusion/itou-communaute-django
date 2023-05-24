@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-12 col-lg-auto">
+        <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="AskQuestionDropdown" aria-expanded="false">
+                Poser une question
+            </button>
+            <div class="dropdown-menu" id="AskQuestionDropdown">
+                <ul class="list-unstyled">
+                    <li>
+                        {% for forum in request.session.upper_visible_forums %}
+                            <li>
+                                <a href="{{ forum.url }}topic/create/"
+                                    class="dropdown-item matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="contribute"
+                                    data-matomo-option="new_topic">
+                                    {{ forum.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
