@@ -209,7 +209,7 @@ msgstr "Marquer les sous-communautés lues"
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/detail.html:19
 #: lacommunaute/templates/machina/forum_moderation/moderation_queue/list.html:67
 msgid "New topic"
-msgstr "Nouveau sujet"
+msgstr "Poser une question"
 
 msgid "New news"
 msgstr "Nouvelle actualités"
@@ -556,7 +556,7 @@ msgstr "Modifier le message"
 #: lacommunaute/templates/machina/forum_conversation/topic_create.html:5
 #: lacommunaute/templates/machina/forum_conversation/topic_create.html:23
 msgid "Post a new topic"
-msgstr "Publier un nouveau sujet"
+msgstr "Poser une nouvelle question"
 
 #: lacommunaute/templates/machina/forum_conversation/topic_detail.html:34
 msgid "Edit"
