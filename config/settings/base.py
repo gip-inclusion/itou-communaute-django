@@ -332,3 +332,7 @@ SIB_ONBOARDING_LIST = 5
 # ---------------------------------------
 TAGGIT_CASE_INSENSITIVE = True
 TAGGIT_STRIP_UNICODE_WHEN_SLUGIFY = True
+
+# SESSIONS
+# ---------------------------------------
+SESSION_COOKIE_SECURE = True
