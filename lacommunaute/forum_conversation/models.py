@@ -57,7 +57,7 @@ class Topic(AbstractTopic):
     tags = TaggableManager()
 
     TOPIC_NEWS = 3
-    TYPE_CHOICES = AbstractTopic.TYPE_CHOICES + ((3, _("News")),)
+    TYPE_CHOICES = AbstractTopic.TYPE_CHOICES + ((TOPIC_NEWS, _("News")),)
 
     def get_absolute_url(self):
         return reverse(
