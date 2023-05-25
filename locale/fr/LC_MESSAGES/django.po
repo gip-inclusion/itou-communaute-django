@@ -212,7 +212,7 @@ msgid "New topic"
 msgstr "Poser une question"
 
 msgid "New news"
-msgstr "Nouvelle actualités"
+msgstr "Nouvelle actualité"
 
 #: lacommunaute/templates/machina/forum/forum_detail.html:40
 #: lacommunaute/templates/machina/forum/forum_detail.html:65
