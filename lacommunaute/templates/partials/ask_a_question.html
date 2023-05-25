@@ -9,7 +9,7 @@
                     <li>
                         {% for forum in request.session.upper_visible_forums %}
                             <li>
-                                <a href="{{ forum.url }}topic/create/"
+                                <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
                                     class="dropdown-item matomo-event"
                                     data-matomo-category="engagement"
                                     data-matomo-action="contribute"
