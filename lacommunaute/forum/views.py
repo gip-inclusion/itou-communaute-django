@@ -15,6 +15,7 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.models import User
+from lacommunaute.utils.middleware import store_upper_visible_forums
 
 
 logger = logging.getLogger(__name__)
@@ -32,12 +33,14 @@ class IndexView(BaseIndexView):
 
     def get_queryset(self):
         """Returns the list of items for this view."""
-        return ForumVisibilityContentTree.from_forums(
+        forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
             self.request.forum_permission_handler.forum_list_filter(
                 Forum.objects.all().prefetch_related("members_group__user_set"),
                 self.request.user,
             ),
         )
+        store_upper_visible_forums(self.request, forum_visibility_content_tree.top_nodes)
+        return forum_visibility_content_tree
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

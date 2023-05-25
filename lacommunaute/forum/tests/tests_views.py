@@ -545,6 +545,26 @@ class IndexViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'hx-trigger="load"')
 
+    def test_store_upper_visible_forums(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            '<a class="dropdown-header matomo-event" href="'
+            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
+        assign_perm("can_see_forum", self.user, self.forum)
+        assign_perm("can_read_forum", self.user, self.forum)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<a class="dropdown-header matomo-event" href="'
+            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
 
 class CreateForumView(TestCase):
     def setUp(self):
