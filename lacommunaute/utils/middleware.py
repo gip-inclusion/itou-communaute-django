@@ -1,4 +1,3 @@
-from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 from machina.core.loading import get_class
 
@@ -12,17 +11,14 @@ PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 UPPER_VISIBLE_FORUMS = "upper_visible_forums"
 
 
-def store_upper_visible_forums(request):
-    forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
-        request.forum_permission_handler.forum_list_filter(Forum.objects.filter(level=0), request.user)
-    )
+def store_upper_visible_forums(request, nodes):
     request.session[UPPER_VISIBLE_FORUMS] = [
         {
-            "name": forum.name,
-            "level": forum.level,
-            "url": reverse("forum_extension:forum", kwargs={"slug": forum.slug, "pk": forum.id}),
+            "name": node.obj.name,
+            "slug": node.obj.slug,
+            "pk": node.obj.id,
         }
-        for forum in forum_visibility_content_tree.visible_forums
+        for node in nodes
     ]
 
 
@@ -30,4 +26,10 @@ class VisibleForumsMiddleware(MiddlewareMixin):
     def process_request(self, request):
         forum_visibility_content_tree = request.session.get(UPPER_VISIBLE_FORUMS, None)
         if not forum_visibility_content_tree:
-            store_upper_visible_forums(request)
+            forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
+                request.forum_permission_handler.forum_list_filter(
+                    Forum.objects.all(),
+                    request.user,
+                ),
+            )
+            store_upper_visible_forums(request, forum_visibility_content_tree.top_nodes)
