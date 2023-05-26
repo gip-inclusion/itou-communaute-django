@@ -16,9 +16,14 @@ tarteaucitron.services.iframe = {
                 width = tarteaucitron.getElemAttr(x,"width"),
                 height = tarteaucitron.getElemAttr(x,"height"),
                 allowfullscreen = tarteaucitron.getElemAttr(x,"allowfullscreen"),
+                scrolling = (tarteaucitron.getElemAttr(x,"scrolling")),
                 url = tarteaucitron.getElemAttr(x,"url");
 
-            return '<iframe title="' + frame_title + '" src="' + url + '" width="' + width + '" height="' + height + '" scrolling="no" allowtransparency' + (allowfullscreen == '0' ? '' : ' webkitallowfullscreen mozallowfullscreen allowfullscreen') + '></iframe>';
+            if(!scrolling){
+                scrolling = 'no';
+            }
+
+            return '<iframe title="' + frame_title + '" src="' + url + '" width="' + width + '" height="' + height + '" scrolling="'+scrolling+'" allowtransparency' + (allowfullscreen == '0' ? '' : ' webkitallowfullscreen mozallowfullscreen allowfullscreen') + '></iframe>';
         });
     },
     "fallback": function () {
@@ -29,6 +34,384 @@ tarteaucitron.services.iframe = {
             elem.style.height = tarteaucitron.getElemAttr(elem,'height') + 'px';
             return tarteaucitron.engage(id);
         });
+    }
+};
+
+// outbrainamplify
+tarteaucitron.services.outbrainamplify = {
+    "key": "outbrainamplify",
+    "type": "ads",
+    "name": "Outbrain Amplify",
+    "uri": "https://www.outbrain.com/privacy/",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.outbrainamplifyId === undefined) {
+            return;
+        }
+
+        var OB_ADV_ID = tarteaucitron.user.outbrainamplifyId;
+        if (window.obApi) {
+            var toArray = function(object) {
+                return Object.prototype.toString.call(object) === '[object Array]' ? object : [object];
+            };
+            window.obApi.marketerId = toArray(_window.obApi.marketerId).concat(toArray(OB_ADV_ID));
+            return;
+        }
+        var api = window.obApi = function() {
+            api.dispatch ? api.dispatch.apply(api, arguments) : api.queue.push(arguments);
+        };
+        api.version = '1.1';
+        api.loaded = true;
+        api.marketerId = OB_ADV_ID;
+        api.queue = [];
+
+        tarteaucitron.addScript('https://amplify.outbrain.com/cp/obtp.js', '', function () {
+            obApi('track', 'PAGE_VIEW');
+        });
+    }
+};
+
+// playplay
+tarteaucitron.services.playplay = {
+    "key": "playplay",
+    "type": "video",
+    "name": "PlayPlay",
+    "uri": "https://playplay.com/fr/confidentialite",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        tarteaucitron.fallback(['tac_playplay'], function (x) {
+            var id = tarteaucitron.getElemAttr(x, "data-id"),
+                width = tarteaucitron.getElemAttr(x, "width"),
+                height = tarteaucitron.getElemAttr(x, "height");
+
+            var playURL = "https://playplay.com/app/embed-video/" + id;
+
+            return "<iframe width=\"" + width + "\" height=\"" + height + "\" src=\"" + playURL + "\" style=\"border:0;\" allowfullscreen=\"\"></iframe>";
+        });
+    },
+    "fallback": function () {
+        "use strict";
+        var id = 'playplay';
+        tarteaucitron.fallback(['tac_playplay'], function (elem) {
+            return tarteaucitron.engage(id);
+        });
+    }
+};
+
+// adobeworkspace
+tarteaucitron.services.adobeworkspace = {
+    "key": "adobeworkspace",
+    "type": "analytic",
+    "name": "Adobe - Analysis Workspace",
+    "uri": "https://www.adobe.com/privacy/policy.html",
+    "needConsent": true,
+    "cookies": ['s_ecid', 's_cc', 's_sq', 's_vi', 's_fid'],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.adobeworkspaceId1 === undefined || tarteaucitron.user.adobeworkspaceId2 === undefined || tarteaucitron.user.adobeworkspaceId3 === undefined) {
+            return;
+        }
+
+        tarteaucitron.addScript('https://assets.adobedtm.com/'+tarteaucitron.user.adobeworkspaceId1+'/'+tarteaucitron.user.adobeworkspaceId2+'/launch-'+tarteaucitron.user.adobeworkspaceId3+'.min.js');
+    }
+};
+
+// zohopagesense
+tarteaucitron.services.zohopagesense = {
+    "key": "zohopagesense",
+    "type": "analytic",
+    "name": "Zoho PageSense",
+    "uri": "https://www.zoho.com/pagesense/cookie-policy.html",
+    "needConsent": true,
+    "cookies": ["zab_g_", "zabUserID", "zabVisitID", "zabSplit", "zabBucket", "zabHMBucket", "zpsfa_", "zfa", "zsr", "zabme", "zsd", "ps_payloadSeqId", "zabPZBucket", "zPersonalization", "zia_", "zpc", "zps_permission_status", "zps-tgr-dts", "zpspolls_", "zpsPollsBucket", "zpspb", "zpsPopupBucket", "zpssr", "zab_g_", "zab_", "zPersonalization"],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.zohoPageSenseProjectId === undefined || tarteaucitron.user.zohoPageSenseScriptHash === undefined) {
+            return;
+        }
+        tarteaucitron.addScript('https://cdn-eu.pagesense.io/js/' + tarteaucitron.user.zohoPageSenseProjectId + '/' + tarteaucitron.user.zohoPageSenseScriptHash + '.js');
+    }
+};
+
+// leadinfo
+tarteaucitron.services.leadinfo = {
+    "key": "leadinfo",
+    "type": "analytic",
+    "name": "Leadinfo",
+    "uri": "https://www.leadinfo.com/en/privacy/",
+    "needConsent": true,
+    "cookies": ['_li_id', '_li_ses'],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.leadinfoId === undefined) {
+            return;
+        }
+
+        window.GlobalLeadinfoNamespace = window.GlobalLeadinfoNamespace || [];
+        window.GlobalLeadinfoNamespace.push("leadinfo");
+        window["leadinfo"] = function() {
+            (window["leadinfo"].q = window["leadinfo"].q || []).push(arguments)
+        };
+        window["leadinfo"].t = window["leadinfo"].t || tarteaucitron.user.leadinfoId;
+        window["leadinfo"].q = window["leadinfo"].q || [];
+
+        tarteaucitron.addScript('https://cdn.leadinfo.net/ping.js');
+    }
+};
+
+// force24
+tarteaucitron.services.force24 = {
+    "key": "force24",
+    "type": "analytic",
+    "name": "Force24",
+    "uri": "https://support.force24.co.uk/support/solutions/articles/79000128057-cookie-policies",
+    "needConsent": true,
+    "cookies": ['F24_autoID', 'F24_personID'],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.force24trackingId === undefined || tarteaucitron.user.force24clientId === undefined) {
+            return;
+        }
+
+        window.Force24Object = "f24", window["f24"] = window["f24"] || function() {
+            window["f24"].q = window["f24"].q || [],
+                window["f24"].q.push(arguments)
+        }, window["f24"].l = 1 * new Date;
+
+        tarteaucitron.addScript('https://static.websites.data-crypt.com/scripts/activity/v3/inject-v3.min.js');
+
+        f24('config', 'set_tracking_id', tarteaucitron.user.force24trackingId);
+        f24('config', 'set_client_id', tarteaucitron.user.force24clientId);
+    }
+};
+
+// tiktokvideo
+tarteaucitron.services.tiktokvideo = {
+    "key": "tiktokvideo",
+    "type": "video",
+    "name": "Tiktok Video",
+    "uri": "https://www.tiktok.com/legal/page/eea/privacy-policy/en",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        tarteaucitron.addScript('https://www.tiktok.com/embed.js');
+    },
+    "fallback": function () {
+        "use strict";
+        var id = 'tiktokvideo';
+        tarteaucitron.fallback(['tiktok-embed'], function (elem) {
+            return tarteaucitron.engage(id);
+        });
+    }
+};
+
+// shinystat
+tarteaucitron.services.shinystat = {
+    "key": "shinystat",
+    "type": "analytic",
+    "name": "Shinystat",
+    "uri": "https://www.shinystat.com/en/opt-out.html",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.shinystatUser === undefined) {
+            return;
+        }
+
+        tarteaucitron.addScript('https://codice.shinystat.com/cgi-bin/getcod.cgi?USER=' + tarteaucitron.user.shinystatUser);
+    }
+};
+
+// activecampaignvgo
+tarteaucitron.services.activecampaignvgo = {
+    "key": "activecampaignvgo",
+    "type": "other",
+    "name": "Active Campaign",
+    "uri": "https://www.activecampaign.com/legal/privacy-policy/",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.activecampaignAccount === undefined) {
+            return;
+        }
+
+        window.visitorGlobalObjectAlias="vgo";
+        window[window.visitorGlobalObjectAlias]=window[window.visitorGlobalObjectAlias]||function(){(window[window.visitorGlobalObjectAlias].q=window[window.visitorGlobalObjectAlias].q||[]).push(arguments)};
+        window[window.visitorGlobalObjectAlias].l=(new Date).getTime();
+
+        tarteaucitron.addScript('https://diffuser-cdn.app-us1.com/diffuser/diffuser.js', '', function () {
+           vgo('setAccount', tarteaucitron.user.activecampaignAccount);
+           vgo('setTrackByDefault', true);
+           vgo('process');
+        });
+    }
+};
+
+// sendinblue
+tarteaucitron.services.sendinblue = {
+    "key": "sendinblue",
+    "type": "other",
+    "name": "sendinblue",
+    "uri": "https://fr.sendinblue.com/legal/cookies/",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.sendinblueKey === undefined) {
+            return;
+        }
+
+        window.sib = {equeue: [], client_key: tarteaucitron.user.sendinblueKey};
+        window.sendinblue = {};
+        for (var j = ['track', 'identify', 'trackLink', 'page'], i = 0; i < j.length; i++) {
+            (function(k) {
+                window.sendinblue[k] = function() {
+                    var arg = Array.prototype.slice.call(arguments);
+                    (window.sib[k] || function() {
+                            var t = {};
+                            t[k] = arg;
+                            window.sib.equeue.push(t);
+                    })(arg[0], arg[1], arg[2], arg[3]);
+                };
+            })(j[i]);
+         }
+
+        tarteaucitron.addScript('https://sibautomation.com/sa.js?key=' + window.sib.client_key, 'sendinblue-js', function () {
+            window.sendinblue.page();
+        });
+    }
+};
+
+// collectchat
+tarteaucitron.services.collectchat = {
+    "key": "collectchat",
+    "type": "other",
+    "name": "Collect Chat",
+    "uri": "https://collect.chat/privacy/",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.collectchatId === undefined) {
+            return;
+        }
+
+        window.CollectId = tarteaucitron.user.collectchatId;
+
+        tarteaucitron.addScript('https://collectcdn.com/launcher.js');
+    }
+};
+
+// eulerian
+tarteaucitron.services.eulerian = {
+    "key": "eulerian",
+    "type": "analytic",
+    "name": "Eulerian",
+    "uri": "https://www.eulerian.com/rgpd",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.eulerianHost === undefined) {
+            return;
+        }
+
+        (function(e,a){var i=e.length,y=5381,k='script',s=window,v=document,o=v.createElement(k);for(;i;){i-=1;y=(y*33)^e.charCodeAt(i)}y='_EA_'+(y>>>=0);(function(e,a,s,y){s[a]=s[a]||function(){(s[y]=s[y]||[]).push(arguments);s[y].eah=e;};}(e,a,s,y));i=new Date/1E7|0;o.ea=y;y=i%26;o.async=1;o.src='//'+e+'/'+String.fromCharCode(97+y,122-y,65+y)+(i%1E3)+'.js?2';s=v.getElementsByTagName(k)[0];s.parentNode.insertBefore(o,s);})
+        (tarteaucitron.user.eulerianHost,'EA_push');
+        EA_push();
+    }
+};
+
+// posthog
+tarteaucitron.services.posthog = {
+    "key": "posthog",
+    "type": "other",
+    "name": "Posthog",
+    "uri": "https://posthog.com/privacy",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.posthogApiKey === undefined || tarteaucitron.user.posthogHost === undefined) {
+            return;
+        }
+
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+
+         posthog.init(tarteaucitron.user.posthogApiKey, {api_host: tarteaucitron.user.posthogHost});
+
+    }
+};
+
+// googlesignin
+tarteaucitron.services.googlesignin = {
+    "key": "googlesignin",
+    "type": "other",
+    "name": "Google Signin",
+    "uri": "https://policies.google.com/technologies/cookies#types-of-cookies",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        tarteaucitron.addScript('https://accounts.google.com/gsi/client');
+    }
+};
+
+// calendly
+tarteaucitron.services.calendly = {
+    "key": "calendly",
+    "type": "other",
+    "name": "Calendly",
+    "uri": "https://calendly.com/privacy",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        tarteaucitron.addScript('https://assets.calendly.com/assets/external/widget.js');
+    }
+};
+
+// tolkai
+tarteaucitron.services.tolkai = {
+    "key": "tolkai",
+    "type": "other",
+    "name": "tolk.ai",
+    "uri": "https://www.tolk.ai/",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+
+        if (tarteaucitron.user.tolkaiBot === undefined) {
+            return;
+        }
+
+        window.tcfbot = tarteaucitron.user.tolkaiBot;
+        window.TcfWbchtParams = { behaviour: 'default' };
+        window.display = 'iframe';
+        tarteaucitron.addScript('https://script.tolk.ai/iframe-latest.js');
     }
 };
 
@@ -1691,9 +2074,9 @@ tarteaucitron.services.deezer = {
     }
 };
 
-// leadforensics
-tarteaucitron.services.leadforensics = {
-    "key": "leadforensics",
+// leadforensicsold
+tarteaucitron.services.leadforensicsold = {
+    "key": "leadforensicsold",
     "type": "analytic",
     "name": "LeadForensics",
     "uri": "https://www.leadforensics.com/privacy-policy/",
@@ -2682,11 +3065,20 @@ tarteaucitron.services.googlefonts = {
             return;
         }
         tarteaucitron.addScript('//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js', '', function () {
-            WebFont.load({
-                google: {
-                    families: tarteaucitron.user.googleFonts
-                }
-            });
+
+            if (tarteaucitron.user.googleFonts instanceof Array) {
+                WebFont.load({
+                    google: {
+                        families: tarteaucitron.user.googleFonts
+                    }
+                });
+            } else {
+                WebFont.load({
+                    google: {
+                        families: [tarteaucitron.user.googleFonts]
+                    }
+                });
+            }
         });
     }
 };
@@ -3617,7 +4009,7 @@ tarteaucitron.services.twittertimeline = {
     "js": function () {
         "use strict";
         tarteaucitron.fallback(['tacTwitterTimelines'], '');
-        tarteaucitron.addScript('//platform.twitter.com/widgets.js', 'twitter-wjs');
+        tarteaucitron.addScript('https://platform.twitter.com/widgets.js', 'twitter-wjs');
     },
     "fallback": function () {
         "use strict";
@@ -4032,8 +4424,8 @@ tarteaucitron.services.youtube = {
         "use strict";
         var id = 'youtube';
         tarteaucitron.fallback(['youtube_player'], function (elem) {
-            elem.style.width = elem.getAttribute('width') + 'px';
-            elem.style.height = elem.getAttribute('height') + 'px';
+            elem.style.width = tarteaucitron.getElemAttr(elem,'width') + 'px';
+            elem.style.height = tarteaucitron.getElemAttr(elem,'height') + 'px';
             return tarteaucitron.engage(id);
         });
     }
@@ -4081,8 +4473,8 @@ tarteaucitron.services.youtubeplaylist = {
         "use strict";
         var id = 'youtubeplaylist';
         tarteaucitron.fallback(['youtube_playlist_player'], function (elem) {
-            elem.style.width = elem.getAttribute('width') + 'px';
-            elem.style.height = elem.getAttribute('height') + 'px';
+            elem.style.width = tarteaucitron.getElemAttr(elem,'width') + 'px';
+            elem.style.height = tarteaucitron.getElemAttr(elem,'height') + 'px';
             return tarteaucitron.engage(id);
         });
     }
@@ -4128,7 +4520,7 @@ tarteaucitron.services.linkedininsighttag = {
     "name": "Linkedin Insight",
     "uri": "https://www.linkedin.com/legal/cookie_policy",
     "needConsent": true,
-    "cookies": [],
+    "cookies": ['li_fat_id'],
     "js": function () {
         "use strict";
         if (tarteaucitron.user.linkedininsighttag !== undefined) {
@@ -4336,21 +4728,7 @@ tarteaucitron.services.koban = {
     }
 };
 
-// matomo
-
-/*
-    1. Set the following variable before the initialization :
-
-    tarteaucitron.user.matomoId = YOUR_SITE_ID_FROM_MATOMO;
-    tarteaucitron.user.matomoHost = "YOUR_MATOMO_URL"; //eg: https://stat.mydomain.com/
-
-    2. Push the service :
-
-    (tarteaucitron.job = tarteaucitron.job || []).push('matomo');  // (or 'matomocloud' for cloud version)
-
-    3. HTML
-    You don't need to add any html code, if the service is authorized, the javascript is added. otherwise no.
- */
+// DEPRECATED, USE MATOMO CLOUD
 tarteaucitron.services.matomo = {
     "key": "matomo",
     "type": "analytic",
@@ -4371,6 +4749,11 @@ tarteaucitron.services.matomo = {
         window._paq.push(["trackPageView"]);
         window._paq.push(["setIgnoreClasses", ["no-tracking", "colorbox"]]);
         window._paq.push(["enableLinkTracking"]);
+
+        if (typeof tarteaucitron.user.matomoMore === 'function') {
+           tarteaucitron.user.matomoMore();
+        }
+
         window._paq.push([function () {
             var self = this;
             function getOriginalVisitorCookieTimeout() {
@@ -4411,7 +4794,7 @@ tarteaucitron.services.matomo = {
     }
 };
 
-
+// DEPRECATED, USE MATOMO CLOUD
 tarteaucitron.services.matomohightrack = {
     "key": "matomohightrack",
     "type": "analytic",
@@ -4457,7 +4840,7 @@ tarteaucitron.services.matomohightrack = {
     }
 };
 
-
+// matomocloud
 tarteaucitron.services.matomocloud = {
     "key": "matomocloud",
     "type": "analytic",
@@ -4472,27 +4855,14 @@ tarteaucitron.services.matomocloud = {
         }
 
         window._paq = window._paq || [];
+        window._paq.push(["requireCookieConsent"]);
+        window._paq.push(["setCookieConsentGiven"]);
         window._paq.push(["setSiteId", tarteaucitron.user.matomoId]);
         window._paq.push(["setTrackerUrl", tarteaucitron.user.matomoHost + "matomo.php"]);
-        window._paq.push(["setDoNotTrack", 1]);
         window._paq.push(["trackPageView"]);
-        window._paq.push(["setIgnoreClasses", ["no-tracking", "colorbox"]]);
         window._paq.push(["enableLinkTracking"]);
-        window._paq.push([function () {
-            var self = this;
-            function getOriginalVisitorCookieTimeout() {
-                var now = new Date(),
-                    nowTs = Math.round(now.getTime() / 1000),
-                    visitorInfo = self.getVisitorInfo();
-                var createTs = parseInt(visitorInfo[2]);
-                var cookieTimeout = 33696000; // 13 mois en secondes
-                var originalTimeout = createTs + cookieTimeout - nowTs;
-                return originalTimeout;
-            }
-            this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
-        }]);
 
-        if (tarteaucitron.user.matomoCustomJSPath === undefined) {
+        if (tarteaucitron.user.matomoCustomJSPath === undefined || tarteaucitron.user.matomoCustomJSPath == '') {
             tarteaucitron.addScript('https://cdn.matomo.cloud/matomo.js', '', '', true, 'defer', true);
         } else {
             tarteaucitron.addScript(tarteaucitron.user.matomoCustomJSPath, '', '', true, 'defer', true);
@@ -4518,7 +4888,26 @@ tarteaucitron.services.matomocloud = {
                     tarteaucitron.services.matomo.cookies.push(cookieName);
                 }
             }
-        }, 100)
+        }, 100);
+    },
+    "fallback": function () {
+        "use strict";
+        if (tarteaucitron.user.matomoId === undefined) {
+            return;
+        }
+
+        window._paq = window._paq || [];
+        window._paq.push(["requireCookieConsent"]);
+        window._paq.push(["setSiteId", tarteaucitron.user.matomoId]);
+        window._paq.push(["setTrackerUrl", tarteaucitron.user.matomoHost + "matomo.php"]);
+        window._paq.push(["trackPageView"]);
+        window._paq.push(["enableLinkTracking"]);
+
+        if (tarteaucitron.user.matomoCustomJSPath === undefined || tarteaucitron.user.matomoCustomJSPath == '') {
+            tarteaucitron.addScript('https://cdn.matomo.cloud/matomo.js', '', '', true, 'defer', true);
+        } else {
+            tarteaucitron.addScript(tarteaucitron.user.matomoCustomJSPath, '', '', true, 'defer', true);
+        }
     }
 };
 
@@ -5041,7 +5430,7 @@ tarteaucitron.services.maps_noapi = {
             var id = x.getAttribute("id"),
                 width = x.getAttribute("width"),
                 height = x.getAttribute("height")
-            var widgetURL = "https://google.com/maps/embed?pb=" + id;
+            var widgetURL = "https://www.google.com/maps/embed?pb=" + id;
             return "<iframe width=\"" + width + "\" height=\"" + height + "\" src=\"" + widgetURL + "\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\"></iframe>";
         });
     },
