@@ -114,7 +114,7 @@
         {% endblock %}
 
         {% block extra_js %}
-            <script src="{% static "vendor/tarteaucitron.js-1.9.9/tarteaucitron.js" %}"></script>
+            <script src="{% static "vendor/tarteaucitron.js-1.11.0/tarteaucitron.js" %}"></script>
             <script>
                 // Tarteaucitron's language is set according to the browser configuration
                 // but a lot of users don't know how to change it.
@@ -145,6 +145,7 @@
                     //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
                     "readmoreLink": "https://doc.inclusion.beta.gouv.fr/mentions/protection-des-donnees", /* Change the default readmore link */
                     "mandatory": true, /* Show a message about mandatory cookies */
+                    "mandatoryCta": true /* Show the disabled accept button when mandatory on */
                 });
 
                 {% if COMMU_ENVIRONMENT == 'PROD' %}
