@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## v1.11 - 2023-05-30
+- [Page d'accueil] dynamiser le chargement de la liste des communautes (#285)
+- [rollback WWW] finalisation (#283)
+- [Topic] créer et afficher des "actualités" - améliorations (#281)
+- [Page d'accueil] bouton Poser une Question (#276)
+- Simplifier le header (#273)
+- build(deps): bump requests from 2.30.0 to 2.31.0 (#270)
+- [FIX] Correction de l’erreur de pluriel dans le compteur de sujets et de messages (#272)
+- [FIX] Ne pas envoyer de notification si aucune question en attente (#265)
+- [FIX] Suppression du champ `target_audience` de `Forum` (#263)
+- [FIX] Tags : corrections et optimisations (#262)
+
 ## v1.10 - 2023-05-15
 - [Notification] sujets non réponds, planification quotidienne des experts volontaires (#259)
 - [FIX] rétablir le lien d'édition dans la vue de détail d'un sujet (#254)
