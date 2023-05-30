@@ -1,6 +1,5 @@
 import logging
 
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import CharField
 from django.db.models.functions import Cast
@@ -28,7 +27,7 @@ class StatistiquesPageView(TemplateView):
             "nb_uniq_visitors",
             "nb_uniq_active_visitors",
         ]
-        after_date = timezone.now() - relativedelta(months=3)
+        after_date = timezone.now() - timezone.timedelta(days=90)
         datas = (
             Stat.objects.filter(period="day", name__in=indicator_names, date__gte=after_date)
             .values("name", "value")
