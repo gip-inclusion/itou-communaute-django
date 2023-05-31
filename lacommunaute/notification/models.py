@@ -18,3 +18,15 @@ class EmailSentTrack(DatedModel):
 
     def __str__(self):
         return f"{self.status_code} - {self.created}"
+
+
+class BouncedEmail(DatedModel):
+    email = models.EmailField(verbose_name="Email", null=False, blank=False, unique=True)
+    reason = models.CharField(verbose_name="Raison", max_length=255, null=False, blank=False)
+
+    class Meta:
+        verbose_name = "Emails en erreur"
+        verbose_name_plural = "Emails en erreur"
+
+    def __str__(self):
+        return f"{self.email} - {self.created}"
