@@ -260,7 +260,7 @@ class PostCreateViewTest(TestCase):
             },
         )
 
-    def test_http_forbidden(self):
+    def test_machina_route_forbidden(self):
 
         self.client.force_login(self.poster)
 

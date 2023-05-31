@@ -5,6 +5,8 @@ from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, 
 from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
+from lacommunaute.notification.utils import should_not_be_approved
+
 
 class PostForm(AbstractPostForm):
     subject = CharField(widget=HiddenInput(), required=False)
@@ -12,6 +14,11 @@ class PostForm(AbstractPostForm):
     def create_post(self):
         post = super().create_post()
         post.subject = f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}"
+
+        if self.user.is_anonymous:
+            if should_not_be_approved(self.cleaned_data["username"]):
+                post.approved = False
+
         return post
 
     def update_post(self, post):
