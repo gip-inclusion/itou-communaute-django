@@ -17,6 +17,7 @@ from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
+from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -278,18 +279,18 @@ class PostUpdateViewTest(TestCase):
     def setUpTestData(cls):
         cls.topic = TopicFactory(with_post=True)
         cls.forum = cls.topic.forum
-        cls.poster = cls.topic.poster
+        cls.post = PostFactory(topic=cls.topic)
+        cls.poster = cls.post.poster
         cls.perm_handler = PermissionHandler()
-        cls.url = reverse(
-            "forum_conversation:post_update",
-            kwargs={
-                "forum_slug": cls.forum.slug,
-                "forum_pk": cls.forum.pk,
-                "topic_slug": cls.topic.slug,
-                "topic_pk": cls.topic.pk,
-                "pk": cls.topic.posts.first().pk,
-            },
-        )
+        cls.kwargs = {
+            "forum_slug": cls.forum.slug,
+            "forum_pk": cls.forum.pk,
+            "topic_slug": cls.topic.slug,
+            "topic_pk": cls.topic.pk,
+            "pk": cls.post.pk,
+        }
+        cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
+        cls.post_data = {"content": faker.text(max_nb_chars=20)}
         assign_perm("can_read_forum", cls.poster, cls.forum)
         assign_perm("can_see_forum", cls.poster, cls.forum)
         assign_perm("can_edit_own_posts", cls.poster, cls.forum)
@@ -298,38 +299,14 @@ class PostUpdateViewTest(TestCase):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(
-            response,
-            reverse(
-                "forum_conversation:post_delete",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                    "topic_slug": self.topic.slug,
-                    "topic_pk": self.topic.pk,
-                    "pk": self.topic.posts.first().pk,
-                },
-            ),
-        )
+        self.assertNotContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
 
     def test_has_permission_to_delete_post(self):
         assign_perm("can_delete_own_posts", self.poster, self.forum)
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation:post_delete",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                    "topic_slug": self.topic.slug,
-                    "topic_pk": self.topic.pk,
-                    "pk": self.topic.posts.first().pk,
-                },
-            ),
-        )
+        self.assertContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
 
     def test_topic_is_marked_as_read_when_post_is_updated(self):
         # evaluating ForumReadTrack instead of TopicReadTrack
@@ -338,14 +315,56 @@ class PostUpdateViewTest(TestCase):
 
         self.client.force_login(self.poster)
 
-        post_data = {"content": "c"}
         response = self.client.post(
             self.url,
-            post_data,
+            self.post_data,
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, ForumReadTrack.objects.count())
+
+    def test_update_post_as_authenticated_user(self):
+        self.client.force_login(self.poster)
+
+        response = self.client.post(
+            self.url,
+            self.post_data,
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.content.raw, self.post_data["content"])
+        self.assertIsNone(self.post.username)
+        self.assertTrue(self.post.approved)
+
+    @patch("machina.apps.forum_conversation.views.PostUpdateView.perform_permissions_check", return_value=True)
+    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
+    def test_update_post_as_anonymous_user(self, *args):
+        self.post_data["username"] = faker.email()
+        url = reverse("forum_conversation:post_update", kwargs=self.kwargs)
+
+        response = self.client.post(
+            url,
+            self.post_data,
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.username, self.post_data["username"])
+        self.assertTrue(self.post.approved)
+
+        BouncedEmailFactory(email=self.post_data["username"])
+
+        response = self.client.post(
+            url,
+            self.post_data,
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.post.refresh_from_db()
+        self.assertFalse(self.post.approved)
 
 
 class PostDeleteViewTest(TestCase):
