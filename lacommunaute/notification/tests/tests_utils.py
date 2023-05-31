@@ -1,12 +1,21 @@
 from django.conf import settings
 from django.test import TestCase
+from faker import Faker
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.notification.factories import EmailSentTrackFactory
+from lacommunaute.notification.factories import BouncedEmailFactory, EmailSentTrackFactory
 from lacommunaute.notification.models import EmailSentTrack
-from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding, last_notification
+from lacommunaute.notification.utils import (
+    collect_first_replies,
+    collect_new_users_for_onboarding,
+    last_notification,
+    should_not_be_approved,
+)
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
+
+
+faker = Faker()
 
 
 class LastNotificationTestCase(TestCase):
@@ -93,3 +102,20 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
 
         EmailSentTrackFactory(kind="onboarding")
         self.assertEqual(len(collect_new_users_for_onboarding()), 0)
+
+
+class ShouldNotBeApprovedTestCase(TestCase):
+    def test_is_bounced_email(self):
+        email = faker.email()
+        self.assertFalse(should_not_be_approved(email))
+
+        BouncedEmailFactory(email=email)
+        self.assertTrue(should_not_be_approved(email))
+
+    def test_email_is_whitelisted_even_if_bounced(self):
+        email = faker.email()
+        UserFactory(email=email)
+        self.assertFalse(should_not_be_approved(email))
+
+        BouncedEmailFactory(email=email)
+        self.assertFalse(should_not_be_approved(email))
