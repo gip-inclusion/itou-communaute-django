@@ -111,6 +111,42 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(self.post_data["content"], topic.first_post.content.raw)
         self.assertEqual(self.post_data["username"], topic.first_post.username)
         self.assertEqual(0, topic.likers.count())
+        self.assertTrue(topic.approved)
+        self.assertTrue(topic.first_post.approved)
+
+    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
+    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
+    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
+    def test_topic_create_as_unapproved_anonymous_user(self, *args):
+        self.post_data["username"] = faker.email()
+        BouncedEmailFactory(email=self.post_data["username"])
+
+        response = self.client.post(
+            self.url,
+            self.post_data,
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, Topic.objects.count())
+        topic = Topic.objects.first()
+        self.assertFalse(topic.approved)
+        self.assertFalse(topic.first_post.approved)
+
+    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
+    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
+    def test_topic_create_as_authenticated_user(self, *args):
+        self.client.force_login(self.poster)
+
+        response = self.client.post(
+            self.url,
+            self.post_data,
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Topic.objects.first().approved)
+        self.assertTrue(Topic.objects.first().posts.first().approved)
 
     def test_tags_checkbox_are_displayed(self):
         Tag.objects.bulk_create([Tag(name=f"tag_x{i}", slug=f"tag_x{i}") for i in range(2)])
