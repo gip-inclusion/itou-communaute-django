@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from faker import Faker
@@ -11,6 +13,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
+from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -465,7 +468,7 @@ class PostListViewTest(TestCase):
 class PostFeedCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.topic = TopicFactory()
+        cls.topic = TopicFactory(with_post=True)
         cls.user = cls.topic.poster
         cls.url = reverse(
             "forum_conversation_extension:post_create",
@@ -476,6 +479,7 @@ class PostFeedCreateViewTest(TestCase):
                 "slug": cls.topic.slug,
             },
         )
+        cls.content = faker.text(max_nb_chars=20)
 
     def test_get_method_unallowed(self):
         self.client.force_login(self.user)
@@ -514,16 +518,54 @@ class PostFeedCreateViewTest(TestCase):
 
         self.assertEqual(response.status_code, 500)
 
-    def test_save_valid_post(self):
-        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
-        PostFactory(topic=self.topic, poster=self.user)
-        content = faker.text(max_nb_chars=20)
+    @patch(
+        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
+    )
+    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
+    def test_create_post_as_authenticated_user(self, *args):
         self.client.force_login(self.user)
 
-        response = self.client.post(self.url, data={"content": content})
+        response = self.client.post(self.url, data={"content": self.content})
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, content)
+        self.assertContains(response, self.content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
         self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 2)
+        self.assertEqual(
+            self.topic.posts.values("content", "username", "approved").last(),
+            {"content": self.content, "username": None, "approved": True},
+        )
+
+    @patch(
+        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
+    )
+    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
+    def test_create_post_as_bounced_not_bounced_anonymous(self, *args):
+        username = faker.email()
+
+        response = self.client.post(self.url, {"content": self.content, "username": username})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.content)
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 2)
+        self.assertEqual(
+            self.topic.posts.values("content", "username", "approved").last(),
+            {"content": self.content, "username": username, "approved": True},
+        )
+
+        BouncedEmailFactory(email=username).save()
+
+        response = self.client.post(self.url, {"content": self.content, "username": username})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.content)
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 3)
+        self.assertEqual(
+            self.topic.posts.values("content", "username", "approved").last(),
+            {"content": self.content, "username": username, "approved": False},
+        )
