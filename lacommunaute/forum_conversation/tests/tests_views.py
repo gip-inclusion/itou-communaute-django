@@ -29,12 +29,13 @@ ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
+@patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
+@patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
 class TopicCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.poster = UserFactory()
         cls.forum = ForumFactory()
-        cls.perm_handler = PermissionHandler()
         cls.url = reverse(
             "forum_conversation:topic_create",
             kwargs={
@@ -42,33 +43,31 @@ class TopicCreateViewTest(TestCase):
                 "forum_pk": cls.forum.pk,
             },
         )
-        assign_perm("can_read_forum", cls.poster, cls.forum)
-        assign_perm("can_see_forum", cls.poster, cls.forum)
 
         cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.text(max_nb_chars=30)}
 
-    def test_redirection(self):
+    def test_redirection(self, *args):
         topic = TopicFactory(forum=self.forum, poster=self.poster, with_post=True)
         view = TopicCreateView()
         view.forum_post = topic.posts.first()
+
         self.assertEqual(
             view.get_success_url(),
             reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
         )
 
-    def test_delete_button_is_hidden(self):
-        assign_perm("can_start_new_topics", self.poster, self.forum)
+    def test_delete_button_is_hidden(self, *args):
         self.client.force_login(self.poster)
+
         response = self.client.get(self.url)
+
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(
             response, '/post/delete/" title="Supprimer" role="button" class="btn btn-outline-danger">Supprimer</a>'
         )
 
-    def test_topic_is_marked_as_read_when_created(self):
+    def test_topic_is_marked_as_read_when_created(self, *args):
         self.assertFalse(TopicReadTrack.objects.count())
-
-        assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
 
         response = self.client.post(
@@ -79,9 +78,9 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, TopicReadTrack.objects.count())
 
-    def test_topic_poster_is_added_to_likers_list(self):
-        assign_perm("can_start_new_topics", self.poster, self.forum)
+    def test_topic_poster_is_added_to_likers_list(self, *args):
         self.client.force_login(self.poster)
+
         response = self.client.post(
             self.url,
             self.post_data,
@@ -91,9 +90,7 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(1, Topic.objects.count())
         self.assertEqual(1, Topic.objects.first().likers.count())
 
-    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
     @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
-    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
     def test_topic_create_as_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
 
@@ -114,9 +111,7 @@ class TopicCreateViewTest(TestCase):
         self.assertTrue(topic.approved)
         self.assertTrue(topic.first_post.approved)
 
-    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
     @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
-    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
     def test_topic_create_as_unapproved_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
         BouncedEmailFactory(email=self.post_data["username"])
@@ -133,7 +128,6 @@ class TopicCreateViewTest(TestCase):
         self.assertFalse(topic.approved)
         self.assertFalse(topic.first_post.approved)
 
-    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
     @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_topic_create_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
@@ -148,30 +142,31 @@ class TopicCreateViewTest(TestCase):
         self.assertTrue(Topic.objects.first().approved)
         self.assertTrue(Topic.objects.first().posts.first().approved)
 
-    def test_tags_checkbox_are_displayed(self):
+    def test_tags_checkbox_are_displayed(self, *args):
         Tag.objects.bulk_create([Tag(name=f"tag_x{i}", slug=f"tag_x{i}") for i in range(2)])
-        assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
+
         response = self.client.get(self.url)
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, Tag.objects.first().name)
         self.assertContains(response, Tag.objects.last().name)
 
-    def test_checked_tags_are_saved(self):
+    def test_checked_tags_are_saved(self, *args):
         Tag.objects.bulk_create([Tag(name=f"tag_y{i}", slug=f"tag_y{i}") for i in range(3)])
-        assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
-
         post_data = {
             "subject": faker.text(max_nb_chars=5),
             "content": faker.text(max_nb_chars=5),
             "tags": [Tag.objects.first().pk, Tag.objects.last().pk],
         }
+
         response = self.client.post(
             self.url,
             post_data,
             follow=True,
         )
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, Topic.objects.count())
         topic = Topic.objects.first()
@@ -310,6 +305,8 @@ class PostCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
+@patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
+@patch("machina.apps.forum_permission.handler.PermissionHandler.can_edit_post", return_value=True)
 class PostUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -317,7 +314,6 @@ class PostUpdateViewTest(TestCase):
         cls.forum = cls.topic.forum
         cls.post = PostFactory(topic=cls.topic)
         cls.poster = cls.post.poster
-        cls.perm_handler = PermissionHandler()
         cls.kwargs = {
             "forum_slug": cls.forum.slug,
             "forum_pk": cls.forum.pk,
@@ -327,24 +323,25 @@ class PostUpdateViewTest(TestCase):
         }
         cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
         cls.post_data = {"content": faker.text(max_nb_chars=20)}
-        assign_perm("can_read_forum", cls.poster, cls.forum)
-        assign_perm("can_see_forum", cls.poster, cls.forum)
-        assign_perm("can_edit_own_posts", cls.poster, cls.forum)
 
-    def test_has_not_permission_to_delete_post(self):
+    def test_has_not_permission_to_delete_post(self, *args):
         self.client.force_login(self.poster)
+
         response = self.client.get(self.url)
+
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
 
-    def test_has_permission_to_delete_post(self):
-        assign_perm("can_delete_own_posts", self.poster, self.forum)
+    def test_has_permission_to_delete_post(self, *args):
         self.client.force_login(self.poster)
+        assign_perm("can_delete_own_posts", self.poster, self.forum)
+
         response = self.client.get(self.url)
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
 
-    def test_topic_is_marked_as_read_when_post_is_updated(self):
+    def test_topic_is_marked_as_read_when_post_is_updated(self, *args):
         # evaluating ForumReadTrack instead of TopicReadTrack
         # because of django-machina logic
         self.assertFalse(ForumReadTrack.objects.count())
@@ -359,7 +356,7 @@ class PostUpdateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, ForumReadTrack.objects.count())
 
-    def test_update_post_as_authenticated_user(self):
+    def test_update_post_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
 
         response = self.client.post(
@@ -367,6 +364,7 @@ class PostUpdateViewTest(TestCase):
             self.post_data,
             follow=True,
         )
+
         self.assertEqual(response.status_code, 200)
         self.post.refresh_from_db()
         self.assertEqual(self.post.content.raw, self.post_data["content"])
@@ -374,7 +372,6 @@ class PostUpdateViewTest(TestCase):
         self.assertTrue(self.post.approved)
 
     @patch("machina.apps.forum_conversation.views.PostUpdateView.perform_permissions_check", return_value=True)
-    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
     def test_update_post_as_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
         url = reverse("forum_conversation:post_update", kwargs=self.kwargs)
