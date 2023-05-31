@@ -47,5 +47,13 @@ class TopicForm(AbstractTopicForm):
     def save(self):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
+
+        if not self.user.is_authenticated:
+            if should_not_be_approved(self.cleaned_data["username"]):
+                post.topic.approved = False
+
+                post.approved = False
+                post.save()
+
         post.topic.save()
         return post
