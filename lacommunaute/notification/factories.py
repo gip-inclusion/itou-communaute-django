@@ -3,7 +3,7 @@ import factory.django
 from faker import Faker
 
 from lacommunaute.notification.enums import EmailSentTrackKind
-from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.notification.models import BouncedEmail, EmailSentTrack
 
 
 faker = Faker()
@@ -17,3 +17,11 @@ class EmailSentTrackFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = EmailSentTrack
+
+
+class BouncedEmailFactory(factory.django.DjangoModelFactory):
+    email = faker.unique.email()
+    reason = factory.Faker("sentence", nb_words=5)
+
+    class Meta:
+        model = BouncedEmail
