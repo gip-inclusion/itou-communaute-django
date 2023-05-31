@@ -24,6 +24,8 @@ class PostForm(AbstractPostForm):
     def update_post(self, post):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
+            if should_not_be_approved(self.cleaned_data["username"]):
+                post.approved = False
         else:
             post.updated_by = self.user
         post.updates_count = F("updates_count") + 1
