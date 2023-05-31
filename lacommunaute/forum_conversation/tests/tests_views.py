@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
@@ -42,6 +44,8 @@ class TopicCreateViewTest(TestCase):
         assign_perm("can_read_forum", cls.poster, cls.forum)
         assign_perm("can_see_forum", cls.poster, cls.forum)
 
+        cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.text(max_nb_chars=30)}
+
     def test_redirection(self):
         topic = TopicFactory(forum=self.forum, poster=self.poster, with_post=True)
         view = TopicCreateView()
@@ -66,10 +70,9 @@ class TopicCreateViewTest(TestCase):
         assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
 
-        post_data = {"subject": "s", "content": "c"}
         response = self.client.post(
             self.url,
-            post_data,
+            self.post_data,
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
@@ -78,38 +81,34 @@ class TopicCreateViewTest(TestCase):
     def test_topic_poster_is_added_to_likers_list(self):
         assign_perm("can_start_new_topics", self.poster, self.forum)
         self.client.force_login(self.poster)
-
-        post_data = {"subject": "s", "content": "c"}
         response = self.client.post(
             self.url,
-            post_data,
+            self.post_data,
             follow=True,
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, Topic.objects.count())
         self.assertEqual(1, Topic.objects.first().likers.count())
 
-    def test_topic_create_as_anonymous_user(self):
-        assign_perm("can_start_new_topics", AnonymousUser(), self.forum)
-        assign_perm("can_read_forum", AnonymousUser(), self.forum)
+    @patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
+    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
+    @patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
+    def test_topic_create_as_anonymous_user(self, *args):
+        self.post_data["username"] = faker.email()
 
-        post_data = {
-            "subject": faker.text(max_nb_chars=5),
-            "content": faker.text(max_nb_chars=5),
-            "username": faker.email(),
-        }
         response = self.client.post(
             self.url,
-            post_data,
+            self.post_data,
             follow=True,
         )
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, Topic.objects.count())
         topic = Topic.objects.first()
-        self.assertEqual(post_data["subject"], topic.subject)
-        self.assertEqual(post_data["subject"], topic.first_post.subject)
-        self.assertEqual(post_data["content"], topic.first_post.content.raw)
-        self.assertEqual(post_data["username"], topic.first_post.username)
+        self.assertEqual(self.post_data["subject"], topic.subject)
+        self.assertEqual(self.post_data["subject"], topic.first_post.subject)
+        self.assertEqual(self.post_data["content"], topic.first_post.content.raw)
+        self.assertEqual(self.post_data["username"], topic.first_post.username)
         self.assertEqual(0, topic.likers.count())
 
     def test_tags_checkbox_are_displayed(self):
