@@ -6,7 +6,7 @@
 {% load forum_tags %}
 
 {% block title %}Accueil{{ block.super }}{% endblock %}
-{% block meta_description %}Nous déployons des communautés publiques et privées. Ces communautés sont co-construites avec et pour les acteurs de l’inclusion en fonction de leurs besoins et de leurs objectifs.{% endblock meta_description %}"
+{% block meta_description %}Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique{% endblock meta_description %}"
 
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
 
@@ -17,7 +17,7 @@
             <div class="s-page-menu-01__container container">
                 <div class="s-page-menu-01__row row align-items-center">
                     <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Entraide, actus et apprentissage pour les professionnels de l'IAE</h1>
                     </div>
                 </div>
                 <div class="s-page-menu-01__row row">
@@ -33,25 +33,25 @@
             <div class="s-page-menu-01__container container">
                 <div class="s-page-menu-01__row row align-items-center">
                     <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Échangeons et améliorons ensemble l’insertion par l’emploi</h1>
+                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Entraide, actus et apprentissage<br>pour les professionnels de l'IAE</h1>
                     </div>
                 </div>
                 <div class="s-page-menu-01__row row">
                     <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
-                        <h2 class="h1 mb-3 mb-lg-5">Accédez aux groupes de travail et discussions</h2>
+                        <h2 class="h1 mb-3 mb-lg-5">Améliorez votre pratique professionnelle :</h2>
 
                         <ul class="lead list-unstyled mb-md-5">
                             <li class="d-flex mb-2">
                                 <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                                <span class="ml-2">Partagez vos avis, expériences, suggestions</span>
+                                <span class="ml-2">Posez vos questions et répondez aux autres professionnels</span>
                             </li>
                             <li class="d-flex mb-2">
                                 <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                                <span class="ml-2">Rencontrez d’autres professionnels de l’inclusion !</span>
+                                <span class="ml-2">Retrouvez les dernières actus et infos de l'inclusion</span>
                             </li>
                             <li class="d-flex mb-2">
-                                <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                                <span class="ml-2">Participez à la construction des outils numériques de l'insertion</span>
+                                <i class="text-success ri-loader-2-line ri-xxl"></i>
+                                <span class="ml-2">Progressez grâce à des ressources exclusives</span>
                             </li>
                         </ul>
                         {% include "partials/ask_a_question.html" %}
@@ -64,37 +64,11 @@
                 </div>
             </section>
 
-            <section class="s-section m-0 bg-nuance-09">
-                <div class="s-section__container container">
-                    <div class="s-section__row row">
-                        <div class="s-section__col col-12 py-5 text-center">
-                            <h2 class="h1 m-0">Vous souhaitez sonder la communauté, créer votre groupe de travail <br class="d-none d-lg-inline">ou animer un sujet de discussion, notre équipe est à votre écoute !</h2>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="s-section">
-                <div class="s-section__container container">
-                    <div class="s-section__row row">
-                        <div class="s-section__col col-12">
-                            <p>Nous déployons des thématiques publiques, qui sont co-construites avec et pour les acteurs de l’inclusion en fonction de leurs besoins et de leurs objectifs. Cliquez sur une thématiques ci-dessous pour consulter les sujets en cours. Pour contribuer, connectez-vous avec Inclusion Connect.</p>
-                        </div>
-                        <div class="s-section__col col-12 col-lg-auto" id="community">
-                            <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-block btn-ico btn-outline-primary justify-content-center">
-                                <i class="ri-login-box-line ri-lg" aria-hidden="true"></i>
-                                <span>
-                                    Je me connecte pour accéder à toutes mes thématiques
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
     {% endif %}
 
+    <div id="community"></div>
 
-    <section class="s-tabs-01">
+    <section class="s-tabs-01 mt-0">
         <div class="s-tabs-01__container container">
             <div class="s-tabs-01__row row">
                 <div class="s-tabs-01__col col-12">
@@ -196,13 +170,16 @@
         </div>
     </section>
 
-    {% if user.is_authenticated %}
+    {% if not user.is_authenticated %}
         <section class="s-section">
             <div class="s-section__container container">
                 <div class="s-section__row row mb-1 mb-md-3">
                     <div class="s-section__col col-12 col-lg-auto">
-                        <a href="{% url 'event:calendar' %}" class="btn btn-primary btn-block">
-                            Accéder aux évènements publics
+                        <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-block btn-ico btn-outline-primary justify-content-center">
+                            <i class="ri-login-box-line ri-lg" aria-hidden="true"></i>
+                            <span>
+                                Je me connecte pour accéder à toutes mes thématiques
+                            </span>
                         </a>
                     </div>
                 </div>
