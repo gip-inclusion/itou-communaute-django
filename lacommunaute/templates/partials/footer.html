@@ -20,7 +20,19 @@
                 <ul class="s-prefooter__gridlist">
                     <li><a href="{% url 'pages:statistiques' %}">Statistiques</a></li>
                     <li><a href="https://github.com/betagouv/itou-communaute-django" target="_blank" rel="noopener" aria-label="Github (lien externe)">Github</a><i class="ri-external-link-line ml-1 font-weight-bold"></i></li>
-                    <li><a href="https://documentation.inclusion.beta.gouv.fr/aide/emplois/" target="_blank" rel="noopener" aria-label="Posez votre question sur la page du support des emplois de l'inclusion (lien externe)">Support des emplois de l'inclusion</a><i class="ri-external-link-line ml-1 font-weight-bold"></i></li>
+                    <li>
+                        <a href="https://documentation.inclusion.beta.gouv.fr/aide/emplois/"
+                            target="_blank"
+                            rel="noopener"
+                            aria-label="Posez votre question sur la page du support des emplois de l'inclusion (lien externe)"
+                            class="matomo-event"
+                            data-matomo-category="support"
+                            data-matomo-action="site_emplois"
+                            data-matomo-option="footer">
+                            Support des emplois de l'inclusion
+                        </a>
+                        <i class="ri-external-link-line ml-1 font-weight-bold"></i>
+                    </li>
                 </ul>
             </div>
         </div>
