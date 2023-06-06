@@ -24,10 +24,12 @@
                     <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
                         {% include "partials/ask_a_question.html" %}
                     </div>
+                    <div class="s-page-menu-01__col col-12 mt-3 mt-lg-5">
+                        {% include "partials/banner.html" %}
+                    </div>
                 </div>
             </div>
         </section>
-
     {% else %}
         <section class="s-page-menu-01 s-page-menu-01--communaute">
             <div class="s-page-menu-01__container container">
@@ -36,10 +38,9 @@
                         <h1 class="h1-hero lh-sm font-weight-bold m-0">Entraide, actus et apprentissage<br>pour les professionnels de l'IAE</h1>
                     </div>
                 </div>
-                <div class="s-page-menu-01__row row">
+                <div class="s-page-menu-01__row row align-items-center">
                     <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
                         <h2 class="h1 mb-3 mb-lg-5">Améliorez votre pratique professionnelle :</h2>
-
                         <ul class="lead list-unstyled mb-md-5">
                             <li class="d-flex mb-2">
                                 <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
@@ -55,15 +56,20 @@
                             </li>
                         </ul>
                         {% include "partials/ask_a_question.html" %}
-                        <div class="s-page-menu-01__col col-12 d-none d-lg-inline-flex col-md-4">
-                            <div>
-                                <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid" loading="lazy" alt="">
-                            </div>
+                    </div>
+                    <div class="s-page-menu-01__col col-12 d-none d-lg-inline-flex col-md-4">
+                        <div>
+                            <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid w-lg-75" loading="lazy" alt="">
                         </div>
                     </div>
                 </div>
-            </section>
-
+                <div class="s-page-menu-01__row row">
+                    <div class="s-page-menu-01__col col-12 mt-3 mt-lg-5">
+                        {% include "partials/banner.html" %}
+                    </div>
+                </div>
+            </div>
+        </section>
     {% endif %}
 
     <div id="community"></div>
