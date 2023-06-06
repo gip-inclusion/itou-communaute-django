@@ -6,6 +6,9 @@
 
 {% block content %}
     <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            {% include "partials/banner.html" %}
+        </div>
         <div class="col-12">
             <h1>{{ forum.name }}</h1>
         </div>
@@ -18,9 +21,6 @@
             <div class="card post-edit">
                 <div class="card-header">
                     <h3 class="m-0 h4 card-title">{% trans "Post a new topic" %}</h3>
-                </div>
-                <div class="card-body">
-                    {% include "partials/banner.html" %}
                 </div>
                 <div class="card-body">
                     {% include "forum_conversation/partials/topic_form.html" %}
