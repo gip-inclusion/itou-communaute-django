@@ -13,7 +13,7 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-1">
+            <h1>
                 {% if forum.level > 0 %}
                     {% for ancestor in forum.get_ancestors %}
                         <a href="{% url 'forum_extension:forum' ancestor.slug ancestor.id %}"
@@ -27,7 +27,7 @@
                 {{ forum.name }}
             </h1>
             {% if forum.description %}
-                <p class="lead">{{forum.description|urlizetrunc_target_blank:30}}</small>
+                <div class="lead">{{forum.description.rendered|urlizetrunc_target_blank:30}}</div>
             {% endif %}
         </div>
     </div>
