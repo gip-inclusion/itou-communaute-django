@@ -512,12 +512,26 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, tag)
+        self.assertContains(
+            response, reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        )
+        self.assertContains(
+            response,
+            f'<span class="badge badge-xs badge-pill badge-info-lighter text-info">{self.forum.name}</span></a>',
+        )
 
         self.topic.tags.add(tag)
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, tag)
+        self.assertContains(
+            response, reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        )
+        self.assertContains(
+            response,
+            f'<span class="badge badge-xs badge-pill badge-info-lighter text-info">{self.forum.name}</span></a>',
+        )
 
     def test_edit_link_is_visible(self):
         self.client.force_login(self.poster)
