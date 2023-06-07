@@ -11,7 +11,6 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
-from lacommunaute.forum_conversation.views import TopicListView
 from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
 
@@ -115,18 +114,6 @@ class TopicContentView(PermissionRequiredMixin, View):
 
     def get_controlled_object(self):
         return self.get_topic().forum
-
-class TopicNewsListView(TopicListView):
-    def get_queryset(self):
-        return Topic.objects.filter(forum__in=Forum.objects.public(), type=Topic.TOPIC_NEWS).optimized_for_topics_list(
-            self.request.user.id
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["loadmoretopic_url"] = reverse("forum_conversation_extension:newsfeed_topics_list")
-        context["loadmoretopic_suffix"] = "newsfeed"
-        return context
 
 
 class TopicCertifiedPostView(TopicContentView):

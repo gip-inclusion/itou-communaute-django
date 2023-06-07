@@ -152,3 +152,22 @@ class TopicListView(ListView):
         context["filters"] = Filters.choices
 
         return context
+
+
+class TopicNewsListView(ListView):
+    context_object_name = "topics"
+    paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+    template_name = "forum_conversation/topic_list.html"
+
+    def get_queryset(self):
+        return Topic.objects.filter(forum__in=Forum.objects.public(), type=Topic.TOPIC_NEWS).optimized_for_topics_list(
+            self.request.user.id
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = PostForm(user=self.request.user)
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:newsfeed_topics_list")
+        context["loadmoretopic_suffix"] = "newsfeed"
+        context["display_filter_dropdown"] = False
+        return context
