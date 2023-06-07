@@ -1,8 +1,15 @@
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path
 from django.views.generic.base import TemplateView
 
-from lacommunaute.pages import views
+from lacommunaute.pages import sitemaps, views
 
+
+sitemaps = {
+    "pages": sitemaps.PagesSitemap,
+    "forum": sitemaps.ForumSitemap,
+    "topic": sitemaps.TopicSitemap,
+}
 
 app_name = "pages"
 
@@ -13,4 +20,5 @@ urlpatterns = [
     path("landing-pages/", views.LandingPagesListView.as_view(), name="landing_pages"),
     path("sentry-debug/", views.trigger_error, name="sentry_debug"),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
 ]
