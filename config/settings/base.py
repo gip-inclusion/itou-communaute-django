@@ -32,6 +32,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "django.contrib.sites",
+    "django.contrib.sitemaps",
     "django.contrib.redirects",
     "django.contrib.flatpages",
 ]
