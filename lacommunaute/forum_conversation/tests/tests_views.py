@@ -694,3 +694,48 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
+
+class NewsFeedTopicListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(with_post=True, type=Topic.TOPIC_NEWS)
+        cls.user = cls.topic.poster
+        cls.forum = cls.topic.forum
+        assign_perm("can_read_forum", cls.topic.poster, cls.topic.forum)
+        cls.url = reverse("forum_conversation_extension:newsfeed_topics_list")
+
+    def test_view(self):
+        TopicFactory(with_post=True, poster=self.user, forum=self.forum)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+        self.assertIsInstance(response.context_data["form"], PostForm)
+        self.assertEqual(response.context_data["loadmoretopic_url"], self.url)
+        self.assertEqual(response.context_data["loadmoretopic_suffix"], "newsfeed")
+        self.assertEqual(list(response.context_data["topics"]), [self.topic])
+        self.assertEqual(response.context_data["display_filter_dropdown"], False)
+        self.assertNotContains(response, '<div class="dropdown-menu" id="filterTopicsDropdown" style="">')
+
+    def test_forum_is_private(self):
+        self.forum.is_private = True
+        self.forum.save()
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context_data["topics"]), 0)
+
+    def test_pagination(self):
+        TopicFactory.create_batch(9, with_post=True, type=Topic.TOPIC_NEWS)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.url + "?page=2")
+
+        TopicFactory(with_post=True, type=Topic.TOPIC_NEWS)
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.url + "?page=2")
