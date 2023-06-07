@@ -371,6 +371,33 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, tag)
 
+    def test_description_is_markdown_rendered(self):
+        self.forum.description = "# title"
+        self.forum.save()
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<h1>title</h1>")
+
+    def test_descendants_are_in_cards_if_forum_is_category_type(self):
+        self.forum.type = Forum.FORUM_CAT
+        self.forum.save()
+        child_forum = ForumFactory(parent=self.forum)
+        assign_perm("can_read_forum", self.user, child_forum)
+        assign_perm("can_see_forum", self.user, child_forum)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<div class="card-body')
+        self.assertContains(response, child_forum.name)
+        self.assertContains(
+            response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+
 
 class ModeratorEngagementViewTest(TestCase):
     @classmethod
