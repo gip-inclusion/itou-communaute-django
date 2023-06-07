@@ -1,0 +1,31 @@
+<div class="row">
+    {% for forum in forums %}
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card c-card has-links-inside h-100">
+                {% if forum.image %}
+                    <div class="card-header">
+                        <img src="{{ forum.image.url }}" class="img-fluid img-fitcover" alt="">
+                    </div>
+                {% endif %}
+                <div class="card-body pb-0">
+                    <p class="h3 lh-base">{{ forum.name }}</p>
+                    {% if forum.description %}
+                        <div>
+                            {{ forum.description.rendered|truncatechars_html:100 }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-right">
+                    <a href="{% url 'forum_extension:forum' forum.slug forum.id %}"
+                        class="btn btn-ico btn-link stretched-link matomo-event"
+                        data-matomo-category="engagement"
+                        data-matomo-action="explore"
+                        data-matomo-option="fiches_techniques">
+                        <span>Consulter les fiches du thème</span>
+                        <i class="ri-arrow-right-up-line ri-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
