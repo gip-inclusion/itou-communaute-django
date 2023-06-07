@@ -7,7 +7,7 @@ from django.db.models import Count, Exists, OuterRef
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, ListView
-from machina.apps.forum.views import ForumView as BaseForumView, IndexView as BaseIndexView
+from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
@@ -15,48 +15,15 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.models import User
-from lacommunaute.utils.middleware import store_upper_visible_forums
 
 
 logger = logging.getLogger(__name__)
 
-ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
 GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
-
-
-class IndexView(BaseIndexView):
-    template_name = "pages/home.html"
-
-    def get_queryset(self):
-        """Returns the list of items for this view."""
-        forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
-            self.request.forum_permission_handler.forum_list_filter(
-                Forum.objects.all().prefetch_related("members_group__user_set"),
-                self.request.user,
-            ),
-        )
-        store_upper_visible_forums(self.request, forum_visibility_content_tree.top_nodes)
-        return forum_visibility_content_tree
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["topics"] = (
-            Topic.objects.filter(forum__in=Forum.objects.public())
-            .unanswered()
-            .optimized_for_topics_list(self.request.user.id)
-        )
-        context["form"] = PostForm(user=self.request.user)
-
-        if self.request.GET.get("new", None):
-            context["pending_topics_tab"] = True
-        else:
-            context["forums_tab"] = True
-
-        return context
 
 
 class ForumView(BaseForumView):
@@ -173,7 +140,7 @@ class ForumCreateView(UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("forum_extension:home")
+        return reverse("forum_conversation_extension:home")
 
 
 class ModeratorEngagementView(PermissionRequiredMixin, ListView):

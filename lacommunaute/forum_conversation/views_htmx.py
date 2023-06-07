@@ -11,6 +11,7 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_conversation.views import TopicListView
 from lacommunaute.forum_upvote.shortcuts import can_certify_post
 
 
@@ -114,14 +115,6 @@ class TopicContentView(PermissionRequiredMixin, View):
 
     def get_controlled_object(self):
         return self.get_topic().forum
-
-
-class TopicListView(ListView):
-    template_name = "forum_conversation/topic_list.html"
-
-    paginate_by = paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
-    context_object_name = "topics"
-
 
 class TopicNewsListView(TopicListView):
     def get_queryset(self):
