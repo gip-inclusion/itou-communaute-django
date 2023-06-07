@@ -1,9 +1,11 @@
 import logging
+from typing import Any
 
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.db.models import Count, Exists, OuterRef
+from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, ListView
@@ -178,3 +180,11 @@ class ModeratorEngagementView(PermissionRequiredMixin, ListView):
         context["forum"] = self.forum
         context["stats"] = self.forum.get_stats(7)
         return context
+
+
+class CategoryForumListView(ListView):
+    template_name = "forum/category_forum_list.html"
+    context_object_name = "forums"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Forum.objects.exclude(is_private=True).filter(type=Forum.FORUM_CAT, level=0)
