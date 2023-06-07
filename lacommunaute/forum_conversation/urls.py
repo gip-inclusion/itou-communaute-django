@@ -4,7 +4,6 @@ from lacommunaute.forum_conversation.views_htmx import (
     ForumTopicListView,
     PostFeedCreateView,
     PostListView,
-    TopicCertifiedListView,
     TopicCertifiedPostView,
     TopicContentView,
     TopicLikeView,
@@ -24,7 +23,6 @@ conversation_urlpatterns = [
 ]
 
 public_topics_urlpatterns = [
-    path("topic/certified/", TopicCertifiedListView.as_view(), name="public_certified_topics_list"),
     path("topic/newsfeed/", TopicNewsListView.as_view(), name="newsfeed_topics_list"),
 ]
 

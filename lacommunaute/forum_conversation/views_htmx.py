@@ -123,19 +123,6 @@ class TopicListView(ListView):
     context_object_name = "topics"
 
 
-class TopicCertifiedListView(TopicListView):
-    def get_queryset(self):
-        return Topic.objects.filter(
-            forum__in=Forum.objects.public(), certified_post__isnull=False
-        ).optimized_for_topics_list(self.request.user.id)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["loadmoretopic_url"] = reverse("forum_conversation_extension:public_certified_topics_list")
-        context["loadmoretopic_suffix"] = "certified"
-        return context
-
-
 class TopicNewsListView(TopicListView):
     def get_queryset(self):
         return Topic.objects.filter(forum__in=Forum.objects.public(), type=Topic.TOPIC_NEWS).optimized_for_topics_list(
