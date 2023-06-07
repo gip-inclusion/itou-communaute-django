@@ -1,18 +1,24 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
+from django.views.generic import ListView
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
+from lacommunaute.forum.models import Forum
+from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 from lacommunaute.forum_upvote.shortcuts import can_certify_post
+from lacommunaute.utils.middleware import store_upper_visible_forums
 
 
 logger = logging.getLogger(__name__)
 
+ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 track_handler = TrackingHandler()
 
@@ -90,3 +96,59 @@ class TopicView(views.TopicView):
 
     def get_queryset(self):
         return get_posts_of_a_topic_except_first_one(self.topic, self.request.user)
+
+
+class TopicListView(ListView):
+    context_object_name = "topics"
+    paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+
+    def get_template_names(self):
+        if self.request.META.get("HTTP_HX_REQUEST"):
+            return ["forum_conversation/topic_list.html"]
+        return ["pages/home.html"]
+
+    def get_filter(self):
+        if not hasattr(self, "filter"):
+            self.filter = self.request.GET.get("filter", None)
+        return self.filter
+
+    def get_content_tree(self):
+        if not hasattr(self, "forum_visibility_content_tree"):
+            self.forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
+                self.request.forum_permission_handler.forum_list_filter(
+                    Forum.objects.exclude(is_newsfeed=True).prefetch_related("members_group__user_set"),
+                    self.request.user,
+                ),
+            )
+            store_upper_visible_forums(self.request, self.forum_visibility_content_tree.top_nodes)
+        return self.forum_visibility_content_tree
+
+    def get_queryset(self):
+        forums = self.get_content_tree().forums
+        qs = Topic.objects.filter(forum__in=forums).optimized_for_topics_list(self.request.user.id)
+
+        if self.get_filter() == Filters.NEW:
+            qs = qs.unanswered()
+        elif self.get_filter() == Filters.CERTIFIED:
+            qs = qs.filter(certified_post__isnull=False)
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = PostForm(user=self.request.user)
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:home")
+
+        if self.get_filter():
+            context["loadmoretopic_url"] += f"?filter={self.get_filter()}"
+
+        context["active_filter_name"] = (
+            getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
+        )
+        context["display_filter_dropdown"] = False if self.request.GET.get("page") else True
+
+        context["loadmoretopic_suffix"] = "topics"
+        context["total"] = self.get_queryset().count()
+        context["filters"] = Filters.choices
+
+        return context

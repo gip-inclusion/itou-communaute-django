@@ -464,95 +464,6 @@ class ModeratorEngagementViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-class IndexViewTest(TestCase):
-    def setUp(self):
-        self.url = reverse("forum_extension:home")
-        self.forum = ForumFactory()
-        self.user = UserFactory()
-
-    def test_forum_is_not_visible_without_perms(self):
-        response = self.client.get(reverse("forum_extension:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.forum.name)
-
-    def test_forum_is_visible_with_authenticated_perms(self):
-        assign_perm("can_see_forum", self.user, self.forum)
-        assign_perm("can_read_forum", self.user, self.forum)
-        self.client.force_login(self.user)
-        response = self.client.get(reverse("forum_extension:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.forum.name)
-
-    def test_forum_is_visible_with_anonymous_perms(self):
-        assign_perm("can_see_forum", AnonymousUser(), self.forum)
-        assign_perm("can_read_forum", AnonymousUser(), self.forum)
-        response = self.client.get(reverse("forum_extension:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.forum.name)
-
-    def test_form_is_in_context(self):
-        response = self.client.get(self.url)
-        self.assertIsInstance(response.context_data["form"], PostForm)
-
-    def test_unaswered_topics_visibility(self):
-        unanswered_private_topic = TopicFactory(forum=ForumFactory(is_private=True), with_post=True)
-        unanswered_public_topic = TopicFactory(forum=ForumFactory(is_private=False), with_post=True)
-
-        response = self.client.get(self.url)
-
-        self.assertNotIn(unanswered_private_topic, response.context["topics"])
-        self.assertIn(unanswered_public_topic, response.context["topics"])
-
-    def test_parameters_in_url(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'class="nav-link" id="pending-topics-tab"')
-        self.assertContains(response, 'class="tab-pane fade" id="pending-topics"')
-        self.assertContains(response, 'class="nav-link active" id="forums_tab"')
-        self.assertContains(response, 'class="tab-pane fade show active" id="forums"')
-
-        url = self.url + "?new=1"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'class="nav-link active" id="pending-topics-tab"')
-        self.assertContains(response, 'class="tab-pane fade show active" id="pending-topics"')
-        self.assertContains(response, 'class="nav-link" id="forums_tab"')
-        self.assertContains(response, 'class="tab-pane fade" id="forums"')
-
-    def test_has_liked(self):
-        TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
-
-    def test_certified_topics_list_is_preloaded(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'hx-trigger="load"')
-
-    def test_store_upper_visible_forums(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(
-            response,
-            '<a class="dropdown-header matomo-event" href="'
-            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
-        assign_perm("can_see_forum", self.user, self.forum)
-        assign_perm("can_read_forum", self.user, self.forum)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            '<a class="dropdown-header matomo-event" href="'
-            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
-
 class CreateForumView(TestCase):
     def setUp(self):
         self.user = UserFactory()
@@ -593,7 +504,7 @@ class CreateForumView(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("forum_extension:home"))
+        self.assertRedirects(response, reverse("forum_conversation_extension:home"))
 
         self.assertEqual(Forum.objects.count(), 1)
         self.assertEqual(Forum.objects.first().name, name)

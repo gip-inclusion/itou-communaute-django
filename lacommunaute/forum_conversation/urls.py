@@ -1,5 +1,6 @@
 from django.urls import include, path
 
+from lacommunaute.forum_conversation.views import TopicListView
 from lacommunaute.forum_conversation.views_htmx import (
     ForumTopicListView,
     PostFeedCreateView,
@@ -27,6 +28,7 @@ public_topics_urlpatterns = [
 ]
 
 urlpatterns = [
+    path("", TopicListView.as_view(), name="home"),
     path(
         "forum/<str:forum_slug>-<int:forum_pk>/",
         include(conversation_urlpatterns),

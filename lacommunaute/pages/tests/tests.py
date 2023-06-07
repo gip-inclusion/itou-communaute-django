@@ -13,7 +13,7 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 class HomepageTest(TestCase):
     def test_home_page(self):
-        url = reverse("forum_extension:home")
+        url = reverse("forum_conversation_extension:home")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/home.html")

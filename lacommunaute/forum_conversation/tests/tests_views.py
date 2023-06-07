@@ -13,7 +13,9 @@ from machina.core.loading import get_class
 from taggit.models import Tag
 
 from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
@@ -535,3 +537,160 @@ class TopicViewTest(TestCase):
         with self.assertNumQueries(55):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
+
+
+class TopicListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = reverse("forum_conversation_extension:home")
+        cls.topic = TopicFactory(with_post=True, with_like=True)
+        cls.forum = cls.topic.forum
+        cls.user = cls.topic.poster
+
+        assign_perm("can_see_forum", cls.user, cls.forum)
+        assign_perm("can_read_forum", cls.user, cls.forum)
+
+    def test_context(self):
+        response = self.client.get(self.url)
+
+        self.assertIsInstance(response.context_data["form"], PostForm)
+        self.assertEqual(response.context_data["filters"], Filters.choices)
+        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:home"))
+        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+
+        for filter, label in Filters.choices:
+            with self.subTest(filter=filter, label=label):
+                response = self.client.get(self.url + f"?filter={filter}")
+                self.assertEqual(
+                    response.context_data["loadmoretopic_url"],
+                    reverse("forum_conversation_extension:home") + f"?filter={filter}",
+                )
+                self.assertEqual(response.context_data["active_filter_name"], label)
+
+        response = self.client.get(self.url + "?filter=FAKE")
+        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+
+    def test_has_liked(self):
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        # icon: solid heart
+        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+
+    def test_store_upper_visible_forums(
+        self,
+    ):
+        hidden_forum = ForumFactory()
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(
+            response,
+            '<a class="dropdown-header matomo-event" href="'
+            + reverse("forum_extension:forum", kwargs={"pk": hidden_forum.pk, "slug": hidden_forum.slug}),
+        )
+        self.assertContains(
+            response,
+            '<a class="dropdown-header matomo-event" href="'
+            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+        )
+
+    def test_queryset(self):
+        answered_topic = TopicFactory(with_post=True, forum=self.forum)
+        PostFactory(topic=answered_topic)
+        nonreadable_topic = TopicFactory(with_post=True)
+        certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["total"], 3)
+        self.assertNotContains(response, nonreadable_topic.subject)
+
+        for topic in Topic.objects.filter(forum=self.forum):
+            with self.subTest(topic):
+                self.assertContains(response, topic.subject)
+
+        response = self.client.get(self.url + "?filter=NEW")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["total"], 1)
+        self.assertContains(response, self.topic.subject)
+
+        for topic in Topic.objects.exclude(id=self.topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
+
+        response = self.client.get(self.url + "?filter=CERTIFIED")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["total"], 1)
+        self.assertContains(response, certified_topic.subject)
+
+        for topic in Topic.objects.exclude(id=certified_topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
+
+    def test_certified_topics_list_content(self):
+        certified_private_topic = TopicFactory(with_certified_post=True, forum=ForumFactory(is_private=True))
+        certified_public_topic = TopicFactory(with_certified_post=True, forum=self.forum)
+        topic = TopicFactory(with_post=True)
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url + "?filter=CERTIFIED")
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, certified_public_topic.first_post.subject)
+        self.assertContains(response, str(certified_public_topic.first_post.content)[:100])
+        self.assertContains(response, str(certified_public_topic.certified_post.post.content)[:100])
+
+        self.assertNotContains(response, certified_private_topic.first_post.subject)
+        self.assertNotContains(response, str(certified_private_topic.first_post.content)[:100])
+        self.assertNotContains(response, str(certified_private_topic.certified_post.post.content)[:100])
+
+        self.assertNotContains(response, topic.first_post.subject)
+        self.assertNotContains(response, str(topic.first_post.content)[:100])
+
+    def test_pagination(self):
+        self.client.force_login(self.user)
+        TopicFactory.create_batch(9, with_post=True, forum=self.forum)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertNotContains(response, self.url + "?page=2")
+
+        TopicFactory(with_post=True, forum=self.forum)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, self.url + "?page=2")
+
+    def test_add_multiple_params_in_query(self):
+        TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user)
+        self.client.force_login(self.user)
+
+        for filter in [Filters.ALL, Filters.NEW]:
+            with self.subTest(filter=filter):
+                response = self.client.get(self.url + f"?filter={filter}")
+
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, self.url + f"?filter={filter}&amp;page=2")
+
+    def test_filter_dropdown_visibility(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, '<div class="dropdown-menu dropdown-menu-right" id="filterTopicsDropdown">')
+        self.assertEqual(response.context_data["display_filter_dropdown"], True)
+
+        response = self.client.get(self.url + "?page=1")
+        self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-right" id="filterTopicsDropdown">')
+        self.assertEqual(response.context_data["display_filter_dropdown"], False)
+
+    def test_template_name(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "pages/home.html")
+
+        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
+        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+

@@ -80,26 +80,16 @@
                 <div class="s-tabs-01__col col-12">
                     <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link{% if forums_tab %} active{% endif %}" id="forums_tab"
+                            <a class="nav-link active" id="topics-tab"
                                 data-toggle="tab"
-                                href="#forums"
+                                href="#topics"
                                 role="tab"
-                                aria-controls="forums"
-                                aria-selected="{% if forums_tab %}true{% else %}false{% endif %}">
-                                Thématiques
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link{% if pending_topics_tab %} active{% endif %}" id="pending-topics-tab"
-                                data-toggle="tab"
-                                href="#pending-topics"
-                                role="tab"
-                                aria-controls="pending-topics"
-                                aria-selected="{% if pending_topics_tab %}true{% else %}false{% endif %}"
+                                aria-controls="topics"
+                                aria-selected="true"
                                 data-matomo-category="engagement"
                                 data-matomo-action="view"
-                                data-matomo-option="pending_topics">
-                                Questions en attente
+                                data-matomo-option="topics">
+                                Questions/Réponses
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -126,24 +116,12 @@
                         </li>
                     </ul>
                     <div class="tab-content topiclist">
-                        <div class="tab-pane fade{% if forums_tab %} show active{% endif %}" id="forums"
+                        <div class="tab-pane fade show active" id="topics"
                             role="tabpanel"
-                            aria-labelledby="forums_tab">
-                            {% forum_list forums %}
-                        </div>
-                        <div class="tab-pane fade{% if pending_topics_tab %} show active{% endif %}" id="pending-topics"
-                            role="tabpanel"
-                            aria-labelledby="pending-topics-tab">
-                            {% with topics=topics topic_list_title="Questions en attente" %}
+                            aria-labelledby="topics-tab">
+                            {% with topics=topics %}
                                 {% include "forum_conversation/topic_list.html" %}
                             {% endwith %}
-                        </div>
-                        <div class="tab-pane fade" id="certified-topics"
-                            role="tabpanel"
-                            aria-labelledby="certified-topics-tab">
-                            <div id="certifiedtopicsarea">
-                                chargement en cours...
-                            </div>
                         </div>
                         <div class="tab-pane fade" id="newsfeed-topics"
                             role="tabpanel"
@@ -174,7 +152,6 @@
             </div>
         </section>
     {% endif %}
-
 {% endblock %}
 
 {% block extra_js %}

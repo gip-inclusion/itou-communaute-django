@@ -2,32 +2,28 @@
 {% load i18n %}
 {% load theme_inclusion %}
 <ul>
-    {% if request.path == '/' and not user.is_authenticated %}
-        <li class="col-12 col-lg-auto">
-            <a href="#community">
-                Accéder aux {% trans "Forums"|lower %}
-            </a>
-        </li>
-    {% else %}
-        {% comment %} TODO : Si user connecté, liste de ses forums et sous-forums {% endcomment %}
-        <li>
-            <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="communautesDropdown" aria-expanded="false">Accéder aux {% trans "Forums"|lower %}</a>
-            <div class="dropdown-menu" id="communautesDropdown">
-                <ul class="list-unstyled">
-                    {% for forum in request.session.upper_visible_forums %}
-                        <li>
-                            <a class="dropdown-header matomo-event" href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                                data-matomo-category="engagement"
-                                data-matomo-action="view"
-                                data-matomo-option="forum">
-                                {{ forum.name }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </li>
-    {% endif %}
+    <li class="col-12 col-lg-auto">
+        <a href="{% url 'forum_conversation_extension:home' %}{% if not user.is_authenticated %}#community{% endif %}">
+            Accéder aux dernières questions-réponses
+        </a>
+    </li>
+    <li>
+        <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="communautesDropdown" aria-expanded="false">Accéder aux {% trans "Forums"|lower %}</a>
+        <div class="dropdown-menu" id="communautesDropdown">
+            <ul class="list-unstyled">
+                {% for forum in request.session.upper_visible_forums %}
+                    <li>
+                        <a class="dropdown-header matomo-event" href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="forum">
+                            {{ forum.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </li>
     <li class="col-12 col-lg-auto mt-3 mt-lg-0">
         <a href="{% url 'event:calendar' %}">
             Accéder aux évènements publics
