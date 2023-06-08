@@ -60,11 +60,13 @@ def get_matomo_visits_data(period, search_date):
     ]
 
 
-def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_visitors"):
+def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_visitors", label=None):
     """
     function to extract data from matomo api Events.getCategory call
     """
     datas = get_matomo_data(period=period, search_date=search_date, method="Events.getCategory")
+    if label:
+        datas = list(filter(lambda d: d.get("label") == label, datas))
 
     if not datas:
         return [
@@ -128,7 +130,7 @@ def collect_stats_from_matomo_api(period="day", from_date=date(2022, 12, 5), to_
     while from_date <= to_date:
 
         stats += get_matomo_visits_data(period, from_date)
-        stats += get_matomo_events_data(period, from_date, nb_uniq_visitors_key=keys[period])
+        stats += get_matomo_events_data(period, from_date, nb_uniq_visitors_key=keys[period], label="engagement")
         print(f"Stats collected for {period} {from_date} ({len(stats)} stats collected)")
 
         if period == "day":
