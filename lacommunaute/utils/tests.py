@@ -395,6 +395,40 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                 expected_res,
             )
 
+    def test_get_matomo_events_data_with_label(self):
+        label = faker.word()
+        nb_active_visitors = faker.random_int()
+        expected_res = self.uniq_active_visitors_res
+        expected_res[1]["value"] = self.nb_uniq_visitors - nb_active_visitors
+
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = [
+                {
+                    "label": label,
+                    "nb_uniq_visitors": self.nb_uniq_visitors,
+                    "subtable": [
+                        {
+                            "label": "view",
+                            "nb_uniq_visitors": nb_active_visitors,
+                        },
+                    ],
+                },
+                {
+                    "label": "not_" + label,
+                    "nb_uniq_visitors": self.nb_uniq_visitors + 1,
+                    "subtable": [
+                        {
+                            "label": "view",
+                            "nb_uniq_visitors": nb_active_visitors + 1,
+                        },
+                    ],
+                },
+            ]
+            self.assertEqual(
+                get_matomo_events_data(period="day", search_date=self.today, label=label),
+                expected_res,
+            )
+
 
 class UtilsMiddlewareStoreUpperVisibleForumTest(TestCase):
     def test_store_upper_visible_forums(self):
