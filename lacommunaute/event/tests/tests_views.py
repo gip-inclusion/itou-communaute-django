@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
@@ -219,7 +219,7 @@ class calendar_data_test(TestCase):
                 "location": event.location,
                 "description": event.description,
                 "poster_id": event.poster.id,
-                "time": "10:00:00",
+                "time": str(time(10)),
                 "year": event.date.year,
                 "month": event.date.month,
                 "day": event.date.day,
