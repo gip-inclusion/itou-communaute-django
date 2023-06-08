@@ -472,12 +472,15 @@ class UtilsMiddlewareVisibleForumsMiddlewareTest(TestCase):
 
         visible_forum = ForumFactory()
         descendant_visible_forum = ForumFactory(parent=visible_forum)
+        categ_forum = ForumFactory(type=Forum.FORUM_CAT)
         ForumFactory()
 
         assign_perm("can_see_forum", user, visible_forum)
         assign_perm("can_read_forum", user, visible_forum)
         assign_perm("can_see_forum", user, descendant_visible_forum)
         assign_perm("can_read_forum", user, descendant_visible_forum)
+        assign_perm("can_see_forum", user, categ_forum)
+        assign_perm("can_read_forum", user, categ_forum)
 
         response = self.client.get("/")
 

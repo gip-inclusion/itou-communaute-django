@@ -13,6 +13,7 @@ from machina.core.loading import get_class
 from taggit.models import Tag
 
 from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -595,6 +596,9 @@ class TopicListViewTest(TestCase):
         self,
     ):
         hidden_forum = ForumFactory()
+        categ_forum = ForumFactory(type=Forum.FORUM_CAT)
+        assign_perm("can_see_forum", self.user, categ_forum)
+        assign_perm("can_read_forum", self.user, categ_forum)
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
@@ -604,6 +608,11 @@ class TopicListViewTest(TestCase):
             response,
             '<a class="dropdown-header matomo-event" href="'
             + reverse("forum_extension:forum", kwargs={"pk": hidden_forum.pk, "slug": hidden_forum.slug}),
+        )
+        self.assertNotContains(
+            response,
+            '<a class="dropdown-header matomo-event" href="'
+            + reverse("forum_extension:forum", kwargs={"pk": categ_forum.pk, "slug": categ_forum.slug}),
         )
         self.assertContains(
             response,

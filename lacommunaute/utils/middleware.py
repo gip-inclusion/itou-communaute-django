@@ -28,7 +28,7 @@ class VisibleForumsMiddleware(MiddlewareMixin):
         if not forum_visibility_content_tree:
             forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
                 request.forum_permission_handler.forum_list_filter(
-                    Forum.objects.all(),
+                    Forum.objects.exclude(type=Forum.FORUM_CAT),
                     request.user,
                 ),
             )

@@ -116,7 +116,7 @@ class TopicListView(ListView):
         if not hasattr(self, "forum_visibility_content_tree"):
             self.forum_visibility_content_tree = ForumVisibilityContentTree.from_forums(
                 self.request.forum_permission_handler.forum_list_filter(
-                    Forum.objects.exclude(is_newsfeed=True).prefetch_related("members_group__user_set"),
+                    Forum.objects.exclude(type=Forum.FORUM_CAT).prefetch_related("members_group__user_set"),
                     self.request.user,
                 ),
             )
