@@ -296,7 +296,6 @@ class PostCreateViewTest(TestCase):
         )
 
     def test_machina_route_forbidden(self):
-
         self.client.force_login(self.poster)
 
         post_data = {"content": "c"}
@@ -586,7 +585,6 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
 
     def test_has_liked(self):
-
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: solid heart
@@ -654,6 +652,21 @@ class TopicListViewTest(TestCase):
         for topic in Topic.objects.exclude(id=certified_topic.id):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
+
+    def test_unanswerd_topics_visibility(self):
+        url = self.url + "?filter=NEW"
+        self.client.force_login(self.user)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.topic.subject)
+
+        self.forum.is_private = True
+        self.forum.save()
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.topic.subject)
 
     def test_certified_topics_list_content(self):
         certified_private_topic = TopicFactory(with_certified_post=True, forum=ForumFactory(is_private=True))
