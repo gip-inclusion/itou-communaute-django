@@ -1,5 +1,16 @@
 # Journal des modifications
 
+## v1.12 - 2023-06-12
+- [FIX] : ne pas afficher les forums de type catégorie dans la liste des forums visibles (#302)
+- [FIX] stats quotidiennes (#301)
+- [FIX] correction de la date dans le test de la liste des evenements (#300)
+- [STATS] stats mensuelles Mai 2023 (#299)
+- [SEO] Ajout des fichiers Robots.txt et Sitemap.xml (#297)
+- [SEO] Fiches Techniques - prototype (#296)
+- [HOME] Bannière pour la redirection vers le support des emplois (#294)
+- [HOME] Aligner la page d'accueil avec l'audience cible (#291)
+- [TOPIC] Liste des Questions/Réponses avec filtres sur la page d'accueil (#289)
+
 ## v1.11 - 2023-05-30
 - [Page d'accueil] dynamiser le chargement de la liste des communautes (#285)
 - [rollback WWW] finalisation (#283)
