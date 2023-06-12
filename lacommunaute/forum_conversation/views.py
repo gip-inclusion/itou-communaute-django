@@ -128,7 +128,7 @@ class TopicListView(ListView):
         qs = Topic.objects.filter(forum__in=forums).optimized_for_topics_list(self.request.user.id)
 
         if self.get_filter() == Filters.NEW:
-            qs = qs.unanswered()
+            qs = qs.unanswered().filter(forum__in=Forum.objects.public())
         elif self.get_filter() == Filters.CERTIFIED:
             qs = qs.filter(certified_post__isnull=False)
 
