@@ -15,11 +15,12 @@ def test_sitemap(client, db):
 
 
 def test_topic_is_in_sitemap(client, db):
-    topic = TopicFactory()
+    topic = TopicFactory(with_post=True)
     url = reverse("pages:django.contrib.sitemaps.views.sitemap")
     response = client.get(url)
     assert response.status_code == 200
     assert topic.get_absolute_url() in response.content.decode()
+    assert f"<lastmod>{topic.last_post_on.strftime('%Y-%m-%d')}</lastmod>" in response.content.decode()
 
 
 def test_forum_is_in_sitemap(client, db):
@@ -28,6 +29,7 @@ def test_forum_is_in_sitemap(client, db):
     response = client.get(url)
     assert response.status_code == 200
     assert reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}) in response.content.decode()
+    assert f"<lastmod>{forum.updated.strftime('%Y-%m-%d')}</lastmod>" in response.content.decode()
 
 
 def test_flatpage_is_in_sitemap(client, db):
