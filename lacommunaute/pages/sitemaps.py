@@ -26,7 +26,7 @@ class ForumSitemap(Sitemap):
         return reverse("forum_extension:forum", kwargs={"pk": obj.pk, "slug": obj.slug})
 
     def lastmod(self, obj: Model) -> str:
-        return obj.last_post_on
+        return obj.updated
 
 
 class TopicSitemap(Sitemap):
