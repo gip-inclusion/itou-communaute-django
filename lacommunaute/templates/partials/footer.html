@@ -8,8 +8,8 @@
 				<div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
 					<strong>Accès rapides</strong>
                     <ul>
-                        <li><a href="{% url 'forum_conversation_extension:home' %}{% if not user.is_authenticated %}#community{% endif %}">Evènements publics</a></li>
-                        <li><a href="#">Thématiques</a></li>
+                        <li><a href="{% url 'forum_conversation_extension:home' %}{% if not user.is_authenticated %}#community{% endif %}">Dernières questions/réponses</a></li>
+                        <li><a href="{% url 'event:calendar' %}">Évènements publics</a></li>
                     </ul>
 				</div>
 				<div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
