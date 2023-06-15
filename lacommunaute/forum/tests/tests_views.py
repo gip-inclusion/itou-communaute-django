@@ -1,20 +1,17 @@
 from django.contrib.auth.models import AnonymousUser, Group
 from django.template.defaultfilters import truncatechars_html
-from django.test import RequestFactory, TestCase, override_settings
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.tracking import TopicReadTrackFactory
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
-from lacommunaute.forum_conversation.forum_polls.factories import TopicPollFactory, TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory
 from lacommunaute.users.factories import UserFactory
@@ -190,13 +187,6 @@ class ForumViewTest(TestCase):
         self.assertNotContains(
             response,
             reverse(
-                "forum_extension:engagement",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
-        self.assertNotContains(
-            response,
-            reverse(
                 "members:forum_profiles",
                 kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
             ),
@@ -205,13 +195,6 @@ class ForumViewTest(TestCase):
         # permission
         assign_perm("can_approve_posts", self.user, self.forum)
         response = self.client.get(self.url)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_extension:engagement",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
         self.assertContains(
             response,
             reverse(
@@ -224,13 +207,6 @@ class ForumViewTest(TestCase):
         self.forum.members_group = None
         self.forum.save()
         response = self.client.get(self.url)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_extension:engagement",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
         self.assertNotContains(
             response,
             reverse(
@@ -397,98 +373,6 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
-
-
-class ModeratorEngagementViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
-        cls.user = cls.topic.poster
-        cls.url = reverse(
-            "forum_extension:engagement",
-            kwargs={"pk": cls.topic.forum.pk, "slug": cls.topic.forum.slug},
-        )
-
-    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
-    def test_queryset(self):
-        assign_perm("can_approve_posts", self.user, self.topic.forum)
-        self.client.force_login(self.user)
-
-        users = UserFactory.create_batch(3)
-
-        # count views
-        # count likes
-        for user in users:
-            TopicReadTrackFactory(topic=self.topic, user=user)
-            self.topic.likers.add(user)
-        self.topic.save()
-
-        # count replies
-        PostFactory(topic=self.topic, poster=self.user)
-
-        # count attachments
-        AttachmentFactory(post=self.topic.posts.first())
-
-        # count votes
-        poll = TopicPollFactory(topic=self.topic)
-        TopicPollVoteFactory.create_batch(4, poll_option__poll=poll, voter=self.user)
-
-        response = self.client.get(self.url)
-        self.assertEqual(
-            response.context["topics"].values("likes", "messages", "attached", "votes").first(),
-            {"likes": 3, "messages": 2, "attached": 1, "votes": 4},
-        )
-
-        # exclued topic not approved
-        not_approved_topic = TopicFactory(forum=self.topic.forum, poster=self.user, approved=False)
-        response = self.client.get(self.url)
-        self.assertNotIn(not_approved_topic, response.context["topics"])
-
-        # order
-        new_topic = TopicFactory(forum=self.topic.forum, poster=self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.context["topics"].first(), new_topic)
-
-    def test_context(self):
-        assign_perm("can_approve_posts", self.user, self.topic.forum)
-        self.client.force_login(self.user)
-
-        response = self.client.get(self.url)
-        self.assertEqual(response.context["forum"], self.topic.forum)
-        topic = response.context["topics"][0]
-        self.assertEqual(topic.id, self.topic.id)
-        self.assertEqual(response.context["stats"], self.topic.forum.get_stats(7))
-
-    def test_permission(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
-
-        assign_perm("can_approve_posts", self.user, self.topic.forum)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation:topic",
-                kwargs={
-                    "forum_pk": self.topic.forum.pk,
-                    "forum_slug": self.topic.forum.slug,
-                    "pk": self.topic.pk,
-                    "slug": self.topic.slug,
-                },
-            ),
-        )
-
-    def test_forum_doesnt_exist(self):
-        self.client.force_login(self.user)
-        response = self.client.get(
-            reverse(
-                "forum_extension:engagement",
-                kwargs={"pk": 9999, "slug": self.topic.forum.slug},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
 
 
 class CreateForumView(TestCase):
