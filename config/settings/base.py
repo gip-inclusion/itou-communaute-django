@@ -42,7 +42,7 @@ THIRD_PARTIES_APPS = [
     "storages",
     # Machina dependencies:
     "mptt",  # to handle the tree of forum instances
-    # "haystack",  # search capabilities, to be setup later
+    "haystack",  # search capabilities
     "widget_tweaks",
     # Machina apps:
     "machina",
@@ -229,10 +229,10 @@ CACHES = {
 }
 
 # Search Backend
-# TODO : improve it later with woosh or elastic search
 HAYSTACK_CONNECTIONS = {
     "default": {
-        "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+        "PATH": os.path.join(ROOT_DIR, "whoosh_index"),
     },
 }
 
