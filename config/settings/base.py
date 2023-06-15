@@ -47,7 +47,6 @@ THIRD_PARTIES_APPS = [
     # Machina apps:
     "machina",
     "machina.apps.forum_moderation",
-    # "machina.apps.forum_search", # to be setup later
     "machina.apps.forum_tracking",
     "machina.apps.forum_permission",
     # django-compressor
@@ -76,6 +75,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_upvote",
     "lacommunaute.forum_stats",
     "lacommunaute.notification",
+    "lacommunaute.forum_search",
     "lacommunaute.event",
     "lacommunaute.inclusion_connect",
     "lacommunaute.pages",
