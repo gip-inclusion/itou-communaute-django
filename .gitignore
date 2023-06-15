@@ -47,3 +47,6 @@ exports
 
 # VS Code
 .vscode/launch.json
+
+# Whoosh index
+whoosh_index/
