@@ -1,0 +1,129 @@
+{% extends 'board_base.html' %}
+{% load i18n %}
+{% load highlight %}
+{% load date_filters %}
+{% block sub_title %}{% trans "Search" %}{% endblock sub_title %}
+
+{% block content %}
+    {% if not query %}
+        <div class="row">
+            <div class="col-12">
+                <h1>{% trans "Search" %}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card post-edit">
+                    <div class="card-header">
+                        <h3 class="m-0 card-title h5">{% trans "Search forums" %}</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" action="." class="form">
+                            {% include "partials/form_field.html" with field=form.q %}
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-large btn-primary" value="{% trans "Search" %}" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-12">
+                <h1>{% trans "Search" %} "{{ request.GET.q|safe }}"
+                    &nbsp;
+                    <a href="{% url 'forum_search_extension:search' %}" class="btn btn-sm btn-primary"><i class="fas fa-search"></i>&nbsp;{% trans "New search" %}</a></h1>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-6 col-md-4 forum-actions-block">
+                <p class="mt-1 mb-0 text-muted">
+                    {% blocktrans trimmed count number_of_results=page.paginator.count %}
+                        Your search for has returned <b>{{ number_of_results }}</b> result
+                    {% plural %}
+                        Your search has returned <b>{{ number_of_results }}</b> results
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <div class="col-12 col-md-8 pagination-block">
+                {% if page.has_previous or page.has_next %}
+                    {% with pagination_size="pagination-sm justify-content-end" %}
+                        {% include "forum_search/pagination.html" %}
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card resultslist">
+                    <div class="card-header">
+                        <h3 class="m-0 card-title h5">
+                            <i class="fas fa-search"></i>&nbsp;{% trans "Results" %}
+                        </h3>
+                    </div>
+                    <div class="p-0 card-body">
+                        <table class="table">
+                            {% for result in page.object_list %}
+                                {% if result.topic %}
+                                    <tr>
+                                        <td class="post-name">
+                                            <a href="{% url 'forum_conversation:topic' result.forum_slug result.forum result.topic_slug result.topic %}" class="topic-name-link">{{ result.topic_subject }}</a>
+                                            <div>
+                                                <small class="text-muted">
+                                                    {% spaceless %}
+                                                        <i class="fas fa-clock"></i>&nbsp;
+                                                        {% blocktrans trimmed with poster=result.poster_name creation_date=result.created %}
+                                                            By: {{ poster }},
+                                                        {% endblocktrans %}
+                                                    {% endspaceless %}
+                                                    {{result.created|relativetimesince_fr}}
+                                                </small>
+                                            </div>
+                                        </td>
+                                        <td class="post-content">
+                                            {% highlight result.text with request.GET.q max_lenght 800 %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td class="post-name">
+                                            <a href="{% url 'forum_extension:forum' result.forum_slug result.forum %}" class="topic-name-link">{{ result.forum_name }}</a>
+                                            <div>
+                                                <small class="text-muted">
+                                                    {% spaceless %}
+                                                        <i class="fas fa-clock"></i>&nbsp;
+                                                        Fiche mise à jour
+                                                    {% endspaceless %}
+                                                    {{result.forum_updated|relativetimesince_fr}}
+                                                </small>
+                                            </div>
+                                        </td>
+                                        <td class="post-content">
+                                            {% highlight result.text with request.GET.q max_lenght 800 %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td>
+                                        {% trans "No results." %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if page.has_previous or page.has_next %}
+            <div class="mt-3 row">
+                <div class="col-md-12 pagination-block">
+                    {% with pagination_size="pagination-sm justify-content-end" %}
+                        {% include "forum_search/pagination.html" %}
+                    {% endwith %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock content %}
