@@ -1,4 +1,6 @@
 [
+    "0 4 * * 0 $ROOT/clevercloud/rebuild_index.sh",
+    "5 4 * * * $ROOT/clevercloud/update_index_daily.sh",
     "0 5 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
     "5 5 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
     "5 7-21 * * * $ROOT/clevercloud/send_notifs_when_first_reply.sh",

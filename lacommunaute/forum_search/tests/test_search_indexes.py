@@ -4,7 +4,7 @@ import pytest
 from django.core.management import call_command
 from django.urls import reverse
 
-from lacommunaute.forum.factories import ForumFactory  # noqa F401
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 
 

@@ -28,6 +28,9 @@ class PostIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Post
 
+    def get_updated_field(self):
+        return "updated"
+
     def prepare_poster_name(self, obj):
         return obj.poster_display_name
 
@@ -65,6 +68,9 @@ class ForumIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Forum
+
+    def get_updated_field(self):
+        return "updated"
 
     def prepare_forum_slug(self, obj):
         return obj.slug

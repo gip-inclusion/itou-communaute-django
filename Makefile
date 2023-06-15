@@ -69,3 +69,10 @@ psql:
 # - Copy .env.template and set correct values.
 postgres_restore_latest_backup: ./scripts/import-latest-db-backup.sh
 	./scripts/import-latest-db-backup.sh
+
+# Whoosh index
+# =============================================================================
+.PHONY: index
+
+index:
+	python manage.py rebuild_index --noinput
