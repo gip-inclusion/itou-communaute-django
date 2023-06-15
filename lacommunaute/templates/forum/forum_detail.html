@@ -17,10 +17,10 @@
                 {% if forum.level > 0 %}
                     {% for ancestor in forum.get_ancestors %}
                         <a href="{% url 'forum_extension:forum' ancestor.slug ancestor.id %}"
-                            class="matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="view"
-                            data-matomo-option="forum">
+                           class="matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="forum">
                             {{ ancestor.name }}</a> /
                     {% endfor %}
                 {% endif %}
@@ -42,10 +42,10 @@
                 <div class="col-12 col-sm-auto forum-actions-block">
                     {% if user_can_add_topic %}
                         <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                            class="btn btn-primary btn-ico matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="contribute"
-                            data-matomo-option="new_topic">
+                           class="btn btn-primary btn-ico matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="contribute"
+                           data-matomo-option="new_topic">
                             <i class="ri-chat-new-line ri-lg"></i>
                             <span>{% if forum.is_newsfeed %}{% trans "New news" %}{% else %}{% trans "New topic" %}{% endif %}</span>
                         </a>
@@ -77,22 +77,22 @@
                         <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="topics-tab"
-                                    data-toggle="tab"
-                                    href="#topics"
-                                    role="tab"
-                                    aria-controls="topics"
-                                    aria-selected="true">
+                                   data-toggle="tab"
+                                   href="#topics"
+                                   role="tab"
+                                   aria-controls="topics"
+                                   aria-selected="true">
                                     Sujets
                                 </a>
                             </li>
                             {% if announces %}
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="announces-tab"
-                                        data-toggle="tab"
-                                        href="#announces"
-                                        role="tab"
-                                        aria-controls="announces"
-                                        aria-selected="false">
+                                       data-toggle="tab"
+                                       href="#announces"
+                                       role="tab"
+                                       aria-controls="announces"
+                                       aria-selected="false">
                                         Annonces
                                     </a>
                                 </li>
@@ -105,16 +105,16 @@
                         </ul>
                         <div class="tab-content topiclist">
                             <div class="tab-pane fade show active" id="topics"
-                                role="tabpanel"
-                                aria-labelledby="topics-tab">
+                                 role="tabpanel"
+                                 aria-labelledby="topics-tab">
                                 {% with unread_topics=unread_topics  %}
                                     {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
                                 {% endwith %}
                             </div>
                             {% if announces %}
                                 <div class="tab-pane fade" id="announces"
-                                    role="tabpanel"
-                                    aria-labelledby="announces-tab">
+                                     role="tabpanel"
+                                     aria-labelledby="announces-tab">
                                     {% with topics=announces hide_if_empty=True unread_topics=unread_topics loadmoretopic_url=None %}
                                         {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
                                     {% endwith %}

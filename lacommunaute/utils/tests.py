@@ -373,7 +373,6 @@ class UtilsGetMatomoEventsDataTest(TestCase):
             )
 
     def test_get_matomo_events_data_with_all_expected_datas(self):
-
         nb_active_visitors = faker.random_int()
         expected_res = self.uniq_active_visitors_res
         expected_res[1]["value"] = self.nb_uniq_visitors - nb_active_visitors
