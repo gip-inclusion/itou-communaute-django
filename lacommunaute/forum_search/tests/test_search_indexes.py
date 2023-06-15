@@ -14,6 +14,13 @@ def search_url():
 
 
 @pytest.fixture
+def public_forums():
+    forums = ForumFactory.create_batch(2, with_public_perms=True)
+    call_command("rebuild_index", noinput=True, interactive=False)
+    return forums
+
+
+@pytest.fixture
 def public_topics():
     topics = TopicFactory.create_batch(2, forum=ForumFactory(with_public_perms=True), with_post=True)
     call_command("rebuild_index", noinput=True, interactive=False)
@@ -26,6 +33,16 @@ def test_search_on_post(client, db, search_url, public_topics):
 
     assert response.status_code == 200
     assert public_topics[1].subject not in response.content.decode("utf-8")
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+
+
+def test_search_on_forum(client, db, search_url, public_forums):
+    query = public_forums[0].description.raw.split()[:3]
+    response = client.get(search_url, {"q": " ".join(query)})
+
+    assert response.status_code == 200
+    assert public_forums[1].description.raw not in response.content.decode("utf-8")
     for word in query:
         assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
 
