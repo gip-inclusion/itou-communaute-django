@@ -1,16 +1,13 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.functions import TruncMonth
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
@@ -22,15 +19,8 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.users.models import User
-from lacommunaute.utils.enums import PeriodAggregation
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
 from lacommunaute.utils.middleware import store_upper_visible_forums
-from lacommunaute.utils.stats import (
-    count_objects_per_period,
-    format_counts_of_objects_for_timeline_chart,
-    get_strftime,
-)
 from lacommunaute.utils.urls import urlize
 
 
@@ -189,53 +179,6 @@ class UtilsTemplateTagsTestCase(TestCase):
         out = template.render(Context(context))
         expected = "?page=1"
         assert out == expected
-
-
-class UtilsStatsTest(TestCase):
-    def test_get_strftime(self):
-        self.assertEqual(get_strftime(PeriodAggregation.WEEK), "%Y-%W")
-        self.assertEqual(get_strftime(PeriodAggregation.MONTH), "%b %Y")
-        with self.assertRaises(ValueError):
-            get_strftime("xxx")
-
-    def test_count_objects_per_period(self):
-        now = timezone.localtime()
-        one_month_ago = now - relativedelta(months=1)
-        UserFactory(date_joined=one_month_ago)
-        UserFactory.create_batch(2, date_joined=now)
-
-        self.assertEqual(
-            count_objects_per_period(User.objects.annotate(period=TruncMonth("date_joined")), "users"),
-            [
-                {"period": one_month_ago.replace(day=1, hour=0, minute=0, second=0, microsecond=0), "users": 1},
-                {"period": now.replace(day=1, hour=0, minute=0, second=0, microsecond=0), "users": 2},
-            ],
-        )
-
-    def test_format_counts_of_objects_for_timeline_chart(self):
-        now = timezone.localtime()
-        one_month_ago = now - relativedelta(months=1)
-        two_month_ago = now - relativedelta(months=2)
-        datas = [{"period": one_month_ago, "posts": 1}, {"period": now, "posts": 2}] + [
-            {"period": two_month_ago, "users": 1},
-            {"period": now, "users": 2},
-        ]
-        self.assertEqual(
-            format_counts_of_objects_for_timeline_chart(datas),
-            {
-                "period": [two_month_ago.strftime("%b %Y"), one_month_ago.strftime("%b %Y"), now.strftime("%b %Y")],
-                "users": [1, 0, 2],
-                "posts": [0, 1, 2],
-            },
-        )
-        self.assertEqual(
-            format_counts_of_objects_for_timeline_chart(datas, period=PeriodAggregation.WEEK),
-            {
-                "period": [two_month_ago.strftime("%Y-%W"), one_month_ago.strftime("%Y-%W"), now.strftime("%Y-%W")],
-                "users": [1, 0, 2],
-                "posts": [0, 1, 2],
-            },
-        )
 
 
 class UtilsGetMatomoDataTest(TestCase):

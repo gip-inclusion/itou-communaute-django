@@ -307,10 +307,6 @@ if _sentry_dsn:
 # ---------------------------------------
 MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextareaWidget"
 
-
-# STATISTIQUES
-DAYS_IN_A_PERIOD = 15
-
 # Django sites framework
 SITE_ID = 1
 

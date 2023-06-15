@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.db.models import Count, Exists, OuterRef
 from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, ListView
 from machina.apps.forum.views import ForumView as BaseForumView
@@ -143,43 +142,6 @@ class ForumCreateView(UserPassesTestMixin, CreateView):
 
     def get_success_url(self):
         return reverse("forum_conversation_extension:home")
-
-
-class ModeratorEngagementView(PermissionRequiredMixin, ListView):
-    context_object_name = "topics"
-    template_name = "forum/moderator_engagement.html"
-    permission_required = ["can_approve_posts"]
-
-    def get_forum(self):
-        """Returns the forum to consider."""
-        if not hasattr(self, "forum"):
-            self.forum = get_object_or_404(Forum, pk=self.kwargs["pk"])
-        return self.forum
-
-    def get_queryset(self):
-        """Returns the list of items for this view."""
-        return (
-            self.get_forum()
-            .topics.exclude(approved=False)
-            .annotate(
-                likes=Count("likers", distinct=True),
-                views=Count("tracks", distinct=True),
-                messages=Count("posts", distinct=True),
-                attached=Count("posts__attachments", distinct=True),
-                votes=Count("poll__options__votes", distinct=True),
-            )
-            .order_by("-last_post_on")
-        )
-
-    def get_controlled_object(self):
-        """Returns the controlled object."""
-        return self.get_forum()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["forum"] = self.forum
-        context["stats"] = self.forum.get_stats(7)
-        return context
 
 
 class CategoryForumListView(ListView):

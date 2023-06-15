@@ -50,21 +50,18 @@
                             <span>{% if forum.is_newsfeed %}{% trans "New news" %}{% else %}{% trans "New topic" %}{% endif %}</span>
                         </a>
                     {% endif %}
-                    {% if user_can_access_stats %}
+                    {% if user_can_access_stats and forum.members_group%}
                         <button id="id_dropdown_moderators_stats_button" class="btn btn-ico-only btn-outline-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
-                            <a href="{% url 'forum_extension:engagement' forum.slug forum.pk %}" class="dropdown-item">{% trans "Engagement" %}</a>
-                            {% if forum.members_group %}
-                                <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
-                                    class="dropdown-item matomo-event"
-                                    data-matomo-category="engagement"
-                                    data-matomo-action="view"
-                                    data-matomo-option="directory">
-                                    {% trans "Members" %}
-                                </a>
-                            {% endif %}
+                            <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
+                               class="dropdown-item matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="view"
+                               data-matomo-option="directory">
+                                {% trans "Members" %}
+                            </a>
                         </div>
                     {% endif %}
                 </div>
