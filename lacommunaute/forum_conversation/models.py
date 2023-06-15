@@ -86,7 +86,6 @@ class Post(AbstractPost):
 
     @property
     def poster_display_name(self):
-
         if self.username:
             return self.username.split("@")[0]
         return get_forum_member_display_name(self.poster)
