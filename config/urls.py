@@ -10,6 +10,7 @@ from lacommunaute.forum import urls as forum_extension_urls
 from lacommunaute.forum_conversation import urls as forum_conversation_extension_urls
 from lacommunaute.forum_conversation.forum_polls import urls as forum_polls_extension_urls
 from lacommunaute.forum_member import urls as forum_member_urls
+from lacommunaute.forum_search import urls as forum_search_urls
 from lacommunaute.forum_upvote import urls as forum_upvote_urls
 from lacommunaute.inclusion_connect import urls as inclusion_connect_urls
 from lacommunaute.pages import urls as pages_urls
@@ -31,6 +32,7 @@ urlpatterns = [
     path("", include(forum_extension_urls)),
     path("", include(forum_polls_extension_urls)),
     path("", include(forum_upvote_urls)),
+    path("", include(forum_search_urls)),
     path("calendar/", include(event_urls)),
     # machina legacy
     path("", include(conversation_urlpatterns_factory.urlpatterns)),
