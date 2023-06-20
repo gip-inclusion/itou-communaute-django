@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load highlight %}
 {% load date_filters %}
+{% load str_filters %}
 
 {% block title %}{% trans "Search" %}{{ block.super }}{% endblock %}
 
@@ -11,20 +12,7 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    {% if not query %}
-                        <h1>{% trans "Search" %}</h1>
-                        <h2 class="h3">{% trans "Search forums" %}</h2>
-                    {% else %}
-                        <h1>{% trans "Search" %} "{{ request.GET.q|safe }}"</h1>
-                        <h2 class="h3">{% trans "Search forums" %}</h2>
-                        <p class="lead">
-                            {% blocktrans trimmed count number_of_results=page.paginator.count %}
-                                Your search has returned <b>{{ number_of_results }}</b> result
-                            {% plural %}
-                                Your search has returned <b>{{ number_of_results }}</b> results
-                            {% endblocktrans %}
-                        </p>
-                    {% endif %}
+                    <h1>{% trans "Search forums" %}</h1>
                 </div>
             </div>
         </div>
@@ -32,32 +20,20 @@
 
     <section class="s-section">
         <div class="s-section__container container">
-            {% if not query %}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="c-box">
-                            <form method="get" action="." class="form">
-                                <div class="form-row align-items-end">
-                                    <div class="col">
-                                        {% include "partials/form_field.html" with field=form.q %}
-                                    </div>
-                                    <div class="col-auto mb-3">
-                                        <button type="submit" class="btn btn-primary btn-ico">
-                                            <i class="ri-search-line"></i>
-                                            <span>{% trans "Search" %}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="c-box">
+                        {% include "forum_search/search_form.html" %}
                     </div>
                 </div>
-            {% else %}
-                <div class="row">
+            </div>
+
+            {% if query %}
+                <div class="row mt-3">
                     <div class="col-12">
                         <div class="c-box">
                             {% if page.paginator.count %}
-                                <h3 class="h4 mb-0">{% trans "Results" %}</h3>
+                                <h3 class="h4 mb-0">{{ page.paginator.count }} {% trans "result" %}{{ page.paginator.count|pluralizefr }}</h3>
                                 <div class="table-responsive-lg">
                                     <table class="table table-hover mt-3 mt-md-4">
                                         <caption class="sr-only">Liste de résultats</caption>
@@ -105,12 +81,6 @@
                             {% else %}
                                 <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
                                     <h3 class="h4 mb-0">{% trans "No results." %}</h3>
-                                    <div class="flex-column flex-md-row btn-group btn-group-sm btn-group-action" role="group">
-                                        <a class="btn btn-primary btn-ico justify-content-center mt-3 mt-md-0" href="{% url 'forum_search_extension:search' %}">
-                                            <i class="ri-search-line"></i>
-                                            <span>{% trans "New search" %}</span>
-                                        </a>
-                                    </div>
                                 </div>
                             {% endif %}
                             {% if page.has_previous or page.has_next %}
