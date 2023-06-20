@@ -262,15 +262,17 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/"  # noqa
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# Forum - Machina settings
+# ------------------------------------------------------------------------------
 MACHINA_FORUM_NAME = "La Communauté"
 FORUM_TOPICS_NUMBER_PER_PAGE = 10
 FORUM_NUMBER_POSTS_PER_TOPIC = 5
-
-# Forum
 MACHINA_FORUM_IMAGE_WIDTH = 300
 MACHINA_FORUM_IMAGE_HEIGHT = 300
 
 # Inclusion Connect
+# ------------------------------------------------------------------------------
 INCLUSION_CONNECT_BASE_URL = os.getenv("INCLUSION_CONNECT_BASE_URL")
 INCLUSION_CONNECT_REALM = os.getenv("INCLUSION_CONNECT_REALM")
 INCLUSION_CONNECT_CLIENT_ID = os.getenv("INCLUSION_CONNECT_CLIENT_ID")
