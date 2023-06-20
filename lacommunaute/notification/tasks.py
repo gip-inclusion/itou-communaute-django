@@ -26,7 +26,9 @@ def send_notifs_when_first_reply():
 
 
 def add_user_to_list_when_register():
-    bulk_send_user_to_list(collect_new_users_for_onboarding(), settings.SIB_ONBOARDING_LIST)
+    new_users = collect_new_users_for_onboarding()
+    if new_users:
+        bulk_send_user_to_list(new_users, settings.SIB_ONBOARDING_LIST)
 
 
 def send_notifs_on_unanswered_topics(list_id: int) -> None:
