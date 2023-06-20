@@ -228,14 +228,6 @@ CACHES = {
     },
 }
 
-# Search Backend
-HAYSTACK_CONNECTIONS = {
-    "default": {
-        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
-        "PATH": os.path.join(ROOT_DIR, "whoosh_index"),
-    },
-}
-
 # Environment, sets the type of env of the app (PROD, DEV…)
 COMMU_ENVIRONMENT = os.getenv("COMMU_ENVIRONMENT", "PROD")
 COMMU_PROTOCOL = "https"
@@ -262,6 +254,15 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"  # noqa
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# Search Backend
+# ------------------------------------------------------------------------------
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+        "PATH": f"{AWS_S3_ENDPOINT_URL}/whoosh_index",
+    },
+}
 
 # Forum - Machina settings
 # ------------------------------------------------------------------------------

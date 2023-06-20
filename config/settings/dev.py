@@ -65,6 +65,15 @@ DATABASES = {
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
     }
 }
+
+# Search Backend
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+        "PATH": os.path.join(ROOT_DIR, "whoosh_index"),  # noqa F405
+    },
+}
+
 # Emails in Mailhog
 # ------------------------------------------------------------------------------
 EMAIL_HOST = "0.0.0.0"
