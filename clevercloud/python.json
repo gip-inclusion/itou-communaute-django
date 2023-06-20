@@ -8,7 +8,7 @@
             "migrate --no-input",
             "collectstatic --no-input",
             "compress --force",
-            "rebuld_index --noinput"
+            "rebuild_index --noinput"
         ]
     }
 }
