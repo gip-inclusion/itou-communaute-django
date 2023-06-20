@@ -8,7 +8,6 @@ from lacommunaute.notification.utils import collect_first_replies, collect_new_u
 
 
 def send_notifs_when_first_reply():
-
     first_replies = collect_first_replies()
 
     for url, subject, to, display_name in first_replies:
@@ -31,7 +30,6 @@ def add_user_to_list_when_register():
 
 
 def send_notifs_on_unanswered_topics(list_id: int) -> None:
-
     contacts = collect_users_from_list(list_id)
 
     if contacts:
