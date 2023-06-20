@@ -260,15 +260,7 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 HAYSTACK_CONNECTIONS = {
     "default": {
         "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
-        "PATH": f"s3://{AWS_STORAGE_BUCKET_NAME}/whoosh_index",
-        "AWS_ACCESS_KEY_ID": AWS_S3_ACCESS_KEY_ID,
-        "AWS_SECRET_ACCESS_KEY": AWS_S3_SECRET_ACCESS_KEY,
-        "AWS_STORAGE_BUCKET_NAME": AWS_STORAGE_BUCKET_NAME,
-        "AWS_S3_ENDPOINT_URL": AWS_S3_ENDPOINT_URL,
-        "AWS_S3_REGION_NAME": AWS_S3_STORAGE_BUCKET_REGION,
-        "AWS_S3_USE_SSL": True,  # Change to True if your endpoint supports SSL
-        "AWS_AUTO_CREATE_BUCKET": False,  # Set to True if you want Haystack to create the bucket
-        "AWS_AUTO_CREATE_INDEX": True,  # Set to False if you manually create the index
+        "PATH": os.path.join(ROOT_DIR, "whoosh_index"),
     },
 }
 # Forum - Machina settings
