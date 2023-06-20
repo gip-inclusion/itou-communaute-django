@@ -90,6 +90,11 @@ class AddUserToListWhenRegister(TestCase):
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
         self.assertEqual(email_sent_track.datas, payload)
 
+    def test_no_user_to_add(self):
+        add_user_to_list_when_register()
+
+        self.assertEqual(EmailSentTrack.objects.count(), 0)
+
 
 class SendNotifsOnUnansweredTopics(TestCase):
     def setUp(self):
