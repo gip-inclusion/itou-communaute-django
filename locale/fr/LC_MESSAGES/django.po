@@ -818,6 +818,9 @@ msgstr[0] "Votre recherche a renvoyé <b>%(number_of_results)s</b> résultat"
 msgstr[1] "Votre recherche a renvoyé <b>%(number_of_results)s</b> résultats"
 
 #: lacommunaute/templates/machina/forum_search/search.html:70
+msgid "result"
+msgstr "résultat"
+
 msgid "Results"
 msgstr "Résultats"
 
