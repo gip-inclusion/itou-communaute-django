@@ -63,7 +63,6 @@ class ModeratorProfileListView(PermissionRequiredMixin, ListView):
 
 
 class JoinForumLandingView(TemplateView):
-
     template_name = "forum_member/join_forum_landing.html"
 
     def get_forum(self):
@@ -92,7 +91,6 @@ class JoinForumLandingView(TemplateView):
 
 
 class JoinForumFormView(LoginRequiredMixin, FormView):
-
     template_name = "forum_member/join_forum_form.html"
     form_class = JoinForumForm
 
