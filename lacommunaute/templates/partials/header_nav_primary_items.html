@@ -28,19 +28,19 @@
                     </li>
                     <li>
                         <a href="{% url 'members:profile' user.id %}"
-                            class="dropdown-item text-primary matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="view"
-                            data-matomo-option="member">
+                           class="dropdown-item text-primary matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="member">
                             Accéder à mon profil
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'event:myevents' %}"
-                            class="dropdown-item text-primary matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="view"
-                            data-matomo-option="event">
+                           class="dropdown-item text-primary matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="event">
                             Accéder à mes évènements
                         </a>
                     </li>
@@ -49,7 +49,7 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item text-primary" href="{% url 'forum_extension:create' %}">Nouvelle communauté publique</a>
+                            <a class="dropdown-item text-primary" href="{% url 'admin:forum_forum_add' %}">Nouvelle thématique</a>
                         </li>
                         <li>
                             <a class="dropdown-item text-primary" href="{% url 'admin:auth_group_changelist' %}">Gérer les groupes</a>
