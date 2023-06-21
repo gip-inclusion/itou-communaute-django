@@ -5,6 +5,9 @@
 {% load forum_permission_tags %}
 {% load str_filters %}
 
+{% block title %}{{ topic.subject }} ({{ topic.forum.name }}){% endblock %}
+{% block meta_description %}{{ topic.first_post.content.raw }}{% endblock meta_description %}
+
 {% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
 
 {% block content %}
