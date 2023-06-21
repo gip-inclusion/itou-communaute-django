@@ -265,7 +265,7 @@ HAYSTACK_CONNECTIONS = {
 }
 # Forum - Machina settings
 # ------------------------------------------------------------------------------
-MACHINA_FORUM_NAME = "La Communauté"
+MACHINA_FORUM_NAME = "La communauté de l'inclusion"
 FORUM_TOPICS_NUMBER_PER_PAGE = 10
 FORUM_NUMBER_POSTS_PER_TOPIC = 5
 MACHINA_FORUM_IMAGE_WIDTH = 300
