@@ -21,7 +21,9 @@ class ForumProfileUpdateViewTest(TestCase):
         view = ForumProfileUpdateView()
         view.request = RequestFactory().get("/")
         view.request.user = forum_profiles.user
-        self.assertEqual(view.get_success_url(), reverse("members:profile", kwargs={"pk": forum_profiles.user.pk}))
+        self.assertEqual(
+            view.get_success_url(), reverse("members:profile", kwargs={"username": forum_profiles.user.username})
+        )
 
 
 class ModeratorProfileListView(TestCase):
@@ -64,7 +66,7 @@ class ModeratorProfileListView(TestCase):
         self.client.force_login(self.profile.user)
         response = self.client.get(self.url)
         self.assertContains(response, forum_profile.user.get_full_name())
-        self.assertContains(response, reverse("members:profile", kwargs={"pk": forum_profile.user_id}))
+        self.assertContains(response, reverse("members:profile", kwargs={"username": forum_profile.user.username}))
 
     def test_ordering_and_count(self):
         self.forum.members_group.user_set.add(ForumProfileFactory(user__first_name="z").user)

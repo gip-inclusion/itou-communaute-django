@@ -24,12 +24,13 @@ PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRe
 
 
 class ForumProfileDetailView(BaseForumProfileDetailView):
-    pass
+    slug_field = "username"
+    slug_url_kwarg = "username"
 
 
 class ForumProfileUpdateView(BaseForumProfileUpdateView):
     def get_success_url(self):
-        return reverse("members:profile", kwargs={"pk": self.request.user.pk})
+        return reverse("members:profile", kwargs={"username": self.request.user.username})
 
 
 class ModeratorProfileListView(PermissionRequiredMixin, ListView):

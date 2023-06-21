@@ -25,7 +25,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h3 class="h5 card-title">
-                                        <a href="{%url 'members:profile' pk=forum_profile.user_id%}"
+                                        <a href="{%url 'members:profile' username=forum_profile.user.username%}"
                                             class="matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="view"
