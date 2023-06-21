@@ -11,7 +11,7 @@
     {% spaceless %}
         <i class="fas fa-clock"></i>&nbsp;
         {% if post.poster %}
-            {% url 'members:profile' post.poster_id as poster_url %}
+            {% url 'members:profile' post.poster.username as poster_url %}
             {% blocktrans trimmed with poster_url=poster_url poster=post.poster_display_name creation_date=post.created %}
                 By:
                 <a href="{{ poster_url }}"
