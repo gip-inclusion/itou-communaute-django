@@ -7,6 +7,7 @@ from lacommunaute.notification.factories import BouncedEmailFactory, EmailSentTr
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.utils import (
     collect_first_replies,
+    collect_following_replies,
     collect_new_users_for_onboarding,
     last_notification,
     should_not_be_approved,
@@ -80,6 +81,63 @@ class CollectFirstRepliesTestCase(TestCase):
         EmailSentTrackFactory(kind="first_reply")
 
         self.assertEqual(len(collect_first_replies()), 0)
+
+
+class CollectFollowingRepliesTestCase(TestCase):
+    @classmethod
+    def setUp(cls):
+        cls.topic = TopicFactory(with_post=True)
+
+    def test_no_reply_ever(self):
+        self.assertEqual(len(collect_following_replies()), 0)
+
+    def test_one_answer(self):
+        PostFactory(topic=self.topic)
+        self.assertEqual(len(collect_following_replies()), 0)
+
+    def test_some_more_answers(self):
+        PostFactory.create_batch(2, topic=self.topic)
+        self.assertEqual(
+            collect_following_replies(),
+            [
+                (
+                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
+                    self.topic.subject,
+                    self.topic.poster_email,
+                    "2 nouvelles réponses",
+                )
+            ],
+        )
+        PostFactory(topic=self.topic)
+        self.assertEqual(
+            collect_following_replies(),
+            [
+                (
+                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
+                    self.topic.subject,
+                    self.topic.poster_email,
+                    "3 nouvelles réponses",
+                )
+            ],
+        )
+
+    def test_replies_after_previous_notification(self):
+        PostFactory.create_batch(2, topic=self.topic)
+        EmailSentTrackFactory(kind="following_replies")
+        self.assertEqual(len(collect_following_replies()), 0)
+
+        PostFactory(topic=self.topic)
+        self.assertEqual(
+            collect_following_replies(),
+            [
+                (
+                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
+                    self.topic.subject,
+                    self.topic.poster_email,
+                    "1 nouvelle réponse",
+                )
+            ],
+        )
 
 
 class CollectNewUsersForOnBoardingTestCase(TestCase):
