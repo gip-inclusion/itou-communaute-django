@@ -102,6 +102,15 @@ class ModeratorProfileListView(TestCase):
             ),
         )
 
+    def test_queries_number(self):
+        profiles = ForumProfileFactory.create_batch(10)
+        self.forum.members_group.user_set.add(*[profile.user for profile in profiles])
+        self.forum.members_group.save()
+
+        self.client.force_login(self.profile.user)
+        with self.assertNumQueries(19):
+            self.client.get(self.url)
+
 
 class JoinForumLandingView(TestCase):
     def test_token_doesnt_exists(self):
