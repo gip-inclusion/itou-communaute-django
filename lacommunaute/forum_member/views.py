@@ -50,7 +50,7 @@ class ModeratorProfileListView(PermissionRequiredMixin, ListView):
         """Returns the list of items for this view."""
         self.forum = self.get_forum()
         users = self.forum.members_group.user_set.all()
-        return ForumProfile.objects.filter(user__in=users).order_by("user__first_name")
+        return ForumProfile.objects.filter(user__in=users).select_related("user").order_by("user__first_name")
 
     def get_controlled_object(self):
         """Returns the controlled object."""
