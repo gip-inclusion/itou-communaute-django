@@ -9,7 +9,7 @@ class EmailSentTrack(DatedModel):
     response = models.TextField(verbose_name="Réponse de l'API")
     datas = models.JSONField(verbose_name="Données envoyées à l'API")
     kind = models.CharField(
-        verbose_name="Type", choices=EmailSentTrackKind.choices, max_length=15, null=False, blank=False
+        verbose_name="Type", choices=EmailSentTrackKind.choices, max_length=20, null=False, blank=False
     )
 
     class Meta:
