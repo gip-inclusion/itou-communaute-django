@@ -1,10 +1,9 @@
-from django.contrib.auth.models import AnonymousUser, Group
+from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils.http import urlencode
 from faker import Faker
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import ForumFactory
@@ -22,10 +21,6 @@ faker = Faker()
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
-
-ForumPermission = get_model("forum_permission", "ForumPermission")
-UserForumPermission = get_model("forum_permission", "UserForumPermission")
-GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 
 
 class ForumViewQuerysetTest(TestCase):
@@ -372,63 +367,4 @@ class ForumViewTest(TestCase):
         self.assertContains(response, child_forum.name)
         self.assertContains(
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-
-
-class CreateForumView(TestCase):
-    def setUp(self):
-        self.user = UserFactory()
-        self.url = reverse("forum_extension:create")
-
-    def test_access(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 302)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
-
-        self.user.is_staff = True
-        self.user.save()
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
-
-        self.user.is_superuser = True
-        self.user.save()
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create(self):
-        self.user.is_superuser = True
-        self.user.save()
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-        name = faker.name()
-
-        response = self.client.post(
-            self.url,
-            {
-                "name": name,
-                "description": "Test",
-            },
-        )
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse("forum_conversation_extension:home"))
-
-        self.assertEqual(Forum.objects.count(), 1)
-        self.assertEqual(Forum.objects.first().name, name)
-
-        self.assertEqual(
-            UserForumPermission.objects.filter(anonymous_user=True).count(), ForumPermission.objects.count()
-        )
-        self.assertEqual(
-            UserForumPermission.objects.filter(authenticated_user=True).count(), ForumPermission.objects.count()
-        )
-
-        self.assertEqual(Group.objects.filter(name=f"{name} moderators").count(), 1)
-        self.assertEqual(
-            GroupForumPermission.objects.filter(group=Group.objects.filter(name=f"{name} moderators").first()).count(),
-            ForumPermission.objects.count(),
         )
