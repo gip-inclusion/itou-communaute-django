@@ -4,7 +4,11 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
 from lacommunaute.notification.enums import EmailSentTrackKind
-from lacommunaute.notification.utils import collect_first_replies, collect_new_users_for_onboarding
+from lacommunaute.notification.utils import (
+    collect_first_replies,
+    collect_following_replies,
+    collect_new_users_for_onboarding,
+)
 
 
 def send_notifs_when_first_reply():
@@ -22,6 +26,24 @@ def send_notifs_when_first_reply():
             params=params,
             template_id=settings.SIB_FIRST_REPLY_TEMPLATE,
             kind=EmailSentTrackKind.FIRST_REPLY,
+        )
+
+
+def send_notifs_on_following_replies():
+    replies = collect_following_replies()
+
+    for url, subject, to, count_txt in replies:
+        contacts = [{"email": to}]
+        params = {
+            "url": f"{url}?mtm_campaign=followingreplies&mtm_medium=email",
+            "topic_subject": subject,
+            "count_txt": count_txt,
+        }
+        send_email(
+            to=contacts,
+            params=params,
+            template_id=settings.SIB_FOLLOWING_REPLIES_TEMPLATE,
+            kind=EmailSentTrackKind.FOLLOWING_REPLIES,
         )
 
 
