@@ -1,5 +1,23 @@
 # Journal des modifications
 
+## v1.13 - 2023-06-26
+- [NOTIFICATION] informer les utilisateurs des nouvelles réponses à leur question (#331)
+- [NOTIFICATION] appel à l'api d'onboarding (#322)
+- [FORUM_MEMBER] sécuriser l'accès aux profils (#329)
+- [FORUM] simplification de la base de code (#327)
+- [FORUM] Supprimer la vue ModeratorEngagementView (#314)
+- [FORUM] Limiter l'affichage des questions non répondues aux thématiques publiques (#305)
+- [SEO] boost (#325 & #324)
+- [SEO] - Maj du theme itou vers la v0.7.1 et du footer (#312)
+- [SEARCH] rollback - stockage index localement et reconstruction lors du déploiement (#321)
+- [SEARCH] correction du endpoint S3 pour le stockage de l'index (#320)
+- [SEARCH] stocker l'index du moteur de recherche dans un bucket permanent (#318)
+- [SEARCH] moteur de recherche - robustification d'un test (#316)
+- [SEARCH] mise en place du moteur d'indexation (#309)
+- [FIX] Gestion des versions de fichiers statiques (#315)
+- [FIX] date de modification des Forum dans le fichier sitemap (#310)
+- [FIX] rendre la factory des évènements résiliente (#307)
+
 ## v1.12 - 2023-06-12
 - [FIX] : ne pas afficher les forums de type catégorie dans la liste des forums visibles (#302)
 - [FIX] stats quotidiennes (#301)
