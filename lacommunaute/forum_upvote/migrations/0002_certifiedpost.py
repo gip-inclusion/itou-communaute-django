@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("forum_conversation", "0005_remove_post_upvoters"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

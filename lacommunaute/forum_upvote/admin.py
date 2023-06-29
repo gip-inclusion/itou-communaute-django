@@ -4,7 +4,6 @@ from lacommunaute.forum_upvote.models import CertifiedPost, UpVote
 
 
 class UpVoteAdmin(admin.ModelAdmin):
-
     list_display = ("voter", "post", "created_at")
     raw_id_fields = (
         "voter",
@@ -13,7 +12,6 @@ class UpVoteAdmin(admin.ModelAdmin):
 
 
 class CertifiedPostAdmin(admin.ModelAdmin):
-
     list_display = ("topic", "post", "user")
     raw_id_fields = (
         "topic",

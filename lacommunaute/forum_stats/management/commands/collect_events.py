@@ -89,7 +89,6 @@ class Command(BaseCommand):
     help = "Collecter le nombre d'evenements par semaine et par mois"
 
     def handle(self, *args, **options):
-
         for period, search_date in (
             ("month", timezone.make_aware(datetime(2023, 1, 1), timezone.get_current_timezone())),
             ("week", timezone.make_aware(datetime(2023, 1, 2), timezone.get_current_timezone())),
