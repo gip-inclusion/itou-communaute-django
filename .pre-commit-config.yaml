@@ -4,9 +4,9 @@ repos:
     hooks:
       - id: poetry-check
       - id: poetry-export
-        args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev", "--without-hashes"]
+        args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev",]
       - id: poetry-export
-        args: ["-f", "requirements.txt", "-o", "requirements/base.txt", "--without-hashes"]
+        args: ["-f", "requirements.txt", "-o", "requirements/base.txt"]
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
