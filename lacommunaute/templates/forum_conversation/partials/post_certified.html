@@ -22,13 +22,13 @@
                         {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
                         {% if post.content.rendered|length > 200 %}
                             <a hx-get="{% url 'forum_conversation_extension:showmore_certified' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                id="showmorecertified-button{{topic.pk}}"
-                                hx-target="#showmorecertifiedpostsarea{{topic.pk}}"
-                                hx-swap="outerHTML"
-                                class="btn btn-link p-0 mh-auto matomo-event"
-                                data-matomo-category="engagement"
-                                data-matomo-action="showmore"
-                                data-matomo-option="certified"
+                               id="showmorecertified-button{{topic.pk}}"
+                               hx-target="#showmorecertifiedpostsarea{{topic.pk}}"
+                               hx-swap="outerHTML"
+                               class="btn btn-link p-0 mh-auto matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="showmore"
+                               data-matomo-option="certified"
                             >
                                 {% trans "+ show more" %}
                             </a>
