@@ -36,7 +36,7 @@ fix:
 	black lacommunaute
 	isort --profile black lacommunaute
 	flake8 lacommunaute
-	djhtml --in-place $(shell find lacommunaute/templates -name "*.html")
+	djhtml $(shell find lacommunaute/templates -name "*.html")
 
 pylint:
 	pylint lacommunaute
