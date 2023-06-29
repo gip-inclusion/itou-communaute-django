@@ -6,7 +6,6 @@ from lacommunaute.notification.enums import EmailSentTrackKind
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("notification", "0001_initial"),
     ]

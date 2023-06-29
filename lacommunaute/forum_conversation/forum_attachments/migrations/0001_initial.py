@@ -11,7 +11,6 @@ get_attachment_file_upload_to = (
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

@@ -22,7 +22,6 @@ class Command(BaseCommand):
     help = "Generate Fake Contents for dev/demo/validation environments"
 
     def handle(self, **options):
-
         users = UserFactory.create_batch(5, password="password")
 
         forum = create_forum()

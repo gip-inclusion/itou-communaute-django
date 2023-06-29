@@ -82,7 +82,6 @@ class ForumTopicListViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
 
     def test_numqueries_vs_tags(self):
-
         tags = Tag.objects.bulk_create([Tag(name=f"tag{i}", slug=f"tag{i}") for i in range(5)])
         for topic in TopicFactory.create_batch(20, forum=self.topic.forum, with_post=True):
             topic.tags.add(", ".join(tag.name for tag in tags))

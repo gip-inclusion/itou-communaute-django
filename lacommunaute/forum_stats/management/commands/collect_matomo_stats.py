@@ -14,7 +14,6 @@ class Command(BaseCommand):
         parser.add_argument("--period", type=str, help="['day','week','month']", default="day")
 
     def handle(self, *args, **options):
-
         period = options["period"]
 
         from_date = Stat.objects.filter(period=period).order_by("-date").first()

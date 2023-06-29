@@ -11,7 +11,6 @@ register = template.Library()
 
 @register.filter(is_safe=False)
 def relativetimesince_fr(d):
-
     if not isinstance(d, datetime.datetime):
         d = datetime.datetime(d.year, d.month, d.day)
 

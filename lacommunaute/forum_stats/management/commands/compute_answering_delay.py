@@ -50,7 +50,6 @@ class Command(BaseCommand):
         parser.add_argument("--month", type=int, help="month without leading zero", default=3)
 
     def handle(self, *args, **options):
-
         month = options["month"]
         year = options["year"]
 

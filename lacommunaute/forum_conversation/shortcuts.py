@@ -7,7 +7,6 @@ from lacommunaute.users.models import User
 
 # vincentporte - setup outside models.py to avoid circular imports
 def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[Post]:
-
     first_post_pk = topic.first_post.pk if topic.first_post else None
 
     qs = topic.posts.exclude(Q(approved=False) | Q(pk=first_post_pk))

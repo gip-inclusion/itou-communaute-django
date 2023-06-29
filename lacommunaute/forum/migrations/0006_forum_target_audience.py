@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("forum", "0005_forum_is_highlighted_forum_is_private"),
     ]
