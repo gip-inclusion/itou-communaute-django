@@ -15,10 +15,10 @@
             {% blocktrans trimmed with poster_url=poster_url poster=post.poster_display_name creation_date=post.created %}
                 By:
                 <a href="{{ poster_url }}"
-                    class="matomo-event"
-                    data-matomo-category="engagement"
-                    data-matomo-action="view"
-                    data-matomo-option="member">
+                   class="matomo-event"
+                   data-matomo-category="engagement"
+                   data-matomo-action="view"
+                   data-matomo-option="member">
                     {{ poster }}
                 </a>,
             {% endblocktrans %}

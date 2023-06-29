@@ -14,9 +14,9 @@
                 {% for forum in request.session.upper_visible_forums %}
                     <li>
                         <a class="dropdown-header matomo-event" href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                            data-matomo-category="engagement"
-                            data-matomo-action="view"
-                            data-matomo-option="forum">
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="forum">
                             {{ forum.name }}
                         </a>
                     </li>

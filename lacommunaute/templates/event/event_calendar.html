@@ -33,7 +33,7 @@
                 <div class="s-section__col col-12">
                     {% if user.is_authenticated %}
                         <a href="{% url 'event:create' %}"
-                            role="button" class="btn btn-primary">
+                           role="button" class="btn btn-primary">
                             {% trans "Post a new Public Event" %}
                         </a>
                     {% else %}

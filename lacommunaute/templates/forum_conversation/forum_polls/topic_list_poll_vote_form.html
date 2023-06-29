@@ -1,12 +1,12 @@
 {% load i18n %}
 
 <form method="post"
-    action=""
-    hx-post="{% url 'forum_polls_extension:topic_poll_vote' poll.topic.forum.slug poll.topic.forum.pk poll.pk %}"
-    id="poll-form{{poll.pk}}"
-    hx-target="#pollarea{{poll.pk}}"
-    hx-swap="outerHTML"
-    novalidate>
+      action=""
+      hx-post="{% url 'forum_polls_extension:topic_poll_vote' poll.topic.forum.slug poll.topic.forum.pk poll.pk %}"
+      id="poll-form{{poll.pk}}"
+      hx-target="#pollarea{{poll.pk}}"
+      hx-swap="outerHTML"
+      novalidate>
     {% csrf_token %}
 
     <ul class="list-unstyled mb-3">
@@ -28,9 +28,9 @@
     </ul>
     <div class="form-actions">
         <input type="submit" class="btn btn-sm btn-secondary matomo-event"
-            value="{% trans "Submit" %}"
-            data-matomo-category="engagement"
-            data-matomo-action="vote"
-            data-matomo-option="poll"/>
+               value="{% trans "Submit" %}"
+               data-matomo-category="engagement"
+               data-matomo-action="vote"
+               data-matomo-option="poll"/>
     </div>
 </form>

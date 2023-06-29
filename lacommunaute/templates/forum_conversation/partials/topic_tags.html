@@ -1,8 +1,8 @@
 <a class="matomo-event"
-    href="{% url 'forum_extension:forum' topic.forum.slug topic.forum.pk %}"
-    data-matomo-category="engagement"
-    data-matomo-action="view-tags"
-    data-matomo-option="forum">
+   href="{% url 'forum_extension:forum' topic.forum.slug topic.forum.pk %}"
+   data-matomo-category="engagement"
+   data-matomo-action="view-tags"
+   data-matomo-option="forum">
     <span class="badge badge-xs badge-pill badge-info-lighter text-info">{{ topic.forum.name }}</span></a>
 {% for tag in tags %}
     <span class="badge badge-xs badge-pill badge-info-lighter text-info">{{ tag }}</span>
