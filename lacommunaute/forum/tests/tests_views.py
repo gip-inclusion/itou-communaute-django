@@ -331,3 +331,20 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
+
+    def test_siblings_in_context(self):
+        self.forum.type = Forum.FORUM_CAT
+        self.forum.save()
+        child_forum = ForumFactory(parent=self.forum, with_public_perms=True)
+        url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.context_data["forums"].get(), child_forum)
+        self.assertEqual(response.context_data["parent_forum"], self.forum)
+
+    def test_next_url_in_context(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["next_url"], self.url)
