@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from django.contrib.auth.models import AnonymousUser
-from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
-from django.test import RequestFactory, TestCase, override_settings
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
@@ -14,13 +12,9 @@ from django.utils.timesince import timesince
 from faker import Faker
 from machina.core.loading import get_class
 
-from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
-from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
-from lacommunaute.utils.middleware import store_upper_visible_forums
 from lacommunaute.utils.urls import urlize
 
 
@@ -370,101 +364,3 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                 get_matomo_events_data(period="day", search_date=self.today, label=label),
                 expected_res,
             )
-
-
-class UtilsMiddlewareStoreUpperVisibleForumTest(TestCase):
-    def test_store_upper_visible_forums(self):
-        request = RequestFactory().get("/")
-        middleware = SessionMiddleware(lambda x: x)
-        middleware.process_request(request)
-        request.session.save()
-        request.user = UserFactory()
-        request.forum_permission_handler = PermissionHandler()
-
-        upper_forums = ForumFactory.create_batch(2)
-        forums = [
-            {
-                "name": forum.name,
-                "slug": forum.slug,
-                "pk": forum.id,
-            }
-            for forum in upper_forums
-        ]
-
-        for forum in upper_forums:
-            assign_perm("can_see_forum", request.user, forum)
-            assign_perm("can_read_forum", request.user, forum)
-
-        content_tree = ForumVisibilityContentTree.from_forums(
-            request.forum_permission_handler.forum_list_filter(
-                Forum.objects.all(),
-                request.user,
-            )
-        )
-
-        store_upper_visible_forums(request, content_tree.nodes)
-
-        self.assertEqual(request.session["upper_visible_forums"], forums)
-
-
-class UtilsMiddlewareVisibleForumsMiddlewareTest(TestCase):
-    def test_upper_visible_forums_key_in_request_session(self):
-        user = UserFactory()
-        self.client.force_login(user)
-
-        visible_forum = ForumFactory()
-        descendant_visible_forum = ForumFactory(parent=visible_forum)
-        categ_forum = ForumFactory(type=Forum.FORUM_CAT)
-        ForumFactory()
-
-        assign_perm("can_see_forum", user, visible_forum)
-        assign_perm("can_read_forum", user, visible_forum)
-        assign_perm("can_see_forum", user, descendant_visible_forum)
-        assign_perm("can_read_forum", user, descendant_visible_forum)
-        assign_perm("can_see_forum", user, categ_forum)
-        assign_perm("can_read_forum", user, categ_forum)
-
-        response = self.client.get("/")
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("upper_visible_forums", response.wsgi_request.session.keys())
-        self.assertEqual(
-            response.wsgi_request.session["upper_visible_forums"],
-            [
-                {
-                    "name": visible_forum.name,
-                    "slug": visible_forum.slug,
-                    "pk": visible_forum.id,
-                }
-            ],
-        )
-
-    def test_upper_visible_forums_key_loaded_without_going_indexview(self):
-        topic = TopicFactory(with_post=True)
-        assign_perm("can_see_forum", AnonymousUser(), topic.forum)
-        assign_perm("can_read_forum", AnonymousUser(), topic.forum)
-
-        response = self.client.get(
-            reverse(
-                "forum_conversation:topic",
-                kwargs={
-                    "forum_slug": topic.forum.slug,
-                    "forum_pk": topic.forum.pk,
-                    "slug": topic.slug,
-                    "pk": topic.id,
-                },
-            )
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("upper_visible_forums", response.wsgi_request.session.keys())
-        self.assertEqual(
-            response.wsgi_request.session["upper_visible_forums"],
-            [
-                {
-                    "name": topic.forum.name,
-                    "slug": topic.forum.slug,
-                    "pk": topic.forum.id,
-                }
-            ],
-        )
