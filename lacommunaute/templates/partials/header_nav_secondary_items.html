@@ -3,32 +3,32 @@
 {% load theme_inclusion %}
 <ul>
     <li class="col-12 col-lg-auto">
-        <a href="{% url 'pages:home' %}">
+        <a href="{% url 'pages:home' %}" class="{% if request.path == '/' %}is-active{% endif %}">
             Accueil
         </a>
     </li>
     <li class="col-12 col-lg-auto">
-        <a href="{% url 'forum_conversation_extension:publicforum' %}">
+        <a href="{% url 'forum_conversation_extension:publicforum' %}" class="{% if request.path == '/publicforum/' %}is-active{% endif %}">
             Espace d'échanges
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_conversation_extension:newsfeed' %}">
+        <a href="{% url 'forum_conversation_extension:newsfeed' %}" class="{% if request.path == '/newsfeed/' %}is-active{% endif %}">
             Actualités
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_extension:documentation' %}">
+        <a href="{% url 'forum_extension:documentation' %}" class="{% if request.path == '/documentation/' %}is-active{% endif %}">
             Documentations
         </a>
     </li>
     <li>
-        <a href="{% url 'event:calendar' %}">
+        <a href="{% url 'event:calendar' %}" class="{% if request.path == '/calendar/' %}is-active{% endif %}">
             Évènements publics
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_search_extension:search' %}">
+        <a href="{% url 'forum_search_extension:search' %}" class="{% if request.path == '/search/' %}is-active{% endif %}">
             {% trans "Search forums" %}
         </a>
     </li>
