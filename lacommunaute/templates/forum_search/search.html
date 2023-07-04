@@ -43,15 +43,16 @@
                                                     <tr>
                                                         <td class="position-relative">
                                                             <a href="{% url 'forum_conversation:topic' result.forum_slug result.forum result.topic_slug result.topic %}"
-                                                               class="btn-link stretched-link matomo-event"
+                                                               class="btn-link stretched-link btn-ico matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
                                                                data-matomo-option="topic"
                                                             >
-                                                                {{ result.topic_subject }}</a><br>
+                                                                <i class="ri-user-line ri-lg" aria-hidden="true"></i>
+                                                                <span>{{ result.topic_subject }}</span>
+                                                            </a><br>
                                                             <small class="text-muted">
                                                                 {% spaceless %}
-                                                                    <i class="fas fa-clock"></i>&nbsp;
                                                                     {% blocktrans trimmed with poster_username=result.poster_name creation_date=result.created %}
                                                                         By: {{ poster_username }},
                                                                     {% endblocktrans %}
@@ -67,15 +68,16 @@
                                                     <tr>
                                                         <td class="position-relative">
                                                             <a href="{% url 'forum_extension:forum' result.forum_slug result.forum %}"
-                                                               class="btn-link stretched-link matomo-event"
+                                                               class="btn-link btn-ico stretched-link matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
                                                                data-matomo-option="forum"
                                                             >
-                                                                {{ result.forum_name }}</a><br>
+                                                                <i class="ri-article-line" aria-hidden="true"></i>
+                                                                <span>{{ result.forum_name }}</span>
+                                                            </a><br>
                                                             <small class="text-muted">
                                                                 {% spaceless %}
-                                                                    <i class="fas fa-clock"></i>&nbsp;
                                                                     Fiche mise à jour
                                                                 {% endspaceless %}
                                                                 {{result.forum_updated|relativetimesince_fr}}
