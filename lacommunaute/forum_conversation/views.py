@@ -41,17 +41,33 @@ class FormValidMixin:
         return valid
 
 
-class TopicCreateView(SuccessUrlMixin, FormValidMixin, views.TopicCreateView):
+class TopicCreateView(FormValidMixin, views.TopicCreateView):
     post_form_class = TopicForm
 
     def form_valid(self, *args, **kwargs):
         valid = super().form_valid(*args, **kwargs)
         if self.request.user.is_authenticated:
             self.forum_post.topic.likers.add(self.request.user)
-        if self.forum_post.topic.forum.is_newsfeed:
-            self.forum_post.topic.type = Topic.TOPIC_NEWS
-            self.forum_post.topic.save()
         return valid
+
+    def get_success_url(self):
+        if not self.forum_post.approved:
+            return reverse(
+                "forum_extension:forum",
+                kwargs={
+                    "slug": self.forum_post.topic.forum.slug,
+                    "pk": self.forum_post.topic.forum.pk,
+                },
+            )
+        return reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_slug": self.forum_post.topic.forum.slug,
+                "forum_pk": self.forum_post.topic.forum.pk,
+                "slug": self.forum_post.topic.slug,
+                "pk": self.forum_post.topic.pk,
+            },
+        )
 
 
 class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):
