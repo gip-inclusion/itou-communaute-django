@@ -36,8 +36,7 @@ class TopicManagerTest(TestCase):
         TopicFactory(forum=forum, posts_count=1, type=Topic.TOPIC_ANNOUNCE)
         TopicFactory(forum=forum, posts_count=1, approved=False)
 
-        self.assertEqual(Topic.objects.unanswered().count(), 1)
-        self.assertIn(topic, Topic.objects.unanswered())
+        self.assertEqual(Topic.objects.unanswered().get(), topic)
 
     def test_optimized_for_topics_list_disapproved(self):
         TopicFactory(approved=False)
@@ -125,4 +124,3 @@ class TopicModelTest(TestCase):
         self.assertEqual(0, Topic.TOPIC_POST)
         self.assertEqual(1, Topic.TOPIC_STICKY)
         self.assertEqual(2, Topic.TOPIC_ANNOUNCE)
-        self.assertEqual(3, Topic.TOPIC_NEWS)
