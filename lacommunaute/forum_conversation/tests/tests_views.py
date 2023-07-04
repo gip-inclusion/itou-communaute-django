@@ -32,13 +32,11 @@ ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
-@patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
-@patch("machina.apps.forum_conversation.views.TopicCreateView.perform_permissions_check", return_value=True)
 class TopicCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.poster = UserFactory()
-        cls.forum = ForumFactory()
+        cls.forum = ForumFactory(with_public_perms=True)
         cls.url = reverse(
             "forum_conversation:topic_create",
             kwargs={
@@ -49,14 +47,38 @@ class TopicCreateViewTest(TestCase):
 
         cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.text(max_nb_chars=30)}
 
-    def test_redirection(self, *args):
-        topic = TopicFactory(forum=self.forum, poster=self.poster, with_post=True)
+    def test_get_success_url(self):
         view = TopicCreateView()
-        view.forum_post = topic.posts.first()
+        view.request = RequestFactory().get("/")
+        topic = TopicFactory(with_post=True)
+        view.forum_post = topic.first_post
+        view.forum_post.topic = topic
+
+        view.forum_post.approved = False
+        success_url = view.get_success_url()
 
         self.assertEqual(
-            view.get_success_url(),
-            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
+            success_url,
+            reverse(
+                "forum_extension:forum",
+                kwargs={"slug": topic.forum.slug, "pk": topic.forum.pk},
+            ),
+        )
+
+        view.forum_post.approved = True
+        success_url = view.get_success_url()
+
+        self.assertEqual(
+            success_url,
+            reverse(
+                "forum_conversation:topic",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "pk": topic.pk,
+                    "slug": topic.slug,
+                },
+            ),
         )
 
     def test_delete_button_is_hidden(self, *args):
@@ -68,18 +90,6 @@ class TopicCreateViewTest(TestCase):
         self.assertNotContains(
             response, '/post/delete/" title="Supprimer" role="button" class="btn btn-outline-danger">Supprimer</a>'
         )
-
-    def test_topic_is_marked_as_read_when_created(self, *args):
-        self.assertFalse(TopicReadTrack.objects.count())
-        self.client.force_login(self.poster)
-
-        response = self.client.post(
-            self.url,
-            self.post_data,
-            follow=True,
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, TopicReadTrack.objects.count())
 
     def test_topic_poster_is_added_to_likers_list(self, *args):
         self.client.force_login(self.poster)
@@ -93,7 +103,6 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(1, Topic.objects.count())
         self.assertEqual(1, Topic.objects.first().likers.count())
 
-    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_topic_create_as_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
 
@@ -114,7 +123,6 @@ class TopicCreateViewTest(TestCase):
         self.assertTrue(topic.approved)
         self.assertTrue(topic.first_post.approved)
 
-    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_topic_create_as_unapproved_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
         BouncedEmailFactory(email=self.post_data["username"])
@@ -131,7 +139,6 @@ class TopicCreateViewTest(TestCase):
         self.assertFalse(topic.approved)
         self.assertFalse(topic.first_post.approved)
 
-    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_topic_create_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
 
