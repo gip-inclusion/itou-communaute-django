@@ -3,7 +3,7 @@
 {% load static %}
 {% load str_filters %}
 
-{% block sub_title %}{% trans "calendar" %}{% endblock sub_title %}
+{% block title %}{% trans "calendar" %}{{ block.super }}{% endblock %}
 
 {% block content %}
     <section class="s-title-01 mt-lg-5">
