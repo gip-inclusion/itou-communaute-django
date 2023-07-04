@@ -7,10 +7,11 @@ from lacommunaute.forum.models import Forum
 
 
 def test_context(client, db):
-    url = reverse("forum_extension:categories")
+    url = reverse("forum_extension:documentation")
     response = client.get(url)
     assert response.status_code == 200
     assert "forum/category_forum_list.html" == response.templates[0].name
+    assert reverse("pages:statistiques") in str(response.content)
 
 
 def test_queryset(client, db):
@@ -21,7 +22,7 @@ def test_queryset(client, db):
         ForumFactory(),
         ForumFactory(type=Forum.FORUM_LINK),
     )
-    url = reverse("forum_extension:categories")
+    url = reverse("forum_extension:documentation")
     response = client.get(url)
     assert response.status_code == 200
     assert forum in response.context_data["forums"]
