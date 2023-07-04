@@ -236,7 +236,7 @@ class ForumViewTest(TestCase):
     def test_queries(self):
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(31):
+        with self.assertNumQueries(21):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
