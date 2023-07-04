@@ -43,12 +43,12 @@ def _redirect_to_login_page_on_error(error_msg, request=None):
     if request:
         messages.error(request, "Une erreur technique est survenue. Merci de recommencer.")
     logger.error(error_msg)
-    return HttpResponseRedirect(reverse("forum_conversation_extension:home"))
+    return HttpResponseRedirect(reverse("pages:home"))
 
 
 def inclusion_connect_authorize(request):
     # Start a new session.
-    previous_url = request.GET.get("previous_url", reverse("forum_conversation_extension:home"))
+    previous_url = request.GET.get("previous_url", reverse("pages:home"))
     next_url = request.GET.get("next_url")
     sign_in = bool(request.GET.get("sign_in", False))
 
@@ -145,14 +145,14 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
 
     login(request, user)
 
-    next_url = ic_session["next_url"] or reverse("forum_conversation_extension:home")
+    next_url = ic_session["next_url"] or reverse("pages:home")
     return HttpResponseRedirect(next_url)
 
 
 def inclusion_connect_logout(request):
     token = request.GET.get("token")
     state = request.GET.get("state")
-    post_logout_redirect_url = request.GET.get("redirect_url", reverse("forum_conversation_extension:home"))
+    post_logout_redirect_url = request.GET.get("redirect_url", reverse("pages:home"))
 
     # Fallback on session data.
     if not token:
