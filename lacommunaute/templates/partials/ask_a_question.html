@@ -1,21 +1,29 @@
-<div class="dropdown">
-    <button type="button" class="btn btn-primary btn-block w-100 w-lg-auto dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="AskQuestionDropdown" aria-expanded="false">
-        Poser une question
-    </button>
-    <div class="dropdown-menu" id="AskQuestionDropdown">
-        <ul class="list-unstyled">
-            {% for forum in request.session.upper_visible_forums %}
-                <li>
-                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                       class="dropdown-item matomo-event"
-                       data-matomo-category="engagement"
-                       data-matomo-action="contribute"
-                       data-matomo-option="new_topic">
-                        {{ forum.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+{% load i18n %}
 
+{% if forum %}
+    <div class="row align-items-center">
+        <div class="col-12 col-md-auto">
+            <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+               class="btn btn-primary btn-ico btn-block matomo-event"
+               data-matomo-category="engagement"
+               data-matomo-action="contribute"
+               data-matomo-option="new_topic">
+                <i class="ri-chat-new-line ri-lg"></i>
+                <span>{% trans "New topic" %}</span>
+            </a>
+        </div>
+        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">
+            ou
+        </div>
+        <div class="col-12 col-md-auto">
+            <a href="{% url 'forum_search_extension:search' %}"
+               class="btn btn-outline-primary btn-ico btn-block matomo-event"
+               data-matomo-category="engagement"
+               data-matomo-action="search"
+               data-matomo-option="query">
+                <i class="ri-search-line ri-lg"></i>
+                <span>{% trans "Search forums" %}</span>
+            </a>
+        </div>
+    </div>
+{% endif %}

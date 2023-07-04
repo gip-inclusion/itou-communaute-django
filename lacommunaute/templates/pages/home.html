@@ -6,181 +6,130 @@
 {% load forum_tags %}
 
 {% block title %}Accueil{{ block.super }}{% endblock %}
-{% block meta_description %}Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique{% endblock meta_description %}"
+{% block meta_description %}Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.{% endblock meta_description %}"
 
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-        <section class="s-page-menu-01 s-page-menu-01--communaute">
-            <div class="s-page-menu-01__container container">
-                <div class="s-page-menu-01__row row align-items-center">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Entraide, actus et apprentissage pour les professionnels de l'IAE</h1>
-                    </div>
-                </div>
-                <div class="s-page-menu-01__row row">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
-                        {% include "partials/ask_a_question.html" %}
-                    </div>
-                    <div class="s-page-menu-01__col col-12 mt-3 mt-lg-5">
-                        {% include "partials/banner.html" %}
-                    </div>
+    <section class="s-hero-title-01 s-hero-title-01--communaute">
+        <div class="s-hero-title-01__container container">
+            <div class="s-hero-title-01__row row align-items-center">
+                <div class="s-hero-title-01__col s-hero-title-01__col--article col-12">
+                    <h1 class="s-hero-title-01__col--article__title h1-hero">S’entraider entre professionnels de l’inclusion</h1>
                 </div>
             </div>
-        </section>
-    {% else %}
-        <section class="s-page-menu-01 s-page-menu-01--communaute">
-            <div class="s-page-menu-01__container container">
-                <div class="s-page-menu-01__row row align-items-center">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12">
-                        <h1 class="h1-hero lh-sm font-weight-bold m-0">Entraide, actus et apprentissage<br>pour les professionnels de l'IAE</h1>
-                    </div>
-                </div>
-                <div class="s-page-menu-01__row row align-items-center">
-                    <div class="s-page-menu-01__col s-page-menu-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
-                        <h2 class="h1 mb-3 mb-lg-5">Améliorez votre pratique professionnelle :</h2>
-                        <ul class="lead list-unstyled mb-md-5">
-                            <li class="d-flex mb-2">
-                                <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                                <span class="ml-2">Posez vos questions et répondez aux autres professionnels</span>
-                            </li>
-                            <li class="d-flex mb-2">
-                                <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                                <span class="ml-2">Retrouvez les dernières actus et infos de l'inclusion</span>
-                            </li>
-                            <li class="d-flex mb-2">
-                                <i class="text-success ri-loader-2-line ri-xxl"></i>
-                                <span class="ml-2">Progressez grâce à des ressources exclusives</span>
-                            </li>
-                        </ul>
-                        {% include "partials/ask_a_question.html" %}
-                    </div>
-                    <div class="s-page-menu-01__col col-12 d-none d-lg-inline-flex col-md-4">
-                        <div>
-                            <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid w-lg-75" loading="lazy" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="s-page-menu-01__row row">
-                    <div class="s-page-menu-01__col col-12 mt-3 mt-lg-5">
-                        {% include "partials/banner.html" %}
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endif %}
-
-    <div id="community"></div>
-
-    <section class="s-tabs-01 mt-0">
-        <div class="s-tabs-01__container container">
-            <div class="s-tabs-01__row row">
-                <div class="s-tabs-01__col col-12">
-                    <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="topics-tab"
-                               data-toggle="tab"
-                               href="#topics"
-                               role="tab"
-                               aria-controls="topics"
-                               aria-selected="true"
-                               data-matomo-category="engagement"
-                               data-matomo-action="view"
-                               data-matomo-option="topics">
-                                Questions/Réponses
-                            </a>
+            <div class="s-hero-title-01__row row align-items-center">
+                <div class="s-hero-title-01__col s-hero-title-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
+                    <h2 class="h1 mb-3 mb-lg-5">Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi</h2>
+                    <ul class="lead list-unstyled mb-md-5">
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Poser ses questions et répondre aux autres professionnels</span>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a id="newsfeed-topics-tab"
-                               data-toggle="tab"
-                               href="#newsfeed-topics"
-                               role="tab"
-                               aria-controls="newsfeed-topics"
-                               aria-selected="false"
-                               hx-target="#newsfeedtopicsarea"
-                               hx-swap="outerHTML"
-                               hx-get="{% url 'forum_conversation_extension:newsfeed_topics_list' %}"
-                               hx-trigger="load"
-                               class="nav-link matomo-event"
-                               data-matomo-category="engagement"
-                               data-matomo-action="loadmore"
-                               data-matomo-option="newsfeed_topic">
-                                Actualités
-                            </a>
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Retrouvez les dernières actus et infos pour sa veille informelle</span>
                         </li>
-                        <!-- coming soon
-                        <li class="nav-item" role="presentation">
-                            <a id="fichestechniques-tab"
-                                data-toggle="tab"
-                                href="#fichestechniques"
-                                role="tab"
-                                aria-controls="fichestechniques"
-                                aria-selected="false"
-                                hx-target="#fichestechniquesarea"
-                                hx-swap="outerHTML"
-                                hx-get="{% url 'forum_extension:categories' %}"
-                                hx-trigger="load"
-                                class="nav-link matomo-event"
-                                data-matomo-category="engagement"
-                                data-matomo-action="loadmore"
-                                data-matomo-option="fichestechniques">
-                                Fiches techniques
-                            </a>
-                        </li>
-                    -->
-                        <li class="nav-item-dropdown dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
+                        <li class="d-flex mb-2">
+                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
+                            <span class="ml-2">Progressez grâce à des ressources exclusives</span>
                         </li>
                     </ul>
-                    <div class="tab-content topiclist">
-                        <div class="tab-pane fade show active" id="topics"
-                             role="tabpanel"
-                             aria-labelledby="topics-tab">
-                            {% with topics=topics %}
-                                {% include "forum_conversation/topic_list.html" %}
-                            {% endwith %}
+                    {% include "partials/ask_a_question.html" %}
+                </div>
+                <div class="s-hero-title-01__col col-12 d-none d-lg-inline-flex col-md-4">
+                    <div>
+                        <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid w-lg-75" loading="lazy" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="s-section mt-0">
+        <div class="s-section__container container">
+            <div class="s-section__row row mt-3 mt-md-5">
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-light">
+                            <h3 class="m-0">
+                                <i class="ri-user-line ri-lg font-weight-normal" aria-hidden="true"></i>
+                                Les dernières questions
+                            </h3>
                         </div>
-                        <div class="tab-pane fade" id="newsfeed-topics"
-                             role="tabpanel"
-                             aria-labelledby="newsfeed-topics-tab">
-                            <div id="newsfeedtopicsarea">
-                                chargement en cours...
-                            </div>
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                            <ul class="list-unstyled mb-lg-5">
+                                {% for topic in topics_public %}
+                                    <li class="mb-3 position-relative">
+                                        <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="topic">
+                                            {{ topic.subject }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <!-- coming soon
-                        <div class="tab-pane fade" id="fichestechniques"
-                            role="tabpanel"
-                            aria-labelledby="fichestechniques-tab">
-                            <div id="fichestechniquesarea">
-                                chargement en cours...
-                            </div>
+                    </div>
+                </div>
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-light">
+                            <h3 class="m-0">
+                                <i class="ri-article-line ri-lg font-weight-normal" aria-hidden="true"></i>
+                                Les dernières fiches techniques
+                            </h3>
                         </div>
-                        -->
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                            <ul class="list-unstyled mb-lg-5">
+                                {% for forum in forums_category %}
+                                    <li class="mb-3 position-relative">
+                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="forum">
+                                            [{{ forum.parent.name }}] {{ forum.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="s-section__col col-12 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-light">
+                            <h3 class="m-0">
+                                <i class="ri-newspaper-line ri-lg font-weight-normal"></i>
+                                Les dernières actus
+                            </h3>
+                        </div>
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                            <ul class="list-unstyled mb-lg-5">
+                                {% for topic in topics_newsfeed %}
+                                    <li class="mb-3 position-relative">
+                                        <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="news">
+                                            {{ topic.subject }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {% if not user.is_authenticated %}
-        <section class="s-section">
-            <div class="s-section__container container">
-                <div class="s-section__row row mb-1 mb-md-3">
-                    <div class="s-section__col col-12 col-lg-auto">
-                        <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-block btn-ico btn-outline-primary justify-content-center">
-                            <i class="ri-login-box-line ri-lg" aria-hidden="true"></i>
-                            <span>
-                                Je me connecte pour accéder à toutes mes thématiques
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import CharField
@@ -7,6 +8,9 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic.base import TemplateView
 
+from lacommunaute.forum.enums import Kind as ForumKind
+from lacommunaute.forum.models import Forum
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_stats.models import Stat
 from lacommunaute.utils.json import extract_values_in_list
 
@@ -45,6 +49,22 @@ class LandingPagesListView(UserPassesTestMixin, TemplateView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+class HomeView(TemplateView):
+    template_name = "pages/home.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["topics_public"] = Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM, approved=True).order_by(
+            "-last_post_on"
+        )[:4]
+        context["topics_newsfeed"] = Topic.objects.filter(forum__kind=ForumKind.NEWS).order_by("-last_post_on")[:4]
+        context["forums_category"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, parent__type=1).order_by(
+            "-updated"
+        )[:4]
+        context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
+        return context
 
 
 def accessibilite(request):

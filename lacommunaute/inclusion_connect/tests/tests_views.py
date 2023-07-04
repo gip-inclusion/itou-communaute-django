@@ -41,7 +41,7 @@ def mock_oauth_dance(
     previous_url=None,
     next_url=None,
     assert_redirects=True,
-    expected_route="forum_conversation_extension:home",
+    expected_route="pages:home",
     user_info_email=None,
 ):
     respx.get(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE).respond(302)
@@ -175,18 +175,16 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
         response = self.client.post(reverse("inclusion_connect:logout"))
 
         # Then log in again.
-        response = self.client.get(reverse("forum_conversation_extension:home"))
+        response = self.client.get(reverse("pages:home"))
         self.assertContains(response, reverse("inclusion_connect:authorize"))
 
         response = mock_oauth_dance(self, assert_redirects=False)
-        expected_redirection = reverse("forum_conversation_extension:home")
+        expected_redirection = reverse("pages:home")
         self.assertRedirects(response, expected_redirection)
 
         # Make sure it was a login instead of a new signup.
         users_count = User.objects.filter(email=OIDC_USERINFO["email"]).count()
         self.assertEqual(users_count, 1)
-
-        self.assertIn("upper_visible_forums", response.wsgi_request.session.keys())
 
 
 class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
@@ -196,13 +194,13 @@ class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
         respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
         logout_url = reverse("inclusion_connect:logout")
         response = self.client.get(logout_url)
-        self.assertRedirects(response, reverse("forum_conversation_extension:home"))
+        self.assertRedirects(response, reverse("pages:home"))
         self.assertFalse(auth.get_user(self.client).is_authenticated)
 
     @respx.mock
     def test_logout_with_redirection(self):
         mock_oauth_dance(self)
-        expected_redirection = reverse("forum_conversation_extension:home")
+        expected_redirection = reverse("pages:home")
         respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
 
         params = {"redirect_url": expected_redirection}

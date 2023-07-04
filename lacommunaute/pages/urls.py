@@ -14,6 +14,7 @@ sitemaps = {
 app_name = "pages"
 
 urlpatterns = [
+    path("", views.HomeView.as_view(), name="home"),
     path("contact/", views.contact, name="contact"),
     path("statistiques/", views.StatistiquesPageView.as_view(), name="statistiques"),
     path("accessibilite/", views.accessibilite, name="accessibilite"),
