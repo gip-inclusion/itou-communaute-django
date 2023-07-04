@@ -52,6 +52,9 @@ class ForumView(BaseForumView):
             .annotate(likes=Count("likers"))
             .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
         )
+        if forum.parent and forum.parent.type == Forum.FORUM_CAT:
+            context["forums"] = Forum.objects.filter(parent=forum.parent).order_by("lft")
+            context["parent_forum"] = forum.parent
         return context
 
 

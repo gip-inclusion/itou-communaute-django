@@ -87,10 +87,12 @@
                 <div class="col-12 col-md-4 mb-3 mb-md-5">
                     <div class="card c-card has-links-inside h-100">
                         <div class="card-body pb-0">
-                            <p class="h3 lh-base">{{ node.obj.name }}</p>
-                            <div>
-                                {{ node.obj.description.rendered|truncatechars_html:200 }}
-                            </div>
+                            <p class="h3 lh-base"><i class="ri-newspaper-line font-weight-normal"></i> {{ node.obj.name }}</p>
+                            {% if node.obj.short_description %}
+                                <div>
+                                    {{ node.obj.short_description }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="card-footer text-right">
                             <a href="{% url 'forum_extension:forum' node.obj.slug node.obj.id %}"
