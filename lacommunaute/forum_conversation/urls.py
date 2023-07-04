@@ -27,7 +27,7 @@ public_topics_urlpatterns = [
 ]
 
 urlpatterns = [
-    path("", TopicListView.as_view(), name="home"),
+    path("publicforum/", TopicListView.as_view(), name="publicforum"),
     path(
         "forum/<str:forum_slug>-<int:forum_pk>/",
         include(conversation_urlpatterns),
