@@ -1,4 +1,4 @@
-{% extends 'board_base.html' %}
+{% extends "layouts/base.html" %}
 {% load i18n %}
 {% load mptt_tags %}
 {% load forum_tags %}
@@ -7,7 +7,7 @@
 {% load forum_tracking_tags %}
 {% load str_filters %}
 
-{% block sub_title %}{{ forum.name }}{% endblock sub_title %}
+{% block title %}{{ forum.name }}{{ block.super }}{% endblock %}
 {% block meta_description %}{{forum.description}}{% endblock meta_description %}"
 
 {% block content %}
