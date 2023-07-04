@@ -4,6 +4,7 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
@@ -19,14 +20,11 @@ remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
 
 
 class ForumManagerTest(TestCase):
-    def test_private_forum(self):
-        ForumFactory(is_private=True)
-        self.assertEqual(Forum.objects.public().count(), 0)
-
-    def test_public_forum(self):
-        forum = ForumFactory(is_private=False)
-        self.assertEqual(Forum.objects.public().count(), 1)
-        self.assertIn(forum, Forum.objects.public())
+    def test_public_method(self):
+        forum = ForumFactory(kind=ForumKind.PUBLIC_FORUM)
+        ForumFactory(kind=ForumKind.NEWS)
+        ForumFactory(kind=ForumKind.PRIVATE_FORUM)
+        self.assertEqual(forum, Forum.objects.public().get())
 
 
 class ForumModelTest(TestCase):
@@ -51,3 +49,9 @@ class ForumModelTest(TestCase):
         topic = TopicFactory(forum=ForumFactory(), posts_count=1)
         TopicFactory(forum=ForumFactory(parent=topic.forum), posts_count=1)
         self.assertEqual(topic.forum.count_unanswered_topics, 2)
+
+    def test_kind(self):
+        self.assertEqual(
+            Forum.kind.field.flatchoices,
+            [("PUBLIC_FORUM", "Espace public"), ("PRIVATE_FORUM", "Espace privé"), ("NEWS", "Actualités")],
+        )

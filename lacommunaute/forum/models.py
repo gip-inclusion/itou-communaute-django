@@ -5,12 +5,13 @@ from django.db import models
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
 
+from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 
 
 class ForumQuerySet(models.QuerySet):
     def public(self):
-        return self.filter(is_private=False)
+        return self.filter(kind=Forum_Kind.PUBLIC_FORUM)
 
 
 class Forum(AbstractForum):
@@ -18,8 +19,12 @@ class Forum(AbstractForum):
         Group, blank=True, null=True, on_delete=models.CASCADE, verbose_name=("Members Group")
     )
     invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
-    is_private = models.BooleanField(default=False, verbose_name="privée")
-    is_newsfeed = models.BooleanField(default=False, verbose_name="fil d'actualité")
+    kind = models.CharField(
+        max_length=20, choices=Forum_Kind.choices, default=Forum_Kind.PUBLIC_FORUM, verbose_name="Type"
+    )
+    short_description = models.CharField(
+        max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
+    )
 
     objects = ForumQuerySet().as_manager()
 

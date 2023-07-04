@@ -14,7 +14,8 @@ class ForumFactory(BaseForumFactory):
     type = Forum.FORUM_POST
     members_group = factory.SubFactory(GroupFactory, name=factory.SelfAttribute("..name"))
     name = factory.Faker("name")
-    description = factory.Faker("sentence", nb_words=10)
+    description = factory.Faker("sentence", nb_words=100)
+    short_description = factory.Faker("sentence", nb_words=10)
 
     @factory.post_generation
     def with_public_perms(self, create, extracted, **kwargs):

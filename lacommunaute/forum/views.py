@@ -1,5 +1,4 @@
 import logging
-from typing import Any
 
 from django.conf import settings
 from django.db.models import Count, Exists, OuterRef
@@ -9,6 +8,7 @@ from django.views.generic import ListView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
@@ -59,5 +59,5 @@ class CategoryForumListView(ListView):
     template_name = "forum/category_forum_list.html"
     context_object_name = "forums"
 
-    def get_queryset(self) -> QuerySet[Any]:
-        return Forum.objects.exclude(is_private=True).filter(type=Forum.FORUM_CAT, level=0)
+    def get_queryset(self) -> QuerySet[Forum]:
+        return Forum.objects.filter(type=Forum.FORUM_CAT, kind=ForumKind.PUBLIC_FORUM, level=0)
