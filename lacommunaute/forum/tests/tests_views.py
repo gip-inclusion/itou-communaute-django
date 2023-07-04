@@ -1,4 +1,3 @@
-from django.contrib.auth.models import AnonymousUser
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
@@ -77,16 +76,10 @@ class ForumViewQuerysetTest(TestCase):
 class ForumViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
+        cls.forum = ForumFactory(with_public_perms=True)
+        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
         cls.user = cls.topic.poster
         cls.forum = cls.topic.forum
-
-        # Assign some permissions
-        cls.perm_handler = PermissionHandler()
-        assign_perm("can_read_forum", cls.user, cls.forum)
-        assign_perm("can_see_forum", cls.user, cls.forum)
-        assign_perm("can_post_without_approval", cls.user, cls.forum)
-        assign_perm("can_reply_to_topics", cls.user, cls.forum)
 
         cls.url = reverse("forum_extension:forum", kwargs={"pk": cls.forum.pk, "slug": cls.forum.slug})
 
@@ -163,7 +156,6 @@ class ForumViewTest(TestCase):
         self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
     def test_anonymous_like(self):
-        assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
         params = {"next_url": self.url}
         url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
@@ -220,33 +212,23 @@ class ForumViewTest(TestCase):
         self.assertContains(response, poll_option.poll.question)
         self.assertContains(response, poll_option.text)
 
-    def test_postform_in_context(self):
+    def test_can_submit_form(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context_data["form"], PostForm)
         self.assertContains(response, f'id="collapsePost{self.topic.pk}')
 
-    def test_loadmoretopic_url_in_context(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.context_data["loadmoretopic_url"],
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
-            ),
-        )
-
-    def test_cannot_submit_post(self):
+    def test_cannot_submit_post(self, *args):
         user = UserFactory()
-        assign_perm("can_read_forum", user, self.forum)
-        assign_perm("can_see_forum", user, self.forum)
+        forum = ForumFactory()
+        assign_perm("can_read_forum", user, forum)
+        assign_perm("can_see_forum", user, forum)
         remove_perm("can_reply_to_topics", user, self.forum)
+        url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
         self.client.force_login(user)
 
-        response = self.client.get(self.url)
+        response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, f'id="collapsePost{self.topic.pk}')
@@ -290,44 +272,28 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
     def test_loadmoretopic_url(self):
+        loadmoretopic_url = reverse(
+            "forum_conversation_extension:topic_list",
+            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+        )
+
         TopicFactory.create_batch(9, with_post=True, forum=self.forum)
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(
-            response,
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
-            )
-            + "?page=2",
-        )
+        self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
+
+        self.assertNotContains(response, loadmoretopic_url + "?page=2")
 
         TopicFactory(with_post=True, forum=self.forum)
-        self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
-            )
-            + "?page=2",
-        )
+        self.assertContains(response, loadmoretopic_url + "?page=2")
 
         TopicFactory.create_batch(10, with_post=True, forum=self.forum)
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
+        response = self.client.get(self.url + "?page=2")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
-            )
-            + "?page=2",
-        )
+        self.assertContains(response, loadmoretopic_url + "?page=3")
 
     def test_topic_has_tags(self):
         tag = f"tag_{faker.word()}"
@@ -355,14 +321,11 @@ class ForumViewTest(TestCase):
     def test_descendants_are_in_cards_if_forum_is_category_type(self):
         self.forum.type = Forum.FORUM_CAT
         self.forum.save()
-        child_forum = ForumFactory(parent=self.forum)
-        assign_perm("can_read_forum", self.user, child_forum)
-        assign_perm("can_see_forum", self.user, child_forum)
-        self.client.force_login(self.user)
+        child_forum = ForumFactory(parent=self.forum, with_public_perms=True)
 
         response = self.client.get(self.url)
-
         self.assertEqual(response.status_code, 200)
+
         self.assertContains(response, '<div class="card-body')
         self.assertContains(response, child_forum.name)
         self.assertContains(
