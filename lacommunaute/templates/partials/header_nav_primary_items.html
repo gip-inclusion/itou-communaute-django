@@ -44,6 +44,15 @@
                             Accéder à mes évènements
                         </a>
                     </li>
+                    <li>
+                        <a href="{% url 'forum_extension:index' %}"
+                           class="dropdown-item text-primary matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="forums">
+                            Accéder à mes thématiques
+                        </a>
+                    </li>
                     {% if user.is_superuser %}
                         <li>
                             <div class="dropdown-divider"></div>
