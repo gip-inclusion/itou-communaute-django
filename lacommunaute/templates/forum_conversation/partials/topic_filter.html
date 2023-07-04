@@ -20,7 +20,7 @@
                                     <button id="filtertopics-button"
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
-                                            hx-get="{% url 'forum_conversation_extension:home' %}?filter={{ filter.0 }}"
+                                            hx-get="{% url 'forum_conversation_extension:publicforum' %}?filter={{ filter.0 }}"
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"

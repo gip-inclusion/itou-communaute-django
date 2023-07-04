@@ -12,8 +12,8 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from taggit.models import Tag
 
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -542,20 +542,20 @@ class TopicViewTest(TestCase):
 class TopicListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse("forum_conversation_extension:home")
-        cls.topic = TopicFactory(with_post=True, with_like=True)
-        cls.forum = cls.topic.forum
+        cls.url = reverse("forum_conversation_extension:publicforum")
+        cls.forum = ForumFactory(with_public_perms=True)
+        cls.topic = TopicFactory(with_post=True, with_like=True, forum=cls.forum)
         cls.user = cls.topic.poster
-
-        assign_perm("can_see_forum", cls.user, cls.forum)
-        assign_perm("can_read_forum", cls.user, cls.forum)
 
     def test_context(self):
         response = self.client.get(self.url)
 
         self.assertIsInstance(response.context_data["form"], PostForm)
         self.assertEqual(response.context_data["filters"], Filters.choices)
-        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:home"))
+        self.assertEqual(
+            response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:publicforum")
+        )
+        self.assertEqual(response.context_data["forum"], self.forum)
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
 
         for filter, label in Filters.choices:
@@ -563,7 +563,7 @@ class TopicListViewTest(TestCase):
                 response = self.client.get(self.url + f"?filter={filter}")
                 self.assertEqual(
                     response.context_data["loadmoretopic_url"],
-                    reverse("forum_conversation_extension:home") + f"?filter={filter}",
+                    reverse("forum_conversation_extension:publicforum") + f"?filter={filter}",
                 )
                 self.assertEqual(response.context_data["active_filter_name"], label)
 
@@ -576,50 +576,26 @@ class TopicListViewTest(TestCase):
         # icon: solid heart
         self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
-    def test_store_upper_visible_forums(
-        self,
-    ):
-        hidden_forum = ForumFactory()
-        categ_forum = ForumFactory(type=Forum.FORUM_CAT)
-        assign_perm("can_see_forum", self.user, categ_forum)
-        assign_perm("can_read_forum", self.user, categ_forum)
-        self.client.force_login(self.user)
-
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(
-            response,
-            '<a class="dropdown-header matomo-event" href="'
-            + reverse("forum_extension:forum", kwargs={"pk": hidden_forum.pk, "slug": hidden_forum.slug}),
-        )
-        self.assertNotContains(
-            response,
-            '<a class="dropdown-header matomo-event" href="'
-            + reverse("forum_extension:forum", kwargs={"pk": categ_forum.pk, "slug": categ_forum.slug}),
-        )
-        self.assertContains(
-            response,
-            '<a class="dropdown-header matomo-event" href="'
-            + reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
     def test_queryset(self):
-        answered_topic = TopicFactory(with_post=True, forum=self.forum)
-        PostFactory(topic=answered_topic)
-        nonreadable_topic = TopicFactory(with_post=True)
-        certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
-        self.client.force_login(self.user)
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["total"], 3)
-        self.assertNotContains(response, nonreadable_topic.subject)
+        self.assertEqual(response.context_data["total"], 1)
 
-        for topic in Topic.objects.filter(forum=self.forum):
+        for topic in Topic.objects.exclude(id=self.topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
+
+        for topic in Topic.objects.filter(id=self.topic.id):
             with self.subTest(topic):
                 self.assertContains(response, topic.subject)
+
+    def test_queryset_for_unanswered_topic(self):
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url + "?filter=NEW")
         self.assertEqual(response.status_code, 200)
@@ -630,49 +606,25 @@ class TopicListViewTest(TestCase):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
 
+    def test_queryset_for_certified_topic(self):
+        certified_topic = TopicFactory(
+            with_post=True, with_certified_post=True, forum=ForumFactory(with_public_perms=True)
+        )
+        TopicFactory(
+            with_post=True,
+            with_certified_post=True,
+            forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True),
+        )
+
         response = self.client.get(self.url + "?filter=CERTIFIED")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["total"], 1)
         self.assertContains(response, certified_topic.subject)
+        self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
 
         for topic in Topic.objects.exclude(id=certified_topic.id):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
-
-    def test_unanswerd_topics_visibility(self):
-        url = self.url + "?filter=NEW"
-        self.client.force_login(self.user)
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.topic.subject)
-
-        self.forum.is_private = True
-        self.forum.save()
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.topic.subject)
-
-    def test_certified_topics_list_content(self):
-        certified_private_topic = TopicFactory(with_certified_post=True, forum=ForumFactory(is_private=True))
-        certified_public_topic = TopicFactory(with_certified_post=True, forum=self.forum)
-        topic = TopicFactory(with_post=True)
-        self.client.force_login(self.user)
-
-        response = self.client.get(self.url + "?filter=CERTIFIED")
-        self.assertEqual(response.status_code, 200)
-
-        self.assertContains(response, certified_public_topic.first_post.subject)
-        self.assertContains(response, str(certified_public_topic.first_post.content)[:100])
-        self.assertContains(response, str(certified_public_topic.certified_post.post.content)[:100])
-
-        self.assertNotContains(response, certified_private_topic.first_post.subject)
-        self.assertNotContains(response, str(certified_private_topic.first_post.content)[:100])
-        self.assertNotContains(response, str(certified_private_topic.certified_post.post.content)[:100])
-
-        self.assertNotContains(response, topic.first_post.subject)
-        self.assertNotContains(response, str(topic.first_post.content)[:100])
 
     def test_pagination(self):
         self.client.force_login(self.user)
@@ -711,7 +663,7 @@ class TopicListViewTest(TestCase):
 
     def test_template_name(self):
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "pages/home.html")
+        self.assertTemplateUsed(response, "forum_conversation/topics_public.html")
 
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
