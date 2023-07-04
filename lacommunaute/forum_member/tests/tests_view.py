@@ -108,7 +108,7 @@ class ModeratorProfileListView(TestCase):
         self.forum.members_group.save()
 
         self.client.force_login(self.profile.user)
-        with self.assertNumQueries(19):
+        with self.assertNumQueries(11):
             self.client.get(self.url)
 
 
