@@ -672,44 +672,29 @@ class TopicListViewTest(TestCase):
 class NewsFeedTopicListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True, type=Topic.TOPIC_NEWS)
-        cls.user = cls.topic.poster
-        cls.forum = cls.topic.forum
-        assign_perm("can_read_forum", cls.topic.poster, cls.topic.forum)
-        cls.url = reverse("forum_conversation_extension:newsfeed_topics_list")
+        cls.url = reverse("forum_conversation_extension:newsfeed")
 
-    def test_view(self):
-        TopicFactory(with_post=True, poster=self.user, forum=self.forum)
-        self.client.force_login(self.user)
+    def test_template_name(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "forum_conversation/topics_newsfeed.html")
+
+        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
+        self.assertTemplateUsed(response, "forum_conversation/topic_list_newsfeed.html")
+
+    def test_queryset(self):
+        news_topic = TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM, with_public_perms=True))
 
         response = self.client.get(self.url)
-
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
-        self.assertIsInstance(response.context_data["form"], PostForm)
-        self.assertEqual(response.context_data["loadmoretopic_url"], self.url)
-        self.assertEqual(response.context_data["loadmoretopic_suffix"], "newsfeed")
-        self.assertEqual(list(response.context_data["topics"]), [self.topic])
-        self.assertEqual(response.context_data["display_filter_dropdown"], False)
-        self.assertNotContains(response, '<div class="dropdown-menu" id="filterTopicsDropdown" style="">')
+        self.assertContains(response, news_topic.subject)
+        for topic in Topic.objects.exclude(id=news_topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
 
-    def test_forum_is_private(self):
-        self.forum.is_private = True
-        self.forum.save()
+    def test_context_data(self):
         response = self.client.get(self.url)
-
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context_data["topics"]), 0)
-
-    def test_pagination(self):
-        TopicFactory.create_batch(9, with_post=True, type=Topic.TOPIC_NEWS)
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.url + "?page=2")
-
-        TopicFactory(with_post=True, type=Topic.TOPIC_NEWS)
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.url + "?page=2")
+        self.assertEqual(response.context_data["forum"], None)
+        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:newsfeed"))
