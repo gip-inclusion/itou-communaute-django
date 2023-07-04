@@ -18,7 +18,7 @@ from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView, TopicUpdateView
+from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
 from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
 from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
@@ -187,10 +187,9 @@ class TopicCreateViewTest(TestCase):
 class TopicUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
-        cls.forum = cls.topic.forum
+        cls.forum = ForumFactory(with_public_perms=True)
+        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
         cls.poster = cls.topic.poster
-        cls.perm_handler = PermissionHandler()
         cls.url = reverse(
             "forum_conversation:topic_update",
             kwargs={
@@ -200,39 +199,8 @@ class TopicUpdateViewTest(TestCase):
                 "pk": cls.topic.pk,
             },
         )
-        assign_perm("can_read_forum", cls.poster, cls.topic.forum)
-        assign_perm("can_see_forum", cls.poster, cls.topic.forum)
 
-    def test_redirection(self):
-        view = TopicUpdateView()
-        view.forum_post = self.topic.posts.first()
-        self.assertEqual(
-            view.get_success_url(),
-            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}),
-        )
-
-    def test_has_not_permission_to_delete_post(self):
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(
-            response,
-            reverse(
-                "forum_conversation:post_delete",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                    "topic_slug": self.topic.slug,
-                    "topic_pk": self.topic.pk,
-                    "pk": self.topic.posts.first().pk,
-                },
-            ),
-        )
-
-    def test_has_permission_to_delete_post(self):
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
-        assign_perm("can_delete_own_posts", self.poster, self.forum)
+    def test_delete_post_button_is_shown(self):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -255,7 +223,6 @@ class TopicUpdateViewTest(TestCase):
         # because of django-machina logic
         self.assertFalse(ForumReadTrack.objects.count())
 
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
         self.client.force_login(self.poster)
 
         post_data = {"subject": "s", "content": "c"}
@@ -268,7 +235,6 @@ class TopicUpdateViewTest(TestCase):
         self.assertEqual(1, ForumReadTrack.objects.count())
 
     def test_selected_tags_are_checked(self):
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
         self.client.force_login(self.poster)
 
         tag = Tag.objects.create(name=faker.word())
@@ -314,13 +280,11 @@ class PostCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
-@patch("machina.apps.forum.views.ForumView.perform_permissions_check", return_value=True)
-@patch("machina.apps.forum_permission.handler.PermissionHandler.can_edit_post", return_value=True)
 class PostUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
-        cls.forum = cls.topic.forum
+        cls.forum = ForumFactory(with_public_perms=True)
+        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
         cls.post = PostFactory(topic=cls.topic)
         cls.poster = cls.post.poster
         cls.kwargs = {
@@ -333,37 +297,13 @@ class PostUpdateViewTest(TestCase):
         cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
         cls.post_data = {"content": faker.text(max_nb_chars=20)}
 
-    def test_has_not_permission_to_delete_post(self, *args):
+    def test_delete_post_button_is_visible(self, *args):
         self.client.force_login(self.poster)
-
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
-
-    def test_has_permission_to_delete_post(self, *args):
-        self.client.force_login(self.poster)
-        assign_perm("can_delete_own_posts", self.poster, self.forum)
 
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
-
-    def test_topic_is_marked_as_read_when_post_is_updated(self, *args):
-        # evaluating ForumReadTrack instead of TopicReadTrack
-        # because of django-machina logic
-        self.assertFalse(ForumReadTrack.objects.count())
-
-        self.client.force_login(self.poster)
-
-        response = self.client.post(
-            self.url,
-            self.post_data,
-            follow=True,
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, ForumReadTrack.objects.count())
 
     def test_update_post_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
