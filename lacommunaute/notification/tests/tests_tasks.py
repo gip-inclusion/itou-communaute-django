@@ -14,6 +14,7 @@ from config.settings.base import (
     SIB_SMTP_URL,
     SIB_UNANSWERED_QUESTION_TEMPLATE,
 )
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.models import EmailSentTrack
@@ -147,7 +148,7 @@ class SendNotifsOnUnansweredTopics(TestCase):
 
     @respx.mock
     def test_send_notifs_on_unanswered_topics(self):
-        TopicFactory(with_post=True, forum=ForumFactory(is_private=False))
+        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM))
         expected_contact = self.contact_list_response["contacts"][0]
         to = [
             {

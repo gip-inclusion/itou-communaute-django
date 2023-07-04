@@ -1,6 +1,7 @@
 import pytest  # noqa
 from django.urls import reverse
 
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
 
@@ -16,7 +17,7 @@ def test_queryset(client, db):
     forum = ForumFactory(type=Forum.FORUM_CAT)
     unvisible_forums = (
         ForumFactory(type=Forum.FORUM_CAT, parent=forum),
-        ForumFactory(type=Forum.FORUM_CAT, is_private=True),
+        ForumFactory(type=Forum.FORUM_CAT, kind=ForumKind.PRIVATE_FORUM),
         ForumFactory(),
         ForumFactory(type=Forum.FORUM_LINK),
     )

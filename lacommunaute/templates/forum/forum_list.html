@@ -57,7 +57,7 @@
                                                 {{ child.obj.name }}
                                             </a>
                                             <small class="text-muted">
-                                                {% if node.obj.is_private %}
+                                                {% if node.obj.kind == "PUBLIC_FORUM" %}
                                                     <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} Membres -
                                                 {% endif %}
                                                 {% if child.topics_count > 1 %}
@@ -119,7 +119,7 @@
                             {{ node.obj.name }}
                         </a>
                         <small class="text-muted">
-                            {% if node.obj.is_private%}
+                            {% if node.obj.kind == 'PRIVATE_FORUM' %}
                                 <i class="ri-lock-2-fill"></i> {{node.obj.members_group.user_set.count}} membres -
                             {% endif %}
                             {% if node.topics_count > 1 %}
