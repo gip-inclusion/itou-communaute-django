@@ -23,17 +23,6 @@ TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 track_handler = TrackingHandler()
 
 
-class SuccessUrlMixin:
-    def get_success_url(self):
-        return reverse(
-            "forum_extension:forum",
-            kwargs={
-                "pk": self.forum_post.topic.forum.pk,
-                "slug": self.forum_post.topic.forum.slug,
-            },
-        )
-
-
 class FormValidMixin:
     def form_valid(self, *args, **kwargs):
         valid = super().form_valid(*args, **kwargs)
@@ -70,7 +59,7 @@ class TopicCreateView(FormValidMixin, views.TopicCreateView):
         )
 
 
-class TopicUpdateView(SuccessUrlMixin, FormValidMixin, views.TopicUpdateView):
+class TopicUpdateView(FormValidMixin, views.TopicUpdateView):
     post_form_class = TopicForm
 
 
@@ -79,7 +68,7 @@ class PostCreateView(views.PostCreateView):
         return False
 
 
-class PostUpdateView(SuccessUrlMixin, FormValidMixin, views.PostUpdateView):
+class PostUpdateView(FormValidMixin, views.PostUpdateView):
     pass
 
 
