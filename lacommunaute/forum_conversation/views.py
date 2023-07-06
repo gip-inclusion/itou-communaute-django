@@ -130,7 +130,7 @@ class TopicListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = PostForm(user=self.request.user)
-        context["loadmoretopic_url"] = reverse("forum_conversation_extension:publicforum")
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:topics")
 
         if self.get_filter():
             context["loadmoretopic_url"] += f"?filter={self.get_filter()}"

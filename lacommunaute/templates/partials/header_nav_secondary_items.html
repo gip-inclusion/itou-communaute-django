@@ -1,34 +1,43 @@
 {% load forum_member_tags %}
 {% load i18n %}
 {% load theme_inclusion %}
+
+
+{% url 'pages:home' as home_url %}
+{% url 'forum_conversation_extension:topics' as publicforum_url %}
+{% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
+{% url 'forum_extension:documentation' as documentation_url %}
+{% url 'event:calendar' as calendar_url %}
+{% url 'forum_search_extension:search' as search_url %}
+
 <ul>
     <li class="col-12 col-lg-auto">
-        <a href="{% url 'pages:home' %}" class="{% if request.path == '/' %}is-active{% endif %}">
+        <a href="{{ home_url }}" class="{% if request.path == home_url %}is-active{% endif %}">
             Accueil
         </a>
     </li>
     <li class="col-12 col-lg-auto">
-        <a href="{% url 'forum_conversation_extension:publicforum' %}" class="{% if request.path == '/publicforum/' %}is-active{% endif %}">
-            Espace d'échanges
+        <a href="{{ publicforum_url }}" class="{% if request.path == publicforum_url %}is-active{% endif %}">
+            {% trans "Discussion area" %}
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_conversation_extension:newsfeed' %}" class="{% if request.path == '/newsfeed/' %}is-active{% endif %}">
+        <a href="{{ newsfeed_url }}" class="{% if request.path == newsfeed_url %}is-active{% endif %}">
             Actualités
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_extension:documentation' %}" class="{% if request.path == '/documentation/' %}is-active{% endif %}">
-            Documentations
+        <a href="{{ documentation_url }}" class="{% if request.path == documentation_url %}is-active{% endif %}">
+            {% trans "Documents" %}
         </a>
     </li>
     <li>
-        <a href="{% url 'event:calendar' %}" class="{% if request.path == '/calendar/' %}is-active{% endif %}">
-            Évènements publics
+        <a href="{{ calendar_url }}" class="{% if request.path == calendar_url %}is-active{% endif %}">
+            {% trans "Events" %}
         </a>
     </li>
     <li>
-        <a href="{% url 'forum_search_extension:search' %}" class="{% if request.path == '/search/' %}is-active{% endif %}">
+        <a href="{{ search_url }}" class="{% if request.path == search_url %}is-active{% endif %}">
             {% trans "Search forums" %}
         </a>
     </li>

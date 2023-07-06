@@ -489,7 +489,7 @@ class TopicViewTest(TestCase):
 class TopicListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.url = reverse("forum_conversation_extension:publicforum")
+        cls.url = reverse("forum_conversation_extension:topics")
         cls.forum = ForumFactory(with_public_perms=True)
         cls.topic = TopicFactory(with_post=True, with_like=True, forum=cls.forum)
         cls.user = cls.topic.poster
@@ -499,9 +499,7 @@ class TopicListViewTest(TestCase):
 
         self.assertIsInstance(response.context_data["form"], PostForm)
         self.assertEqual(response.context_data["filters"], Filters.choices)
-        self.assertEqual(
-            response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:publicforum")
-        )
+        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
 
@@ -510,7 +508,7 @@ class TopicListViewTest(TestCase):
                 response = self.client.get(self.url + f"?filter={filter}")
                 self.assertEqual(
                     response.context_data["loadmoretopic_url"],
-                    reverse("forum_conversation_extension:publicforum") + f"?filter={filter}",
+                    reverse("forum_conversation_extension:topics") + f"?filter={filter}",
                 )
                 self.assertEqual(response.context_data["active_filter_name"], label)
 
