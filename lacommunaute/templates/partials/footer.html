@@ -13,7 +13,7 @@
                     <ul>
                         <li>
                             <a href="{% url 'forum_conversation_extension:topics' %}">
-                                Espace d'échanges
+                                {% trans "Discussion area" %}
                             </a>
                         </li>
                         <li>
@@ -23,15 +23,19 @@
                         </li>
                         <li>
                             <a href="{% url 'forum_extension:documentation' %}">
-                                Documentations
+                                {% trans "Documents" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'event:calendar' %}">
-                                Évènements publics
+                                {% trans "Events" %}
                             </a>
                         </li>
-                        <li><a href="{% url 'forum_search_extension:search' %}">{% trans "Search forums" %}</a></li>
+                        <li>
+                            <a href="{% url 'forum_search_extension:search' %}">
+                                {% trans "Search forums" %}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
