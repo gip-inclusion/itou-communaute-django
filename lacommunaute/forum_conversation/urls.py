@@ -24,8 +24,8 @@ conversation_urlpatterns = [
 
 
 urlpatterns = [
-    path("publicforum/", TopicListView.as_view(), name="publicforum"),
-    path("newsfeed/", NewsFeedTopicListView.as_view(), name="newsfeed"),
+    path("topics/", TopicListView.as_view(), name="topics"),
+    path("news/", NewsFeedTopicListView.as_view(), name="newsfeed"),
     path(
         "forum/<str:forum_slug>-<int:forum_pk>/",
         include(conversation_urlpatterns),
