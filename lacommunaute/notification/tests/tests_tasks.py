@@ -158,7 +158,7 @@ class SendNotifsOnUnansweredTopics(TestCase):
 
         url = (
             f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}/"
-            "?new=1&mtm_campaign=unsanswered&mtm_medium=email#community"
+            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community"
         )
 
         params = {"count": 1, "link": url}

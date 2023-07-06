@@ -60,7 +60,7 @@ def send_notifs_on_unanswered_topics(list_id: int) -> None:
         count = Topic.objects.unanswered().filter(forum__in=Forum.objects.public()).count()
         link = (
             f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}/"
-            "?new=1&mtm_campaign=unsanswered&mtm_medium=email#community"
+            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community"
         )
 
         params = {"count": count, "link": link}
