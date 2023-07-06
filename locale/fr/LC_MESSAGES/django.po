@@ -804,7 +804,7 @@ msgstr "Modifier le type de sujet"
 
 #: lacommunaute/templates/machina/forum_search/search.html:18
 msgid "Search forums"
-msgstr "Chercher dans les thématiques"
+msgstr "Chercher dans les échanges"
 
 #: lacommunaute/templates/machina/forum_search/search.html:44
 msgid "New search"
@@ -923,6 +923,9 @@ msgstr "Voir les %(count)s sous-thématiques"
 msgid "Calendar"
 msgstr "Calendrier"
 
+msgid "Events"
+msgstr "Évènements"
+
 msgid "Manage My Events"
 msgstr "Gérer mes évènements"
 
@@ -934,3 +937,9 @@ msgstr "Effacer cet évènement"
 
 msgid "No event yet"
 msgstr "Aucun évènement"
+
+msgid "Discussion area"
+msgstr "Espace d'échange"
+
+msgid "Documents"
+msgstr "Documentation"

@@ -5,7 +5,7 @@
 {% load mptt_tags %}
 {% load forum_tags %}
 
-{% block title %}Espace d'échanges{{ block.super }}{% endblock %}
+{% block title %}{% trans "Discussion area" %}{{ block.super }}{% endblock %}
 {% block meta_description %}Questions / réponses entre CIP, travailleurs sociaux et autres accompagnateurs des personnes éloignées de l’emploi (insertion/handicap){% endblock meta_description %}"
 
 {% block body_class %}{{ block.super }}{% endblock %}
@@ -16,7 +16,7 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1>Espace d'échanges</h1>
+                    <h1>{% trans "Discussion area" %}</h1>
                     <h2 class="mt-3">Questions / réponses entre CIP, travailleurs sociaux et autres accompagnateurs des personnes éloignées de l’emploi (insertion/handicap)</h2>
                 </div>
             </div>
