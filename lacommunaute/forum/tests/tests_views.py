@@ -5,8 +5,7 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.loading import get_class
 
-from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum.models import Forum
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -319,11 +318,11 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "<h1>title</h1>")
 
     def test_descendants_are_in_cards_if_forum_is_category_type(self):
-        self.forum.type = Forum.FORUM_CAT
-        self.forum.save()
-        child_forum = ForumFactory(parent=self.forum, with_public_perms=True)
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        child_forum = forum.get_children().first()
+        url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
-        response = self.client.get(self.url)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         self.assertContains(response, '<div class="card-body')
@@ -333,16 +332,15 @@ class ForumViewTest(TestCase):
         )
 
     def test_siblings_in_context(self):
-        self.forum.type = Forum.FORUM_CAT
-        self.forum.save()
-        child_forum = ForumFactory(parent=self.forum, with_public_perms=True)
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        child_forum = forum.get_children().first()
         url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response.context_data["forums"].get(), child_forum)
-        self.assertEqual(response.context_data["parent_forum"], self.forum)
+        self.assertEqual(response.context_data["parent_forum"], forum)
 
     def test_next_url_in_context(self):
         response = self.client.get(self.url)

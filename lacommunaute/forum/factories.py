@@ -46,3 +46,14 @@ class ForumFactory(BaseForumFactory):
             for permission in ForumPermission.objects.filter(codename__in=perms)
         ]
         UserForumPermission.objects.bulk_create(anonymous_authorized_perms + authentified_authorized_perms)
+
+
+class CategoryForumFactory(ForumFactory):
+    type = Forum.FORUM_CAT
+
+    @factory.post_generation
+    def with_child(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        ForumFactory(parent=self, with_public_perms=True)
