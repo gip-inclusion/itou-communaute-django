@@ -28,50 +28,59 @@ def create_forum() -> Forum:
     return forum
 
 
-def update_topics(forum_id_list: List[int], new_forum: Forum) -> None:
+def update_topics(
+    forum_id_list: List[int],
+    new_forum: Forum,
+) -> None:
     print("Mise à jour des topics")
-    for forum in Forum.objects.filter(id__in=public_forums_id_list):
+    for forum in Forum.objects.filter(id__in=forum_id_list):
+        print(f"/n**** Forum: {forum}")
         for topic in Topic.objects.filter(forum=forum):
+            print(f"Topic: {topic}")
             topic.tags.add(forum.name)
             topic.forum = new_forum
             topic.save()
+            print(f" >> moved from {forum} to {topic.forum}")
 
 
-def add_redirections(forum_id_list: List[int], site_id: int, new_forum: Forum) -> None:
+def add_forums_redirections(forum_id_list: List[int], new_forum: Forum, site: Site) -> None:
     print("Ajout des redirections")
-    site = Site.objects.get(id=site_id)
-    Redirect.objects.bulk_create(
+    redirections = Redirect.objects.bulk_create(
         [
             Redirect(
                 site=site,
-                old_path=f"/forum/{forum.slug}-{forum.id}/{topic.slug}-{topic.id}",
-                new_path=f"/forum/{new_forum.slug}-{new_forum.id}/{topic.slug}-{topic.id}",
+                old_path=f"/forum/{forum.slug}-{forum.id}/",
+                new_path=f"/forum/{new_forum.slug}-{new_forum.id}/",
             )
             for forum in Forum.objects.filter(id__in=forum_id_list)
-            for topic in Topic.objects.filter(forum=forum)
         ]
     )
+    print(f"redirections créées: {redirections}")
+
+
+def delete_forums(forum_id_list: List[int]) -> None:
+    print("Suppression des anciens forums publics")
+    forums = Forum.objects.filter(id__in=forum_id_list).delete()
+    print(f"{forums[0]} objets supprimés: {forums[1]}")
+
+
+def delete_unapproved_topics() -> None:
+    print("Suppression des topics non approuvés")
+    topics = Topic.objects.filter(approved=False).delete()
+    print(f"{topics[0]} objets supprimés: {topics[1]}")
 
 
 class Command(BaseCommand):
     help = "réorganisation des forums publics"
 
     def handle(self, *args, **options):
-        # ajouter les nouveaux tags à partir des forums publics existants
+        delete_unapproved_topics()
+
         create_tags(public_forums_id_list)
 
-        # ajouter le nouveau forum public
         forum = create_forum()
-
-        # ajouter ces tags aux topics concernés
-        # migrer les topics des forums publics existants vers le nouveau forum public
         update_topics(public_forums_id_list, forum)
-
-        # ajouter les redirections des anciens forums publics vers le nouveau forum public
-        add_redirections(public_forums_id_list, site_id, forum)
-
-        # supprimer les forums publics existants
-        print("Suppression des anciens forums publics")
-        Forum.objects.filter(id__in=public_forums_id_list).delete()
+        add_forums_redirections(public_forums_id_list, forum, Site.objects.get(id=site_id))
+        delete_forums(public_forums_id_list)
 
         print("Terminé")
