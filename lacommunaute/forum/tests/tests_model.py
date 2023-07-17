@@ -1,22 +1,10 @@
 from django.db import IntegrityError
 from django.test import TestCase
-from faker import Faker
-from machina.core.db.models import get_model
-from machina.core.loading import get_class
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
-
-
-faker = Faker()
-
-ForumPermission = get_model("forum_permission", "ForumPermission")
-UserForumPermission = get_model("forum_permission", "UserForumPermission")
-PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
-remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
 
 
 class ForumManagerTest(TestCase):
