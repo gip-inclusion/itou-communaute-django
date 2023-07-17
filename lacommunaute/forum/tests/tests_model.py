@@ -43,3 +43,10 @@ class ForumModelTest(TestCase):
             Forum.kind.field.flatchoices,
             [("PUBLIC_FORUM", "Espace public"), ("PRIVATE_FORUM", "Espace privé"), ("NEWS", "Actualités")],
         )
+
+    def test_get_absolute_url(self):
+        forum = ForumFactory()
+        self.assertEqual(
+            forum.get_absolute_url(),
+            f"/forum/{forum.slug}-{forum.pk}/",
+        )
