@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.models import Group
 from django.db import models
+from django.urls import reverse
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
 
@@ -27,6 +28,15 @@ class Forum(AbstractForum):
     )
 
     objects = ForumQuerySet().as_manager()
+
+    def get_absolute_url(self):
+        return reverse(
+            "forum_extension:forum",
+            kwargs={
+                "pk": self.pk,
+                "slug": self.slug,
+            },
+        )
 
     def get_unanswered_topics(self):
         return Topic.objects.unanswered().filter(forum__in=self.get_descendants(include_self=True))
