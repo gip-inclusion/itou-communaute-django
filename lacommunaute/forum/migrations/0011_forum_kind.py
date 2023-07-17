@@ -7,14 +7,12 @@ def add_kind_to_forums(apps, schema_editor):
     Forum = apps.get_model("forum", "Forum")
     Forum.objects.filter(is_newsfeed=True).update(kind="NEWS")
     Forum.objects.filter(is_newsfeed=False, is_private=True).update(kind="PRIVATE_FORUM")
-    Forum.objects.filter(is_newsfeed=False, is_private=False, type=1).update(kind="DOCUMENTATION")
 
 
 def remove_kind_from_forums(apps, schema_editor):
     Forum = apps.get_model("forum", "Forum")
     Forum.objects.filter(kind="NEWS").update(is_newsfeed=True, is_private=False)
     Forum.objects.filter(kind="PRIVATE_FORUM").update(is_private=True, is_newsfeed=False)
-    Forum.objects.filter(kind="DOCUMENTATION").update(is_private=False, is_newsfeed=False, type=1)
 
 
 class Migration(migrations.Migration):
