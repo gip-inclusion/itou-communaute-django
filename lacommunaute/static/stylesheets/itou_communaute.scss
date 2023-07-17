@@ -138,3 +138,12 @@
   max-height: 75vh;
   overflow-y: auto;
 }
+
+blockquote {
+  padding: 1rem;
+  border: 0px solid #3f3e62;
+  border-radius: .25rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background-color: rgb(242, 243, 245);
+}
