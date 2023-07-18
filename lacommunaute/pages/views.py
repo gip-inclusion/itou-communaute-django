@@ -57,7 +57,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["topics_public"] = Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM, approved=True).order_by(
-            "-last_post_on"
+            "-created"
         )[:4]
         context["topics_newsfeed"] = Topic.objects.filter(forum__kind=ForumKind.NEWS).order_by("-last_post_on")[:4]
         context["forums_category"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, parent__type=1).order_by(
