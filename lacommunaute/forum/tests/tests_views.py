@@ -346,3 +346,14 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["next_url"], self.url)
+
+    def test_share_buttons(self):
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        child_forum = forum.get_children().first()
+        url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, 'div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">'
+        )

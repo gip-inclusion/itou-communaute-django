@@ -32,8 +32,22 @@
             {% if forums %}
                 <div class="s-section__row row">
                     <div class="col-12 col-lg-9">
+                        <div class="row align-items-sm-center mb-3">
+                            <div class="col-12 col-sm">
+                                <span class="badge badge-xs badge-pill bg-communaute text-white text-decoration-none">
+                                    <i class="ri-checkbox-circle-fill"></i>
+                                    Certifié par la Plateforme de l'Inclusion le {{ forum.updated|date:"d/m/Y" }}
+                                </span>
+                            </div>
+                        </div>
                         {{forum.description.rendered|urlizetrunc_target_blank:30}}
-                        <small>dernière mise à jour le : {{ forum.updated|date:"d/m/Y" }}</small>
+                        <div class="row align-items-sm-center mb-3">
+                            <div class="col-12 col-sm">
+                            </div>
+                            <div class="col-12 col-sm-auto">
+                                {% include "partials/social_share_buttons.html" with text=forum.name instance=forum %}
+                            </div>
+                        </div>
                     </div>
                     <div class="col-12 col-lg-3">
                         <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"
