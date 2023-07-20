@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
@@ -44,12 +45,22 @@ class PostUpvoteViewTest(TestCase):
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
-        self.assertEqual(1, UpVote.objects.filter(voter_id=self.user.id, post_id=post.id).count())
+        self.assertEqual(
+            1,
+            UpVote.objects.filter(
+                voter_id=self.user.id, object_id=post.id, content_type=ContentType.objects.get_for_model(post)
+            ).count(),
+        )
 
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
-        self.assertEqual(0, UpVote.objects.filter(voter_id=self.user.id, post_id=post.id).count())
+        self.assertEqual(
+            0,
+            UpVote.objects.filter(
+                voter_id=self.user.id, object_id=post.id, content_type=ContentType.objects.get_for_model(post)
+            ).count(),
+        )
 
     def test_object_not_found(self):
         self.client.force_login(self.user)
@@ -58,13 +69,27 @@ class PostUpvoteViewTest(TestCase):
 
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(0, UpVote.objects.filter(voter_id=self.user.id, post_id=self.topic.last_post.id).count())
+        self.assertEqual(
+            0,
+            UpVote.objects.filter(
+                voter_id=self.user.id,
+                object_id=self.topic.last_post.id,
+                content_type_id=ContentType.objects.get_for_model(self.topic.last_post).id,
+            ).count(),
+        )
 
         form_data = {"pk": self.topic.pk, "post_pk": 9999}
 
         response = self.client.post(self.url, data=form_data)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(0, UpVote.objects.filter(voter_id=self.user.id, post_id=self.topic.last_post.id).count())
+        self.assertEqual(
+            0,
+            UpVote.objects.filter(
+                voter_id=self.user.id,
+                object_id=self.topic.last_post.id,
+                content_type_id=ContentType.objects.get_for_model(self.topic.last_post).id,
+            ).count(),
+        )
 
     def test_topic_is_marked_as_read_when_upvoting(self):
         self.assertFalse(ForumReadTrack.objects.count())
