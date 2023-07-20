@@ -343,8 +343,8 @@ class PostListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
-        UpVoteFactory(post=post, voter=UserFactory())
-        UpVoteFactory(post=post, voter=self.user)
+        UpVoteFactory(content_object=post, voter=UserFactory())
+        UpVoteFactory(content_object=post, voter=self.user)
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
