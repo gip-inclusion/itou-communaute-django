@@ -10,8 +10,7 @@ from machina.core.loading import get_class
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
-from lacommunaute.forum_upvote.shortcuts import can_certify_post
+from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
 
 
 logger = logging.getLogger(__name__)
