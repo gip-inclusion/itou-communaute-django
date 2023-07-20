@@ -15,7 +15,7 @@ from taggit.models import Tag
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.enums import Filters
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
@@ -439,18 +439,18 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
-    # def test_certified_post_is_highlighted(self):
-    #    post = PostFactory(topic=self.topic, poster=self.poster)
-    #    self.client.force_login(self.poster)
+    def test_certified_post_is_highlighted(self):
+        post = PostFactory(topic=self.topic, poster=self.poster)
+        self.client.force_login(self.poster)
 
-    #    response = self.client.get(self.url)
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
-    #    CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
-    #    response = self.client.get(self.url)
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+        CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
     def test_has_tags(self):
         tag = f"tag_{faker.word()}"
@@ -474,17 +474,16 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs))
 
+    def test_numqueries(self):
+        PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
+        UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
+        CertifiedPostFactory(topic=self.topic, post=self.topic.last_post, user=UserFactory())
+        self.client.force_login(self.poster)
 
-#    def test_numqueries(self):
-#        PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
-#        UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
-#        CertifiedPostFactory(topic=self.topic, post=self.topic.last_post, user=UserFactory())
-#        self.client.force_login(self.poster)
-
-# note vincentporte : to be optimized
-#        with self.assertNumQueries(44):
-#            response = self.client.get(self.url)
-#        self.assertEqual(response.status_code, 200)
+        # note vincentporte : to be optimized
+        with self.assertNumQueries(44):
+            response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
 
 
 class TopicListViewTest(TestCase):
