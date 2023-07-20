@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
@@ -7,6 +8,7 @@ from machina.models.abstract_models import DatedModel
 from taggit.managers import TaggableManager
 
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
 
 
@@ -81,6 +83,8 @@ class Topic(AbstractTopic):
 
 class Post(AbstractPost):
     username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
+
+    upvotes = GenericRelation(UpVote, related_query_name="post")
 
     @property
     def poster_display_name(self):
