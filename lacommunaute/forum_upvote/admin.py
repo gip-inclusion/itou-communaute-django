@@ -4,11 +4,8 @@ from lacommunaute.forum_upvote.models import UpVote
 
 
 class UpVoteAdmin(admin.ModelAdmin):
-    list_display = ("voter", "post", "created_at")
-    raw_id_fields = (
-        "voter",
-        "post",
-    )
+    list_display = ("voter", "created_at")
+    raw_id_fields = ("voter",)
 
 
 admin.site.register(UpVote, UpVoteAdmin)
