@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Exists, OuterRef, Prefetch, Q, QuerySet
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
@@ -21,8 +22,13 @@ def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[
     if user.is_authenticated:
         qs = qs.annotate(
             upvotes_count=Count("upvotes"),
-            # using user.id instead of user, to manage anonymous user journey
-            has_upvoted=Exists(UpVote.objects.filter(post=OuterRef("pk"), voter=user)),
+            has_upvoted=Exists(
+                UpVote.objects.filter(
+                    object_id=OuterRef("pk"),
+                    voter=user,
+                    content_type_id=ContentType.objects.get_for_model(qs.model).id,
+                )
+            ),
         )
     else:
         qs = qs.annotate(

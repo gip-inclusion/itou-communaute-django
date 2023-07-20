@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from machina.core.loading import get_class
@@ -33,13 +34,21 @@ class PostUpvoteView(PermissionRequiredMixin, View):
 
     def post(self, request, **kwargs):
         post = self.get_object()
-        upvote = UpVote.objects.filter(voter_id=request.user.id, post_id=post.id)
+        upvote = UpVote.objects.filter(
+            voter_id=request.user.id,
+            object_id=post.id,
+            content_type=ContentType.objects.get_for_model(post),
+        )
 
         if upvote.exists():
             upvote.delete()
             post.has_upvoted = False
         else:
-            UpVote(voter_id=request.user.id, post_id=post.id).save()
+            UpVote(
+                voter_id=request.user.id,
+                object_id=post.id,
+                content_type=ContentType.objects.get_for_model(post),
+            ).save()
             post.has_upvoted = True
 
         post.upvotes_count = post.upvotes.count()
