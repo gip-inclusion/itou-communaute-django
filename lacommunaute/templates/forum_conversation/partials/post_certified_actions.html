@@ -1,7 +1,7 @@
 {%if can_certify_post %}
     {% if not topic.is_certified or post.is_certified %}
         - <i class="ri-award-line small" aria-hidden="true"></i>
-        <form hx-post="#"
+        <form hx-post="{%  url 'forum_conversation_extension:certify' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
               id="certifiedpost-button{{post.pk}}"
               class="d-inline-block"
               hx-target="#showmorepostsarea{{topic.pk}}"

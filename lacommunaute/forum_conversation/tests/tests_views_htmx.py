@@ -7,9 +7,9 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 from taggit.models import Tag
 
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import BouncedEmailFactory
@@ -350,18 +350,18 @@ class PostListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
 
-    # def test_certified_post_highlight(self):
-    #    post = PostFactory(topic=self.topic, poster=self.user)
-    #    self.client.force_login(self.user)
+    def test_certified_post_highlight(self):
+        post = PostFactory(topic=self.topic, poster=self.user)
+        self.client.force_login(self.user)
 
-    #    response = self.client.get(self.url)
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
-    #    CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
-    #    response = self.client.get(self.url)
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+        CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
 
 class PostFeedCreateViewTest(TestCase):
@@ -468,3 +468,71 @@ class PostFeedCreateViewTest(TestCase):
             self.topic.posts.values("content", "username", "approved").last(),
             {"content": self.content, "username": username, "approved": False},
         )
+
+
+class CertifiedPostViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(with_post=True)
+        cls.user = cls.topic.poster
+        assign_perm("can_read_forum", cls.user, cls.topic.forum)
+        cls.url = reverse(
+            "forum_conversation_extension:certify",
+            kwargs={
+                "forum_pk": cls.topic.forum.pk,
+                "forum_slug": cls.topic.forum.slug,
+                "pk": cls.topic.pk,
+                "slug": cls.topic.slug,
+            },
+        )
+        cls.form_data = {"post_pk": cls.topic.last_post.pk}
+
+    def test_get(self):
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405)
+
+    def test_post_instance_doesnt_exist(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data={"post_pk": 9999})
+        self.assertEqual(response.status_code, 404)
+
+    def test_certify_without_permission(self):
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.form_data)
+        self.assertEqual(response.status_code, 403)
+
+    def test_certify_with_permission(self):
+        self.topic.forum.members_group.user_set.add(self.user)
+        self.topic.forum.members_group.save()
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.form_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(CertifiedPost.objects.count(), 1)
+        certified_post = CertifiedPost.objects.first()
+        self.assertEqual(certified_post.post, self.topic.last_post)
+        self.assertEqual(certified_post.user, self.user)
+        self.assertEqual(certified_post.topic, self.topic)
+        self.assertEqual(ForumReadTrack.objects.count(), 1)
+
+    def test_uncertify_with_permission(self):
+        self.topic.forum.members_group.user_set.add(self.user)
+        self.topic.forum.members_group.save()
+        CertifiedPost(topic=self.topic, post=self.topic.last_post, user=self.user).save()
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.form_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(CertifiedPost.objects.count(), 0)
+        self.assertEqual(ForumReadTrack.objects.count(), 1)
+
+    def test_rendered_content(self):
+        self.topic.forum.members_group.user_set.add(self.user)
+        self.topic.forum.members_group.save()
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, data=self.form_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'<div id="showmorepostsarea{self.topic.pk}">')
+        self.assertTemplateUsed(response, "forum_conversation/partials/posts_list.html")

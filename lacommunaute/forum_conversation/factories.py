@@ -3,8 +3,7 @@ from machina.test.factories.conversation import PostFactory as BasePostFactory, 
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollVoteFactory
-from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_upvote.factories import CertifiedPostFactory
+from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.users.factories import UserFactory
 
 
@@ -12,6 +11,11 @@ class PostFactory(BasePostFactory):
     subject = factory.Faker("sentence", nb_words=5)
     content = factory.Faker("sentence", nb_words=40)
     poster = factory.SubFactory(UserFactory)
+
+
+class CertifiedPostFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CertifiedPost
 
 
 class TopicFactory(BaseTopicFactory):
