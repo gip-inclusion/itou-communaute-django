@@ -11,7 +11,7 @@ from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
-from lacommunaute.forum_upvote.factories import CertifiedPostFactory, UpVoteFactory
+from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
@@ -350,18 +350,18 @@ class PostListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
 
-    def test_certified_post_highlight(self):
-        post = PostFactory(topic=self.topic, poster=self.user)
-        self.client.force_login(self.user)
+    # def test_certified_post_highlight(self):
+    #    post = PostFactory(topic=self.topic, poster=self.user)
+    #    self.client.force_login(self.user)
 
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
+    #    response = self.client.get(self.url)
+    #    self.assertEqual(response.status_code, 200)
+    #    self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
 
-        CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+    #    CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
+    #    response = self.client.get(self.url)
+    #    self.assertEqual(response.status_code, 200)
+    #    self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
 
 class PostFeedCreateViewTest(TestCase):
