@@ -51,7 +51,7 @@ class GetPostsofaTopicExceptFirstOneTest(TestCase):
     def test_topic_has_been_upvoted(self):
         topic = TopicFactory(with_post=True)
         post = PostFactory(topic=topic)
-        UpVoteFactory(post=post)
+        UpVoteFactory(content_object=post)
         posts = get_posts_of_a_topic_except_first_one(topic, AnonymousUser())
         post = posts.first()
 
@@ -62,7 +62,7 @@ class GetPostsofaTopicExceptFirstOneTest(TestCase):
     def test_topic_has_been_upvoted_by_the_user(self):
         topic = TopicFactory(with_post=True)
         post = PostFactory(topic=topic)
-        UpVoteFactory(post=post, voter=topic.poster)
+        UpVoteFactory(content_object=post, voter=topic.poster)
         posts = get_posts_of_a_topic_except_first_one(topic, topic.poster)
         post = posts.first()
 

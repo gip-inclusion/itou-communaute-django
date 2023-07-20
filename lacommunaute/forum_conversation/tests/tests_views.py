@@ -432,7 +432,7 @@ class TopicViewTest(TestCase):
 
     def test_post_has_upvote_by_user(self):
         PostFactory(topic=self.topic, poster=self.poster)
-        UpVoteFactory(post=self.topic.last_post, voter=self.poster)
+        UpVoteFactory(content_object=self.topic.last_post, voter=self.poster)
         self.client.force_login(self.poster)
 
         response = self.client.get(self.url)
@@ -476,7 +476,7 @@ class TopicViewTest(TestCase):
 
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
-        UpVoteFactory(post=self.topic.last_post, voter=UserFactory())
+        UpVoteFactory(content_object=self.topic.last_post, voter=UserFactory())
         CertifiedPostFactory(topic=self.topic, post=self.topic.last_post, user=UserFactory())
         self.client.force_login(self.poster)
 
