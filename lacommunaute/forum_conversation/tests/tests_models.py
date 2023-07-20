@@ -1,9 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 
@@ -124,3 +125,20 @@ class TopicModelTest(TestCase):
         self.assertEqual(0, Topic.TOPIC_POST)
         self.assertEqual(1, Topic.TOPIC_STICKY)
         self.assertEqual(2, Topic.TOPIC_ANNOUNCE)
+
+
+class CertifiedPostModelTest(TestCase):
+    def test_topic_is_unique(self):
+        topic = TopicFactory(with_certified_post=True)
+
+        with self.assertRaises(IntegrityError):
+            CertifiedPostFactory(topic=topic, post=topic.first_post, user=topic.poster)
+
+    def test_post_is_link_to_topic(self):
+        topic_to_be_certified = TopicFactory()
+        other_topic = TopicFactory(with_post=True)
+
+        with self.assertRaises(ValueError):
+            CertifiedPostFactory(
+                topic=topic_to_be_certified, post=other_topic.first_post, user=topic_to_be_certified.poster
+            )
