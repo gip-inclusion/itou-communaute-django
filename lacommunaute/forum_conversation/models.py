@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Count, Exists, OuterRef
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
+from machina.models.abstract_models import DatedModel
 from taggit.managers import TaggableManager
 
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
@@ -90,3 +91,40 @@ class Post(AbstractPost):
     @property
     def is_certified(self):
         return hasattr(self, "certified_post")
+
+
+class CertifiedPost(DatedModel):
+    topic = models.OneToOneField(
+        Topic,
+        related_name="certified_post",
+        on_delete=models.CASCADE,
+        verbose_name="Topic",
+    )
+
+    post = models.OneToOneField(
+        Post,
+        related_name="certified_post",
+        on_delete=models.CASCADE,
+        verbose_name="Post",
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="certified_posts",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="User",
+    )
+
+    class Meta:
+        ordering = [
+            "-created",
+        ]
+
+    def __str__(self):
+        return f"{self.post} - {self.topic} - {self.user}"
+
+    def save(self, *args, **kwargs):
+        if self.topic != self.post.topic:
+            raise ValueError("The post is not link to the topic")
+        super().save(*args, **kwargs)
