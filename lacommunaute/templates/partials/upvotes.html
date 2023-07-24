@@ -4,7 +4,7 @@
 <div id="upvotesarea{{obj.pk}}" class="d-inline-block">
     {% with obj.upvotes_count as counter %}
         {% if user.is_authenticated %}
-            <form hx-post="{% url 'forum_upvote:post' %}"
+            <form hx-post="{% if kind == 'post' %}{% url 'forum_upvote:post' %}{% elif kind == 'forum' %}{% url 'forum_upvote:forum' %}{% endif %}"
                   id="upvote-button{{obj.pk}}"
                   hx-target="#upvotesarea{{obj.pk}}"
                   hx-swap="outerHTML">

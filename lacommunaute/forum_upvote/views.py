@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 from machina.core.loading import get_class
 
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Post
 from lacommunaute.forum_upvote.models import UpVote
 
@@ -72,3 +73,19 @@ class PostUpvoteView(BaseUpvoteMixin, PermissionRequiredMixin, View):
 
     def get_controlled_object(self):
         return self.get_object().topic.forum
+
+
+class ForumUpVoteView(BaseUpvoteMixin, PermissionRequiredMixin, View):
+    def get_object(self):
+        if not hasattr(self, "object"):
+            self.object = get_object_or_404(
+                Forum,
+                pk=self.request.POST["pk"],
+            )
+        return self.object
+
+    def handle_extra_logic(self, request):
+        track_handler.mark_forums_read([self.get_object()], request.user)
+
+    def get_controlled_object(self):
+        return self.get_object()
