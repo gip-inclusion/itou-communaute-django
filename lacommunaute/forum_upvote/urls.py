@@ -7,5 +7,5 @@ app_name = "forum_upvote"
 
 
 urlpatterns = [
-    path("upvote/", PostUpvoteView.as_view(), name="upvote"),
+    path("upvote/post/", PostUpvoteView.as_view(), name="post"),
 ]

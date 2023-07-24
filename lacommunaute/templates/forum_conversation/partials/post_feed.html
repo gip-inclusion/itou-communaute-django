@@ -14,7 +14,7 @@
                     <span class="mb-0 flex-grow-1">
                         {%include "forum_conversation/partials/poster.html" with post=post topic=topic actions=True %}
                     </span>
-                    {% include "forum_conversation/partials/post_upvotes.html"%}
+                    {% include "partials/upvotes.html" with obj=post kind="post"%}
                 </div>
                 <div class="post-content">
                     {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid}}
