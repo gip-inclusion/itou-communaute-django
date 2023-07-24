@@ -11,19 +11,18 @@
                 <input type='hidden' name='pk' value="{{obj.pk}}"/>
 
                 <button type="submit"
-                        class="btn btn-ico btn-link px-0 text-nowrap matomo-event"
+                        title="{% trans "UpVotes" %}"
+                        class="btn btn-sm btn-ico-only btn-secondary matomo-event"
                         data-matomo-category="engagement"
                         data-matomo-action="upvote"
                         data-matomo-option="post"
                 >
-                    <span class="mr-1">{% trans "UpVotes" %}</span>
-                    <i class="{% if obj.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
+                    <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
                 </button>
             </form>
         {% else %}
-            <a href="{% inclusion_connect_url next_url obj.id %}" class="btn btn-ico btn-link pr-0 text-nowrap" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
-                <span class="mr-1">{% trans "UpVotes" %}</span>
-                <i class="{% if obj.has_upvoted %}ri-star-fill{% else %}ri-star-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
+            <a href="{% inclusion_connect_url next_url obj.id %}" class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour sauvegarder">
+                <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
             </a>
         {% endif %}
     {% endwith %}
