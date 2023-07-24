@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import Group
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
@@ -8,6 +9,7 @@ from machina.apps.forum.abstract_models import AbstractForum
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_upvote.models import UpVote
 
 
 class ForumQuerySet(models.QuerySet):
@@ -26,6 +28,8 @@ class Forum(AbstractForum):
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
     )
+
+    upvotes = GenericRelation(UpVote, related_query_name="forum")
 
     objects = ForumQuerySet().as_manager()
 
