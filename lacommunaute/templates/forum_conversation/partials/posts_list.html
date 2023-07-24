@@ -20,7 +20,7 @@
                             </div>
                             <div>
                                 {% include "forum_conversation/partials/post_certified_badge.html" %}
-                                {% include "forum_conversation/partials/post_upvotes.html" %}
+                                {% include "partials/upvotes.html" with obj=post kind="post"%}
                             </div>
                         </div>
                         <div class="post-content">

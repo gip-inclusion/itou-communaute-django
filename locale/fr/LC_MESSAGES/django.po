@@ -903,7 +903,7 @@ msgid "Topics Engagement"
 msgstr "Engagement par sujet"
 
 msgid "UpVotes"
-msgstr "Ça m'est utile"
+msgstr "Sauvegarder"
 
 msgid "Likes"
 msgstr "Ce sujet m'intéresse"
