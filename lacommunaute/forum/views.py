@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Exists, OuterRef
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -12,6 +13,7 @@ from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
 
 
@@ -31,7 +33,16 @@ class ForumView(BaseForumView):
 
     def get_context_data(self, **kwargs):
         forum = self.get_forum()
+
+        if self.request.user.is_authenticated:
+            forum.has_upvoted = UpVote.objects.filter(
+                object_id=forum.id,
+                voter=self.request.user,
+                content_type_id=ContentType.objects.get_for_model(forum).id,
+            ).exists()
+
         context = super().get_context_data(**kwargs)
+        context["forum"] = forum
         context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
         context["next_url"] = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         context["loadmoretopic_url"] = reverse(
