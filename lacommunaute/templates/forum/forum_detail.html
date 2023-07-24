@@ -39,15 +39,12 @@
                                     Certifié par la Plateforme de l'Inclusion le {{ forum.updated|date:"d/m/Y" }}
                                 </span>
                             </div>
-                        </div>
-                        {{forum.description.rendered|urlizetrunc_target_blank:30}}
-                        <div class="row align-items-sm-center mb-3">
-                            <div class="col-12 col-sm">
-                            </div>
                             <div class="col-12 col-sm-auto">
+                                {% include "partials/upvotes.html" with obj=forum kind="forum"%}
                                 {% include "partials/social_share_buttons.html" with text=forum.name instance=forum %}
                             </div>
                         </div>
+                        {{forum.description.rendered|urlizetrunc_target_blank:30}}
                     </div>
                     <div class="col-12 col-lg-3">
                         <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"

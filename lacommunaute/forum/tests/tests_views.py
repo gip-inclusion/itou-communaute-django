@@ -234,7 +234,7 @@ class ForumViewTest(TestCase):
     def test_queries(self):
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(21):
+        with self.assertNumQueries(22):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
@@ -356,3 +356,79 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response, 'div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">'
         )
+
+    def test_upvote_actions(self):
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        child_forum = forum.get_children().first()
+
+        # anonymous
+        anonymous_html = (
+            '<a href="/inclusion_connect/authorize?next_url=%2Fforum%2F'
+            f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
+            ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top"'
+            ' title="Connectez-vous pour sauvegarder">'
+            '\n                <i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>'
+        )
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+        self.assertContains(response, anonymous_html, status_code=200)
+
+        # authenticated
+        self.client.force_login(self.user)
+        no_upvote_html = (
+            '<button type="submit"'
+            '\n                        title="Sauvegarder"'
+            '\n                        class="btn btn-sm btn-ico-only btn-secondary matomo-event"'
+            '\n                        data-matomo-category="engagement"'
+            '\n                        data-matomo-action="upvote"'
+            '\n                        data-matomo-option="post"'
+            "\n                >"
+            '\n                    <i class="ri-bookmark-line" aria-hidden="true"></i>'
+            '<span class="ml-1">0</span>'
+        )
+        response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": forum.slug}))
+        self.assertContains(response, no_upvote_html, status_code=200)
+
+        child_forum.upvotes.create(voter=self.user)
+        upvoted_html = (
+            '<button type="submit"'
+            '\n                        title="Sauvegarder"'
+            '\n                        class="btn btn-sm btn-ico-only btn-secondary matomo-event"'
+            '\n                        data-matomo-category="engagement"'
+            '\n                        data-matomo-action="upvote"'
+            '\n                        data-matomo-option="post"'
+            "\n                >"
+            '\n                    <i class="ri-bookmark-fill" aria-hidden="true"></i>'
+            '<span class="ml-1">1</span>'
+        )
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+        self.assertContains(response, upvoted_html, status_code=200)
+
+    def test_upvotes_count(self):
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        child_forum = forum.get_children().first()
+
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+
+        child_forum.upvotes.create(voter=self.user)
+
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">1</span>')
+
+        child_forum.upvotes.create(voter=UserFactory())
+
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">2</span>')
