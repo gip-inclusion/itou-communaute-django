@@ -428,7 +428,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
     def test_post_has_upvote_by_user(self):
         PostFactory(topic=self.topic, poster=self.poster)
@@ -437,7 +437,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+        self.assertContains(response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
 
     def test_certified_post_is_highlighted(self):
         post = PostFactory(topic=self.topic, poster=self.poster)

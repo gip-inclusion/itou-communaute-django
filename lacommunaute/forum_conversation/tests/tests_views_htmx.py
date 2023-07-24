@@ -341,14 +341,14 @@ class PostListViewTest(TestCase):
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
 
         UpVoteFactory(content_object=post, voter=UserFactory())
         UpVoteFactory(content_object=post, voter=self.user)
 
         response = view.get(request)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
+        self.assertContains(response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
 
     def test_certified_post_highlight(self):
         post = PostFactory(topic=self.topic, poster=self.user)
@@ -430,7 +430,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertContains(response, self.content)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
-        self.assertContains(response, '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
         self.assertEqual(

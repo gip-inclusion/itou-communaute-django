@@ -35,7 +35,7 @@ def test_upvote_with_permission(client, db):
     # upvote
     response = client.post(url, data=form_data)
     assert response.status_code == 200
-    assert '<i class="ri-star-fill" aria-hidden="true"></i><span class="ml-1">1</span>' in str(response.content)
+    assert '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>' in str(response.content)
     assert UpVote.objects.get(
         voter_id=user.id,
         object_id=topic.first_post.id,
@@ -45,7 +45,7 @@ def test_upvote_with_permission(client, db):
     # downvote
     response = client.post(url, data=form_data)
     assert response.status_code == 200
-    assert '<i class="ri-star-line" aria-hidden="true"></i><span class="ml-1">0</span>' in str(response.content)
+    assert '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>' in str(response.content)
     assert not UpVote.objects.all()
 
 
