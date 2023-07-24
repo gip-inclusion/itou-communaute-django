@@ -5,6 +5,7 @@ from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.users.factories import UserFactory
 
 
 class ForumManagerTest(TestCase):
@@ -50,3 +51,9 @@ class ForumModelTest(TestCase):
             forum.get_absolute_url(),
             f"/forum/{forum.slug}-{forum.pk}/",
         )
+
+    def test_upvotes_count(self):
+        forum = ForumFactory()
+        self.assertEqual(forum.upvotes_count(), 0)
+        forum.upvotes.create(voter=UserFactory())
+        self.assertEqual(forum.upvotes_count(), 1)

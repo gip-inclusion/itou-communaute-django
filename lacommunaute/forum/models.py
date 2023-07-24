@@ -48,3 +48,6 @@ class Forum(AbstractForum):
     @cached_property
     def count_unanswered_topics(self):
         return self.get_unanswered_topics().count()
+
+    def upvotes_count(self):
+        return self.upvotes.count()
