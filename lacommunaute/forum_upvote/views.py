@@ -1,8 +1,11 @@
 import logging
 
+from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render
 from django.views import View
+from django.views.generic import ListView
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
@@ -89,3 +92,18 @@ class ForumUpVoteView(BaseUpvoteMixin, PermissionRequiredMixin, View):
 
     def get_controlled_object(self):
         return self.get_object()
+
+
+class UpVoteListView(LoginRequiredMixin, ListView):
+    paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+    template_name = "forum_upvote/upvote_list.html"
+    context_object_name = "upvotes"
+
+    def get_queryset(self):
+        qs = (
+            UpVote.objects.filter(voter=self.request.user)
+            .select_related("content_type")
+            .prefetch_related("content_object")
+            .order_by("-created_at")
+        )
+        return qs
