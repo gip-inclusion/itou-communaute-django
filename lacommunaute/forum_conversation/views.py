@@ -154,7 +154,7 @@ class NewsFeedTopicListView(TopicListView):
         return ["forum_conversation/topics_newsfeed.html"]
 
     def get_queryset(self):
-        return Topic.objects.filter(forum__kind=ForumKind.NEWS)
+        return Topic.objects.filter(forum__kind=ForumKind.NEWS).optimized_for_topics_list(self.request.user.id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
