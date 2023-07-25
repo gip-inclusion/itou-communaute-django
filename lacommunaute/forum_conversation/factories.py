@@ -4,6 +4,7 @@ from machina.test.factories.conversation import PostFactory as BasePostFactory, 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.forum_polls.factories import TopicPollVoteFactory
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
+from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.factories import UserFactory
 
 
@@ -11,6 +12,14 @@ class PostFactory(BasePostFactory):
     subject = factory.Faker("sentence", nb_words=5)
     content = factory.Faker("sentence", nb_words=40)
     poster = factory.SubFactory(UserFactory)
+
+    @factory.post_generation
+    def upvoted_by(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        for user in extracted:
+            UpVote.objects.create(voter=user, content_object=self)
 
 
 class CertifiedPostFactory(factory.django.DjangoModelFactory):
