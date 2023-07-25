@@ -627,16 +627,15 @@ class NewsFeedTopicListViewTest(TestCase):
         self.assertTemplateUsed(response, "forum_conversation/topic_list_newsfeed.html")
 
     def test_queryset(self):
-        news_topic = TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
+        news_topics = TopicFactory.create_batch(
+            2, with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True)
+        )
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM, with_public_perms=True))
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, news_topic.subject)
-        for topic in Topic.objects.exclude(id=news_topic.id):
-            with self.subTest(topic):
-                self.assertNotContains(response, topic.subject)
+        self.assertQuerysetEqual(response.context_data["topics"], [topic for topic in news_topics[::-1]])
 
     def test_context_data(self):
         response = self.client.get(self.url)
