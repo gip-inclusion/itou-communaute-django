@@ -3,6 +3,7 @@ from machina.core.db.models import get_model
 from machina.test.factories.forum import ForumFactory as BaseForumFactory
 
 from lacommunaute.forum.models import Forum
+from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.factories import GroupFactory
 
 
@@ -46,6 +47,14 @@ class ForumFactory(BaseForumFactory):
             for permission in ForumPermission.objects.filter(codename__in=perms)
         ]
         UserForumPermission.objects.bulk_create(anonymous_authorized_perms + authentified_authorized_perms)
+
+    @factory.post_generation
+    def upvoted_by(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        for user in extracted:
+            UpVote.objects.create(voter=user, content_object=self)
 
 
 class CategoryForumFactory(ForumFactory):
