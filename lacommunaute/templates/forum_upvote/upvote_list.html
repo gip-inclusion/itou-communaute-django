@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load date_filters %}
+{% load str_filters %}
+
+{% block title %}{% trans "My UpVotes" %}{{ block.super }}{% endblock %}
+
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1>{% trans "My UpVotes" %}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if upvotes or not hide_if_empty %}
+        <section class="s-section">
+            <div class="s-section__container container">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="c-box">
+                            <div class="table-responsive-lg">
+                                <table class="table table-hover mt-3 mt-md-4">
+                                    <caption class="sr-only">Liste de résultats</caption>
+                                    <tbody>
+                                        {% for upvote in upvotes %}
+                                            <tr>
+                                                <td class="position-relative">
+                                                    {% if upvote.content_type.model == 'forum' %}
+                                                        <a href="{% url 'forum_extension:forum' upvote.content_object.slug upvote.content_object.pk %}"
+                                                           class="btn-link btn-ico stretched-link matomo-event"
+                                                           data-matomo-category="engagement"
+                                                           data-matomo-action="view"
+                                                           data-matomo-option="upvoted-forum"
+                                                        >
+                                                            <i class="ri-article-line" aria-hidden="true"></i>
+                                                            <span>{{ upvote.content_object.name }}</span>
+                                                        </a><br>
+                                                        <small class="text-muted">
+                                                            {% spaceless %}
+                                                                Fiche mise à jour
+                                                            {% endspaceless %}
+                                                            {{upvote.content_object.updated|relativetimesince_fr}}
+                                                        </small>
+                                                        <div>
+                                                            {{upvote.content_object.short_description}}
+                                                        </div>
+                                                    {% elif upvote.content_type.model == 'post' %}
+                                                        <a href="{% url 'forum_conversation:topic' upvote.content_object.topic.forum.slug upvote.content_object.topic.forum.pk upvote.content_object.topic.slug upvote.content_object.topic.pk %}"
+                                                           class="btn-link stretched-link btn-ico matomo-event"
+                                                           data-matomo-category="engagement"
+                                                           data-matomo-action="view"
+                                                           data-matomo-option="upvoted-topic"
+                                                        >
+                                                            <i class="ri-user-line ri-lg" aria-hidden="true"></i>
+                                                            <span>{{ upvote.content_object.topic.subject }}</span>
+                                                        </a><br>
+                                                        {% include "forum_conversation/partials/poster.html" with post=upvote.content_object topic=upvote.content_object.topic %}
+                                                        <div>
+                                                            {{upvote.content_object.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200}}
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
+                                                <h3 class="h4 mb-0">{% trans "No results." %}</h3>
+                                            </div>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row mt-3 mb-3">
+                                <div class="col-12">
+                                    {% with "justify-content-center" as pagination_size %}
+                                        {% include "partials/pagination.html" %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+{% endblock %}
+
