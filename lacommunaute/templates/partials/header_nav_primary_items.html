@@ -36,6 +36,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'forum_upvote:mine' %}"
+                           class="dropdown-item text-primary matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="upvotes">
+                            Accéder à mes sauvegardes
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'event:myevents' %}"
                            class="dropdown-item text-primary matomo-event"
                            data-matomo-category="engagement"
