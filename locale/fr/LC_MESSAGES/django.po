@@ -905,6 +905,9 @@ msgstr "Engagement par sujet"
 msgid "UpVotes"
 msgstr "Sauvegarder"
 
+msgid "My UpVotes"
+msgstr "Mes sauvegardes"
+
 msgid "Likes"
 msgstr "Ce sujet m'intéresse"
 
