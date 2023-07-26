@@ -175,6 +175,9 @@ msgstr "Copier"
 msgid "Search"
 msgstr "Recherche"
 
+msgid "Search in"
+msgstr "Rechercher dans"
+
 #: lacommunaute/templates/machina/board_base.html:28
 msgid "Advanced search"
 msgstr "Recherche avancée"
@@ -804,7 +807,7 @@ msgstr "Modifier le type de sujet"
 
 #: lacommunaute/templates/machina/forum_search/search.html:18
 msgid "Search forums"
-msgstr "Chercher dans les échanges"
+msgstr "Chercher dans la communauté"
 
 #: lacommunaute/templates/machina/forum_search/search.html:44
 msgid "New search"
