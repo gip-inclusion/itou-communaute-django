@@ -154,8 +154,7 @@ class JoinForumFormViewTest(TestCase):
     def test_get(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.forum.name)
+        self.assertContains(response, self.forum.name, status_code=200)
 
     def test_post(self):
         self.client.force_login(self.user)

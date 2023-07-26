@@ -55,8 +55,7 @@ class ForumTopicListViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.topic.subject)
+        self.assertContains(response, self.topic.subject, status_code=200)
         self.assertNotContains(response, other_topic.subject)
         self.assertEqual(response.context["forum"], self.topic.forum)
 
@@ -71,13 +70,13 @@ class ForumTopicListViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
             reverse(
                 "forum_conversation_extension:topic_list",
                 kwargs={"forum_pk": self.topic.forum.pk, "forum_slug": self.topic.forum.slug},
             ),
+            status_code=200,
         )
         self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
 
@@ -130,14 +129,16 @@ class TopicLikeViewTest(TestCase):
         self.client.force_login(self.user)
 
         response = self.client.post(self.url)
-        self.assertEqual(response.status_code, 200)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+        self.assertContains(
+            response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+        )
 
         response = self.client.post(self.url)
-        self.assertEqual(response.status_code, 200)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(
+            response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+        )
 
     def test_post_topic_not_found(self):
         assign_perm("can_read_forum", self.user, self.topic.forum)
@@ -220,8 +221,7 @@ class TopicContentViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, post.content)
+        self.assertContains(response, post.content, status_code=200)
         self.assertEqual(1, ForumReadTrack.objects.count())
 
 
@@ -243,8 +243,7 @@ class TopicCertifiedPostViewTest(TestCase):
 
         response = self.client.get(url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, topic.certified_post.post.content)
+        self.assertContains(response, topic.certified_post.post.content, status_code=200)
         self.assertEqual(1, ForumReadTrack.objects.count())
 
 
@@ -291,8 +290,9 @@ class PostListViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.topic.first_post.content)  # original post content excluded
+        self.assertNotContains(
+            response, self.topic.first_post.content, status_code=200
+        )  # original post content excluded
         self.assertContains(response, posts[0].content)
         self.assertContains(response, posts[1].content)
         self.assertContains(response, posts[0].poster_display_name)
@@ -307,8 +307,7 @@ class PostListViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, post.poster_display_name)
+        self.assertContains(response, post.poster_display_name, status_code=200)
 
     def test_get_list_of_posts_linked_to_annonce_topic(self):
         post = PostFactory(topic=self.topic, poster=self.user)
@@ -324,8 +323,9 @@ class PostListViewTest(TestCase):
         view.kwargs = self.kwargs
 
         response = view.get(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.topic.first_post.content)  # original post content excluded
+        self.assertNotContains(
+            response, self.topic.first_post.content, status_code=200
+        )  # original post content excluded
         self.assertContains(response, post.content)
 
     def test_upvote_annotations(self):
@@ -340,28 +340,28 @@ class PostListViewTest(TestCase):
         view.kwargs = self.kwargs
 
         response = view.get(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+        )
 
         UpVoteFactory(content_object=post, voter=UserFactory())
         UpVoteFactory(content_object=post, voter=self.user)
 
         response = view.get(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">2</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">2</span>', status_code=200
+        )
 
     def test_certified_post_highlight(self):
         post = PostFactory(topic=self.topic, poster=self.user)
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion")
+        self.assertNotContains(response, "Certifié par la Plateforme de l'Inclusion", status_code=200)
 
         CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion", status_code=200)
 
 
 class PostFeedCreateViewTest(TestCase):
@@ -426,8 +426,7 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, data={"content": self.content})
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.content)
+        self.assertContains(response, self.content, status_code=200)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
         self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
@@ -447,8 +446,7 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, {"content": self.content, "username": username})
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.content)
+        self.assertContains(response, self.content, status_code=200)
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
         self.assertEqual(
@@ -460,8 +458,7 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, {"content": self.content, "username": username})
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.content)
+        self.assertContains(response, self.content, status_code=200)
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 3)
         self.assertEqual(
@@ -533,6 +530,5 @@ class CertifiedPostViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.post(self.url, data=self.form_data)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'<div id="showmorepostsarea{self.topic.pk}">')
+        self.assertContains(response, f'<div id="showmorepostsarea{self.topic.pk}">', status_code=200)
         self.assertTemplateUsed(response, "forum_conversation/partials/posts_list.html")

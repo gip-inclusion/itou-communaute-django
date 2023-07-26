@@ -94,14 +94,12 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, f'<a href="{topic_url}"')
+        self.assertNotContains(response, f'<a href="{topic_url}"', status_code=200)
 
         PostFactory.create_batch(2, topic=self.topic, poster=self.user)
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'hx-get="{topic_url}"')
+        self.assertContains(response, f'hx-get="{topic_url}"', status_code=200)
         self.assertContains(response, "Voir les 2 réponses")
 
     def test_show_more_content(self):
@@ -120,8 +118,7 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f'hx-get="{topic_url}"')
+        self.assertContains(response, f'hx-get="{topic_url}"', status_code=200)
         self.assertContains(response, "+ voir la suite")
         self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
 
@@ -206,16 +203,14 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, poll_option.poll.question)
+        self.assertContains(response, poll_option.poll.question, status_code=200)
         self.assertContains(response, poll_option.text)
 
     def test_can_submit_form(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context_data["form"], PostForm)
-        self.assertContains(response, f'id="collapsePost{self.topic.pk}')
+        self.assertContains(response, f'id="collapsePost{self.topic.pk}', status_code=200)
 
     def test_cannot_submit_post(self, *args):
         user = UserFactory()
@@ -264,8 +259,7 @@ class ForumViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, truncatechars_html(post.content.rendered, 200))
+        self.assertContains(response, truncatechars_html(post.content.rendered, 200), status_code=200)
         self.assertContains(response, topic_certified_post_url)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
 
@@ -285,26 +279,22 @@ class ForumViewTest(TestCase):
 
         TopicFactory(with_post=True, forum=self.forum)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, loadmoretopic_url + "?page=2")
+        self.assertContains(response, loadmoretopic_url + "?page=2", status_code=200)
 
         TopicFactory.create_batch(10, with_post=True, forum=self.forum)
         response = self.client.get(self.url + "?page=2")
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, loadmoretopic_url + "?page=3")
+        self.assertContains(response, loadmoretopic_url + "?page=3", status_code=200)
 
     def test_topic_has_tags(self):
         tag = f"tag_{faker.word()}"
         self.client.force_login(self.user)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, tag)
+        self.assertNotContains(response, tag, status_code=200)
 
         self.topic.tags.add(tag)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, tag)
+        self.assertContains(response, tag, status_code=200)
 
     def test_description_is_markdown_rendered(self):
         self.forum.description = "# title"
@@ -313,8 +303,7 @@ class ForumViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "<h1>title</h1>")
+        self.assertContains(response, "<h1>title</h1>", status_code=200)
 
     def test_descendants_are_in_cards_if_forum_is_category_type(self):
         forum = CategoryForumFactory(with_public_perms=True, with_child=True)
@@ -322,9 +311,8 @@ class ForumViewTest(TestCase):
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, '<div class="card-body')
+        self.assertContains(response, '<div class="card-body', status_code=200)
         self.assertContains(response, child_forum.name)
         self.assertContains(
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
@@ -352,9 +340,10 @@ class ForumViewTest(TestCase):
         url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
 
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
         self.assertContains(
-            response, 'div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">'
+            response,
+            'div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">',
+            status_code=200,
         )
 
     def test_upvote_actions(self):
@@ -414,21 +403,24 @@ class ForumViewTest(TestCase):
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+        )
 
         child_forum.upvotes.create(voter=self.user)
 
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">1</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+        )
 
         child_forum.upvotes.create(voter=UserFactory())
 
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">2</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">2</span>', status_code=200
+        )

@@ -158,8 +158,7 @@ class TopicCreateViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, Tag.objects.first().name)
+        self.assertContains(response, Tag.objects.first().name, status_code=200)
         self.assertContains(response, Tag.objects.last().name)
 
     def test_checked_tags_are_saved(self, *args):
@@ -203,7 +202,6 @@ class TopicUpdateViewTest(TestCase):
     def test_delete_post_button_is_shown(self):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
             reverse(
@@ -216,6 +214,7 @@ class TopicUpdateViewTest(TestCase):
                     "pk": self.topic.posts.first().pk,
                 },
             ),
+            status_code=200,
         )
 
     def test_topic_is_marked_as_read_when_updated(self):
@@ -244,10 +243,9 @@ class TopicUpdateViewTest(TestCase):
         self.topic.save()
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
 
         checked_box = f'type="checkbox" name="tags" value="{linked_tag.id}" checked="">'
-        self.assertContains(response, checked_box)
+        self.assertContains(response, checked_box, status_code=200)
         not_checked_box = f'type="checkbox" name="tags" value="{tag.id}">'
         self.assertContains(response, not_checked_box)
 
@@ -302,8 +300,7 @@ class PostUpdateViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs))
+        self.assertContains(response, reverse("forum_conversation:post_delete", kwargs=self.kwargs), status_code=200)
 
     def test_update_post_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
@@ -427,8 +424,9 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+        )
 
     def test_post_has_upvote_by_user(self):
         PostFactory(topic=self.topic, poster=self.poster)
@@ -436,8 +434,9 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>')
+        self.assertContains(
+            response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+        )
 
     def test_certified_post_is_highlighted(self):
         post = PostFactory(topic=self.topic, poster=self.poster)
@@ -449,30 +448,26 @@ class TopicViewTest(TestCase):
 
         CertifiedPostFactory(topic=self.topic, post=post, user=self.poster)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion")
+        self.assertContains(response, "Certifié par la Plateforme de l'Inclusion", status_code=200)
 
     def test_has_tags(self):
         tag = f"tag_{faker.word()}"
         self.client.force_login(self.poster)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, tag)
+        self.assertNotContains(response, tag, status_code=200)
 
         self.topic.tags.add(tag)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, tag)
+        self.assertContains(response, tag, status_code=200)
 
     def test_edit_link_is_visible(self):
         self.client.force_login(self.poster)
         assign_perm("can_edit_own_posts", self.poster, self.forum)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs))
+        self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs), status_code=200)
 
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
@@ -543,9 +538,8 @@ class TopicListViewTest(TestCase):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url + "?filter=NEW")
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["total"], 1)
-        self.assertContains(response, self.topic.subject)
+        self.assertContains(response, self.topic.subject, status_code=200)
 
         for topic in Topic.objects.exclude(id=self.topic.id):
             with self.subTest(topic):
@@ -562,9 +556,8 @@ class TopicListViewTest(TestCase):
         )
 
         response = self.client.get(self.url + "?filter=CERTIFIED")
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["total"], 1)
-        self.assertContains(response, certified_topic.subject)
+        self.assertContains(response, certified_topic.subject, status_code=200)
         self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
 
         for topic in Topic.objects.exclude(id=certified_topic.id):
@@ -576,15 +569,12 @@ class TopicListViewTest(TestCase):
         TopicFactory.create_batch(9, with_post=True, forum=self.forum)
 
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-        self.assertNotContains(response, self.url + "?page=2")
+        self.assertNotContains(response, self.url + "?page=2", status_code=200)
 
         TopicFactory(with_post=True, forum=self.forum)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, self.url + "?page=2")
+        response = self.client.get(self.url)
+        self.assertContains(response, self.url + "?page=2", status_code=200)
 
     def test_add_multiple_params_in_query(self):
         TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user)
@@ -594,8 +584,7 @@ class TopicListViewTest(TestCase):
             with self.subTest(filter=filter):
                 response = self.client.get(self.url + f"?filter={filter}")
 
-                self.assertEqual(response.status_code, 200)
-                self.assertContains(response, self.url + f"?filter={filter}&amp;page=2")
+                self.assertContains(response, self.url + f"?filter={filter}&amp;page=2", status_code=200)
 
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
