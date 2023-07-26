@@ -70,3 +70,63 @@ def test_search_with_non_unicode_characters(client, db, search_url):
     response = client.get(search_url, {"q": encoded_char})
     assert response.status_code == 200
     assert "Aucun résultat" in response.content.decode("utf-8")
+
+
+def test_search_on_post_model_only(client, db, search_url, public_topics, public_forums):
+    datas = {"m": "post"}
+
+    query = public_topics[0].first_post.content.raw.split()[:4]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+
+    query = public_forums[0].description.raw.split()[:3]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' not in response.content.decode("utf-8")
+
+
+def test_search_on_forum_model_only(client, db, search_url, public_topics, public_forums):
+    datas = {"m": "forum"}
+
+    query = public_topics[0].first_post.content.raw.split()[:4]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' not in response.content.decode("utf-8")
+
+    query = public_forums[0].description.raw.split()[:3]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+
+
+def test_search_on_both_models(client, db, search_url, public_topics, public_forums):
+    datas = {"m": "all"}
+
+    query = public_topics[0].first_post.content.raw.split()[:4]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+
+    query = public_forums[0].description.raw.split()[:3]
+    datas["q"] = " ".join(query)
+
+    response = client.get(search_url, datas)
+    assert response.status_code == 200
+    for word in query:
+        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
