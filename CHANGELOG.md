@@ -1,5 +1,23 @@
 # Journal des modifications
 
+## v2.0 - 2023-07-26
+- [HOME] Rearrangement de la structure de site (V2) (#341)
+- [HOME] tri des dernières questions (#353)
+- [HOME] tri des actualités (#363)
+- [SEARCH] limiter la recherche aux échanges ou aux discussions, au choix (#367)
+- [UPVOTE] liste des sauvegardes d'un utilisateur (#365)
+- [UPVOTE] sauvegarder un forum (#362)
+- [UPVOTE] convertir la clé étrangère Post en clé étrangère générique (#354)
+- [UPVOTE] préparation : déplacement du modèle CertifiedPost  (#356)
+- [FORUM] mise à jour du lien vers l'aide des emplois (#358)
+- [FORUM] partager la documentation sur les réseaux sociaux (#350)
+- [NOTIFICATION] filtre sur les questions non répondues (#347)
+- [STATS] exporter l'activité du site pour entrainer le modèle de clustering non supervisé (#345)
+- [STATS] stats mensuelles Juin 2023 (#343)
+- [TECH] gestion des citations dans le markdown (#346)
+- [TECH] mise à jour des dépendances (#368)
+- [TECH]Mise à jour des Linters et du format d'export des requirements (#342)
+
 ## v1.13 - 2023-06-26
 - [NOTIFICATION] informer les utilisateurs des nouvelles réponses à leur question (#331)
 - [NOTIFICATION] appel à l'api d'onboarding (#322)
