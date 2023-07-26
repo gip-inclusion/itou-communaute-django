@@ -1,6 +1,7 @@
 import pytest  # noqa
 from django.urls import reverse
 from machina.core.db.models import get_model
+from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_upvote.models import UpVote
@@ -32,14 +33,16 @@ def test_upvote_downvote_with_permission(client, db):
 
     # upvote
     response = client.post(url, data=form_data)
-    assert response.status_code == 200
-    assert '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>' in str(response.content)
+    assertContains(
+        response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+    )
     assert UpVote.objects.get()
 
     # downvote
     response = client.post(url, data=form_data)
-    assert response.status_code == 200
-    assert '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>' in str(response.content)
+    assertContains(
+        response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+    )
     assert not UpVote.objects.all()
 
 

@@ -1,5 +1,6 @@
 import pytest  # noqa
 from django.urls import reverse
+from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
@@ -9,9 +10,8 @@ from lacommunaute.forum.models import Forum
 def test_context(client, db):
     url = reverse("forum_extension:documentation")
     response = client.get(url)
-    assert response.status_code == 200
     assert "forum/category_forum_list.html" == response.templates[0].name
-    assert reverse("pages:statistiques") in str(response.content)
+    assertContains(response, reverse("pages:statistiques"), status_code=200)
 
 
 def test_queryset(client, db):
