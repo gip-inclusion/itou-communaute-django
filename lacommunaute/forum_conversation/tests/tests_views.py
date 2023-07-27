@@ -469,6 +469,17 @@ class TopicViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs), status_code=200)
 
+    def test_delete_link_visibility(self):
+        self.client.force_login(self.poster)
+        assign_perm("can_delete_posts", self.poster, self.forum)
+
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            reverse("forum_moderation_extension:topic_delete", kwargs={"slug": self.topic.slug, "pk": self.topic.pk}),
+            status_code=200,
+        )
+
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
         UpVoteFactory(content_object=self.topic.last_post, voter=UserFactory())
