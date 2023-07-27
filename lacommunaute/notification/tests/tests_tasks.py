@@ -4,6 +4,7 @@ import httpx
 import respx
 from django.conf import settings
 from django.test import TestCase
+from django.urls import reverse
 from faker import Faker
 
 from config.settings.base import (
@@ -158,11 +159,12 @@ class SendNotifsOnUnansweredTopics(TestCase):
         ]
 
         url = (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}/"
-            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community"
+            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
+            reverse("forum_conversation_extension:topics"),
+            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
         )
 
-        params = {"count": 1, "link": url}
+        params = {"count": 1, "link": "".join(url)}
         payload = {
             "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
             "to": to,
