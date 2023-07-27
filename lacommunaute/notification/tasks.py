@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.urls import reverse
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
@@ -59,11 +60,12 @@ def send_notifs_on_unanswered_topics(list_id: int) -> None:
     if contacts:
         count = Topic.objects.unanswered().filter(forum__in=Forum.objects.public()).count()
         link = (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}/"
-            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community"
+            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
+            reverse("forum_conversation_extension:topics"),
+            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
         )
 
-        params = {"count": count, "link": link}
+        params = {"count": count, "link": "".join(link)}
 
         if count > 0:
             send_email(
