@@ -323,7 +323,7 @@ MATOMO_URL = "https://stats.data.gouv.fr/index.php"
 
 # SENDINBLUE
 # ---------------------------------------
-SIB_URL = "https://api.sendinblue.com/v3/"
+SIB_URL = "https://api.brevo.com/v3/"
 SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
 SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
 SIB_CONTACT_LIST_URL = os.path.join(SIB_URL, "contacts/lists")
