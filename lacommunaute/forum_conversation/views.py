@@ -116,6 +116,11 @@ class TopicListView(ListView):
             self.filter = self.request.GET.get("filter", None)
         return self.filter
 
+    def get_tags(self):
+        if not hasattr(self, "tags"):
+            self.tags = self.request.GET.get("tags", None)
+        return self.tags
+
     def get_queryset(self):
         qs = Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM).optimized_for_topics_list(self.request.user.id)
 
@@ -123,6 +128,9 @@ class TopicListView(ListView):
             qs = qs.unanswered()
         elif self.get_filter() == Filters.CERTIFIED:
             qs = qs.filter(certified_post__isnull=False)
+
+        if self.get_tags():
+            qs = qs.filter(tags__slug__in=self.get_tags().split(","))
 
         return qs
 
