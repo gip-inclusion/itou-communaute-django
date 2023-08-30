@@ -575,6 +575,15 @@ class TopicListViewTest(TestCase):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
 
+    def test_queryset_filtered_on_tag(self):
+        tag = faker.word()
+        tagged_topic = TopicFactory(with_post=True, forum=self.forum, with_tags=[tag])
+
+        response = self.client.get(self.url + f"?tags={tag}")
+        self.assertEqual(response.context_data["total"], 1)
+        self.assertContains(response, tagged_topic.subject, status_code=200)
+        self.assertNotContains(response, self.topic.subject)
+
     def test_pagination(self):
         self.client.force_login(self.user)
         TopicFactory.create_batch(9, with_post=True, forum=self.forum)
