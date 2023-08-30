@@ -62,3 +62,12 @@ class TopicFactory(BaseTopicFactory):
             return
         PostFactory(topic=self, poster=self.poster)
         CertifiedPostFactory(topic=self, post=PostFactory(topic=self, poster=self.poster), user=self.poster)
+
+    @factory.post_generation
+    def with_tags(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        if isinstance(extracted, list):
+            for tag in extracted:
+                self.tags.add(tag)
