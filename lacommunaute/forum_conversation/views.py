@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib import messages
@@ -137,10 +138,13 @@ class TopicListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = PostForm(user=self.request.user)
-        context["loadmoretopic_url"] = reverse("forum_conversation_extension:topics")
 
-        if self.get_filter():
-            context["loadmoretopic_url"] += f"?filter={self.get_filter()}"
+        encoded_params = urlencode(
+            {k: v for k, v in {"filter": self.get_filter(), "tags": self.get_tags()}.items() if v}
+        )
+        context["loadmoretopic_url"] = reverse("forum_conversation_extension:topics")
+        if encoded_params:
+            context["loadmoretopic_url"] += f"?{encoded_params}"
 
         context["active_filter_name"] = (
             getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label

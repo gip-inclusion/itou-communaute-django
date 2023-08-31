@@ -596,15 +596,27 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, self.url + "?page=2", status_code=200)
 
-    def test_add_multiple_params_in_query(self):
-        TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user)
+    def test_showmoretopics_url_with_params(self):
+        tag_list = [faker.word() for _ in range(3)]
+        TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user, with_tags=tag_list)
         self.client.force_login(self.user)
 
-        for filter in [Filters.ALL, Filters.NEW]:
-            with self.subTest(filter=filter):
-                response = self.client.get(self.url + f"?filter={filter}")
+        params = [
+            {"filter": filter, "tags": tags}
+            for filter in ["ALL", "NEW", None]
+            for tags in tag_list + [",".join(tag_list), None]
+        ]
 
-                self.assertContains(response, self.url + f"?filter={filter}&amp;page=2", status_code=200)
+        for param in params:
+            with self.subTest(param=param):
+                encoded_params = urlencode({k: v for k, v in param.items() if v})
+                response = self.client.get(self.url + f"?{encoded_params}")
+                if encoded_params:
+                    self.assertContains(
+                        response, self.url + f"?{encoded_params.replace('&','&amp;')}&amp;page=2", status_code=200
+                    )
+                else:
+                    self.assertContains(response, self.url + "?page=2", status_code=200)
 
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
