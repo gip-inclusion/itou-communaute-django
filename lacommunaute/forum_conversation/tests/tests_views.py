@@ -610,13 +610,12 @@ class TopicListViewTest(TestCase):
         for param in params:
             with self.subTest(param=param):
                 encoded_params = urlencode({k: v for k, v in param.items() if v})
-                response = self.client.get(self.url + f"?{encoded_params}")
-                if encoded_params:
-                    self.assertContains(
-                        response, self.url + f"?{encoded_params.replace('&','&amp;')}&amp;page=2", status_code=200
-                    )
-                else:
-                    self.assertContains(response, self.url + "?page=2", status_code=200)
+                url_with_params = self.url + f"?{encoded_params}" if encoded_params else self.url
+                expected_url = (
+                    url_with_params.replace("&", "&amp;") + "&amp;page=2" if encoded_params else self.url + "?page=2"
+                )
+                response = self.client.get(url_with_params)
+                self.assertContains(response, expected_url, status_code=200)
 
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
