@@ -354,6 +354,7 @@ class ForumViewTest(TestCase):
         anonymous_html = (
             '<a href="/inclusion_connect/authorize?next_url=%2Fforum%2F'
             f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
+            ' rel="nofollow"'
             ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top"'
             ' title="Connectez-vous pour sauvegarder">'
             '\n                <i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>'
