@@ -97,6 +97,7 @@
                         <div class="col-12 col-sm-auto forum-actions-block">
                             {% if user_can_add_topic %}
                                 <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                   rel="nofollow"
                                    class="btn btn-primary btn-ico matomo-event"
                                    data-matomo-category="engagement"
                                    data-matomo-action="contribute"
