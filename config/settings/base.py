@@ -186,6 +186,11 @@ TIME_ZONE = "Europe/Paris"
 USE_TZ = True
 DATE_INPUT_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%d %m %Y"]
 
+# STORAGE (django >= 4.2)
+STORAGES = {
+    "default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"},
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -205,8 +210,6 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 ]
-
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 
@@ -242,6 +245,7 @@ AWS_S3_ENDPOINT_URL = (
     f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.getenv('CELLAR_ADDON_HOST', 'set-var-env.com')}"
 )
 AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME", "set-bucket-name")
+AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC", "set-bucket-name-public")
 AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION", "fr")
 
 # MEDIA CONFIGURATION
@@ -252,8 +256,6 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"  # noqa
-
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 # Search Backend
 # ------------------------------------------------------------------------------
