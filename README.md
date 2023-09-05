@@ -44,11 +44,15 @@ python manage.py runserver
 
 ## Peupler la base de données
 
+1. setup anonymous user default perms
+1. setup authenticated user default perms
+1. creer un forum type=0, kind=PUBLIC_FORUM, name="Échanges"
+1. creer un forum type=0, kind=News, name="Actualités"
 
-```bash
-python manage.py loaddata fixtures/validation_fixtures.json
-```
+pour créer de la documentation:
 
+1. creer un forum type=1, kind=PUBLIC_FORUM, name="nom du thème"
+1. creer un à x forum(s) type=0, kind=PUBLIC_FORUM, parent={forum précédent}, name="nom du sous-thème"
 
 ## Mises à jour
 
@@ -108,7 +112,6 @@ Il vous reste juste à configurer votre IDE pour qu'il s'y attache. Dans VSCode,
 
 Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le numéro de ligne dans la colonne à gauche et de lancer le débogueur (qui ne fera que s'attacher au serveur de deboguage qui tourne dans votre conteneur).
 
-
 ### Lancer les tests en distribué
 
 ```bash
@@ -119,47 +122,50 @@ pytest --numprocesses=logical --create-db
 
 Ajouter les secrets suivants dans le repo git
 
-* CLEVER_SECRET
-* CLEVER_TOKEN
+- CLEVER_SECRET
+- CLEVER_TOKEN
 
 Créer et lier les addons
-* postgresql
-* cellar S3 storage
-* configuration provider
+
+- postgresql
+- cellar S3 storage
+- configuration provider
 
 Créer les variables d'environnement suivantes dans le configuration provider
-* ALLOWED_HOSTS
-* CC_PIP_REQUIREMENTS_FILE
-* CC_PYTHON_BACKEND
-* CC_PYTHON_MODULE
-* CC_PYTHON_VERSION
-* CC_UWSGI_DISABLE_FILE_WRAPPER
-* DJANGO_DEBUG
-* DJANGO_SECRET_KEY
-* DJANGO_SETTINGS_MODULE
-* INCLUSION_CONNECT_BASE_URL
-* INCLUSION_CONNECT_CLIENT_ID
-* INCLUSION_CONNECT_CLIENT_SECRET
-* INCLUSION_CONNECT_REALM
-* PORT
-* PYTHONPATH
-* S3_STORAGE_BUCKET_NAME
-* S3_STORAGE_BUCKET_NAME_PUBLIC"
-* S3_STORAGE_BUCKET_REGION
-* SENTRY_DSN
-* SIB_API_KEY
-* STATIC_FILES_PATH
-* STATIC_URL_PREFIX
+
+- ALLOWED_HOSTS
+- CC_PIP_REQUIREMENTS_FILE
+- CC_PYTHON_BACKEND
+- CC_PYTHON_MODULE
+- CC_PYTHON_VERSION
+- CC_UWSGI_DISABLE_FILE_WRAPPER
+- DJANGO_DEBUG
+- DJANGO_SECRET_KEY
+- DJANGO_SETTINGS_MODULE
+- INCLUSION_CONNECT_BASE_URL
+- INCLUSION_CONNECT_CLIENT_ID
+- INCLUSION_CONNECT_CLIENT_SECRET
+- INCLUSION_CONNECT_REALM
+- PORT
+- PYTHONPATH
+- S3_STORAGE_BUCKET_NAME
+- S3_STORAGE_BUCKET_NAME_PUBLIC"
+- S3_STORAGE_BUCKET_REGION
+- SENTRY_DSN
+- SIB_API_KEY
+- STATIC_FILES_PATH
+- STATIC_URL_PREFIX
 
 ### pour le déploiment des recettes jetables
 
 Créer et lier les addons (différents de ceux de production ^^)
-* postgresql
-* cellar S3 storage
-* configuration provider
+
+- postgresql
+- cellar S3 storage
+- configuration provider
 
 Ajouter les secrets suivants dans le repo git
 
-* CLEVER_REVIEW_APPS_CONFIGURATION_ADDON
-* CLEVER_REVIEW_APPS_ORG
-* CLEVER_REVIEW_APPS_S3_ADDON
+- CLEVER_REVIEW_APPS_CONFIGURATION_ADDON
+- CLEVER_REVIEW_APPS_ORG
+- CLEVER_REVIEW_APPS_S3_ADDON
