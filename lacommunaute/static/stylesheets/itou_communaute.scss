@@ -15,7 +15,7 @@
 
 .p-homepage {
   .s-main::before {
-    content: "";
+    content: '';
     position: absolute;
     z-index: -1;
     top: 0;
@@ -30,18 +30,17 @@
 }
 
 .topiclist .card-header {
-
   .topic-thumbnail {
     display: flex;
     align-items: end;
     justify-content: center;
     width: 42px;
     height: 42px;
-    margin-right: 0.50rem;
+    margin-right: 0.5rem;
     border-radius: 50%;
     overflow: hidden;
 
-    >img {
+    > img {
       width: 100%;
       height: auto;
       object-fit: cover;
@@ -69,7 +68,7 @@
   }
 }
 
-.btn-post-reply[aria-expanded="true"] {
+.btn-post-reply[aria-expanded='true'] {
   color: #fff !important;
   background-color: #b3b4c3 !important;
   border-color: #b3b4c3 !important;
@@ -142,7 +141,7 @@
 blockquote {
   padding: 1rem;
   border: 0px solid #3f3e62;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   margin-bottom: 1rem;
   font-size: 1rem;
   background-color: rgb(242, 243, 245);
@@ -150,4 +149,22 @@ blockquote {
 
 span.highlighted {
   font-weight: 500;
+}
+
+.input-group-rounded-pill {
+  border-radius: 50rem !important;
+
+  @media (min-width: 1280px) {
+    min-width: 320px;
+  }
+
+  > input {
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+  }
+
+  button {
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+  }
 }
