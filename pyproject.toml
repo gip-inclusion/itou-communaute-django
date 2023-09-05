@@ -6,7 +6,7 @@ name = "lacommunaute"
 version = "0.1.0"
 description = "La communauté de l'inclusion"
 authors = []
-license = "GNU AFFERO GENERAL PUBLIC LICENSE"
+license = "ETALAB 2.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
