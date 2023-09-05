@@ -2,6 +2,20 @@
 {% load i18n %}
 {% load theme_inclusion %}
 <ul>
+    <li>
+        <form class="form-inline " action="{% url 'forum_search_extension:search' %}">
+            <input class="form-control mr-2" type="search" placeholder="{% trans "Keywords or phrase" %}" aria-label="Search" name="q">
+            <button type="submit"
+                    class="btn btn-outline-primary btn-ico matomo-event"
+                    data-matomo-category="engagement"
+                    data-matomo-action="search"
+                    data-matomo-option="submit_query_header"
+            >
+                <i class="ri-search-line"></i>
+                <span>{% trans "Search" %}</span>
+            </button>
+        </form>
+    </li>
     {% if user.is_authenticated %}
         <li class="dropdown">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
