@@ -12,14 +12,11 @@
                     data-matomo-action="like"
                     data-matomo-option="topic"
             >
-
-                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
-
+                <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %} mr-1" aria-hidden="true"></i><span>{{counter}}</span>
             </button>
         {% else %}
             <a href="{% inclusion_connect_url next_url topic.pk %}" rel="nofollow" class="btn btn-ico btn-link btn-like pr-0 text-nowrap" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
-
-                <i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">{{counter}}</span>
+                <i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>{{counter}}</span>
             </a>
         {% endif %}
     {% endwith %}
