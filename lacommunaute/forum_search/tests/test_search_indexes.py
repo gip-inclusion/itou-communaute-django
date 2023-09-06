@@ -1,11 +1,19 @@
 import urllib.parse
 
 import pytest
+from django.conf import settings
 from django.core.management import call_command
 from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
+
+
+@pytest.fixture(scope="session", autouse=True)
+def haystack_woosh_path_xdist_suffix_fixture(worker_id) -> None:
+    for haystack_setting in settings.HAYSTACK_CONNECTIONS.values():
+        if haystack_setting["ENGINE"] == "haystack.backends.whoosh_backend.WhooshEngine":
+            haystack_setting["PATH"] = "_".join([haystack_setting["PATH"], worker_id])
 
 
 @pytest.fixture(name="search_url")
