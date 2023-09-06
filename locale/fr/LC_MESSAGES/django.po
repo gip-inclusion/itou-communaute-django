@@ -173,7 +173,7 @@ msgstr "Copier"
 #: lacommunaute/templates/machina/forum_search/search.html:32
 #: lacommunaute/templates/machina/forum_search/search.html:42
 msgid "Search"
-msgstr "Recherche"
+msgstr "Rechercher"
 
 msgid "Search in"
 msgstr "Rechercher dans"
