@@ -131,13 +131,13 @@ class TopicLikeViewTest(TestCase):
         response = self.client.post(self.url)
         # icon: solid heart
         self.assertContains(
-            response, '<i class="ri-heart-3-fill" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+            response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
         response = self.client.post(self.url)
         # icon: regular heart (outlined)
         self.assertContains(
-            response, '<i class="ri-heart-3-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+            response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
     def test_post_topic_not_found(self):
