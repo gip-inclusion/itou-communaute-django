@@ -19,6 +19,7 @@ urlpatterns = [
     path("statistiques/", views.StatistiquesPageView.as_view(), name="statistiques"),
     path("accessibilite/", views.accessibilite, name="accessibilite"),
     path("mentions-legales/", views.mentions_legales, name="mentions_legales"),
+    path("politique-de-confidentialite/", views.politique_de_confidentialite, name="politique_de_confidentialite"),
     path("landing-pages/", views.LandingPagesListView.as_view(), name="landing_pages"),
     path("sentry-debug/", views.trigger_error, name="sentry_debug"),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
