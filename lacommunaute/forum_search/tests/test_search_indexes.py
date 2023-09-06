@@ -8,20 +8,20 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 
 
-@pytest.fixture
-def search_url():
+@pytest.fixture(name="search_url")
+def search_url_fixture():
     return reverse("forum_search_extension:search")
 
 
-@pytest.fixture
-def public_forums():
+@pytest.fixture(name="public_forums")
+def public_forums_fixture():
     forums = ForumFactory.create_batch(2, with_public_perms=True)
     call_command("rebuild_index", noinput=True, interactive=False)
     return forums
 
 
-@pytest.fixture
-def public_topics():
+@pytest.fixture(name="public_topics")
+def public_topics_fixture():
     topics = TopicFactory.create_batch(2, forum=ForumFactory(with_public_perms=True), with_post=True)
     call_command("rebuild_index", noinput=True, interactive=False)
     return topics
