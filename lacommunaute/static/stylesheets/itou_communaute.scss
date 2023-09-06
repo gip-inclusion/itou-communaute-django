@@ -154,10 +154,6 @@ span.highlighted {
 .input-group-rounded-pill {
   border-radius: 50rem !important;
 
-  @media (min-width: 1280px) {
-    min-width: 320px;
-  }
-
   > input {
     border-top-left-radius: 50rem !important;
     border-bottom-left-radius: 50rem !important;
