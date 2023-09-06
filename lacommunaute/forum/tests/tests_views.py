@@ -357,7 +357,7 @@ class ForumViewTest(TestCase):
             ' rel="nofollow"'
             ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top"'
             ' title="Connectez-vous pour sauvegarder">'
-            '\n                <i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>'
+            '\n                <i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>'
         )
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
@@ -369,13 +369,13 @@ class ForumViewTest(TestCase):
         no_upvote_html = (
             '<button type="submit"'
             '\n                        title="Sauvegarder"'
-            '\n                        class="btn btn-sm btn-ico-only btn-secondary matomo-event"'
+            '\n                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
             '\n                        data-matomo-category="engagement"'
             '\n                        data-matomo-action="upvote"'
             '\n                        data-matomo-option="post"'
             "\n                >"
-            '\n                    <i class="ri-bookmark-line" aria-hidden="true"></i>'
-            '<span class="ml-1">0</span>'
+            '\n                    <i class="ri-bookmark-line mr-1" aria-hidden="true"></i>'
+            "<span>0</span>"
         )
         response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": forum.slug}))
         self.assertContains(response, no_upvote_html, status_code=200)
@@ -384,13 +384,13 @@ class ForumViewTest(TestCase):
         upvoted_html = (
             '<button type="submit"'
             '\n                        title="Sauvegarder"'
-            '\n                        class="btn btn-sm btn-ico-only btn-secondary matomo-event"'
+            '\n                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
             '\n                        data-matomo-category="engagement"'
             '\n                        data-matomo-action="upvote"'
             '\n                        data-matomo-option="post"'
             "\n                >"
-            '\n                    <i class="ri-bookmark-fill" aria-hidden="true"></i>'
-            '<span class="ml-1">1</span>'
+            '\n                    <i class="ri-bookmark-fill mr-1" aria-hidden="true"></i>'
+            "<span>1</span>"
         )
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
@@ -405,7 +405,7 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
         child_forum.upvotes.create(voter=self.user)
@@ -414,7 +414,7 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
         child_forum.upvotes.create(voter=UserFactory())
@@ -423,5 +423,5 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">2</span>', status_code=200
+            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>2</span>', status_code=200
         )

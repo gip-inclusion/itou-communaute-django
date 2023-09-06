@@ -425,7 +425,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
+            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
     def test_post_has_upvote_by_user(self):
@@ -435,7 +435,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-fill" aria-hidden="true"></i><span class="ml-1">1</span>', status_code=200
+            response, '<i class="ri-bookmark-fill mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
     def test_certified_post_is_highlighted(self):

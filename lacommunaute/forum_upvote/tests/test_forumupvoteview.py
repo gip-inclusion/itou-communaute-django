@@ -38,9 +38,7 @@ def test_upvote_downvote_with_permission(client, db):
 
     # downvote
     response = client.post(url, data=form_data)
-    assertContains(
-        response, '<i class="ri-bookmark-line" aria-hidden="true"></i><span class="ml-1">0</span>', status_code=200
-    )
+    assertContains(response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200)
     assert not UpVote.objects.all()
 
 
