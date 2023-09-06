@@ -49,4 +49,4 @@ exports
 .vscode/launch.json
 
 # Whoosh index
-whoosh_index/
+whoosh_index*
