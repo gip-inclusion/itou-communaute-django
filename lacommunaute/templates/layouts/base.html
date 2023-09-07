@@ -6,31 +6,31 @@
 <html lang="fr">
     <head>
         {% block head %}
-            <meta charset="utf-8" />
+            <meta charset="utf-8">
             <title>{% block title %} - {{ MACHINA_FORUM_NAME|default:"Forum" }}{% endblock %}</title>
-            <meta name="created" content="{% now "jS M Y h:i" %}" />
-            <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
-            <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}"/>
+            <meta name="created" content="{% now "jS M Y h:i" %}">
+            <meta name="description" content="{% block meta_description %}{% endblock meta_description %}">
+            <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <meta http-equiv="x-ua-compatible" content="ie=edge">
             <meta name="theme-color" content="#ffffff">
 
             <!-- https://metatags.io Open Graph -->
-            <meta property="og:locale" content="fr_FR" />
-            <meta property="og:type" content="website" />
-            <meta property="og:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/" />
-            <meta property="og:image" content="{% static 'images/logo-meta-communaute.png' %}" />
-            <meta property="og:image:alt" content="Logo de la communauté de l'inclusion" />
-            <meta property="og:image:type" content="image/png" />
-            <meta property="og:image:width" content="1200" />
-            <meta property="og:image:height" content="630" />
+            <meta property="og:locale" content="fr_FR">
+            <meta property="og:type" content="website">
+            <meta property="og:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/">
+            <meta property="og:image" content="{% static 'images/logo-meta-communaute.png' %}">
+            <meta property="og:image:alt" content="Logo de la communauté de l'inclusion">
+            <meta property="og:image:type" content="image/png">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
             <!-- https://metatags.io Twitter -->
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/" />
-            <meta property="twitter:image" content="{% static 'images/logo-meta-communaute.png' %}" />
-            <meta property="twitter:site" content="inclusion_gouv" />
+            <meta property="twitter:card" content="summary_large_image">
+            <meta property="twitter:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/">
+            <meta property="twitter:image" content="{% static 'images/logo-meta-communaute.png' %}">
+            <meta property="twitter:site" content="inclusion_gouv">
             <!-- https://metatags.io Facebook -->
-            <meta property="fb:page_id" content="inclusion.gouv" />
+            <meta property="fb:page_id" content="inclusion.gouv">
 
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
@@ -41,12 +41,12 @@
         {% block css %}
             <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
             {% import_static_CSS_theme_inclusion %}
-            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.vendor.min.css' %}" />
-            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.min.css' %}" />
+            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.vendor.min.css' %}">
+            <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.min.css' %}">
         {% endblock %}
 
         {% compress css %}
-            <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss" />
+            <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss">
         {% endcompress %}
 
         {% block extra_css %}{% endblock %}
