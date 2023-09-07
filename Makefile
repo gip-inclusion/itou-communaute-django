@@ -44,7 +44,6 @@ pylint:
 tests:
 	pytest --numprocesses=logical --create-db
 
-
 # Docker shell.
 # =============================================================================
 
@@ -67,7 +66,7 @@ psql:
 # Prerequisites:
 # - Clone the git `itou-backups` project first and run `make build`. https://github.com/betagouv/itou-backups
 # - Copy .env.template and set correct values.
-postgres_restore_latest_backup: ./scripts/import-latest-db-backup.sh
+postgres_restore_latest_backup:
 	./scripts/import-latest-db-backup.sh
 
 # Whoosh index
