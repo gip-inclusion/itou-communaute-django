@@ -1,61 +1,84 @@
 # La communauté de l'inclusion
 
-## Poetry
+## Initial setup
 
-### Lancer le serveur local
+Installer l'environnement virtuel et les dépendances :
 
-#### Configuration environnement
+```bash
+$ poetry install
+```
+
+Creer les buckets S3 :
+
+```bash
+s3cmd mb s3://test-inclusion-public/
+s3cmd setacl s3://test-inclusion-public/ --acl-public
+s3cmd mb s3://test-inclusion-private/
+```
+
+Copier le fichier `.env.template` en `.env` et le modifier en fonction de vos besoins.
 
 ```bash
 $ cp .env.template .env
 ```
 
-Installation des dependances avec Poetry
+Accéder à l'environnement virtuel :
+
 ```bash
-$ poetry install
+$ poetry shell
 ```
 
-#### Lancement
+## Démarrer les instances
 
-Pour utiliser les commandes python dans l'environnement géré par `poetry`
+Démarer la base de données
 
-* Ajoutez la variable d'environnement : `DJANGO_SETTINGS_MODULE` pour activer les settings de prod (`config.settings.base`) ou de dev (`config.settings.dev`)
-* Lancer le shell `poetry shell`
-* Puis executer les commandes du fichier `Makefile`
 ```bash
-$ make server
+$ docker-compose up -d
 ```
 
-* Ou les commandes python de votre choix : ie `pytest`. Executées depuis le `shell` de `poetry`, cette commande équivaut à `poetry run pytest`
-* Bonus, les tests lancés depuis `vscode` avec `pytest` bénéficient aussi de tout l'environnement `poetry`
+Démarrer le service web
 
-### Ajout de dépendance
+```bash
+python manage.py runserver
+```
 
-Ajout d'une dépendance :
+## Peupler la base de données
+
+
+```bash
+python manage.py loaddata fixtures/validation_fixtures.json
+```
+
+
+## Mises à jour
+
+Ajouter d'une dépendance :
 
 ```bash
 poetry add django-anymail
 ```
 
-Ajout d'une dépendance de développement :
+Ajouter d'une dépendance de développement :
 
 ```bash
 poetry add --group dev poethepoet
 ```
 
-### Mise à jour des dépendances
+Mettre à jour des dépendances :
 
 ```bash
 poetry update
 poetry lock
 ```
 
-### Générer les fichiers `requirements`
+Générer les fichiers `requirements`
 
 ```bash
 poetry run poe export
 poetry run poe export_dev
 ```
+
+## Développement
 
 ### Déboguer pas à pas
 
@@ -85,57 +108,6 @@ Il vous reste juste à configurer votre IDE pour qu'il s'y attache. Dans VSCode,
 
 Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le numéro de ligne dans la colonne à gauche et de lancer le débogueur (qui ne fera que s'attacher au serveur de deboguage qui tourne dans votre conteneur).
 
-## Docker
-
-
-### Lancer le serveur local
-
-```bash
-$ cp .env.template .env
-```
-
-Pour Docker, mettre : `POSTGRESQL_ADDON_HOST=postgres`.
-
-```bash
-$ docker-compose up -d
-```
-
-Visitez la page d'accueil du projet : http://localhost:8000.
-
-Si le port 8000 ne vous convient pas, vous pouvez définir la variable `DJANGO_PORT_ON_DOCKER_HOST` dans votre `.env` pour mettre le port que vous souhaitez.
-
-### Déboguer pas à pas
-
-Le débogueur démarre par défaut avec `debugpy` dans le conteneur Django sur le port 5678 (que vous pouvez changer avec la variable d'environnement `DJANGO_DEBUGPY_PORT`).
-Il vous reste juste à configurer votre IDE pour qu'il s'y attache. Dans VSCode, il suffit de créer le fichier `launch.json` dans le répertoire `.vscode` comme suit :
-
-```json
-{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Attacher",
-            "type": "python",
-            "request": "attach",
-            "connect": {
-                "host": "127.0.0.1",
-                "port": 5678
-            },
-            "pathMappings": [
-                {
-                    "localRoot": "${workspaceFolder}",
-                    "remoteRoot": "/app"
-                }
-            ],
-            "django": true
-        }
-    ]
-}
-```
-
-Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le numéro de ligne dans la colonne à gauche et de lancer le débogueur (qui ne fera que s'attacher au serveur de deboguage qui tourne dans votre conteneur).
-
-## Tester
 
 ### Lancer les tests en distribué
 
