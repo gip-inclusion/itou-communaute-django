@@ -4,12 +4,12 @@ anyio==4.0.0 ; python_version >= "3.10" and python_version < "4.0" \
 asgiref==3.7.2 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:89b2ef2247e3b562a16eef663bc0e2e703ec6468e2fa8a5cd61cd449786d4f6e \
     --hash=sha256:9e0ce3aa93a819ba5b45120216b23878cf6e8525eb3848653452b4192b92afed
-boto3==1.28.40 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:6ff9a5b815e106656596064d51c9b6ba97a307807baa5f89634384b7d3f7ecc6 \
-    --hash=sha256:bd7c760afb195eaeaab907dc6b2c21fa64ddbba3fed4a869e80d820ddbd6cc70
-botocore==1.31.40 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:ce22a82ef8674f49691477d09558992cc87e7331f65c6a5b0da897ab192240ca \
-    --hash=sha256:df766969f0d9ef9eda1a9c9946e0e173c10199f37a9e4c92861f11ddb5c9e702
+boto3==1.28.43 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:4cd3e96900fb50bddc9f48007176c80d15396d08c5248b25a41220f3570e014f \
+    --hash=sha256:c0211a3e830432851c73fa1e136b14dbb6d02b5c9a5e1272c557e63538620b88
+botocore==1.31.43 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:b4a3a1fcf75011351e2b0d3eb991f51f8d44a375d3e065f907dac67db232fc97 \
+    --hash=sha256:d8b0c41c8c75d82f15fee57f7d54a852a99810faacbeb9d6f3f022558a2c330e
 certifi==2023.7.22 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:539cc1d13202e33ca466e88b2807e29f4c13049d6d87031a3c110744495cb082 \
     --hash=sha256:92d6037539857d8206b8f6ae472e8b77db8058fec5937a1ef3f54304089edbb9
@@ -42,9 +42,9 @@ django-mptt==0.14.0 ; python_version >= "3.10" and python_version < "4.0" \
 django-social-share==2.3.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:13d0a1fbb2a90e3a6e7eb556315ececd1e93a906574a3284affbe2f43e2f7398 \
     --hash=sha256:37844f3b4f88a2008604ece7eaedd52fd5914f111f13525200ce1101b750757f
-django-storages==1.13.2 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:31dc5a992520be571908c4c40d55d292660ece3a55b8141462b4e719aa38eab3 \
-    --hash=sha256:cbadd15c909ceb7247d4ffc503f12a9bec36999df8d0bef7c31e57177d512688
+django-storages==1.14 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:11280a883b13812df548f3cfe9c10280afc0d4727c8babdee369a75e71158f16 \
+    --hash=sha256:6c97e5faad829c923a1262206281742c484d76d43b332a196ddcc242b909c551
 django-taggit==3.1.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:543218ac346fbe02a65733e0341c91b57a3e0f7a41568966b26f1cea9edc4805 \
     --hash=sha256:c8f2e4eae387939089b3d75d1d8649e008880970c068ce9d0e82f87fd5e29508
@@ -209,9 +209,9 @@ psycopg2-binary==2.9.7 ; python_version >= "3.10" and python_version < "4.0" \
 pytest-django==4.5.2 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:c60834861933773109334fe5a53e83d1ef4828f2203a1d6a0fa9972f4f75ab3e \
     --hash=sha256:d9076f759bb7c36939dbdd5ae6633c18edfc2902d1a69fdbefd2426b970ce6c2
-pytest==7.4.1 ; python_version >= "3.10" and python_version < "4.0" \
-    --hash=sha256:2f2301e797521b23e4d2585a0a3d7b5e50fdddaaf7e7d6773ea26ddb17c213ab \
-    --hash=sha256:460c9a59b14e27c602eb5ece2e47bec99dc5fc5f6513cf924a7d03a578991b1f
+pytest==7.4.2 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:1d881c6124e08ff0a1bb75ba3ec0bfd8b5354a01c194ddd5a0a870a48d99b002 \
+    --hash=sha256:a766259cfab564a2ad52cb1aae1b881a75c3eb7e34ca3779697c23ed47c47069
 python-dateutil==2.8.2 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
     --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
