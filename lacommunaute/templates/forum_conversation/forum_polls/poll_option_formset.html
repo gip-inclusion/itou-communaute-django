@@ -11,9 +11,9 @@
                     {{ form.id }}
                 {% endif %}
                 {% if field.name == 'DELETE' %}
-                    <div class="custom-control custom-checkbox mt-2">
-                        {{ field | add_class:'custom-control-input' }}
-                        <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                    <div class="form-check mt-2">
+                        {{ field | add_class:'form-check-input' }}
+                        <label class="form-check-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                     </div>
                 {% else %}
                     {% include "partials/form_field.html" with field=field %}

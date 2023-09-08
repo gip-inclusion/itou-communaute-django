@@ -13,18 +13,18 @@
                     <button type="button" class="btn btn-sm btn-link dropdown-toggle p-0" data-toggle="dropdown" aria-haspopup="true" aria-controls="filterTopicsDropdown" aria-expanded="false">
                         {{ active_filter_name }}
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right" id="filterTopicsDropdown">
+                    <div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">
                         <ul class="list-unstyled">
                             {% for filter in filters %}
                                 <li>
                                     <button id="filtertopics-button"
-                                            hx-target="#topicsarea"
-                                            hx-swap="outerHTML"
-                                            hx-get="{% url 'forum_conversation_extension:topics' %}?filter={{ filter.0 }}"
-                                            class="dropdown-item matomo-event"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="filter"
-                                            data-matomo-option="topics">
+                                        hx-target="#topicsarea"
+                                        hx-swap="outerHTML"
+                                        hx-get="{% url 'forum_conversation_extension:topics' %}?filter={{ filter.0 }}"
+                                        class="dropdown-item matomo-event"
+                                        data-matomo-category="engagement"
+                                        data-matomo-action="filter"
+                                        data-matomo-option="topics">
                                         {{ filter.1 }}
                                     </button>
                                 </li>

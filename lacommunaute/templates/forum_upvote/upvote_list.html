@@ -31,10 +31,10 @@
                                                 <td class="position-relative">
                                                     {% if upvote.content_type.model == 'forum' %}
                                                         <a href="{% url 'forum_extension:forum' upvote.content_object.slug upvote.content_object.pk %}"
-                                                           class="btn-link btn-ico stretched-link matomo-event"
-                                                           data-matomo-category="engagement"
-                                                           data-matomo-action="view"
-                                                           data-matomo-option="upvoted-forum"
+                                                            class="btn-link btn-ico stretched-link matomo-event"
+                                                            data-matomo-category="engagement"
+                                                            data-matomo-action="view"
+                                                            data-matomo-option="upvoted-forum"
                                                         >
                                                             <i class="ri-article-line" aria-hidden="true"></i>
                                                             <span>{{ upvote.content_object.name }}</span>
@@ -50,10 +50,10 @@
                                                         </div>
                                                     {% elif upvote.content_type.model == 'post' %}
                                                         <a href="{% url 'forum_conversation:topic' upvote.content_object.topic.forum.slug upvote.content_object.topic.forum.pk upvote.content_object.topic.slug upvote.content_object.topic.pk %}"
-                                                           class="btn-link stretched-link btn-ico matomo-event"
-                                                           data-matomo-category="engagement"
-                                                           data-matomo-action="view"
-                                                           data-matomo-option="upvoted-topic"
+                                                            class="btn-link stretched-link btn-ico matomo-event"
+                                                            data-matomo-category="engagement"
+                                                            data-matomo-action="view"
+                                                            data-matomo-option="upvoted-topic"
                                                         >
                                                             <i class="ri-user-line ri-lg" aria-hidden="true"></i>
                                                             <span>{{ upvote.content_object.topic.subject }}</span>

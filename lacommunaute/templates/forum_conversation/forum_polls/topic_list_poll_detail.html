@@ -35,15 +35,15 @@
         </div>
         {% if view_results_action %}
             <div class="form-actions">
-                <a href="." class="btn btn-sm btn-link pl-0">{% trans "Vote" %}</a>
+                <a href="." class="btn btn-sm btn-link ps-0">{% trans "Vote" %}</a>
             </div>
         {% elif can_be_completed and has_been_completed and not change_vote_action %}
             <div class="form-actions">
                 <a href="{% url 'forum_conversation:topic' poll.topic.forum.slug poll.topic.forum.pk poll.topic.slug poll.topic.pk %}?change_vote=true"
-                   class="btn btn-sm btn-link pl-0 matomo-event"
-                   data-matomo-category="engagement"
-                   data-matomo-action="view"
-                   data-matomo-option="topic">
+                    class="btn btn-sm btn-link ps-0 matomo-event"
+                    data-matomo-category="engagement"
+                    data-matomo-action="view"
+                    data-matomo-option="topic">
                     {% trans "Change your vote" %}
                 </a>
             </div>

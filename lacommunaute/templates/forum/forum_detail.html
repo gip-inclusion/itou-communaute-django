@@ -34,7 +34,7 @@
                     <div class="col-12 col-lg-9">
                         <div class="row align-items-sm-center mb-3">
                             <div class="col-12 col-sm">
-                                <span class="badge badge-xs badge-pill bg-communaute text-white text-decoration-none">
+                                <span class="badge badge-xs rounded-pill bg-communaute text-white text-decoration-none">
                                     <i class="ri-checkbox-circle-fill"></i>
                                     Certifié par la Plateforme de l'Inclusion le {{ forum.updated|date:"d/m/Y" }}
                                 </span>
@@ -48,10 +48,10 @@
                     </div>
                     <div class="col-12 col-lg-3">
                         <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"
-                           class="matomo-event h3 text-decoration-none d-inline-block"
-                           data-matomo-category="engagement"
-                           data-matomo-action="view"
-                           data-matomo-option="forum">
+                            class="matomo-event h3 text-decoration-none d-inline-block"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="forum">
                             Les autres fiches du thème
                         </a>
                         <ul class="nav nav-tabs flex-column">
@@ -97,11 +97,11 @@
                         <div class="col-12 col-sm-auto forum-actions-block">
                             {% if user_can_add_topic %}
                                 <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                                   rel="nofollow"
-                                   class="btn btn-primary btn-ico matomo-event"
-                                   data-matomo-category="engagement"
-                                   data-matomo-action="contribute"
-                                   data-matomo-option="new_topic">
+                                    rel="nofollow"
+                                    class="btn btn-primary btn-ico matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="contribute"
+                                    data-matomo-option="new_topic">
                                     <i class="ri-chat-new-line ri-lg"></i>
                                     <span>{% if forum.kind == 'NEWS' %}{% trans "New news" %}{% else %}{% trans "New topic" %}{% endif %}</span>
                                 </a>
@@ -112,10 +112,10 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
                                     <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}"
-                                       class="dropdown-item matomo-event"
-                                       data-matomo-category="engagement"
-                                       data-matomo-action="view"
-                                       data-matomo-option="directory">
+                                        class="dropdown-item matomo-event"
+                                        data-matomo-category="engagement"
+                                        data-matomo-action="view"
+                                        data-matomo-option="directory">
                                         {% trans "Members" %}
                                     </a>
                                 </div>
@@ -135,22 +135,22 @@
                         <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="topics-tab"
-                                   data-toggle="tab"
-                                   href="#topics"
-                                   role="tab"
-                                   aria-controls="topics"
-                                   aria-selected="true">
+                                    data-toggle="tab"
+                                    href="#topics"
+                                    role="tab"
+                                    aria-controls="topics"
+                                    aria-selected="true">
                                     Sujets
                                 </a>
                             </li>
                             {% if announces %}
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="announces-tab"
-                                       data-toggle="tab"
-                                       href="#announces"
-                                       role="tab"
-                                       aria-controls="announces"
-                                       aria-selected="false">
+                                        data-toggle="tab"
+                                        href="#announces"
+                                        role="tab"
+                                        aria-controls="announces"
+                                        aria-selected="false">
                                         Annonces
                                     </a>
                                 </li>
@@ -158,21 +158,21 @@
                             <li class="nav-item-dropdown dropdown">
                                 <!-- for responsive needs -->
                                 <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sTabs01DropdownMoreLink"></div>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sTabs01DropdownMoreLink"></div>
                             </li>
                         </ul>
                         <div class="tab-content topiclist">
                             <div class="tab-pane fade show active" id="topics"
-                                 role="tabpanel"
-                                 aria-labelledby="topics-tab">
+                                role="tabpanel"
+                                aria-labelledby="topics-tab">
                                 {% with unread_topics=unread_topics  %}
                                     {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
                                 {% endwith %}
                             </div>
                             {% if announces %}
                                 <div class="tab-pane fade" id="announces"
-                                     role="tabpanel"
-                                     aria-labelledby="announces-tab">
+                                    role="tabpanel"
+                                    aria-labelledby="announces-tab">
                                     {% with topics=announces hide_if_empty=True unread_topics=unread_topics loadmoretopic_url=None %}
                                         {% include "forum_conversation/topic_list.html" %} <!-- note vincentporte : to be optimized -->
                                     {% endwith %}

@@ -389,13 +389,13 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>')
+        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
 
     def test_has_not_liked(self):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>0</span>')
+        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
 
     def test_pluralized_likes(self):
         self.topic.likers.add(UserFactory())
@@ -405,7 +405,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>2</span>')
+        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>2</span>')
 
     def test_anonymous_like(self):
         assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
@@ -425,7 +425,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
+            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
     def test_post_has_upvote_by_user(self):
@@ -435,7 +435,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-fill mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
+            response, '<i class="ri-bookmark-fill me-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
     def test_certified_post_is_highlighted(self):
@@ -525,7 +525,7 @@ class TopicListViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>')
+        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
 
     def test_queryset(self):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
@@ -619,11 +619,11 @@ class TopicListViewTest(TestCase):
 
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
-        self.assertContains(response, '<div class="dropdown-menu dropdown-menu-right" id="filterTopicsDropdown">')
+        self.assertContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
         self.assertEqual(response.context_data["display_filter_dropdown"], True)
 
         response = self.client.get(self.url + "?page=1")
-        self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-right" id="filterTopicsDropdown">')
+        self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
         self.assertEqual(response.context_data["display_filter_dropdown"], False)
 
     def test_template_name(self):
