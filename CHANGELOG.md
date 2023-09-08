@@ -1,5 +1,21 @@
 # Journal des modifications
 
+## v2.1 - 2023-09-08
+- [PAGES] mise à jour des pages de mentions  (#397)
+- [RECHERCHE] fix - le fichier d'index est absent lors de certains tests (#394)
+- [RECHERCHE] barre de recherche dans le header (#391)
+- [STATISTIQUES] août 2023 (#390)
+- [SEO] ajout de balises nofollow (#387)
+- [SEO] suppression de l'aide MD (#385)
+- [TOPICS] filtrer les sujets à partir des étiquettes - part 1 (#384)
+- [DOCUMENTATION] titre des liens vers les autres fiches du thème (#378)
+- [DOCUMENTATION] déposer des images publiques (#388)
+- [MODERATION] mise à jour de la vue de suppression d'un `Topic` (#371)
+- [NOTIFICATION] correction de l'url d'accès aux questions non répondues dans l'email de notification (#370)
+- [SETTINGS] ajout de la compression des données (#380)
+- [SETTINGS] peupler les recettes jetables automatiquement (#399)
+- [SETTINGS] mise à jour des dépendances (#372)
+
 ## v2.0 - 2023-07-26
 - [HOME] Rearrangement de la structure de site (V2) (#341)
 - [HOME] tri des dernières questions (#353)
