@@ -115,3 +115,51 @@ Vous pourrez dès lors placer des points d'arrêt dans le code en survolant le n
 pytest --numprocesses=logical --create-db
 ```
 
+## Déploiement sur Clever Cloud
+
+Ajouter les secrets suivants dans le repo git
+
+* CLEVER_SECRET
+* CLEVER_TOKEN
+
+Créer et lier les addons
+* postgresql
+* cellar S3 storage
+* configuration provider
+
+Créer les variables d'environnement suivantes dans le configuration provider
+* ALLOWED_HOSTS
+* CC_PIP_REQUIREMENTS_FILE
+* CC_PYTHON_BACKEND
+* CC_PYTHON_MODULE
+* CC_PYTHON_VERSION
+* CC_UWSGI_DISABLE_FILE_WRAPPER
+* DJANGO_DEBUG
+* DJANGO_SECRET_KEY
+* DJANGO_SETTINGS_MODULE
+* INCLUSION_CONNECT_BASE_URL
+* INCLUSION_CONNECT_CLIENT_ID
+* INCLUSION_CONNECT_CLIENT_SECRET
+* INCLUSION_CONNECT_REALM
+* PORT
+* PYTHONPATH
+* S3_STORAGE_BUCKET_NAME
+* S3_STORAGE_BUCKET_NAME_PUBLIC"
+* S3_STORAGE_BUCKET_REGION
+* SENTRY_DSN
+* SIB_API_KEY
+* STATIC_FILES_PATH
+* STATIC_URL_PREFIX
+
+### pour le déploiment des recettes jetables
+
+Créer et lier les addons (différents de ceux de production ^^)
+* postgresql
+* cellar S3 storage
+* configuration provider
+
+Ajouter les secrets suivants dans le repo git
+
+* CLEVER_REVIEW_APPS_CONFIGURATION_ADDON
+* CLEVER_REVIEW_APPS_ORG
+* CLEVER_REVIEW_APPS_S3_ADDON
