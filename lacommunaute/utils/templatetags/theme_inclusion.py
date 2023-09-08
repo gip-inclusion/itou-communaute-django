@@ -33,13 +33,13 @@ JS_DEPENDENCIES_THEME = [
     },
     {
         "is_external": True,
-        "src": "https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js",
-        "integrity": "sha256-/ijcOLwFf26xEYAjW75FizKVo5tnTYiQddPZoLUHHZ8=",
+        "src": "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
+        "integrity": "sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r",
     },
     {
         "is_external": True,
-        "src": "https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js",
-        "integrity": "sha256-QjIXq/h3XOotww+h/j4cXiTcNZqA8cN60pqGCUv+gdE=",
+        "src": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js",
+        "integrity": "sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS",
     },
     {
         "is_external": False,
