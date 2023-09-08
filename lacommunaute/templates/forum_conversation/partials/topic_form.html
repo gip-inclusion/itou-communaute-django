@@ -34,9 +34,9 @@
                     {% if post_form.lock_topic %}
                         <div class="form-group">
                             {% with field=post_form.lock_topic %}
-                                <div class="custom-control custom-checkbox mt-2">
-                                    {{ field | add_class:'custom-control-input' }}
-                                    <label class="custom-control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                <div class="form-check mt-2">
+                                    {{ field | add_class:'form-check-input' }}
+                                    <label class="form-check-label" for="{{ field.auto_id }}">{{ field.label }}</label>
                                 </div>
                             {% endwith %}
                         </div>
@@ -60,16 +60,16 @@
                         {% include "partials/form_field.html" with field=post_form.poll_max_options %}
                         {% include "partials/form_field.html" with field=post_form.poll_duration %}
                         <div class="form-group{% if post_form.poll_user_changes.errors %} has-error{% endif %}">
-                            <div class="custom-control custom-checkbox mt-3">
-                                {{ post_form.poll_user_changes | add_class:'custom-control-input' }}
-                                <label class="custom-control-label" for="{{ post_form.poll_user_changes.auto_id }}">{{ post_form.poll_user_changes.label }}</label>
+                            <div class="form-check mt-3">
+                                {{ post_form.poll_user_changes | add_class:'form-check-input' }}
+                                <label class="form-check-label" for="{{ post_form.poll_user_changes.auto_id }}">{{ post_form.poll_user_changes.label }}</label>
                             </div>
                         </div>
                         {% if post_form.poll_hide_results %}
                             <div class="form-group{% if post_form.poll_hide_results.errors %} has-error{% endif %}">
-                                <div class="custom-control custom-checkbox mt-3">
-                                    {{ post_form.poll_hide_results | add_class:'custom-control-input' }}
-                                    <label class="custom-control-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
+                                <div class="form-check mt-3">
+                                    {{ post_form.poll_hide_results | add_class:'form-check-input' }}
+                                    <label class="form-check-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
                                 </div>
                             </div>
                         {% endif %}
@@ -94,9 +94,9 @@
     <div class="form-actions form-row">
         <div class="form-group col-auto">
             <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
-                   data-matomo-category="engagement"
-                   data-matomo-action="contribute"
-                   data-matomo-option="submit_topic" />
+                data-matomo-category="engagement"
+                data-matomo-action="contribute"
+                data-matomo-option="submit_topic" />
         </div>
         {% if post %}
             {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}

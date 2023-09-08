@@ -128,27 +128,27 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>')
+        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
 
     def test_has_not_liked(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>0</span>')
+        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
 
     def test_has_liked_TOPIC_ANNOUNCE(self):
         TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True, type=Topic.TOPIC_ANNOUNCE)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>')
+        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
 
     def test_has_not_liked_TOPIC_ANNOUNCE(self):
         TopicFactory(forum=self.forum, poster=self.user, with_post=True, type=Topic.TOPIC_ANNOUNCE)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>0</span>')
+        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
 
     def test_anonymous_like(self):
         params = {"next_url": self.url}
@@ -342,7 +342,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(url)
         self.assertContains(
             response,
-            'div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">',
+            'div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuSocialShare">',
             status_code=200,
         )
 
@@ -357,7 +357,7 @@ class ForumViewTest(TestCase):
             ' rel="nofollow"'
             ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top"'
             ' title="Connectez-vous pour sauvegarder">'
-            '\n                <i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>'
+            '\n                <i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>'
         )
         response = self.client.get(
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
@@ -374,7 +374,7 @@ class ForumViewTest(TestCase):
             '\n                        data-matomo-action="upvote"'
             '\n                        data-matomo-option="post"'
             "\n                >"
-            '\n                    <i class="ri-bookmark-line mr-1" aria-hidden="true"></i>'
+            '\n                    <i class="ri-bookmark-line me-1" aria-hidden="true"></i>'
             "<span>0</span>"
         )
         response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": forum.slug}))
@@ -389,7 +389,7 @@ class ForumViewTest(TestCase):
             '\n                        data-matomo-action="upvote"'
             '\n                        data-matomo-option="post"'
             "\n                >"
-            '\n                    <i class="ri-bookmark-fill mr-1" aria-hidden="true"></i>'
+            '\n                    <i class="ri-bookmark-fill me-1" aria-hidden="true"></i>'
             "<span>1</span>"
         )
         response = self.client.get(
@@ -405,7 +405,7 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
+            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
         child_forum.upvotes.create(voter=self.user)
@@ -414,7 +414,7 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
+            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
         child_forum.upvotes.create(voter=UserFactory())
@@ -423,5 +423,5 @@ class ForumViewTest(TestCase):
             reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
         self.assertContains(
-            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>2</span>', status_code=200
+            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>2</span>', status_code=200
         )

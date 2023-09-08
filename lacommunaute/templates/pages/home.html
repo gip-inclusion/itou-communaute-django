@@ -25,15 +25,15 @@
                     <ul class="lead list-unstyled mb-md-5">
                         <li class="d-flex mb-2">
                             <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ml-2">Posez vos questions et répondre aux autres professionnels</span>
+                            <span class="ms-2">Posez vos questions et répondre aux autres professionnels</span>
                         </li>
                         <li class="d-flex mb-2">
                             <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ml-2">Retrouvez les dernières actus et infos pour sa veille informelle</span>
+                            <span class="ms-2">Retrouvez les dernières actus et infos pour sa veille informelle</span>
                         </li>
                         <li class="d-flex mb-2">
                             <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ml-2">Progressez grâce à des ressources exclusives</span>
+                            <span class="ms-2">Progressez grâce à des ressources exclusives</span>
                         </li>
                     </ul>
                     {% include "partials/ask_a_question.html" %}
@@ -64,10 +64,10 @@
                                 {% for topic in topics_public %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                           class="matomo-event btn-link stretched-link"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="view"
-                                           data-matomo-option="topic">
+                                            class="matomo-event btn-link stretched-link"
+                                            data-matomo-category="engagement"
+                                            data-matomo-action="view"
+                                            data-matomo-option="topic">
                                             {{ topic.subject }}
                                         </a>
                                     </li>
@@ -89,10 +89,10 @@
                                 {% for forum in forums_category %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                                           class="matomo-event btn-link stretched-link"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="view"
-                                           data-matomo-option="forum">
+                                            class="matomo-event btn-link stretched-link"
+                                            data-matomo-category="engagement"
+                                            data-matomo-action="view"
+                                            data-matomo-option="forum">
                                             [{{ forum.parent.name }}] {{ forum.name }}
                                         </a>
                                     </li>
@@ -114,10 +114,10 @@
                                 {% for topic in topics_newsfeed %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                           class="matomo-event btn-link stretched-link"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="view"
-                                           data-matomo-option="news">
+                                            class="matomo-event btn-link stretched-link"
+                                            data-matomo-category="engagement"
+                                            data-matomo-action="view"
+                                            data-matomo-option="news">
                                             {{ topic.subject }}
                                         </a>
                                     </li>

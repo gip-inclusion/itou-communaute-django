@@ -131,13 +131,13 @@ class TopicLikeViewTest(TestCase):
         response = self.client.post(self.url)
         # icon: solid heart
         self.assertContains(
-            response, '<i class="ri-heart-3-fill mr-1" aria-hidden="true"></i><span>1</span>', status_code=200
+            response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
         response = self.client.post(self.url)
         # icon: regular heart (outlined)
         self.assertContains(
-            response, '<i class="ri-heart-3-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
+            response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
     def test_post_topic_not_found(self):
@@ -341,7 +341,7 @@ class PostListViewTest(TestCase):
 
         response = view.get(request)
         self.assertContains(
-            response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>', status_code=200
+            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
         UpVoteFactory(content_object=post, voter=UserFactory())
@@ -349,7 +349,7 @@ class PostListViewTest(TestCase):
 
         response = view.get(request)
         self.assertContains(
-            response, '<i class="ri-bookmark-fill mr-1" aria-hidden="true"></i><span>2</span>', status_code=200
+            response, '<i class="ri-bookmark-fill me-1" aria-hidden="true"></i><span>2</span>', status_code=200
         )
 
     def test_certified_post_highlight(self):
@@ -429,7 +429,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertContains(response, self.content, status_code=200)
         self.assertIsInstance(response.context["form"], PostForm)
         self.assertEqual(1, ForumReadTrack.objects.count())
-        self.assertContains(response, '<i class="ri-bookmark-line mr-1" aria-hidden="true"></i><span>0</span>')
+        self.assertContains(response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>')
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
         self.assertEqual(

@@ -4,7 +4,7 @@
 <button class="btn btn-sm btn-ico-only btn-secondary" type="button" id="dropdownMenuSocialShare" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="ri-share-fill ri-lg" aria-label="{% trans "Share this topics on " %}"></i>
 </button>
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuSocialShare">
+<div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuSocialShare">
     {% post_to_facebook instance '<i class="ri-facebook-fill ri-lg"></i> Partager sur Facebook' %}
     {% post_to_whatsapp instance '<i class="ri-whatsapp-line ri-lg"></i> Partager sur Whatsapp' %}
     {% post_to_twitter text instance '<i class="ri-twitter-line ri-lg"></i> Partager sur Twitter' %}

@@ -6,14 +6,14 @@
         {% for option in poll_form.options.field.queryset %}
             <li>
                 {% if poll.max_options == 1 %}
-                    <div class="custom-control custom-radio">
-                        <input type="radio" class="custom-control-input" name="options" value="{{ option.id }}" id="option{{ option.id }}"  >
-                        <label class="custom-control-label" for="option{{ option.id }}">{{ option.text }}</label>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ option.id }}"  >
+                        <label class="form-check-label" for="option{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% else %}
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="options" value="{{ option.id }}" id="option{{ option.id }}">
-                        <label class="custom-control-label" for="option{{ option.id }}">{{ option.text }}</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ option.id }}">
+                        <label class="form-check-label" for="option{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% endif %}
             </li>
@@ -21,6 +21,6 @@
     </ul>
     <div class="form-actions">
         <input type="submit" class="btn btn-sm btn-secondary" value="{% trans "Submit" %}" />
-        <a href="{% if change_vote_action %}.{% else %}?view_results=true{% endif %}" class="btn btn-sm btn-link ml-3">{% trans "View results" %}</a>
+        <a href="{% if change_vote_action %}.{% else %}?view_results=true{% endif %}" class="btn btn-sm btn-link ms-3">{% trans "View results" %}</a>
     </div>
 </form>

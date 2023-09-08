@@ -35,11 +35,11 @@
         </div>
         {% if view_results_action %}
             <div class="form-actions">
-                <a href="." class="btn btn-sm btn-link pl-0">{% trans "Vote" %}</a>
+                <a href="." class="btn btn-sm btn-link ps-0">{% trans "Vote" %}</a>
             </div>
         {% elif can_be_completed and has_been_completed and not change_vote_action %}
             <div class="form-actions">
-                <a href="?change_vote=true" class="btn btn-sm btn-link pl-0">{% trans "Change your vote" %}</a>
+                <a href="?change_vote=true" class="btn btn-sm btn-link ps-0">{% trans "Change your vote" %}</a>
             </div>
         {% endif %}
     {% endwith %}
