@@ -11,9 +11,7 @@
             <meta name="created" content="{% now "jS M Y h:i" %}">
             <meta name="description" content="{% block meta_description %}{% endblock meta_description %}">
             <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta http-equiv="x-ua-compatible" content="ie=edge">
-            <meta name="theme-color" content="#ffffff">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
 
             <!-- https://metatags.io Open Graph -->
             <meta property="og:locale" content="fr_FR">
@@ -59,7 +57,7 @@
             </div>
         </noscript>
 
-        <nav role="navigation" aria-label="Accès rapide" tabindex="1" class="sr-only">
+        <nav role="navigation" aria-label="Accès rapide" tabindex="1" class="visually-hidden">
             <ul>
                 <li><a href="#nav-primary">Aller au menu principal</a></li>
                 <li><a href="#main">Aller au contenu principal</a></li>
@@ -98,7 +96,7 @@
 
         {% block modals %}{% endblock %}
 
-        <div class="sr-only sr-only-focusable">
+        <div class="visually-hidden visually-hidden-focusable">
             <a href="#header">Retour au début de la page</a>
         </div>
 
