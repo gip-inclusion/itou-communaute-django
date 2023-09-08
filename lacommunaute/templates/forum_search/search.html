@@ -36,7 +36,7 @@
                                 <h3 class="h4 mb-0">{{ page.paginator.count }} {% trans "result" %}{{ page.paginator.count|pluralizefr }}</h3>
                                 <div class="table-responsive-lg">
                                     <table class="table table-hover mt-3 mt-md-4">
-                                        <caption class="sr-only">Liste de résultats</caption>
+                                        <caption class="visually-hidden">Liste de résultats</caption>
                                         <tbody>
                                             {% for result in page.object_list %}
                                                 {% if result.topic %}

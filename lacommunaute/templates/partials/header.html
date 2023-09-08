@@ -7,7 +7,7 @@
     <section class="s-header">
         <div class="s-header__container container">
             <div class="s-header__row row">
-                <div class="s-header__col s-header__col--logo-ministere col col-md-auto d-flex align-items-center pr-0">
+                <div class="s-header__col s-header__col--logo-ministere col col-md-auto d-flex align-items-center pe-0">
                     <a href="{% url 'pages:home' %}" class="s-header__logo-ministere"><img src="{% static_theme_images 'logo-republique-francaise.svg' %}" height="90" alt="Rébublique Française"></a>
                 </div>
                 <div class="s-header__col s-header__col--logo-service col-auto d-flex align-items-center px-0">
@@ -18,7 +18,7 @@
                         {% include 'partials/header_nav_primary_items.html' %}
                     </nav>
                 </div>
-                <div class="s-header__col s-header__col--burger col d-flex align-items-center justify-content-end d-xl-none" data-toggle="burger">
+                <div class="s-header__col s-header__col--burger col d-flex align-items-center justify-content-end d-xl-none" data-bs-toggle="burger">
                     <i class="ri-menu-line" id="open" role="button" tabindex="0" aria-label="Ouverture du menu de navigation principale pour mobile"></i>
                     <i class="ri-close-line" id="close" role="button" tabindex="0" aria-label="Fermeture du menu de navigation principale pour mobile"></i>
                 </div>
