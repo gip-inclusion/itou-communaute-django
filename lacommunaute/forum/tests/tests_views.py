@@ -368,11 +368,11 @@ class ForumViewTest(TestCase):
         self.client.force_login(self.user)
         no_upvote_html = (
             '<button type="submit"'
-            '\n                        title="Sauvegarder"'
-            '\n                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
-            '\n                        data-matomo-category="engagement"'
-            '\n                        data-matomo-action="upvote"'
-            '\n                        data-matomo-option="post"'
+            '\n                    title="Sauvegarder"'
+            '\n                    class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
+            '\n                    data-matomo-category="engagement"'
+            '\n                    data-matomo-action="upvote"'
+            '\n                    data-matomo-option="post"'
             "\n                >"
             '\n                    <i class="ri-bookmark-line me-1" aria-hidden="true"></i>'
             "<span>0</span>"
@@ -383,11 +383,11 @@ class ForumViewTest(TestCase):
         child_forum.upvotes.create(voter=self.user)
         upvoted_html = (
             '<button type="submit"'
-            '\n                        title="Sauvegarder"'
-            '\n                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
-            '\n                        data-matomo-category="engagement"'
-            '\n                        data-matomo-action="upvote"'
-            '\n                        data-matomo-option="post"'
+            '\n                    title="Sauvegarder"'
+            '\n                    class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
+            '\n                    data-matomo-category="engagement"'
+            '\n                    data-matomo-action="upvote"'
+            '\n                    data-matomo-option="post"'
             "\n                >"
             '\n                    <i class="ri-bookmark-fill me-1" aria-hidden="true"></i>'
             "<span>1</span>"
