@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 
+from config.settings.base import DEFAULT_FROM_EMAIL
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
@@ -15,36 +16,38 @@ from lacommunaute.notification.utils import (
 def send_notifs_when_first_reply():
     first_replies = collect_first_replies()
 
-    for url, subject, to, display_name in first_replies:
-        contacts = [{"email": to}]
+    for url, subject, emails, display_name in first_replies:
+        contacts = [{"email": email} for email in emails]
         params = {
             "url": f"{url}?mtm_campaign=firstreply&mtm_medium=email",
             "topic_subject": subject,
             "display_name": display_name,
         }
         send_email(
-            to=contacts,
+            to=[{"email": DEFAULT_FROM_EMAIL}],
             params=params,
             template_id=settings.SIB_FIRST_REPLY_TEMPLATE,
             kind=EmailSentTrackKind.FIRST_REPLY,
+            bcc=contacts,
         )
 
 
 def send_notifs_on_following_replies():
     replies = collect_following_replies()
 
-    for url, subject, to, count_txt in replies:
-        contacts = [{"email": to}]
+    for url, subject, emails, count_txt in replies:
+        contacts = [{"email": email} for email in emails]
         params = {
             "url": f"{url}?mtm_campaign=followingreplies&mtm_medium=email",
             "topic_subject": subject,
             "count_txt": count_txt,
         }
         send_email(
-            to=contacts,
+            to=[{"email": DEFAULT_FROM_EMAIL}],
             params=params,
             template_id=settings.SIB_FOLLOWING_REPLIES_TEMPLATE,
             kind=EmailSentTrackKind.FOLLOWING_REPLIES,
+            bcc=contacts,
         )
 
 

@@ -50,9 +50,13 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
             "display_name": post.poster_display_name,
         }
         payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "to": [{"email": topic.poster_email}],
+            "to": [{"email": DEFAULT_FROM_EMAIL}],
+            "bcc": [
+                {"email": email}
+                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
+            ],
             "params": params,
+            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
             "templateId": 2,
         }
 
@@ -80,9 +84,13 @@ class SendNotifsOnFollowingReplyTestCase(TestCase):
 
         params = {"url": url, "topic_subject": topic.subject, "count_txt": "2 nouvelles réponses"}
         payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "to": [{"email": topic.poster_email}],
+            "to": [{"email": DEFAULT_FROM_EMAIL}],
+            "bcc": [
+                {"email": email}
+                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
+            ],
             "params": params,
+            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
             "templateId": 13,
         }
 
