@@ -5,9 +5,16 @@ from django.test import TestCase
 from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import (
+    AnonymousPostFactory,
+    CertifiedPostFactory,
+    PostFactory,
+    TopicFactory,
+)
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.users.factories import UserFactory
 
 
 class PostModelTest(TestCase):
@@ -132,6 +139,45 @@ class TopicModelTest(TestCase):
         self.assertEqual(0, Topic.TOPIC_POST)
         self.assertEqual(1, Topic.TOPIC_STICKY)
         self.assertEqual(2, Topic.TOPIC_ANNOUNCE)
+
+    def test_mails_to_notify_sorted_authenticated_posters(self):
+        topic = TopicFactory(with_post=True)
+        self.assertEqual(topic.mails_to_notify(), [])
+
+        post = PostFactory(topic=topic)
+        self.assertEqual(topic.mails_to_notify(), [topic.poster.email])
+
+        PostFactory(topic=topic)
+        self.assertEqual(topic.mails_to_notify(), sorted([topic.poster.email, post.poster.email]))
+
+    def test_mails_to_notify_authenticated_liker(self):
+        liker = UserFactory()
+        topic = TopicFactory(with_post=True)
+        topic.likers.add(liker)
+
+        self.assertEqual(topic.mails_to_notify(), [liker.email])
+
+    def test_mails_to_notify_authenticated_upvoters(self):
+        upvoter = UserFactory()
+        topic = TopicFactory(with_post=True)
+        UpVote.objects.create(content_object=topic.first_post, voter=upvoter)
+
+        self.assertEqual(topic.mails_to_notify(), [upvoter.email])
+
+    def test_mails_to_notify_anonymous_poster(self):
+        topic = TopicFactory(with_post=True)
+        anonymous_post = AnonymousPostFactory(topic=topic)
+        PostFactory(topic=topic)
+
+        self.assertEqual(topic.mails_to_notify(), sorted([topic.poster.email, anonymous_post.username]))
+
+    def test_mails_to_notify_deduplication(self):
+        topic = TopicFactory(with_post=True)
+        topic.likers.add(topic.poster)
+        UpVote.objects.create(content_object=topic.first_post, voter=topic.poster)
+
+        PostFactory(topic=topic)
+        self.assertEqual(topic.mails_to_notify(), [topic.poster.email])
 
 
 class CertifiedPostModelTest(TestCase):
