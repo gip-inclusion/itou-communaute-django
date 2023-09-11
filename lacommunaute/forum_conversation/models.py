@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Count, Exists, OuterRef
+from django.db.models import Count, Exists, OuterRef, Q
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from machina.models.abstract_models import DatedModel
@@ -75,6 +76,39 @@ class Topic(AbstractTopic):
             return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{absolute_url}"
 
         return absolute_url
+
+    def mails_to_notify(self):
+        # we want to notify stakeholders of the topic, except the last poster.
+        # stakeholders are:
+        # - authenticated users who liked the topic
+        # - authenticated users who upvoted one of the posts of the topic
+        # - authenticated users who posted in the topic
+        # - anonymous users who posted in the topic
+        #
+        # Notes :
+        # `post.username` is the email of the anonymous poster
+        # `post.username` is null for authenticated users, we use `post.poster.email` instead
+
+        authenticated_qs = (
+            User.objects.filter(
+                Q(topic_likes=self)
+                | Q(
+                    upvotes__content_type=ContentType.objects.get_for_model(Post),
+                    upvotes__object_id__in=self.posts.values("id"),
+                )
+                | Q(posts__topic=self)
+            )
+            .distinct()
+            .values_list("email", flat=True)
+        )
+        anonymous_qs = (
+            Post.objects.filter(topic=self).exclude(username__isnull=True).values_list("username", flat=True)
+        )
+        stakeholders_qs = sorted((authenticated_qs.union(anonymous_qs)))
+
+        last_poster_email = self.last_post.username or self.last_post.poster.email
+
+        return [email for email in stakeholders_qs if email != last_poster_email]
 
     @property
     def poster_email(self):
