@@ -49,6 +49,17 @@ class TopicQuerySet(models.QuerySet):
             .order_by("-last_post_on")
         )
 
+    def with_first_reply(self, previous_notification_at=None):
+        """
+        The first reply is the second approved post of a topic
+        """
+        first_reply_posts_count = 2
+
+        qs = self.filter(posts_count=first_reply_posts_count)
+        if previous_notification_at:
+            qs = qs.filter(updated__gte=previous_notification_at)
+        return qs
+
 
 class Topic(AbstractTopic):
     likers = models.ManyToManyField(

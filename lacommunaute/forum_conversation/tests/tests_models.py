@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -89,6 +91,34 @@ class TopicManagerTest(TestCase):
         PostFactory(topic=topic1)
         self.assertEqual(qs.first(), topic1)
         self.assertEqual(qs.last(), topic2)
+
+    def test_with_first_replies(self):
+        topic = TopicFactory(with_post=True)
+        self.assertEqual(Topic.objects.with_first_reply().count(), 0)
+
+        # first reply
+        PostFactory(topic=topic)
+        self.assertEqual(Topic.objects.with_first_reply().get(), topic)
+        # first reply after last notification
+        self.assertEqual(Topic.objects.with_first_reply(previous_notification_at=topic.created).get(), topic)
+        # first reply before last notification (already notified)
+        self.assertEqual(
+            Topic.objects.with_first_reply(previous_notification_at=topic.updated + timedelta(minutes=1)).count(), 0
+        )
+
+        # second reply
+        PostFactory(topic=topic)
+        self.assertEqual(Topic.objects.with_first_reply().count(), 0)
+
+    def test_with_first_replies_on_multiple_topics(self):
+        topic1 = TopicFactory(with_post=True)
+        topic2 = TopicFactory(with_post=True)
+
+        PostFactory(topic=topic1)
+        PostFactory(topic=topic2)
+
+        self.assertEqual(Topic.objects.with_first_reply().count(), 2)
+        self.assertEqual(Topic.objects.with_first_reply(previous_notification_at=topic2.updated).get(), topic2)
 
 
 class TopicModelTest(TestCase):
