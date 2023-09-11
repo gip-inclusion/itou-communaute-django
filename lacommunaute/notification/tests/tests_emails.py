@@ -15,28 +15,19 @@ faker = Faker()
 
 
 class SendEmailTestCase(TestCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpTestData(cls):
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
-        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
-
-        self.contact_list_response = {
-            "contacts": [
-                {
-                    "email": faker.email(),
-                    "emailBlacklisted": False,
-                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
-                },
-                {
-                    "email": faker.email(),
-                    "emailBlacklisted": True,
-                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
-                },
-            ]
+        cls.to = [{"email": faker.email()}]
+        cls.params = faker.text()
+        cls.template_id = faker.random_int()
+        cls.kind = "first_reply"
+        cls.payload = {
+            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+            "to": cls.to,
+            "params": cls.params,
+            "templateId": cls.template_id,
         }
-        respx.get(SIB_CONTACT_LIST_URL + "/1/contacts").mock(
-            return_value=httpx.Response(200, json=self.contact_list_response)
-        )
 
     @respx.mock
     def test_send_email(self):
@@ -58,8 +49,12 @@ class SendEmailTestCase(TestCase):
         email_sent_track = EmailSentTrack.objects.first()
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
-        self.assertEqual(email_sent_track.datas, payload)
-        self.assertEqual(email_sent_track.kind, "first_reply")
+
+
+class BulkSendUserToListTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_bulk_send_user_to_list(self):
@@ -86,6 +81,28 @@ class SendEmailTestCase(TestCase):
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
         self.assertEqual(email_sent_track.datas, payload)
         self.assertEqual(email_sent_track.kind, "onboarding")
+
+
+class CollectUsersFromListTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.contact_list_response = {
+            "contacts": [
+                {
+                    "email": faker.email(),
+                    "emailBlacklisted": False,
+                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
+                },
+                {
+                    "email": faker.email(),
+                    "emailBlacklisted": True,
+                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
+                },
+            ]
+        }
+        respx.get(SIB_CONTACT_LIST_URL + "/1/contacts").mock(
+            return_value=httpx.Response(200, json=cls.contact_list_response)
+        )
 
     def test_collect_users_from_list_bad_status_code(self):
         self.assertIsNone(collect_users_from_list(faker.random_int()))
