@@ -1,4 +1,4 @@
-from django.conf import settings
+from datetime import datetime
 from django.db.models import Count, F, Q
 from django.utils.timezone import now, timedelta
 
@@ -8,7 +8,7 @@ from lacommunaute.notification.models import BouncedEmail, EmailSentTrack
 from lacommunaute.users.models import User
 
 
-def last_notification(kind=None):
+def last_notification(kind=None) -> datetime:
     return getattr(EmailSentTrack.objects.filter(kind=kind).last(), "created", now() - timedelta(days=5))
 
 
