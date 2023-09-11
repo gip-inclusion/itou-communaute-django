@@ -84,6 +84,10 @@ class TopicManagerTest(TestCase):
 
 
 class TopicModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(with_post=True)
+
     def test_get_absolute_url(self):
         topic = TopicFactory()
         self.assertEqual(
@@ -100,23 +104,22 @@ class TopicModelTest(TestCase):
         )
 
     def test_poster_email(self):
-        topic = TopicFactory(with_post=True)
-        self.assertEqual(topic.poster_email, topic.first_post.poster.email)
+        self.assertEqual(self.topic.poster_email, self.topic.first_post.poster.email)
 
-        topic = TopicFactory()
-        post = PostFactory(topic=topic, username="user@beta.gouv.fr")
-        self.assertEqual(topic.poster_email, post.username)
+        anonymous_topic = TopicFactory()
+        anonymous_post = AnonymousPostFactory(topic=anonymous_topic)
+        self.assertEqual(anonymous_topic.poster_email, anonymous_post.username)
 
     def test_poster_display_name(self):
-        topic = TopicFactory(with_post=True)
-        self.assertEqual(topic.first_post.poster_display_name, get_forum_member_display_name(topic.first_post.poster))
+        self.assertEqual(
+            self.topic.first_post.poster_display_name, get_forum_member_display_name(self.topic.first_post.poster)
+        )
 
-        post = PostFactory(topic=topic, username="user@beta.gouv.fr")
+        post = PostFactory(topic=self.topic, username="user@beta.gouv.fr")
         self.assertEqual(post.poster_display_name, "user")
 
     def test_is_certified(self):
-        topic = TopicFactory(with_post=True)
-        self.assertFalse(topic.is_certified)
+        self.assertFalse(self.topic.is_certified)
 
         topic = TopicFactory(with_certified_post=True)
         self.assertTrue(topic.is_certified)
