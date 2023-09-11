@@ -22,6 +22,11 @@ class PostFactory(BasePostFactory):
             UpVote.objects.create(voter=user, content_object=self)
 
 
+class AnonymousPostFactory(PostFactory):
+    username = factory.Faker("email")
+    poster = None
+
+
 class CertifiedPostFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = CertifiedPost
