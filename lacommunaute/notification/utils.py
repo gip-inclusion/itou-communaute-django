@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db.models import Count, F, Q
 from django.utils.timezone import now, timedelta
 
-from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import BouncedEmail, EmailSentTrack
 from lacommunaute.users.models import User
@@ -15,16 +15,12 @@ def last_notification(kind=None) -> datetime:
 def collect_first_replies():
     return [
         (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}",
-            post.topic.subject,
-            post.topic.poster_email,
-            post.poster_display_name,
+            topic.get_absolute_url(with_fqdn=True),
+            topic.subject,
+            topic.mails_to_notify(),
+            topic.last_post.poster_display_name,
         )
-        for post in Post.objects.filter(
-            created__gte=last_notification(kind=EmailSentTrackKind.FIRST_REPLY),
-            approved=True,
-        )
-        if post.position == 2
+        for topic in Topic.objects.with_first_reply(last_notification(kind=EmailSentTrackKind.FIRST_REPLY))
     ]
 
 

@@ -29,57 +29,33 @@ class LastNotificationTestCase(TestCase):
 
 class CollectFirstRepliesTestCase(TestCase):
     @classmethod
-    def setUp(cls):
+    def setUpTestData(cls):
         cls.topic = TopicFactory(with_post=True)
 
-    def test_no_reply_ever(self):
+    def test_no_reply_to_be_notified(self):
+        self.assertEqual(len(list(collect_first_replies())), 0)
+
+    def test_first_reply(self):
         post = PostFactory(topic=self.topic)
         self.assertEqual(
             collect_first_replies(),
             [
                 (
-                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}",
-                    post.topic.subject,
-                    post.topic.poster_email,
+                    self.topic.get_absolute_url(with_fqdn=True),
+                    self.topic.subject,
+                    [self.topic.poster_email],
                     post.poster_display_name,
                 )
             ],
         )
 
-    def test_no_reply_since_last_notification(self):
+    def test_first_reply_since_last_notification(self):
         PostFactory(topic=self.topic)
-        EmailSentTrackFactory(kind="first_reply")
 
-        self.assertEqual(len(collect_first_replies()), 0)
-
-    def test_replies_since_last_notification(self):
-        EmailSentTrackFactory(kind="first_reply")
-        post = PostFactory(topic=self.topic)
-
-        self.assertEqual(
-            collect_first_replies(),
-            [
-                (
-                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}",
-                    post.topic.subject,
-                    post.topic.poster_email,
-                    post.poster_display_name,
-                )
-            ],
-        )
-
-    def test_unapproved_reply_in_previous_hour(self):
-        PostFactory(topic=self.topic, approved=False)
-        self.assertEqual(len(collect_first_replies()), 0)
-
-    def test_last_emailsenttrack_with_kind(self):
-        PostFactory(topic=self.topic)
-        EmailSentTrackFactory(kind="other")
-
+        EmailSentTrackFactory(kind="dummy")
         self.assertEqual(len(collect_first_replies()), 1)
 
-        EmailSentTrackFactory(kind="first_reply")
-
+        EmailSentTrackFactory(kind=EmailSentTrackKind.FIRST_REPLY)
         self.assertEqual(len(collect_first_replies()), 0)
 
 
