@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
@@ -89,18 +90,21 @@ class TopicModelTest(TestCase):
         cls.topic = TopicFactory(with_post=True)
 
     def test_get_absolute_url(self):
-        topic = TopicFactory()
         self.assertEqual(
-            topic.get_absolute_url(),
+            self.topic.get_absolute_url(),
             reverse(
                 "forum_conversation:topic",
                 kwargs={
-                    "forum_pk": topic.forum.pk,
-                    "forum_slug": topic.forum.slug,
-                    "pk": topic.pk,
-                    "slug": topic.slug,
+                    "forum_pk": self.topic.forum.pk,
+                    "forum_slug": self.topic.forum.slug,
+                    "pk": self.topic.pk,
+                    "slug": self.topic.slug,
                 },
             ),
+        )
+        self.assertEqual(
+            self.topic.get_absolute_url(with_fqdn=True),
+            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
         )
 
     def test_poster_email(self):

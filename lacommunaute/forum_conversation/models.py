@@ -59,8 +59,8 @@ class Topic(AbstractTopic):
 
     tags = TaggableManager()
 
-    def get_absolute_url(self):
-        return reverse(
+    def get_absolute_url(self, with_fqdn=False):
+        absolute_url = reverse(
             "forum_conversation:topic",
             kwargs={
                 "forum_pk": self.forum.pk,
@@ -69,6 +69,12 @@ class Topic(AbstractTopic):
                 "slug": self.slug,
             },
         )
+
+        # for tasks context, when we don't have access to request
+        if with_fqdn:
+            return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{absolute_url}"
+
+        return absolute_url
 
     @property
     def poster_email(self):
