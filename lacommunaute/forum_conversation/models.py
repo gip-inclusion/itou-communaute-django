@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Count, Exists, OuterRef, Q
+from django.db.models import Count, Exists, F, OuterRef, Q
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from machina.models.abstract_models import DatedModel
@@ -59,6 +59,30 @@ class TopicQuerySet(models.QuerySet):
         if previous_notification_at:
             qs = qs.filter(updated__gte=previous_notification_at)
         return qs
+
+    def with_following_replies(self, previous_notification_at=None):
+        """
+        Note 1 : disapproved post are not counted in posts_count. Filter them out in unuseful
+        Note 2 : posts_count >= 3 condition :
+        - the first post is message posted by the topic creator
+        - the second post is the first reply
+        - the third post and more are the following replies
+        """
+        following_replies_minimum_posts_count = 3
+
+        if not previous_notification_at:
+            previous_notification_at = Topic.objects.earliest("created").created
+
+        return (
+            self.filter(updated__gte=previous_notification_at, posts_count__gte=following_replies_minimum_posts_count)
+            .annotate(
+                new_replies=Count(
+                    "posts",
+                    filter=Q(posts__created__gte=previous_notification_at) & ~Q(posts__id=F("first_post_id")),
+                )
+            )
+            .exclude(new_replies=0)
+        )
 
 
 class Topic(AbstractTopic):
