@@ -10,7 +10,7 @@ from lacommunaute.notification.models import EmailSentTrack
 logger = logging.getLogger(__name__)
 
 
-def send_email(to, params, template_id, kind):
+def send_email(to, params, template_id, kind, bcc=None):
     headers = {"api-key": settings.SIB_API_KEY, "Content-Type": "application/json", "Accept": "application/json"}
     payload = {
         "sender": {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL},
@@ -18,6 +18,8 @@ def send_email(to, params, template_id, kind):
         "params": params,
         "templateId": template_id,
     }
+    if bcc:
+        payload["bcc"] = bcc
 
     response = httpx.post(settings.SIB_SMTP_URL, headers=headers, json=payload)
 
