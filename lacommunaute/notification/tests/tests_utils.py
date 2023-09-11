@@ -1,8 +1,9 @@
-from django.conf import settings
 from django.test import TestCase
 from faker import Faker
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.models import Post
+from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.factories import BouncedEmailFactory, EmailSentTrackFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.utils import (
@@ -61,59 +62,66 @@ class CollectFirstRepliesTestCase(TestCase):
 
 class CollectFollowingRepliesTestCase(TestCase):
     @classmethod
-    def setUp(cls):
+    def setUpTestData(cls):
         cls.topic = TopicFactory(with_post=True)
 
-    def test_no_reply_ever(self):
-        self.assertEqual(len(collect_following_replies()), 0)
+    def test_no_reply_to_be_notified(self):
+        self.assertEqual(len(list(collect_following_replies())), 0)
 
-    def test_one_answer(self):
-        PostFactory(topic=self.topic)
-        self.assertEqual(len(collect_following_replies()), 0)
+    def test_one_reply_to_be_notified(self):
+        # first reply
+        PostFactory(topic=self.topic, poster__email=self.topic.poster_email)
+        EmailSentTrackFactory(kind=EmailSentTrackKind.FOLLOWING_REPLIES)
 
-    def test_some_more_answers(self):
-        PostFactory.create_batch(2, topic=self.topic)
-        self.assertEqual(
-            collect_following_replies(),
-            [
-                (
-                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
-                    self.topic.subject,
-                    self.topic.poster_email,
-                    "2 nouvelles réponses",
-                )
-            ],
-        )
+        # following reply
         PostFactory(topic=self.topic)
         self.assertEqual(
-            collect_following_replies(),
+            list(collect_following_replies()),
             [
                 (
-                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
+                    self.topic.get_absolute_url(with_fqdn=True),
                     self.topic.subject,
-                    self.topic.poster_email,
-                    "3 nouvelles réponses",
-                )
-            ],
-        )
-
-    def test_replies_after_previous_notification(self):
-        PostFactory.create_batch(2, topic=self.topic)
-        EmailSentTrackFactory(kind="following_replies")
-        self.assertEqual(len(collect_following_replies()), 0)
-
-        PostFactory(topic=self.topic)
-        self.assertEqual(
-            collect_following_replies(),
-            [
-                (
-                    f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{self.topic.get_absolute_url()}",
-                    self.topic.subject,
-                    self.topic.poster_email,
+                    [self.topic.poster_email],
                     "1 nouvelle réponse",
                 )
             ],
         )
+
+    def test_multiple_replies_to_be_notified(self):
+        PostFactory(topic=self.topic)
+
+        for i in range(2, 10):
+            with self.subTest(i=i):
+                PostFactory(topic=self.topic)
+
+                self.assertEqual(
+                    list(collect_following_replies()),
+                    [
+                        (
+                            self.topic.get_absolute_url(with_fqdn=True),
+                            self.topic.subject,
+                            sorted(
+                                list(
+                                    set(
+                                        Post.objects.filter(topic=self.topic)
+                                        .exclude(id=self.topic.last_post_id)
+                                        .values_list("poster__email", flat=True)
+                                    )
+                                )
+                            ),
+                            f"{i} nouvelles réponses",
+                        )
+                    ],
+                )
+
+    def test_following_replies_since_last_notification(self):
+        PostFactory.create_batch(2, topic=self.topic)
+
+        EmailSentTrackFactory(kind="other")
+        self.assertEqual(len(list(collect_following_replies())), 1)
+
+        EmailSentTrackFactory(kind=EmailSentTrackKind.FOLLOWING_REPLIES)
+        self.assertEqual(len(list(collect_following_replies())), 0)
 
 
 class CollectNewUsersForOnBoardingTestCase(TestCase):
