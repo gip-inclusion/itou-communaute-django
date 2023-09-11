@@ -31,24 +31,22 @@ class SendEmailTestCase(TestCase):
 
     @respx.mock
     def test_send_email(self):
-        to = [{"email": faker.email()}]
-        params = faker.text()
-        template_id = faker.random_int()
-        kind = "first_reply"
+        send_email(self.to, self.params, self.template_id, self.kind)
 
-        payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "to": to,
-            "params": params,
-            "templateId": template_id,
-        }
-
-        send_email(to, params, template_id, kind)
-
-        self.assertEqual(EmailSentTrack.objects.count(), 1)
-        email_sent_track = EmailSentTrack.objects.first()
+        email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
+        self.assertEqual(email_sent_track.datas, self.payload)
+        self.assertEqual(email_sent_track.kind, self.kind)
+
+    @respx.mock
+    def test_send_email_with_bcc(self):
+        self.payload["bcc"] = [{"email": faker.email()}]
+
+        send_email(self.to, self.params, self.template_id, self.kind, self.payload["bcc"])
+
+        email_sent_track = EmailSentTrack.objects.get()
+        self.assertEqual(email_sent_track.datas, self.payload)
 
 
 class BulkSendUserToListTestCase(TestCase):
