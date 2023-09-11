@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.db.models import Count, F, Q
+
 from django.utils.timezone import now, timedelta
 
 from lacommunaute.forum_conversation.models import Topic
@@ -25,25 +25,16 @@ def collect_first_replies():
 
 
 def collect_following_replies():
-    # vincentporte : assumed disapproved post are counted
     return [
         (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{topic.get_absolute_url()}",
+            topic.get_absolute_url(with_fqdn=True),
             topic.subject,
-            topic.poster_email,
+            topic.mails_to_notify(),
             f"{topic.new_replies} nouvelle réponse"
             if topic.new_replies == 1
             else f"{topic.new_replies} nouvelles réponses",
         )
-        for topic in Topic.objects.filter(
-            updated__gte=last_notification(kind=EmailSentTrackKind.FOLLOWING_REPLIES), posts_count__gte=3
-        ).annotate(
-            new_replies=Count(
-                "posts",
-                filter=Q(posts__created__gte=last_notification(kind=EmailSentTrackKind.FOLLOWING_REPLIES))
-                & ~Q(posts__id=F("first_post_id")),
-            )
-        )
+        for topic in Topic.objects.with_following_replies(last_notification(kind=EmailSentTrackKind.FOLLOWING_REPLIES))
     ]
 
 
