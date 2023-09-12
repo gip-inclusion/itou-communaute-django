@@ -4,7 +4,7 @@
     "0 5 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
     "5 5 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
     "5 7-21 * * * $ROOT/clevercloud/send_notifs_when_first_reply.sh",
-    "5 19 * * * $ROOT/clevercloud/send_notifs_when_following_replies.sh",
+    "5 6 * * * $ROOT/clevercloud/send_notifs_when_following_replies.sh",
     "10 6-22 * * * $ROOT/clevercloud/add_user_to_list_when_register.sh",
     "30 13 * * 1 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 8",
     "30 13 * * 2 $ROOT/clevercloud/send_notifs_on_unanswered_topics_list.sh 9",
