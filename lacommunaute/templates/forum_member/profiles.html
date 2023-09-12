@@ -18,29 +18,33 @@
         <div class="s-section__container container">
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
-                    <div class="card-columns">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
                         {% for forum_profile in forum_profiles %}
-                            <div class="card">
-                                {% if forum_profile.avatar %}
-                                    <img class="avatar" src="{{ forum_profile.avatar }}" class="card-img-top" alt="{{ forum_profile.user.get_full_name }}">
-                                {% endif %}
-                                <div class="card-body">
-                                    <h3 class="h5 card-title">
-                                        <a href="{%url 'members:profile' username=forum_profile.user.username%}"
-                                            class="matomo-event"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="view"
-                                            data-matomo-option="member">
-                                            {{ forum_profile.user.get_full_name }}
-                                        </a>
-                                    </h3>
-                                    {% if forum_profile.signature %}
-                                        <p class="card-text">{{ forum_profile.signature }}</p>
+                            <div class="col">
+                                <div class="card">
+                                    {% if forum_profile.avatar %}
+                                        <img class="avatar" src="{{ forum_profile.avatar }}" class="card-img-top" alt="{{ forum_profile.user.get_full_name }}">
                                     {% endif %}
+                                    <div class="card-body">
+                                        <h3 class="h5 card-title">
+                                            <a href="{%url 'members:profile' username=forum_profile.user.username%}"
+                                                class="matomo-event"
+                                                data-matomo-category="engagement"
+                                                data-matomo-action="view"
+                                                data-matomo-option="member">
+                                                {{ forum_profile.user.get_full_name }}
+                                            </a>
+                                        </h3>
+                                        {% if forum_profile.signature %}
+                                            <p class="card-text">{{ forum_profile.signature }}</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         {% empty %}
-                            <p>No body yet…</p>
+                            <div class="col">
+                                <p>No body yet…</p>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
