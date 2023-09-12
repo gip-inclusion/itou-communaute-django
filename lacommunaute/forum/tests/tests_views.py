@@ -355,7 +355,7 @@ class ForumViewTest(TestCase):
             '<a href="/inclusion_connect/authorize?next_url=%2Fforum%2F'
             f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
             ' rel="nofollow"'
-            ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top"'
+            ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"'
             ' title="Connectez-vous pour sauvegarder">'
             '\n                <i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>'
         )

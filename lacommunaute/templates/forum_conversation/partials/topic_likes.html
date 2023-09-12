@@ -15,7 +15,7 @@
                 <i class="{% if topic.has_liked %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %} me-1" aria-hidden="true"></i><span>{{counter}}</span>
             </button>
         {% else %}
-            <a href="{% inclusion_connect_url next_url topic.pk %}" rel="nofollow" class="btn btn-ico btn-link btn-like pe-0 text-nowrap" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour contribuer">
+            <a href="{% inclusion_connect_url next_url topic.pk %}" rel="nofollow" class="btn btn-ico btn-link btn-like pe-0 text-nowrap" data-bs-toggle="tooltip" data-bs-placement="top" title="Connectez-vous pour contribuer">
                 <i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>{{counter}}</span>
             </a>
         {% endif %}
