@@ -20,7 +20,7 @@
                 </button>
             </form>
         {% else %}
-            <a href="{% inclusion_connect_url next_url obj.id %}" rel="nofollow" class="btn btn-sm btn-ico-only btn-link btn-secondary" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour sauvegarder">
+            <a href="{% inclusion_connect_url next_url obj.id %}" rel="nofollow" class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Connectez-vous pour sauvegarder">
                 <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{counter}}</span>
             </a>
         {% endif %}

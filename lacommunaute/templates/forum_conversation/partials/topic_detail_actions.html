@@ -11,7 +11,7 @@
 
 
 {% if user_can_add_post %}
-    <a data-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm btn-post-reply justify-content-center w-100 w-sm-auto me-sm-1 mb-2 mb-sm-0">
+    <a data-bs-toggle="collapse" href="#collapsePost{{topic.pk}}" role="button" aria-expanded="false" aria-controls="collapsePost{{topic.pk}}" id="collapseButtonPost{{topic.pk}}" class="btn btn-primary btn-ico btn-sm btn-post-reply justify-content-center w-100 w-sm-auto me-sm-1 mb-2 mb-sm-0">
         <i class="ri-question-answer-line" aria-hidden="true"></i>
         <span>{% trans "Post reply" %}</span>
     </a>

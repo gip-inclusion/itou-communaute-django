@@ -37,7 +37,7 @@
                         {{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}
                     {% endif %}
                     {% if node.children %}
-                        <a data-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pt-0 ps-0">
+                        <a data-bs-toggle="collapse" href="#collapse{{node.obj.id}}" role="button" aria-expanded="false" aria-controls="collapse{{node.obj.id}}" class="btn btn-link pt-0 ps-0">
                             {% if node.obj.is_forum %}
                                 Voir les sous-communautés
                             {% else %}

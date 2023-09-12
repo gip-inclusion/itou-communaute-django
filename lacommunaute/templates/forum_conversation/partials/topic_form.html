@@ -20,9 +20,9 @@
     <!-- Sub "forms" tabs -->
     {% if poll_option_formset or attachment_formset %}
         <ul class="nav nav-tabs nav-tabs--communaute border-bottom-0">
-            <li class="nav-item"><a href="#tags" class="nav-link" data-toggle="tab">{% trans "Tags" %}</a></li>
-            {% if attachment_formset %}<li class="nav-item"><a href="#attachments" class="nav-link" data-toggle="tab">{% trans "Attachments" %}</a></li>{% endif %}
-            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
+            <li class="nav-item"><a href="#tags" class="nav-link" data-bs-toggle="tab">{% trans "Tags" %}</a></li>
+            {% if attachment_formset %}<li class="nav-item"><a href="#attachments" class="nav-link" data-bs-toggle="tab">{% trans "Attachments" %}</a></li>{% endif %}
+            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-bs-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
         </ul>
     {% endif %}
 
