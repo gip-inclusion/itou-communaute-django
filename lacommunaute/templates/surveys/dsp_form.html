@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block title %}Diagnostic Socio Professionnel{{ block.super }}{% endblock %}
+{% block meta_description %}DSP{% endblock meta_description %}
+
+
+{% block content %}
+
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">Diagnostic socio-professionnel</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-form">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-8">
+                                            <legend>{{ field.label_tag }}</legend>
+                                            <div class="form-group form-group-required">{{ field }}</div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="row">
+                                    <div class="col-12 col-lg-7">
+                                        <hr />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="col-12 col-lg-7">
+                                    <div class="form-row justify-content-end">
+                                        <div class="form-group col-12 col-lg-auto">
+                                            <button type="submit" class="btn btn-block btn-primary">Valider</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
