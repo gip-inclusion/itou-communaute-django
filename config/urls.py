@@ -15,6 +15,7 @@ from lacommunaute.forum_search import urls as forum_search_urls
 from lacommunaute.forum_upvote import urls as forum_upvote_urls
 from lacommunaute.inclusion_connect import urls as inclusion_connect_urls
 from lacommunaute.pages import urls as pages_urls
+from lacommunaute.surveys import urls as surveys_urls
 
 
 conversation_urlpatterns_factory = get_class("forum_conversation.urls", "urlpatterns_factory")
@@ -36,6 +37,7 @@ urlpatterns = [
     path("", include(forum_search_urls)),
     path("", include(forum_moderation_urls)),
     path("calendar/", include(event_urls)),
+    path("surveys/", include(surveys_urls)),
     # machina legacy
     path("", include(conversation_urlpatterns_factory.urlpatterns)),
     path("moderation/", include(moderation_urlpatterns_factory.urlpatterns)),

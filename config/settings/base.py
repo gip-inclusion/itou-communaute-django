@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
-
 load_dotenv()
 
 # Django settings
@@ -81,6 +80,7 @@ LOCAL_APPS = [
     "lacommunaute.pages",
     "lacommunaute.forum_file",
     "lacommunaute.metabase",
+    "lacommunaute.surveys",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
