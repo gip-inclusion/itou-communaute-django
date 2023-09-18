@@ -342,7 +342,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(url)
         self.assertContains(
             response,
-            'div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuSocialShare">',
+            f'div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuSocialShare{child_forum.id}">',
             status_code=200,
         )
 
