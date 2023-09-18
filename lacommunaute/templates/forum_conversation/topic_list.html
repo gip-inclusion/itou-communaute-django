@@ -32,10 +32,10 @@
                                     <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl aria-hidden="true""></i>
                                 </span>
                                 <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                    class="matomo-event"
-                                    data-matomo-category="engagement"
-                                    data-matomo-action="view"
-                                    data-matomo-option="topic">
+                                   class="matomo-event"
+                                   data-matomo-category="engagement"
+                                   data-matomo-action="view"
+                                   data-matomo-option="topic">
                                     {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
                                 </a>
                             </p>
@@ -56,13 +56,13 @@
                                         {{ topic.first_post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
                                         {% if topic.first_post.content.rendered|length > 200 %}
                                             <a hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                                id="showmoretopic-button{{topic.pk}}"
-                                                hx-target="#showmoretopicsarea{{topic.pk}}"
-                                                hx-swap="outerHTML"
-                                                class="btn btn-link p-0 mh-auto matomo-event"
-                                                data-matomo-category="engagement"
-                                                data-matomo-action="showmore"
-                                                data-matomo-option="topic"
+                                               id="showmoretopic-button{{topic.pk}}"
+                                               hx-target="#showmoretopicsarea{{topic.pk}}"
+                                               hx-swap="outerHTML"
+                                               class="btn btn-link p-0 mh-auto matomo-event"
+                                               data-matomo-category="engagement"
+                                               data-matomo-action="showmore"
+                                               data-matomo-option="topic"
                                             >
                                                 {% trans "+ show more" %}
                                             </a>
@@ -121,13 +121,13 @@
             <div id="loadmoretopicsarea{{ loadmoretopic_suffix }}" class="row mx-3 mt-md-5 justify-content-center">
                 <div class="col-12 col-md-auto">
                     <a hx-get="{% url_add_query loadmoretopic_url page=page_obj.next_page_number %}"
-                        id="loadmoretopics-button"
-                        hx-target="#loadmoretopicsarea{{ loadmoretopic_suffix }}"
-                        hx-swap="outerHTML"
-                        class="btn btn-link btn-ico btn-block justify-content-center matomo-event"
-                        data-matomo-category="engagement"
-                        data-matomo-action="loadmore"
-                        data-matomo-option="topic">
+                       id="loadmoretopics-button"
+                       hx-target="#loadmoretopicsarea{{ loadmoretopic_suffix }}"
+                       hx-swap="outerHTML"
+                       class="btn btn-link btn-ico btn-block justify-content-center matomo-event"
+                       data-matomo-category="engagement"
+                       data-matomo-action="loadmore"
+                       data-matomo-option="topic">
                         <i class="ri-loop-right-line" aria-hidden="true"></i>
                         <span>{% trans "load more topics" %}</span>
                     </a>
