@@ -103,7 +103,7 @@
                     {% include "forum_conversation/partials/topic_detail_actions.html" with posts_count=topic.posts_count %}
                 </div>
                 <div class="col-12 col-sm-auto">
-                    {% include "partials/social_share_buttons.html" with text=topic.subject instance=topic %}
+                    {% include "partials/social_share_buttons.html" with text=topic.subject instance=topic id=topic.pk %}
                 </div>
             </div>
         {% empty %}
