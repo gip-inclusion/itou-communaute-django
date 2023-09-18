@@ -6,6 +6,7 @@
 {% if post.attachments.exists and user_can_download_files %}
     <div class="row attachments mt-3 mt-md-5">
         {% for attachment in post.attachments.all %}
+            {% comment %}to prevent failure in dev, when files don't exist{% endcomment %}
             {% if attachement %}
                 {% if not attachment|is_image %}
                     <div class="col-md-12 attachment">
