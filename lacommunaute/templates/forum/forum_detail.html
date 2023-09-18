@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-12 col-sm-auto">
                                 {% include "partials/upvotes.html" with obj=forum kind="forum"%}
-                                {% include "partials/social_share_buttons.html" with text=forum.name instance=forum %}
+                                {% include "partials/social_share_buttons.html" with text=forum.name instance=forum id=forum.pk %}
                             </div>
                         </div>
                         {{forum.description.rendered|urlizetrunc_target_blank:30}}

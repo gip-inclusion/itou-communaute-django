@@ -66,7 +66,7 @@
             {% include "forum_conversation/partials/topic_detail_actions.html" %}
         </div>
         <div class="col-12 col-sm-auto">
-            {% include "partials/social_share_buttons.html" with text=topic.subject instance=topic %}
+            {% include "partials/social_share_buttons.html" with text=topic.subject instance=topic id=topic.pk %}
         </div>
     </div>
     <div class="row mt-5 mb-5">
