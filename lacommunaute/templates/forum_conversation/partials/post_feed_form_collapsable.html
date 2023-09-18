@@ -25,7 +25,7 @@
                                     </div>
                                 {% endfor %}
                             {% endif %}
-                            {% include "partials/form_field.html" with field=post_form.content %}
+                            {% include "partials/form_field.html" with field=post_form.content id=topic.pk %}
                             {% if post_form.username %}
                                 {% include "partials/form_field.html" with field=post_form.username %}
                             {% endif %}
