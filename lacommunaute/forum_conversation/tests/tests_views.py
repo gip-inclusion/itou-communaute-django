@@ -409,7 +409,7 @@ class TopicViewTest(TestCase):
 
     def test_anonymous_like(self):
         assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
-        params = {"next_url": self.url}
+        params = {"next": self.url}
         url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
         response = self.client.get(self.url)
