@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
@@ -63,6 +64,35 @@ class AttachmentsTemplateTagTests(TestCase):
                     )
                 )
                 self.assertEqual(out, "False")
+
+    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    def test_is_available(self):
+        f = SimpleUploadedFile("test.png", force_bytes("file_content"))
+        attachment = AttachmentFactory(post=self.post, file=f)
+
+        out = Template("{% load attachments_tags %}" "{{ attachment|is_available }}").render(
+            Context(
+                {
+                    "attachment": attachment,
+                }
+            )
+        )
+        self.assertEqual(out, "True")
+
+    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    def test_is_not_available(self):
+        f = SimpleUploadedFile("test.png", force_bytes("file_content"))
+        attachment = AttachmentFactory(post=self.post, file=f)
+
+        with patch.object(default_storage, "exists", return_value=False):
+            out = Template("{% load attachments_tags %}" "{{ attachment|is_available }}").render(
+                Context(
+                    {
+                        "attachment": attachment,
+                    }
+                )
+            )
+            self.assertEqual(out.strip(), "False")
 
 
 class SettingsContextProcessorsTest(TestCase):
