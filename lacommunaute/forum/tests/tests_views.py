@@ -151,7 +151,7 @@ class ForumViewTest(TestCase):
         self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
 
     def test_anonymous_like(self):
-        params = {"next_url": self.url}
+        params = {"next": self.url}
         url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
 
         response = self.client.get(self.url)
@@ -352,7 +352,7 @@ class ForumViewTest(TestCase):
 
         # anonymous
         anonymous_html = (
-            '<a href="/inclusion_connect/authorize?next_url=%2Fforum%2F'
+            '<a href="/inclusion_connect/authorize?next=%2Fforum%2F'
             f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
             ' rel="nofollow"'
             ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"'

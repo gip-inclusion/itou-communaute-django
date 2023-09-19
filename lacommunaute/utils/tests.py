@@ -114,11 +114,11 @@ class UtilsTemplateTagsTestCase(TestCase):
         context = Context({"next_url": next_url, "anchor": anchor})
 
         out = Template("{% load str_filters %}{% inclusion_connect_url next_url%}").render(context)
-        params = {"next_url": next_url}
+        params = {"next": next_url}
         self.assertEqual(out, f"{inclusion_connect_url}?{urlencode(params)}")
 
         out = Template("{% load str_filters %}{% inclusion_connect_url next_url anchor %}").render(context)
-        params = {"next_url": f"{next_url}#{anchor}"}
+        params = {"next": f"{next_url}#{anchor}"}
         self.assertEqual(out, f"{inclusion_connect_url}?{urlencode(params)}")
 
     def test_relativetimesince_fr(self):
