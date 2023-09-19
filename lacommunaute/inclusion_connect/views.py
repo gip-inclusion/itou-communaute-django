@@ -49,7 +49,7 @@ def _redirect_to_login_page_on_error(error_msg, request=None):
 def inclusion_connect_authorize(request):
     # Start a new session.
     previous_url = request.GET.get("previous_url", reverse("pages:home"))
-    next_url = request.GET.get("next_url")
+    next_url = request.GET.get("next")
     sign_in = bool(request.GET.get("sign_in", False))
 
     ic_session = InclusionConnectSession(previous_url=previous_url, next_url=next_url)
