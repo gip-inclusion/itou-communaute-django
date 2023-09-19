@@ -47,7 +47,7 @@ def mock_oauth_dance(
     respx.get(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE).respond(302)
     authorize_params = {
         "previous_url": previous_url,
-        "next_url": next_url,
+        "next": next_url,
     }
     authorize_params = {k: v for k, v in authorize_params.items() if v}
 
