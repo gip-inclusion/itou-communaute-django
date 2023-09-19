@@ -13,3 +13,8 @@ def is_image(object):
         return True
     else:
         return False
+
+
+@register.filter
+def is_available(object):
+    return object.file.field.storage.exists(object.file.name)
