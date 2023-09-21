@@ -22,6 +22,6 @@
     {% endwith %}
 </div>
 
-<script>
+<script nonce="{{ request.csp_nonce }}">
     document.activeElement?.blur();
 </script>

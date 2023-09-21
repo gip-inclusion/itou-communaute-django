@@ -135,7 +135,7 @@
 {% block extra_js %}
     {{ block.super }}
     <script async src="https://tally.so/widgets/embed.js"></script>
-    <script defer>
+    <script defer nonce="{{ request.csp_nonce }}">
         // Any given Tally popup will not be shown more than once every `minDaysBetweenDisplays` days.
         const minDaysBetweenDisplays = 14;
         const delayBeforeShowingPopupInSeconds = 45;
