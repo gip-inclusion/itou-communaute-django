@@ -64,10 +64,10 @@
                                 {% for topic in topics_public %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                            class="matomo-event btn-link stretched-link"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="view"
-                                            data-matomo-option="topic">
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="topic">
                                             {{ topic.subject }}
                                         </a>
                                     </li>
@@ -89,10 +89,10 @@
                                 {% for forum in forums_category %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                                            class="matomo-event btn-link stretched-link"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="view"
-                                            data-matomo-option="forum">
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="forum">
                                             [{{ forum.parent.name }}] {{ forum.name }}
                                         </a>
                                     </li>
@@ -114,10 +114,10 @@
                                 {% for topic in topics_newsfeed %}
                                     <li class="mb-3 position-relative">
                                         <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                            class="matomo-event btn-link stretched-link"
-                                            data-matomo-category="engagement"
-                                            data-matomo-action="view"
-                                            data-matomo-option="news">
+                                           class="matomo-event btn-link stretched-link"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="news">
                                             {{ topic.subject }}
                                         </a>
                                     </li>
