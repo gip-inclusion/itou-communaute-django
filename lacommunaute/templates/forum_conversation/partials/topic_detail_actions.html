@@ -26,7 +26,6 @@
        data-matomo-category="engagement"
        data-matomo-action="showmore"
        data-matomo-option="post"
-       onclick=DisabledMe("showmoreposts-button{{topic.pk}}")
        aria-label="{% trans "Show me the comment" %}"
        role="button"
     >
@@ -64,10 +63,3 @@
         {% endif %}
     </div>
 {% endif %}
-
-
-<script>
-    function DisabledMe(id) {
-        document.getElementById(id).classList.add('disabled');
-    }
-</script>
