@@ -575,6 +575,24 @@ rcssmin = "1.1.1"
 rjsmin = "1.2.1"
 
 [[package]]
+name = "django-csp"
+version = "3.7"
+description = "Django Content Security Policy support."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django_csp-3.7-py2.py3-none-any.whl", hash = "sha256:01443a07723f9a479d498bd7bb63571aaa771e690f64bde515db6cdb76e8041a"},
+    {file = "django_csp-3.7.tar.gz", hash = "sha256:01eda02ad3f10261c74131cdc0b5a6a62b7c7ad4fd017fbefb7a14776e0a9727"},
+]
+
+[package.dependencies]
+Django = ">=1.8"
+
+[package.extras]
+jinja2 = ["jinja2 (>=2.9.6)"]
+tests = ["jinja2 (>=2.9.6)", "mock (==1.0.1)", "pep8 (==1.4.6)", "pytest (<4.0)", "pytest-django", "pytest-flakes (==1.0.1)", "pytest-pep8 (==1.0.6)", "six (==1.12.0)"]
+
+[[package]]
 name = "django-debug-toolbar"
 version = "3.8.1"
 description = "A configurable set of panels that display various debug information about the current request/response."
@@ -700,6 +718,20 @@ django-js-asset = "*"
 
 [package.extras]
 tests = ["coverage", "mock-django"]
+
+[[package]]
+name = "django-permissions-policy"
+version = "4.17.0"
+description = "Set the draft security HTTP header Permissions-Policy (previously Feature-Policy) on your Django app."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_permissions_policy-4.17.0-py3-none-any.whl", hash = "sha256:e317143f8c8ef7ff30dc20bc1343f8f299c9e4423148957d9f0fc2bae04b0ebe"},
+    {file = "django_permissions_policy-4.17.0.tar.gz", hash = "sha256:cb2f0d2772ddab63dabd50331fa823d0cea06c89932d412c8c6aa5fc239b364f"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
 
 [[package]]
 name = "django-social-share"
@@ -2218,4 +2250,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1d1db1497245f9d937e48810ced5f701dec4d8ccfbbdeef7b06fa8798c4a4333"
+content-hash = "5904193b894e535d62259a61aa0c3883f4f8a8cde3308c81d7df4aa366bbd241"
