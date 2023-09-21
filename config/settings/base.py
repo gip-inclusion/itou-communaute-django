@@ -84,7 +84,7 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
 
-MIDDLEWARE = [
+DJANGO_MIDDLEWARE = [
     "django.middleware.gzip.GZipMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
@@ -94,9 +94,19 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+THIRD_PARTIES_MIDDLEWARE = [
+    "csp.middleware.CSPMiddleware",
+    "django_permissions_policy.PermissionsPolicyMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+]
+
+LOCAL_MIDDLEWARE = [
     "machina.apps.forum_permission.middleware.ForumPermissionMiddleware",
 ]
+
+MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTIES_MIDDLEWARE + LOCAL_MIDDLEWARE
 
 ROOT_URLCONF = "config.urls"
 LOGIN_URL = "/inclusion_connect/authorize"
@@ -341,6 +351,67 @@ SIB_ONBOARDING_LIST = 5
 TAGGIT_CASE_INSENSITIVE = True
 TAGGIT_STRIP_UNICODE_WHEN_SLUGIFY = True
 
+# CSP
+# ---------------------------------------
+CSP_DEFAULT_SRC = ("'self'",)
+# unsafe-inline for htmx.js, embed.js & tartecitron.js needs
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
+CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com/", "data:")
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "https://cdn.jsdelivr.net",
+    "https://tally.so",
+)
+CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
+CSP_FRAME_SRC = ("'self'", "https://tally.so")
+CSP_IMG_SRC = ("'self'", "data:", "cellar-c2.services.clever-cloud.com")
+CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
+
+# HSTS
+# ---------------------------------------
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Clickjacking
+# ---------------------------------------
+X_FRAME_OPTIONS = "DENY"
+
+# SECURITY
+# ---------------------------------------
+# See https://docs.djangoproject.com/en/4.1/topics/security/
+# and https://docs.djangoproject.com/en/4.1/ref/middleware/#module-django.middleware.security
+# See https://docs.djangoproject.com/en/4.1/ref/middleware/#http-strict-transport-security
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
+
 # SESSIONS
 # ---------------------------------------
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# PERMISSIONS POLICIES
+# ---------------------------------------
+PERMISSIONS_POLICY = {
+    "accelerometer": [],
+    "autoplay": [],
+    "camera": [],
+    "encrypted-media": [],
+    "fullscreen": [],
+    "geolocation": [],
+    "gyroscope": [],
+    "magnetometer": [],
+    "microphone": [],
+    "midi": [],
+    "payment": [],
+    "picture-in-picture": [],
+    "sync-xhr": [],
+    "usb": [],
+}
