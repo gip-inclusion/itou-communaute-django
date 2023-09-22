@@ -40,7 +40,7 @@
     border-radius: 50%;
     overflow: hidden;
 
-    >img {
+    > img {
       width: 100%;
       height: auto;
       object-fit: cover;
@@ -74,7 +74,6 @@
   border-color: #b3b4c3 !important;
 }
 
-
 .btn-poster {
   padding: 0 !important;
   background-color: transparent !important;
@@ -102,7 +101,7 @@ span.highlighted {
 .input-group-rounded-pill {
   border-radius: 50rem !important;
 
-  >input {
+  > input {
     border-top-left-radius: 50rem !important;
     border-bottom-left-radius: 50rem !important;
   }
@@ -115,91 +114,77 @@ span.highlighted {
 }
 
 .funnel {
+  position: relative;
+  overflow: hidden;
   list-style-type: none;
   margin: 0;
   padding: 0;
   text-align: center;
   color: #fff;
 
-  .number {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .comment {
-    font-size: 10px;
-  }
-
-  li {
-    padding: 10px 5px;
-    margin: 0;
-    margin-bottom: 5px;
-    position: relative;
-    overflow: hidden;
-    height: 110px;
-  }
-
-  li:before,
-  li:after {
+  &:before,
+  &:after {
     content: '';
+    display: inline-block;
     position: absolute;
     top: 0;
     height: 0;
-    border-bottom: 110px solid #fff;
-  }
-
-  li:before {
-    left: 0;
-    border-right: 27px solid transparent;
+    width: 0;
     border-left: 0;
-  }
-
-  li:after {
-    right: 0;
-    border-left: 27px solid transparent;
     border-right: 0;
+    border-bottom: 450px solid white;
   }
 
-  li:nth-child(1) {
-    color: #000638;
-    background-color: #d8ede3;
+  &:before {
+    left: 0;
+    border-right: 50px solid transparent;
+
+    @media (min-width: 992px) {
+      border-right: 100px solid transparent;
+    }
   }
 
-  li:nth-child(1):before,
-  li:nth-child(1):after {
-    width: 25px;
+  &:after {
+    right: 0;
+    border-left: 50px solid transparent;
+
+    @media (min-width: 992px) {
+      border-left: 100px solid transparent;
+    }
   }
 
-  li:nth-child(2) {
-    background-color: #60a47c;
-  }
+  > div {
+    padding: 16px 8px;
+    margin: 0;
+    margin-bottom: 8px;
+    min-height: 140px;
 
-  li:nth-child(2):before,
-  li:nth-child(2):after {
-    width: 55px;
-  }
+    > span {
+      display: block;
+    }
 
-  li:nth-child(3) {
-    background-color: #3e7152;
-  }
+    &:nth-child(1) {
+      color: #000638;
+      background-color: #d8ede3;
+    }
 
-  li:nth-child(3):before,
-  li:nth-child(3):after {
-    width: 84px;
+    &:nth-child(2) {
+      background-color: #60a47c;
+    }
+
+    &:nth-child(3) {
+      background-color: #3e7152;
+    }
   }
 }
 
-.legend {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.definition {
+  > div {
+    padding: 16px 8px 0 16px;
+    margin-bottom: 8px;
 
-  li {
-    padding: 10px 5px;
-    margin: 0;
-    margin-bottom: 5px;
-    position: relative;
-    overflow: hidden;
-    height: 110px;
+    @media (min-width: 992px) {
+      min-height: 140px;
+    }
   }
 }
