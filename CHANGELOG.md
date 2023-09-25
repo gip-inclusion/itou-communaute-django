@@ -1,5 +1,16 @@
 # Journal des modifications
 
+## v2.2 - 2023-09-25
+- [STATS] un entonnoir adaptatif (#418)
+- [CONVERSATION] masquer le bouton "voir les 999 reponses" (fix) (#417)
+- [CONVERSATION] gérer les fichiers manquants (#411, #410, #409)
+- [SEO] dédoublonner les ID (#408)
+- [INCLUSION CONNECT] gérer les redirections après authentification (#413)
+- [NOTIFICATION] mise à jour de la planification de `send_notifs_when_following_replies.sh` (#403)
+- Nettoyage des dépendances de developpement (#416)
+- HTMX - mise à jour - version 1.9.5 (#415)
+- mise à jour des dependances (#405)
+
 ## v2.1 - 2023-09-08
 - [PAGES] mise à jour des pages de mentions  (#397)
 - [RECHERCHE] fix - le fichier d'index est absent lors de certains tests (#394)
