@@ -1,19 +1,11 @@
 # La communauté de l'inclusion
 
-## Initial setup
+## Initial dev setup
 
 Installer l'environnement virtuel et les dépendances :
 
 ```bash
 $ poetry install
-```
-
-Creer les buckets S3 :
-
-```bash
-s3cmd mb s3://test-inclusion-public/
-s3cmd setacl s3://test-inclusion-public/ --acl-public
-s3cmd mb s3://test-inclusion-private/
 ```
 
 Copier le fichier `.env.template` en `.env` et le modifier en fonction de vos besoins.
@@ -33,53 +25,44 @@ $ poetry shell
 Démarer la base de données
 
 ```bash
-$ docker-compose up -d
+$ docker-compose up postgres -d
 ```
 
 Démarrer le service web
 
 ```bash
-python manage.py runserver
+$ python manage.py runserver
 ```
 
 ## Peupler la base de données
 
-1. setup anonymous user default perms
-1. setup authenticated user default perms
-1. creer un forum type=0, kind=PUBLIC_FORUM, name="Échanges"
-1. creer un forum type=0, kind=News, name="Actualités"
-
-pour créer de la documentation:
-
-1. creer un forum type=1, kind=PUBLIC_FORUM, name="nom du thème"
-1. creer un à x forum(s) type=0, kind=PUBLIC_FORUM, parent={forum précédent}, name="nom du sous-thème"
-
+```bash
+$ python manage.py loaddata fixtures/validation_fixtures.json
+```
 ## Mises à jour
 
 Ajouter d'une dépendance :
 
 ```bash
-poetry add django-anymail
+$ poetry add django-anymail
 ```
 
 Ajouter d'une dépendance de développement :
 
 ```bash
-poetry add --group dev poethepoet
+$ poetry add --group dev poethepoet
 ```
 
 Mettre à jour des dépendances :
 
 ```bash
-poetry update
-poetry lock
+$ poetry update;poetry lock
 ```
 
 Générer les fichiers `requirements`
 
 ```bash
-poetry run poe export
-poetry run poe export_dev
+$ poetry run poe export;poetry run poe export_dev
 ```
 
 ## Développement
