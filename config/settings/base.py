@@ -362,6 +362,7 @@ CSP_SCRIPT_SRC = (
     "'self'",
     "https://cdn.jsdelivr.net",
     "https://tally.so",
+    "https://stats.data.gouv.fr/piwik.js",
 )
 CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
 CSP_FRAME_SRC = ("'self'", "https://tally.so")
