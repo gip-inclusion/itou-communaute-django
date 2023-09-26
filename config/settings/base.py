@@ -360,7 +360,7 @@ CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com/", "data:")
 CSP_SCRIPT_SRC = (
     "'self'",
-    "https://cdn.jsdelivr.net",
+    "https://cdn.jsdelivr.net/npm/chart.js",
     "https://tally.so",
     "https://stats.data.gouv.fr/piwik.js",
 )
