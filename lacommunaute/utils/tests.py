@@ -15,6 +15,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
+from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
 from lacommunaute.utils.urls import urlize
 
@@ -395,3 +396,16 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                 get_matomo_events_data(period="day", search_date=self.today, label=label),
                 expected_res,
             )
+
+
+class UtilsMathPercent(TestCase):
+    def test_percent(self):
+        self.assertEqual(percent(2, 1), 200)
+        self.assertEqual(percent(1, 2), 50)
+        self.assertEqual(percent(-1, 2), -50)
+        self.assertEqual(percent(1, -2), -50)
+        self.assertEqual(percent(-1, -2), 50)
+        self.assertEqual(percent(1, 9), 11.11)
+        self.assertEqual(percent(0, 1), 0)
+        self.assertEqual(percent(1, 0), 0)
+        self.assertEqual(percent(0, 0), 0)
