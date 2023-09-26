@@ -6,18 +6,18 @@
 source .env
 
 if [ -z $PATH_TO_BACKUPS ]; then
-  echo "please add 'PATH_TO_BACKUPS=/your/backups/root/directory' in .env at the root of the project in order to run this script"
+  echo "please add 'PATH_TO_BACKUPS=/your/backups/directory' in .env at the root of the project in order to run this script"
   exit
 fi
 
-# Download last available backup, provided you already ran `make build` once.
-echo "Downloading last available backup..."
-( cd $PATH_TO_BACKUPS && make download )
-echo "Download is over."
+# Download last available backup
+# rclone copy --max-age 24h --progress communaute:/encrypted-backups ./backups
+echo "please rclone the last db backup to $PATH_TO_BACKUPS"
 
 # Get the latest backup filename and path
-DB_BACKUP_NAME=$(ls $PATH_TO_BACKUPS/backups | tail -n1)
-DB_BACKUP_PATH=$PATH_TO_BACKUPS/backups/$DB_BACKUP_NAME
+DB_BACKUP_NAME=$(ls $PATH_TO_BACKUPS | tail -n1)
+echo "Going to restore $DB_BACKUP_NAME"
+DB_BACKUP_PATH=$PATH_TO_BACKUPS/$DB_BACKUP_NAME
 
 echo "Going to inject DB_BACKUP_PATH=$DB_BACKUP_PATH"
 docker cp $DB_BACKUP_PATH commu_postgres:/backups
