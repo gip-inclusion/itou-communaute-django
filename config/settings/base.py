@@ -360,7 +360,7 @@ CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com/", "data:")
 CSP_SCRIPT_SRC = (
     "'self'",
-    "https://cdn.jsdelivr.net/npm/chart.js",
+    "https://cdn.jsdelivr.net/npm/chart.js@4.0.1",
     "https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js",
     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js",
