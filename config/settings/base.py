@@ -242,8 +242,6 @@ CACHES = {
     },
 }
 
-# Environment, sets the type of env of the app (PROD, DEV…)
-COMMU_ENVIRONMENT = os.getenv("COMMU_ENVIRONMENT", "PROD")
 COMMU_PROTOCOL = "https"
 COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.beta.gouv.fr")
 
@@ -359,7 +357,6 @@ TAGGIT_STRIP_UNICODE_WHEN_SLUGIFY = True
 CSP_DEFAULT_SRC = ("'self'",)
 # unsafe-inline for htmx.js, embed.js & tartecitron.js needs
 CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
-CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com/", "data:")
 CSP_SCRIPT_SRC = (
     "'self'",
@@ -368,12 +365,19 @@ CSP_SCRIPT_SRC = (
     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js",
     "https://tally.so",
-    "https://stats.data.gouv.fr/piwik.js",
 )
-CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
 CSP_FRAME_SRC = ("'self'", "https://tally.so")
 CSP_IMG_SRC = ("'self'", "data:", "cellar-c2.services.clever-cloud.com")
+CSP_CONNECT_SRC = ("'self'", "*.sentry.io")
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
+
+if MATOMO_BASE_URL:
+    CSP_IMG_SRC += (MATOMO_BASE_URL,)
+    CSP_SCRIPT_SRC += (MATOMO_BASE_URL,)
+    CSP_CONNECT_SRC += (MATOMO_BASE_URL,)
+
+CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
+CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
 
 # HSTS
 # ---------------------------------------
