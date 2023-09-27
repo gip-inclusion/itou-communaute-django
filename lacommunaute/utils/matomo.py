@@ -1,3 +1,4 @@
+import os
 from datetime import date
 
 import httpx
@@ -11,7 +12,7 @@ def get_matomo_data(
     period,
     search_date,
     method,
-    token_auth="anonymous",
+    token_auth=settings.MATOMO_AUTH_TOKEN,
     **kwargs,
 ):
     """
@@ -34,7 +35,7 @@ def get_matomo_data(
         "filter_limit": -1,
         **kwargs,
     }
-    response = httpx.get(settings.MATOMO_URL, params=params)
+    response = httpx.get(os.path.join(settings.MATOMO_BASE_URL, "index.php"), params=params)
 
     if response.status_code != 200:
         raise Exception(f"Matomo API error: {response.text}")
