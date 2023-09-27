@@ -150,8 +150,8 @@
 
                 {% if COMMU_ENVIRONMENT == 'PROD' %}
                     // Matomo :
-                    tarteaucitron.user.matomoId = 268;
-                    tarteaucitron.user.matomoHost = "https://stats.data.gouv.fr/";
+                    tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
+                    tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
                     (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
             </script>
