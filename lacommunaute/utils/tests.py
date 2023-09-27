@@ -206,6 +206,7 @@ class UtilsTemplateTagsTestCase(TestCase):
 
 
 class UtilsGetMatomoDataTest(TestCase):
+    @override_settings(MATOMO_BASE_URL="https://matomo.example.com")
     def test_get_matomo_data(self):
         nb_uniq_visitors = faker.random_int()
         with patch("lacommunaute.utils.matomo.httpx.get") as mock_get:
