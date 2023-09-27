@@ -328,9 +328,7 @@ SITE_ID = 1
 # ---------------------------------------
 MATOMO_BASE_URL = os.getenv("MATOMO_BASE_URL", None)
 MATOMO_SITE_ID = int(os.getenv("MATOMO_SITE_ID", "1"))
-
-if MATOMO_BASE_URL:
-    MATOMO_AUTH_TOKEN = os.getenv("MATOMO_AUTH_TOKEN")
+MATOMO_AUTH_TOKEN = os.getenv("MATOMO_AUTH_TOKEN", None)
 
 # SENDINBLUE
 # ---------------------------------------
