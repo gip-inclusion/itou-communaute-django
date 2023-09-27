@@ -148,14 +148,14 @@
                     "mandatoryCta": true /* Show the disabled accept button when mandatory on */
                 });
 
-                {% if COMMU_ENVIRONMENT == 'PROD' %}
+                {% if MATOMO_BASE_URL %}
                     // Matomo :
                     tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
                     tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
                     (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
             </script>
-            {% if COMMU_ENVIRONMENT == 'PROD' %}
+            {% if MATOMO_BASE_URL %}
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
             {% endif %}
             <script type="text/javascript" src="{% static 'vendor/htmx-1.9.5/htmx.min.js' %}" defer></script>
