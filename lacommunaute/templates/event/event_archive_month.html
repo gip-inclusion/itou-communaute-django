@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block sub_title %}{% trans "Events" %} {{ month }}{% endblock sub_title %}
+
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1"><strong>{% trans "Month Events" %}</strong></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    {% if previous_month %}
+                        <a href="{% url 'event:month' year=previous_month|date:"Y" month=previous_month|date:"m" %}" class="btn btn-outline-primary">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    {% endif %}
+                    <span class="mx-2"><b>{{ month|date:"F Y" }}</b></span>
+                    {% if next_month %}
+                        <a href="{% url 'event:month' year=next_month|date:"Y" month=next_month|date:"m" %}" class="btn btn-outline-primary">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <ul class="list-group">
+                        {% for event in object_list %}
+                            <li class="list-group-item list-group-item-action">
+                                {{ event.date }} - {{ event.time }} :
+                                <a href="{% url 'event:detail' pk=event.pk%}">{{event.name|truncatechars:100}}</a>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">{% trans "No event yet" %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <a href="{% url 'event:create' %}"
+                       role="button" class="btn btn-primary">
+                        {% trans "Post a new Public Event" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
+
