@@ -1,13 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.functions import TruncMonth
-from django.utils import timezone
 from machina.models.abstract_models import DatedModel
-
-
-class CurrentUpcomingManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(date__gte=TruncMonth(timezone.now()))
 
 
 class Event(DatedModel):
@@ -27,7 +20,6 @@ class Event(DatedModel):
     )
 
     objects = models.Manager()
-    current_and_upcomings = CurrentUpcomingManager()
 
     class Meta:
         verbose_name = "Event"
