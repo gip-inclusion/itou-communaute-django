@@ -1,11 +1,9 @@
 import logging
+from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import F
-from django.db.models.functions import ExtractDay, ExtractMonth, ExtractYear
-from django.http import JsonResponse
-from django.template.response import TemplateResponse
+from django.http import Http404
 from django.urls import reverse
 from django.views.generic.dates import MonthArchiveView
 from django.views.generic.detail import DetailView
@@ -78,6 +76,20 @@ class EventMonthArchiveView(MonthArchiveView):
     queryset = Event.objects.all()
     month_format = "%m"
     year_format = "%Y"
+
+    def get_month(self):
+        try:
+            month = super().get_month()
+        except Http404:
+            month = datetime.now().strftime(self.get_month_format())
+        return month
+
+    def get_year(self):
+        try:
+            year = super().get_year()
+        except Http404:
+            year = datetime.now().strftime(self.get_year_format())
+        return year
 
 
 # TODO vincentporte : factoriser les EventXXXView
