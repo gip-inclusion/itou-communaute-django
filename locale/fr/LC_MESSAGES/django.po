@@ -926,11 +926,26 @@ msgstr "Charger plus de sujets"
 #, python-format
 msgid "Show me the %(count)s subforums"
 msgstr "Voir les %(count)s sous-thématiques"
+
 msgid "Calendar"
 msgstr "Calendrier"
 
 msgid "Events"
 msgstr "Évènements"
+
+msgid "Public event"
+msgstr "Évènement public"
+
+msgid "Month Events"
+msgstr "Les évènements du mois"
+
+#, python-format
+msgid "On %(date)s from %(time)s to %(end_time)s"
+msgstr "Le %(date)s de %(time)s à %(end_time)s"
+
+#, python-format
+msgid "From %(date)s %(time)s to %(end_date)s %(end_time)s"
+msgstr "Du %(date)s %(time)s au %(end_date)s %(end_time)s"
 
 msgid "Manage My Events"
 msgstr "Gérer mes évènements"
@@ -940,6 +955,9 @@ msgstr "Ajouter un évènement public"
 
 msgid "Delete event"
 msgstr "Effacer cet évènement"
+
+msgid "Back to events list"
+msgstr "Retourner à la liste des évènements"
 
 msgid "No event yet"
 msgstr "Aucun évènement"
