@@ -49,15 +49,21 @@
                             {% include "partials/form_field.html" with field=form.location %}
                             {% include "partials/form_field.html" with field=form.description %}
 
-                            <div class="form-actions form-row">
-                                <div class="form-group col-auto">
-                                    <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="contribute"
-                                           data-matomo-option="event">
-                                    {% if event %}
-                                        <a href="{% url 'event:delete' pk=event.pk %}" role="button" class="btn btn-outline-danger" value="{% trans "Delete" %}">{% trans "Delete" %}</a>
-                                    {% endif %}
+                            <hr>
+                            <div class="form-row align-items-center justify-content-lg-end gx-3">
+                                {% if event %}
+                                    <div class="form-group col-6 col-lg-auto order-2 order-lg-1">
+                                        <a href="{% url 'event:delete' pk=event.pk %}" class="btn btn-block btn-ico btn-outline-danger">
+                                            <i class="ri-close-fill ri-lg" aria-hidden="true"></i>
+                                            <span>{% trans "Delete" %}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                <div class="form-group {% if event %}col-6{% else %}col-12{% endif %} col-lg-auto order-1 order-lg-2">
+                                    <button type="submit" class="btn btn-ico btn-block btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="contribute" data-matomo-option="event">
+                                        <i class="ri-send-plane-line ri-lg" aria-hidden="true"></i>
+                                        <span>{% trans "Submit" %}</span>
+                                    </button>
                                 </div>
                             </div>
                         </form>
