@@ -6,6 +6,7 @@ from django.db.models import CharField
 from django.db.models.functions import Cast
 from django.shortcuts import render
 from django.utils import timezone
+from django.utils.dateformat import format
 from django.views.generic.base import TemplateView
 
 from lacommunaute.forum.enums import Kind as ForumKind
@@ -13,6 +14,7 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_stats.models import Stat
 from lacommunaute.utils.json import extract_values_in_list
+from lacommunaute.utils.math import percent
 
 
 logger = logging.getLogger(__name__)
@@ -24,6 +26,30 @@ def contact(request):
 
 class StatistiquesPageView(TemplateView):
     template_name = "pages/statistiques.html"
+
+    def get_funnel_data(self):
+        qs = Stat.objects.current_month_datas()
+
+        stats = {
+            "period": None,
+            "nb_uniq_visitors": 0,
+            "nb_uniq_active_visitors": 0,
+            "nb_uniq_engaged_visitors": 0,
+        }
+
+        if qs.filter(name="nb_uniq_visitors").exists():
+            stats["period"] = format(qs.get(name="nb_uniq_visitors")["date"], "F Y")
+            stats["nb_uniq_visitors"] = qs.get(name="nb_uniq_visitors")["value"]
+
+        if qs.filter(name="nb_uniq_active_visitors").exists():
+            stats["nb_uniq_active_visitors"] = qs.get(name="nb_uniq_active_visitors")["value"]
+
+        if qs.filter(name="nb_uniq_engaged_visitors").exists():
+            stats["nb_uniq_engaged_visitors"] = qs.get(name="nb_uniq_engaged_visitors")["value"]
+
+        stats["activation_percent"] = percent(stats["nb_uniq_active_visitors"], stats["nb_uniq_visitors"])
+        stats["engagement_percent"] = percent(stats["nb_uniq_engaged_visitors"], stats["nb_uniq_active_visitors"])
+        return stats
 
     def get_context_data(self, **kwargs):
         indicator_names = [
@@ -40,6 +66,7 @@ class StatistiquesPageView(TemplateView):
 
         context = super().get_context_data(**kwargs)
         context["stats"] = extract_values_in_list(datas, indicator_names)
+        context = {**context, **self.get_funnel_data()}
 
         return context
 
