@@ -27,36 +27,21 @@
                             <div class="col-12 col-lg-6">
                                 <figure class="funnel">
                                     <div>
-                                        <span class="display-3">Utilisateurs</span>
-                                        <span class="h2 mb-0">3192</span>
-                                        <span class="fs-sm">-16%/mois précédent</span>
+                                        <span class="display-3 mb-3">Utilisateurs</span>
+                                        <span class="h2">{{ nb_uniq_visitors }}</span>
                                     </div>
                                     <div>
-                                        <span class="display-3 text-white">Utilisateurs actifs</span>
-                                        <span class="h2 mb-0 text-white">3067</span>
-                                        <ul class="list-unstyled fs-sm mb-0">
-                                            <li>
-                                                96% des Utilisateurs
-                                            </li>
-                                            <li>
-                                                +1,4%/mois précédent
-                                            </li>
-                                        </ul>
+                                        <span class="display-3 text-white mb-3">Utilisateurs actifs</span>
+                                        <span class="h2 mb-3 text-white">{{ nb_uniq_active_visitors }}</span>
+                                        <span class="fs-sm">{{ activation_percent }}% des utilisateurs</span>
                                     </div>
                                     <div>
-                                        <span class="display-3 text-white">Utilisateurs engagés</span>
-                                        <span class="h2 mb-0 text-white">1539</span>
-                                        <ul class="list-unstyled fs-sm mb-0">
-                                            <li>
-                                                50.2% des Util. Actifs
-                                            </li>
-                                            <li>
-                                                +3%/mois préc.
-                                            </li>
-                                        </ul>
+                                        <span class="display-3 text-white mb-3">Utilisateurs engagés</span>
+                                        <span class="h2 mb-3 text-white">{{nb_uniq_engaged_visitors }}</span>
+                                        <span class="fs-sm">{{ engagement_percent }}% des util. actifs</span>
                                     </div>
-                                    <figcaption class="fs-sm text-muted">
-                                        Période : Août 2023
+                                    <figcaption class="fs-sm text-muted mt-3">
+                                        Période : {{ period }}
                                     </figcaption>
                                 </figure>
                             </div>
