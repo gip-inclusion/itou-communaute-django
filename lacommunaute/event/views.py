@@ -7,6 +7,7 @@ from django.db.models.functions import ExtractDay, ExtractMonth, ExtractYear
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.views.generic.dates import MonthArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
@@ -69,6 +70,14 @@ class EventListView(LoginRequiredMixin, ListView):
 class EventDetailView(DetailView):
     model = Event
     template_name = "event/event_detail.html"
+
+
+class EventMonthArchiveView(MonthArchiveView):
+    allow_future = True
+    date_field = "date"
+    queryset = Event.objects.all()
+    month_format = "%m"
+    year_format = "%Y"
 
 
 # TODO vincentporte : factoriser les EventXXXView

@@ -214,6 +214,41 @@ class EventDetailViewTest(TestCase):
         self.assertContains(response, event.name, status_code=200)
 
 
+class EventMonthArchiveViewTest(TestCase):
+    def test_view_with_args(self):
+        event = EventFactory(date=timezone.now() + relativedelta(months=1))
+        response = self.client.get(reverse("event:month", kwargs={"year": event.date.year, "month": event.date.month}))
+        self.assertContains(response, event.name, status_code=200)
+
+    def test_navbar(self):
+        event = EventFactory(date=timezone.now())
+        event_in_the_future = EventFactory(date=event.date + relativedelta(months=1))
+        event_in_the_past = EventFactory(date=event.date - relativedelta(months=1))
+        response = self.client.get(reverse("event:current"))
+        self.assertContains(
+            response,
+            reverse(
+                "event:month",
+                kwargs={
+                    "year": event_in_the_past.date.year,
+                    "month": f"{event_in_the_past.date.month:02d}",
+                },
+            ),
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            reverse(
+                "event:month",
+                kwargs={
+                    "year": event_in_the_future.date.year,
+                    "month": f"{event_in_the_future.date.month:02d}",
+                },
+            ),
+            status_code=200,
+        )
+
+
 class calendar_data_test(TestCase):
     def test_json_response(self):
         event = EventFactory()

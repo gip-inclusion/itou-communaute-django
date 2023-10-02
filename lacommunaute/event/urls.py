@@ -5,6 +5,7 @@ from lacommunaute.event.views import (
     EventDeleteView,
     EventDetailView,
     EventListView,
+    EventMonthArchiveView,
     EventUpdateView,
     calendar,
     calendar_data,
@@ -22,4 +23,5 @@ urlpatterns = [
     path("<int:pk>/delete/", EventDeleteView.as_view(), name="delete"),
     path("myevents/", EventListView.as_view(), name="myevents"),
     path("events/events.json", calendar_data, name="data_source"),
+    path("events/<int:year>/<int:month>/", EventMonthArchiveView.as_view(), name="month"),
 ]
