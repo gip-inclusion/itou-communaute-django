@@ -24,4 +24,5 @@ urlpatterns = [
     path("myevents/", EventListView.as_view(), name="myevents"),
     path("events/events.json", calendar_data, name="data_source"),
     path("events/<int:year>/<int:month>/", EventMonthArchiveView.as_view(), name="month"),
+    path("events/", EventMonthArchiveView.as_view(), name="current"),
 ]

@@ -215,6 +215,13 @@ class EventDetailViewTest(TestCase):
 
 
 class EventMonthArchiveViewTest(TestCase):
+    def test_view_wo_args(self):
+        event = EventFactory(date=timezone.now())
+        response = self.client.get(reverse("event:current"))
+        self.assertContains(response, event.name, status_code=200)
+        self.assertContains(response, reverse("event:detail", kwargs={"pk": event.pk}))
+        self.assertContains(response, reverse("event:create"))
+
     def test_view_with_args(self):
         event = EventFactory(date=timezone.now() + relativedelta(months=1))
         response = self.client.get(reverse("event:month", kwargs={"year": event.date.year, "month": event.date.month}))
