@@ -5,16 +5,16 @@
     {% with obj.upvotes_count as counter %}
         {% if user.is_authenticated %}
             <form hx-post="{% if kind == 'post' %}{% url 'forum_upvote:post' %}{% elif kind == 'forum' %}{% url 'forum_upvote:forum' %}{% endif %}"
-                id="upvote-button{{obj.pk}}"
-                hx-target="#upvotesarea{{obj.pk}}"
-                hx-swap="outerHTML">
+                  id="upvote-button{{obj.pk}}"
+                  hx-target="#upvotesarea{{obj.pk}}"
+                  hx-swap="outerHTML">
                 <input type='hidden' name='pk' value="{{obj.pk}}"/>
                 <button type="submit"
-                    title="{% trans "UpVotes" %}"
-                    class="btn btn-sm btn-ico btn-secondary matomo-event px-2"
-                    data-matomo-category="engagement"
-                    data-matomo-action="upvote"
-                    data-matomo-option="post"
+                        title="{% trans "UpVotes" %}"
+                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"
+                        data-matomo-category="engagement"
+                        data-matomo-action="upvote"
+                        data-matomo-option="post"
                 >
                     <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{counter}}</span>
                 </button>

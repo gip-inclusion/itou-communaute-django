@@ -4,11 +4,11 @@
     <div class="row align-items-center">
         <div class="col-12 col-md-auto">
             <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                rel="nofollow"
-                class="btn btn-primary btn-ico btn-block matomo-event"
-                data-matomo-category="engagement"
-                data-matomo-action="contribute"
-                data-matomo-option="new_topic">
+               rel="nofollow"
+               class="btn btn-primary btn-ico btn-block matomo-event"
+               data-matomo-category="engagement"
+               data-matomo-action="contribute"
+               data-matomo-option="new_topic">
                 <i class="ri-chat-new-line ri-lg"></i>
                 <span>{% trans "New topic" %}</span>
             </a>
@@ -18,10 +18,10 @@
         </div>
         <div class="col-12 col-md-auto">
             <a href="{% url 'forum_search_extension:search' %}"
-                class="btn btn-outline-primary btn-ico btn-block matomo-event"
-                data-matomo-category="engagement"
-                data-matomo-action="search"
-                data-matomo-option="query">
+               class="btn btn-outline-primary btn-ico btn-block matomo-event"
+               data-matomo-category="engagement"
+               data-matomo-action="search"
+               data-matomo-option="query">
                 <i class="ri-search-line ri-lg"></i>
                 <span>{% trans "Search forums" %}</span>
             </a>
