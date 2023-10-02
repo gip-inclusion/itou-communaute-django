@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
@@ -254,32 +253,3 @@ class EventMonthArchiveViewTest(TestCase):
             ),
             status_code=200,
         )
-
-
-class calendar_data_test(TestCase):
-    def test_json_response(self):
-        event = EventFactory()
-        items = [
-            {
-                "id": event.id,
-                "name": event.name,
-                "color": 1,
-                "location": event.location,
-                "description": event.description,
-                "poster_id": event.poster.id,
-                "time": event.time.strftime("%H:%M:%S"),
-                "year": event.date.year,
-                "month": event.date.month,
-                "day": event.date.day,
-                "duration": 1,
-            }
-        ]
-        response = self.client.get(reverse("event:data_source"))
-        self.assertEqual(json.loads(response.content)["items"], items)
-
-
-class calendar_test(TestCase):
-    def test_template(self):
-        response = self.client.get(reverse("event:calendar"))
-        self.assertTemplateUsed(response, "event/event_calendar.html")
-        self.assertContains(response, reverse("event:create"))
