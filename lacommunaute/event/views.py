@@ -7,6 +7,7 @@ from django.db.models.functions import ExtractDay, ExtractMonth, ExtractYear
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
@@ -63,6 +64,11 @@ class EventListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Event.objects.filter(poster=self.request.user)
+
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = "event/event_detail.html"
 
 
 # TODO vincentporte : factoriser les EventXXXView

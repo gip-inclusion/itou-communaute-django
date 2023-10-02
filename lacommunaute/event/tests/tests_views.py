@@ -207,6 +207,13 @@ class EventListViewTest(TestCase):
         self.assertNotIn(not_myevent, response.context_data["object_list"])
 
 
+class EventDetailViewTest(TestCase):
+    def test_detail_view(self):
+        event = EventFactory()
+        response = self.client.get(reverse("event:detail", kwargs={"pk": event.pk}))
+        self.assertContains(response, event.name, status_code=200)
+
+
 class calendar_data_test(TestCase):
     def test_json_response(self):
         event = EventFactory()
