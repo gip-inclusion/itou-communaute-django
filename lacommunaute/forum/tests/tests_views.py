@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
@@ -227,9 +228,11 @@ class ForumViewTest(TestCase):
         self.assertNotContains(response, f'id="collapsePost{self.topic.pk}')
 
     def test_queries(self):
+        ContentType.objects.clear_cache()
+
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(22):
+        with self.assertNumQueries(23):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
