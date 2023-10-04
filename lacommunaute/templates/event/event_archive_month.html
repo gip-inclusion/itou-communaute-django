@@ -1,6 +1,7 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
 
+{% block title %}{% trans "Events" %}{{ block.super }}{% endblock %}
 {% block sub_title %}{% trans "Events" %} {{ month }}{% endblock sub_title %}
 
 {% block content %}
