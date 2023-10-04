@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.formats import date_format
 from faker import Faker
 
 from lacommunaute.event.factories import EventFactory
@@ -231,17 +233,21 @@ class EventMonthArchiveViewTest(TestCase):
         self.assertContains(response, "Aucun évènement", status_code=200, html=True)
 
     def test_navbar(self):
-        event = EventFactory(date=timezone.now())
-        event_in_the_future = EventFactory(date=event.date + relativedelta(months=1))
-        event_in_the_past = EventFactory(date=event.date - relativedelta(months=1))
-        response = self.client.get(reverse("event:current"))
+        with translation.override(settings.LANGUAGE_CODE):
+            current_date = timezone.now()
+            next_month = current_date + relativedelta(months=1)
+            previous_month = current_date - relativedelta(months=1)
+
+            response = self.client.get(reverse("event:current"))
+            self.assertContains(response, date_format(current_date, "F Y"), status_code=200)
+
         self.assertContains(
             response,
             reverse(
                 "event:month",
                 kwargs={
-                    "year": event_in_the_past.date.year,
-                    "month": f"{event_in_the_past.date.month:02d}",
+                    "year": previous_month.year,
+                    "month": f"{previous_month.month:02d}",
                 },
             ),
             status_code=200,
@@ -251,8 +257,8 @@ class EventMonthArchiveViewTest(TestCase):
             reverse(
                 "event:month",
                 kwargs={
-                    "year": event_in_the_future.date.year,
-                    "month": f"{event_in_the_future.date.month:02d}",
+                    "year": next_month.year,
+                    "month": f"{next_month.month:02d}",
                 },
             ),
             status_code=200,
