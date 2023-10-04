@@ -72,6 +72,7 @@ class EventDetailView(DetailView):
 
 class EventMonthArchiveView(MonthArchiveView):
     allow_future = True
+    allow_empty = True
     date_field = "date"
     queryset = Event.objects.all()
     month_format = "%m"

@@ -226,6 +226,10 @@ class EventMonthArchiveViewTest(TestCase):
         response = self.client.get(reverse("event:month", kwargs={"year": event.date.year, "month": event.date.month}))
         self.assertContains(response, event.name, status_code=200)
 
+    def test_allow_empty(self):
+        response = self.client.get(reverse("event:month", kwargs={"year": 2000, "month": 1}))
+        self.assertContains(response, "Aucun évènement", status_code=200, html=True)
+
     def test_navbar(self):
         event = EventFactory(date=timezone.now())
         event_in_the_future = EventFactory(date=event.date + relativedelta(months=1))
