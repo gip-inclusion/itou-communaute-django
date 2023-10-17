@@ -189,21 +189,15 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
 
 class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
     @respx.mock
-    def test_simple_logout(self):
+    def test_logout_with_redirection(self):
         mock_oauth_dance(self)
+        params = {
+            "id_token_hint": 123456,
+            "post_logout_redirect_uri": f'http://testserver{reverse("pages:home")}',
+        }
+        expected_redirection = f"{constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT}?{urlencode(params)}"
         respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
         logout_url = reverse("inclusion_connect:logout")
         response = self.client.get(logout_url)
-        self.assertRedirects(response, reverse("pages:home"))
         self.assertFalse(auth.get_user(self.client).is_authenticated)
-
-    @respx.mock
-    def test_logout_with_redirection(self):
-        mock_oauth_dance(self)
-        expected_redirection = reverse("pages:home")
-        respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
-
-        params = {"redirect_url": expected_redirection}
-        logout_url = f"{reverse('inclusion_connect:logout')}?{urlencode(params)}"
-        response = self.client.get(logout_url)
-        self.assertRedirects(response, expected_redirection)
+        self.assertRedirects(response, expected_redirection, fetch_redirect_response=False)

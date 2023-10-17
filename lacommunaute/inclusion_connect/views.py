@@ -151,8 +151,7 @@ def inclusion_connect_callback(request):  # pylint: disable=too-many-return-stat
 
 def inclusion_connect_logout(request):
     token = request.GET.get("token")
-    state = request.GET.get("state")
-    post_logout_redirect_url = request.GET.get("redirect_url", reverse("pages:home"))
+    post_logout_redirect_uri = request.GET.get("redirect_url", reverse("pages:home"))
 
     # Fallback on session data.
     if not token:
@@ -160,20 +159,13 @@ def inclusion_connect_logout(request):
         if not ic_session:
             raise KeyError("Missing session key.")
         token = ic_session["token"]
-        state = ic_session["state"]
 
     params = {
         "id_token_hint": token,
-        "state": state,
+        "post_logout_redirect_uri": request.build_absolute_uri(post_logout_redirect_uri),
     }
     complete_url = f"{constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT}?{urlencode(params)}"
-    # Logout user from IC with HTTPX to benefit from respx in tests
-    # and to handle post logout redirection more easily.
-    response = httpx.get(complete_url)
-    if response.status_code != 200:
-        logger.error("Error during IC logout. Status code: %s", response.status_code)
 
-    # Logout user from Django
     logout(request)
 
-    return HttpResponseRedirect(post_logout_redirect_url)
+    return HttpResponseRedirect(complete_url)
