@@ -963,7 +963,7 @@ msgid "No event yet"
 msgstr "Aucun évènement"
 
 msgid "Discussion area"
-msgstr "Espace d'échange"
+msgstr "Espace d'échanges"
 
 msgid "Documents"
 msgstr "Documentation"
