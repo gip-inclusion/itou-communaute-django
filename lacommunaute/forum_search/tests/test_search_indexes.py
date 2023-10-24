@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.management import call_command
 from django.urls import reverse
 
+from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 
@@ -138,3 +139,31 @@ def test_search_on_both_models(client, db, search_url, public_topics, public_for
     assert response.status_code == 200
     for word in query:
         assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+
+
+def test_non_public_forums_are_excluded(client, db, search_url):
+    for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
+        ForumFactory(kind=kind, name=f"invisible {i}")
+    call_command("rebuild_index", noinput=True, interactive=False)
+    response = client.get(search_url, {"q": "invisible"})
+    assert response.status_code == 200
+    assert "Aucun résultat" in response.content.decode("utf-8")
+
+
+def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
+    for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
+        TopicFactory(forum=ForumFactory(kind=kind), subject=f"invisible {i}", with_post=True)
+    call_command("rebuild_index", noinput=True, interactive=False)
+    response = client.get(search_url, {"q": "invisible"})
+    assert response.status_code == 200
+    assert "Aucun résultat" in response.content.decode("utf-8")
+
+
+def test_unapproved_post_is_exclude(client, db, search_url, public_forums):
+    topic = TopicFactory(forum=public_forums[0], with_post=True)
+    topic.first_post.approved = False
+    topic.first_post.save()
+    call_command("rebuild_index", noinput=True, interactive=False)
+    response = client.get(search_url, {"q": topic.first_post.content.raw.split()[0]})
+    assert response.status_code == 200
+    assert "Aucun résultat" in response.content.decode("utf-8")

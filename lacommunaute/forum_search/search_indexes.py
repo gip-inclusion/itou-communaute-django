@@ -1,5 +1,6 @@
 from haystack import indexes
 
+from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Post
 
@@ -47,10 +48,10 @@ class PostIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.topic.subject
 
     def index_queryset(self, using=None):
-        return Post.objects.all().exclude(approved=False)
+        return Post.objects.exclude(approved=False).exclude(topic__forum__kind=Forum_Kind.PRIVATE_FORUM)
 
     def read_queryset(self, using=None):
-        return Post.objects.all().exclude(approved=False).select_related("topic", "poster")
+        return self.index_queryset(using=using).select_related("topic", "poster")
 
 
 class ForumIndex(indexes.SearchIndex, indexes.Indexable):
@@ -85,7 +86,7 @@ class ForumIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.updated
 
     def index_queryset(self, using=None):
-        return Forum.objects.all()
+        return Forum.objects.filter(kind=Forum_Kind.PUBLIC_FORUM)
 
     def read_queryset(self, using=None):
-        return Forum.objects.all()
+        return self.index_queryset(using=using)
