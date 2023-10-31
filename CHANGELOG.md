@@ -1,5 +1,23 @@
 # Journal des modifications
 
+## v2.4 - 2023-10-31
+- [NPS] délai avant affichage sur la homepage à 10secondes (#456)
+- [NPS] ajout sous les résultats de recherche (#454)
+- [FORUM] Espace d'échanges - correction typo (#442)
+- [STATS] nommage des formulaires de recherche (#432)
+- [SEARCH] limiter l'indexation aux contenus publics (#451)
+- [INCLUSION_CONNECT] adapter l'authentification à la nouvelle version d'IC (#447)
+- [INCLUSION_CONNECT] mise à jour des urls (#444)
+- [EVENEMENT] patch #1 - mois sans evenement (#437)
+- [EVENEMENT] restaurer les evenements sans javascript (#433)
+- [TECH] montée en version pg 15 (#449)
+- [TECH] Mise à jour des dépendances (#441)
+- [TECH] fiabilisation d'un test (#436)
+- [TECH] qualité - reindexation des gabarits (#434)
+- [TECH] adaptation du scripts de rechargement des sauvegardes de DB suite à la mise à jour de itou-backups (#429)
+- [CONTENT_SECURITY_POLICIES] - patches (#430, #427, #425, #423)
+- README: update (#428)
+
 ## v2.2 - 2023-09-25
 - [STATS] un entonnoir adaptatif (#418)
 - [CONVERSATION] masquer le bouton "voir les 999 reponses" (fix) (#417)
