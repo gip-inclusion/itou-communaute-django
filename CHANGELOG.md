@@ -18,6 +18,8 @@
 - [CONTENT_SECURITY_POLICIES] - patches (#430, #427, #425, #423)
 - README: update (#428)
 
+sans v2.3
+
 ## v2.2 - 2023-09-25
 - [STATS] un entonnoir adaptatif (#418)
 - [CONVERSATION] masquer le bouton "voir les 999 reponses" (fix) (#417)
