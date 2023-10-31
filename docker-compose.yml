@@ -4,7 +4,7 @@ services:
 
   postgres:
     container_name: commu_postgres
-    image: postgres:14.5-alpine
+    image: postgres:15-alpine
     env_file:
       - .env
     shm_size: 64M
