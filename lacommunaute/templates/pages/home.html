@@ -12,6 +12,10 @@
 
 {% block content %}
 
+    {% url 'forum_conversation_extension:topics' as publicforum_url %}
+    {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
+    {% url 'forum_extension:documentation' as documentation_url %}
+
     <section class="s-hero-title-01 s-hero-title-01--communaute">
         <div class="s-hero-title-01__container container">
             <div class="s-hero-title-01__row row align-items-center">
@@ -74,6 +78,15 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ publicforum_url }}"
+                               class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="view"
+                               data-matomo-option="topics">
+                                <span>{% trans "See all questions" %}</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
@@ -99,6 +112,15 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ documentation_url }}"
+                               class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="view"
+                               data-matomo-option="documentation">
+                                <span>{% trans "See all docs" %}</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="s-section__col col-12 mb-3 mb-md-5">
@@ -123,6 +145,15 @@
                                     </li>
                                 {% endfor %}
                             </ul>
+                        </div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ newsfeed_url }}"
+                               class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="view"
+                               data-matomo-option="news">
+                                <span>{% trans "See all news" %}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
