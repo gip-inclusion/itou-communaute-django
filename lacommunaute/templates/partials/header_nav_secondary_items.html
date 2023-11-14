@@ -12,22 +12,31 @@
 
 <ul>
     <li class="col-12 col-lg-auto">
-        <a href="{{ home_url }}" class="{% if request.path == home_url %}is-active{% endif %}">
+        <a href="{{ home_url }}" class="{% if request.path == home_url %}is-active {% endif %}">
             Accueil
         </a>
     </li>
     <li class="col-12 col-lg-auto">
-        <a href="{{ publicforum_url }}" class="{% if request.path == publicforum_url %}is-active{% endif %}">
+        <a href="{{ publicforum_url }}" class="{% if request.path == publicforum_url %}is-active {% endif %}matomo-event"
+           data-matomo-category="engagement"
+           data-matomo-action="view"
+           data-matomo-option="topics">
             {% trans "Discussion area" %}
         </a>
     </li>
     <li>
-        <a href="{{ newsfeed_url }}" class="{% if request.path == newsfeed_url %}is-active{% endif %}">
+        <a href="{{ newsfeed_url }}" class="{% if request.path == newsfeed_url %}is-active {% endif %}matomo-event"
+           data-matomo-category="engagement"
+           data-matomo-action="view"
+           data-matomo-option="news_header">
             Actualités
         </a>
     </li>
     <li>
-        <a href="{{ documentation_url }}" class="{% if request.path == documentation_url %}is-active{% endif %}">
+        <a href="{{ documentation_url }}" class="{% if request.path == documentation_url %}is-active{% endif %}matomo-event"
+           data-matomo-category="engagement"
+           data-matomo-action="view"
+           data-matomo-option="documentation_header">
             {% trans "Documents" %}
         </a>
     </li>
