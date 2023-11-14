@@ -976,3 +976,7 @@ msgstr "Voir toute la documentation"
 
 msgid "See all news"
 msgstr "Voir toutes les actualités"
+
+msgid "New topic on doc"
+msgstr "Poser une question sur cette documentation"
+
