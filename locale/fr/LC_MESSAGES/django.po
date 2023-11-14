@@ -967,3 +967,12 @@ msgstr "Espace d'échanges"
 
 msgid "Documents"
 msgstr "Documentation"
+
+msgid "See all questions"
+msgstr "Voir toutes les questions"
+
+msgid "See all docs"
+msgstr "Voir toute la documentation"
+
+msgid "See all news"
+msgstr "Voir toutes les actualités"
