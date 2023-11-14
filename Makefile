@@ -63,9 +63,10 @@ psql:
 
 # Download last prod backup and inject it locally.
 # ----------------------------------------------------
-# Prerequisites:
 # - Clone the git `itou-backups` project first and run `make build`. https://github.com/betagouv/itou-backups
 # - Copy .env.template and set correct values.
+# - run `rclone copy --max-age 24h --progress communaute:/encrypted-backups ./backups` to collect last backup
+
 postgres_restore_latest_backup:
 	./scripts/import-latest-db-backup.sh
 
