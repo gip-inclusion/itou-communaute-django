@@ -30,7 +30,6 @@ django-permissions-policy = "^4.15.0"
 
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = "^0.16.2"
 black = "^23.3.0"
 flake8 = "^6.0.0"
 isort = "^5.12"
@@ -50,6 +49,7 @@ pygithub = "^1.57"
 pytest-xdist = "^3.2.1"
 pillow = "^10.0.0"
 moto = "^4.2.2"
+virtualenv = "^20.24.6"
 
 [build-system]
 requires = ["poetry-core"]
