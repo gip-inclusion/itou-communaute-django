@@ -48,39 +48,32 @@
                         {{forum.description.rendered|urlizetrunc_target_blank:30}}
                     </div>
                     <div class="col-12 col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                {% if user_can_add_topic %}
-                                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                                       rel="nofollow"
-                                       class="btn btn-primary btn-ico matomo-event"
-                                       data-matomo-category="engagement"
-                                       data-matomo-action="contribute"
-                                       data-matomo-option="new_topic_on_docs">
-                                        <i class="ri-chat-new-line ri-lg"></i>
-                                        <span>{% trans "New topic on doc" %}</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"
-                                   class="matomo-event h3 text-decoration-none d-inline-block"
-                                   data-matomo-category="engagement"
-                                   data-matomo-action="view"
-                                   data-matomo-option="forum">
-                                    Les autres fiches du thème
-                                </a>
-                                <ul class="nav nav-tabs flex-column">
-                                    {% for sibling_forum in forums %}
-                                        <li class="nav-item">
-                                            <a href="{% url 'forum_extension:forum' sibling_forum.slug sibling_forum.id %}" class="nav-link{% if forum.id == sibling_forum.id %} active{% endif %}">{{ sibling_forum.name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
+                        {% if user_can_add_topic %}
+                            <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                               rel="nofollow"
+                               class="btn btn-primary btn-block btn-ico matomo-event"
+                               data-matomo-category="engagement"
+                               data-matomo-action="contribute"
+                               data-matomo-option="new_topic_on_docs">
+                                <i class="ri-chat-new-line ri-lg"></i>
+                                <span>{% trans "New topic on doc" %}</span>
+                            </a>
+                            <hr>
+                        {% endif %}
+                        <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"
+                           class="matomo-event h3 text-decoration-none d-inline-block"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="forum">
+                            Les autres fiches du thème
+                        </a>
+                        <ul class="nav nav-tabs flex-column">
+                            {% for sibling_forum in forums %}
+                                <li class="nav-item">
+                                    <a href="{% url 'forum_extension:forum' sibling_forum.slug sibling_forum.id %}" class="nav-link{% if forum.id == sibling_forum.id %} active{% endif %}">{{ sibling_forum.name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             {% else %}
@@ -126,7 +119,7 @@
                                     <span>{% if forum.kind == 'NEWS' %}{% trans "New news" %}{% else %}{% trans "New topic" %}{% endif %}</span>
                                 </a>
                             {% endif %}
-                            {% if user_can_access_stats and forum.members_group%}
+                            {% if user_can_access_stats and forum.members_group %}
                                 <button id="id_dropdown_moderators_stats_button" class="btn btn-ico-only btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
                                 </button>
