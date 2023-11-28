@@ -10,6 +10,9 @@ from lacommunaute.metabase.models import ForumTable
 class Command(BaseCommand):
     help = "Extracts data for the metabase"
 
+    def truncate_forum_tables(self):
+        ForumTable.objects.all().delete()
+
     def extract_forum_tables(self, extracted_at):
         TYPE_CHOICES_DICT = {item[0]: item[1] for item in Forum.TYPE_CHOICES}
         forum_tables = []
@@ -45,6 +48,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         extracted_at = datetime.now()
 
+        self.truncate_forum_tables()
         self.extract_forum_tables(extracted_at)
 
         self.stdout.write(self.style.SUCCESS("That's all, folks!"))

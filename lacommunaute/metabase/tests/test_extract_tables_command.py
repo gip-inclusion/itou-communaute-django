@@ -3,6 +3,7 @@ from django.core.management import call_command
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.metabase.factories import ForumTableFactory
 from lacommunaute.metabase.models import ForumTable
 from lacommunaute.users.factories import UserFactory
 
@@ -35,3 +36,11 @@ def test_extract_forum_tables_command():
 
     child_forum_table = ForumTable.objects.get(name=category_forum_with_child.get_children().first().name)
     assert child_forum_table.parent_name == category_forum_with_child.name
+
+
+@pytest.mark.django_db
+def test_truncate_forum_table():
+    ForumTableFactory()
+    assert ForumTable.objects.count() == 1
+    call_command("extract_tables")
+    assert ForumTable.objects.count() == 0
