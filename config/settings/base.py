@@ -80,6 +80,7 @@ LOCAL_APPS = [
     "lacommunaute.inclusion_connect",
     "lacommunaute.pages",
     "lacommunaute.forum_file",
+    "lacommunaute.metabase",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTIES_APPS
