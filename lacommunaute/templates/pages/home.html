@@ -16,7 +16,37 @@
     {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
     {% url 'forum_extension:documentation' as documentation_url %}
 
-    <section class="s-hero-title-01 s-hero-title-01--communaute">
+    <section>
+        <div class="s-section__container container">
+            <div class="s-section__row row mt-3 mt-md-5">
+                <div class="s-section__col col-12">
+                    <div class="alert alert-info alert-dismissible fade show" role="status">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        <div class="row">
+                            <div class="col-auto pe-0">
+                                <i class="ri-chat-smile-2-line ri-xl text-info"></i>
+                            </div>
+                            <div class="col">
+                                <p class="mb-2"><strong>Lancez la discussion !</strong></p>
+                                <p class="mb-0">🤝 Partagez vos experiences et trouvez un binôme en insertion professionnelle.</p>
+                            </div>
+                            <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                <a href="https://tally.so/r/mOXyWK"
+                                   class="btn btn-sm btn-primary matomo-event"
+                                   data-matomo-category="binome"
+                                   data-matomo-action="click"
+                                   data-matomo-option="tally">
+                                    Trouver un binôme d'entraide
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-hero-title-01--communaute">
         <div class="s-hero-title-01__container container">
             <div class="s-hero-title-01__row row align-items-center">
                 <div class="s-hero-title-01__col s-hero-title-01__col--article col-12">
