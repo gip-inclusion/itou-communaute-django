@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
 
-{% block sub_title %}{{ event.name }}{% endblock sub_title %}
+{% block title %}{{ event.name }}{{ block.super }}{% endblock %}
 
 {% block content %}
     <section class="s-title-01 mt-lg-5">
