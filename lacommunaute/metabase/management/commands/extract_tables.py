@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db.models import BooleanField, Count, ExpressionWrapper, Q
 
 from lacommunaute.forum.models import Forum
-from lacommunaute.metabase.models import ForumTable
+from lacommunaute.metabase.models import ForumTable, PostTable
 
 
 class Command(BaseCommand):
@@ -12,6 +12,9 @@ class Command(BaseCommand):
 
     def truncate_forum_tables(self):
         ForumTable.objects.all().delete()
+
+    def truncate_post_tables(self):
+        PostTable.objects.all().delete()
 
     def extract_forum_tables(self, extracted_at):
         TYPE_CHOICES_DICT = {item[0]: item[1] for item in Forum.TYPE_CHOICES}
@@ -50,6 +53,8 @@ class Command(BaseCommand):
         extracted_at = datetime.now()
 
         self.truncate_forum_tables()
+        self.truncate_post_tables()
+
         self.extract_forum_tables(extracted_at)
 
         self.stdout.write(self.style.SUCCESS("That's all, folks!"))
