@@ -34,6 +34,14 @@
 
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
+
+            <!-- Matomo Tag Manager -->
+            <script nonce="{{ request.csp_nonce }}">
+                var _mtm = window._mtm = window._mtm || [];
+                _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.async=true; g.src='https://matomo.inclusion.beta.gouv.fr/js/container_GTln5jDH.js'; s.parentNode.insertBefore(g,s);
+            </script>
         {% endblock head %}
 
         {% block extra_head %}{% endblock %}
