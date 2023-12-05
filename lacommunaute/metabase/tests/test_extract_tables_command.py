@@ -3,8 +3,8 @@ from django.core.management import call_command
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
-from lacommunaute.metabase.factories import ForumTableFactory
-from lacommunaute.metabase.models import ForumTable
+from lacommunaute.metabase.factories import ForumTableFactory, PostTableFactory
+from lacommunaute.metabase.models import ForumTable, PostTable
 from lacommunaute.users.factories import UserFactory
 
 
@@ -44,3 +44,11 @@ def test_truncate_forum_table():
     assert ForumTable.objects.count() == 1
     call_command("extract_tables")
     assert ForumTable.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_truncate_post_table():
+    PostTableFactory()
+    assert PostTable.objects.count() == 1
+    call_command("extract_tables")
+    assert PostTable.objects.count() == 0
