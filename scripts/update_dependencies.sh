@@ -1,7 +1,5 @@
 #!/bin/sh
-echo "Hi, I'm going to update the dependencies and extract last PRS for the changelog"
-python ./scripts/changelog.py
-wait
+echo "Hi, I'm going to update the dependencies of the project"
 pre-commit autoupdate
 wait
 poetry lock
