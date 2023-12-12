@@ -41,9 +41,10 @@ class Command(BaseCommand):
                     extracted_at=extracted_at,
                 )
             )
-            self.stdout.write(self.style.SUCCESS(f"Extracted {forum.name}"))
+        self.stdout.write(self.style.SUCCESS(f"Extracted {len(forum_tables)} forums."))
 
         ForumTable.objects.bulk_create(forum_tables)
+        self.stdout.write(self.style.SUCCESS("Forums extracted."))
 
     def handle(self, *args, **options):
         extracted_at = datetime.now()
