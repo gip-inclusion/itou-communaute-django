@@ -8,12 +8,12 @@ repos:
       - id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/base.txt"]
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.11.0
     hooks:
       - id: black
         language_version: python3
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.1
     hooks:
       - id: isort
   - repo: https://github.com/PyCQA/flake8
