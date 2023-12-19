@@ -31,9 +31,6 @@
                                 {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
                             </div>
                         </div>
-                        {% block htmx %}
-                            {% include "forum_conversation/partials/topic_likes.html" %}
-                        {% endblock %}
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
