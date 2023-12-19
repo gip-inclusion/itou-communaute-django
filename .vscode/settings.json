@@ -2,14 +2,7 @@
     "python.analysis.autoImportCompletions": true,
     "python.analysis.completeFunctionParens": true,
     "python.envFile": "${workspaceFolder}/.envrc",
-    "python.formatting.provider": "none",
     "python.languageServer": "Pylance",
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.pylintArgs": [
-        "--disable=C0111", // missing docstring
-        "--load-plugins=pylint_django",
-    ],
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
     "html.format.wrapLineLength": 0,
@@ -19,36 +12,27 @@
         "**/requirements{/**,*}.{txt,in}": "pip-requirements"
     },
     "editor.formatOnSave": true,
-    "editor.wordBasedSuggestionsMode": "allDocuments",
     "editor.quickSuggestions": {
         "other": true,
         "comments": false,
         "strings": true
     },
-    "editor.wordBasedSuggestions": true,
+    "editor.wordBasedSuggestions": "matchingDocuments",
     "files.trimTrailingWhitespace": true,
     "html.format.enable": true,
     "[python]": {
-        "editor.wordBasedSuggestions": true,
+        "editor.wordBasedSuggestions": "matchingDocuments",
         "editor.quickSuggestions": {
             "other": true,
             "comments": false,
             "strings": true
         },
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         },
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "security.workspace.trust.untrustedFiles": "open",
-    "emeraldwalk.runonsave": {
-        "commands": [
-            {
-                "match": "\\.html$",
-                "cmd": "djhtml --in-place ${file}"
-            }
-        ]
-    },
     "explorer.confirmDragAndDrop": false,
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "python.defaultInterpreterPath": "./.venv/bin/python"
 }
