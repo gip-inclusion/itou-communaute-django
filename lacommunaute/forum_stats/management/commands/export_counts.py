@@ -16,15 +16,6 @@ def export_users():
             writer.writerow([user["email"], user["date_joined"], user["last_login"]])
 
 
-def export_likes():
-    qs = User.objects.values("email").order_by("email").annotate(likes=Count("topic_likes"))
-    with open("exports/likes.csv", "w") as f:
-        writer = csv.writer(f)
-        writer.writerow(["email", "likes"])
-        for user in qs:
-            writer.writerow([user["email"], user["likes"]])
-
-
 def export_upvotes():
     qs = User.objects.values("email").order_by("email").annotate(upvotes=Count("upvotes"))
     with open("exports/upvotes.csv", "w") as f:
@@ -96,9 +87,6 @@ class Command(BaseCommand):
     def handle(self, **options):
         print("Exporting users...")
         export_users()
-
-        print("Exporting likes...")
-        export_likes()
 
         print("Exporting upvotes...")
         export_upvotes()
