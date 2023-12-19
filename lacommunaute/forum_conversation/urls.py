@@ -8,14 +8,12 @@ from lacommunaute.forum_conversation.views_htmx import (
     PostListView,
     TopicCertifiedPostView,
     TopicContentView,
-    TopicLikeView,
 )
 
 
 app_name = "forum_conversation_extension"
 
 conversation_urlpatterns = [
-    path("topic/<str:slug>-<int:pk>/like", TopicLikeView.as_view(), name="like_topic"),
     path("topic/<str:slug>-<int:pk>/showmore/topic", TopicContentView.as_view(), name="showmore_topic"),
     path("topic/<str:slug>-<int:pk>/showmore/posts", PostListView.as_view(), name="showmore_posts"),
     path("topic/<str:slug>-<int:pk>/showmore/certified", TopicCertifiedPostView.as_view(), name="showmore_certified"),
