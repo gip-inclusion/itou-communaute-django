@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -91,18 +90,6 @@ class TopicCreateViewTest(TestCase):
             response, '/post/delete/" title="Supprimer" role="button" class="btn btn-outline-danger">Supprimer</a>'
         )
 
-    def test_topic_poster_is_added_to_likers_list(self, *args):
-        self.client.force_login(self.poster)
-
-        response = self.client.post(
-            self.url,
-            self.post_data,
-            follow=True,
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, Topic.objects.count())
-        self.assertEqual(1, Topic.objects.first().likers.count())
-
     def test_topic_create_as_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
 
@@ -119,7 +106,6 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(self.post_data["subject"], topic.first_post.subject)
         self.assertEqual(self.post_data["content"], topic.first_post.content.raw)
         self.assertEqual(self.post_data["username"], topic.first_post.username)
-        self.assertEqual(0, topic.likers.count())
         self.assertTrue(topic.approved)
         self.assertTrue(topic.first_post.approved)
 
@@ -382,43 +368,6 @@ class TopicViewTest(TestCase):
         }
         cls.url = reverse("forum_conversation:topic", kwargs=cls.kwargs)
 
-    def test_has_liked(self):
-        self.topic.likers.add(self.poster)
-        self.topic.save()
-
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
-
-    def test_has_not_liked(self):
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
-
-    def test_pluralized_likes(self):
-        self.topic.likers.add(UserFactory())
-        self.topic.likers.add(UserFactory())
-        self.topic.save()
-
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>2</span>')
-
-    def test_anonymous_like(self):
-        assign_perm("can_read_forum", AnonymousUser(), self.topic.forum)
-        params = {"next": self.url}
-        url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
-
-        response = self.client.get(self.url)
-        self.assertContains(response, url)
-
-        self.client.force_login(self.poster)
-        response = self.client.get(self.url)
-        self.assertNotContains(response, url)
-
     def test_post_has_no_upvote(self):
         PostFactory(topic=self.topic, poster=self.poster)
         self.client.force_login(self.poster)
@@ -487,7 +436,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(38):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -497,7 +446,7 @@ class TopicListViewTest(TestCase):
     def setUpTestData(cls):
         cls.url = reverse("forum_conversation_extension:topics")
         cls.forum = ForumFactory(with_public_perms=True)
-        cls.topic = TopicFactory(with_post=True, with_like=True, forum=cls.forum)
+        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
         cls.user = cls.topic.poster
 
     def test_context(self):
@@ -520,12 +469,6 @@ class TopicListViewTest(TestCase):
 
         response = self.client.get(self.url + "?filter=FAKE")
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-
-    def test_has_liked(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
 
     def test_queryset(self):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
