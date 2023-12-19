@@ -64,21 +64,6 @@ class TopicManagerTest(TestCase):
         self.assertIn(sticky, qs)
         self.assertIn(topic, qs)
 
-    def test_optimized_for_topics_list_likes(self):
-        topic = TopicFactory(with_post=True)
-
-        instance = Topic.objects.optimized_for_topics_list(topic.poster.id).first()
-
-        self.assertEqual(instance.likes, 0)
-        self.assertEqual(False, instance.has_liked)
-
-        topic.likers.add(topic.poster)
-
-        instance = Topic.objects.optimized_for_topics_list(topic.poster.id).first()
-
-        self.assertEqual(instance.likes, 1)
-        self.assertEqual(True, instance.has_liked)
-
     def test_optimized_for_topics_list_order(self):
         topic1 = TopicFactory(with_post=True)
         topic2 = TopicFactory(with_post=True)
@@ -223,13 +208,6 @@ class TopicModelTest(TestCase):
         PostFactory(topic=topic)
         self.assertEqual(topic.mails_to_notify(), sorted([topic.poster.email, post.poster.email]))
 
-    def test_mails_to_notify_authenticated_liker(self):
-        liker = UserFactory()
-        topic = TopicFactory(with_post=True)
-        topic.likers.add(liker)
-
-        self.assertEqual(topic.mails_to_notify(), [liker.email])
-
     def test_mails_to_notify_authenticated_upvoters(self):
         upvoter = UserFactory()
         topic = TopicFactory(with_post=True)
@@ -246,7 +224,6 @@ class TopicModelTest(TestCase):
 
     def test_mails_to_notify_deduplication(self):
         topic = TopicFactory(with_post=True)
-        topic.likers.add(topic.poster)
         UpVote.objects.create(content_object=topic.first_post, voter=topic.poster)
 
         PostFactory(topic=topic)

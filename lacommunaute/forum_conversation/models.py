@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Count, Exists, F, OuterRef, Q
+from django.db.models import Count, F, Q
 from django.urls import reverse
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from machina.models.abstract_models import DatedModel
@@ -26,8 +26,6 @@ class TopicQuerySet(models.QuerySet):
         return (
             self.exclude(approved=False)
             .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
-            .annotate(likes=Count("likers"))
-            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=user_id)))
             .select_related(
                 "forum",
                 "poster",
@@ -86,13 +84,6 @@ class TopicQuerySet(models.QuerySet):
 
 
 class Topic(AbstractTopic):
-    likers = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="topic_likes",
-        blank=True,
-        verbose_name=("Likers"),
-    )
-
     tags = TaggableManager()
 
     def get_absolute_url(self, with_fqdn=False):
@@ -115,7 +106,6 @@ class Topic(AbstractTopic):
     def mails_to_notify(self):
         # we want to notify stakeholders of the topic, except the last poster.
         # stakeholders are:
-        # - authenticated users who liked the topic
         # - authenticated users who upvoted one of the posts of the topic
         # - authenticated users who posted in the topic
         # - anonymous users who posted in the topic
@@ -126,8 +116,7 @@ class Topic(AbstractTopic):
 
         authenticated_qs = (
             User.objects.filter(
-                Q(topic_likes=self)
-                | Q(
+                Q(
                     upvotes__content_type=ContentType.objects.get_for_model(Post),
                     upvotes__object_id__in=self.posts.values("id"),
                 )
