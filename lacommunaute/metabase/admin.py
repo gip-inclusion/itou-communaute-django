@@ -27,7 +27,6 @@ class ForumTableAdmin(admin.ModelAdmin):
 class PostTableAdmin(admin.ModelAdmin):
     readonly_fields = (
         "subject",
-        "subject_likes_count",
         "forum_name",
         "poster",
         "is_anonymous_post",
