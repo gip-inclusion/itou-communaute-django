@@ -35,8 +35,6 @@ class TopicCreateView(FormValidMixin, views.TopicCreateView):
 
     def form_valid(self, *args, **kwargs):
         valid = super().form_valid(*args, **kwargs)
-        if self.request.user.is_authenticated:
-            self.forum_post.topic.likers.add(self.request.user)
         return valid
 
     def get_success_url(self):
