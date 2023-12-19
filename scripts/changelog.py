@@ -4,7 +4,6 @@ from github import Github
 
 
 if __name__ == "__main__":
-
     GITHUB_ACCESS_TOKEN = os.getenv("GITHUB_ACCESS_TOKEN", None)
     GITHUB_REPO = os.getenv("GITHUB_REPO", None)
 

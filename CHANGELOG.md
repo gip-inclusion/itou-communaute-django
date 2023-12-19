@@ -1,5 +1,22 @@
 # Journal des modifications
 
+## v2.5 - 2023-12-19
+
+- [HOME] Ajout de raccourcis (#465)
+- [HOME] Mise a jour du contenu de la déclaration d'accessibilité (#466)
+- [HOME] Bannière "les 2 font la paires" (#462)
+- [CONVERSATION] Correction de la mise en forme des icones et photo thumbnail (#472)
+- [DOCUMENTATION] Poser une question en haut de doc (#464)
+- [LIKES] Suppression de la fonctionnalité (#475)
+- [EVENEMENT] Correction du titre de la page de détail (#468)
+- [STATS] Ajout du tag manager matomo (#470)
+- [PILOTAGE] Extraction des données Post (part 2) (#471)
+- [PILOTAGE] Extraction des données Forum (part 1) (#469)
+- [SETTINGS] Update vscode settings (#474)
+- [SETTINGS] Update dependencies (#460 & #467 & #473)
+- [SETTINGS] Test deploiement automatique après bascule du repo (#463)
+- [SETTINGS] Ajout commentaire RCLONE dans le fichier Makefile(#459)
+
 ## v2.4 - 2023-10-31
 - [NPS] délai avant affichage sur la homepage à 10secondes (#456)
 - [NPS] ajout sous les résultats de recherche (#454)
