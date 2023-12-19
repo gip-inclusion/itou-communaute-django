@@ -9,6 +9,7 @@
 {% url 'forum_extension:documentation' as documentation_url %}
 {% url 'event:current' as calendar_url %}
 {% url 'forum_search_extension:search' as search_url %}
+{% url 'surveys:dsp_create' as dsp_url %}
 
 <ul>
     <li class="col-12 col-lg-auto">
@@ -45,4 +46,11 @@
             {% trans "Events" %}
         </a>
     </li>
+    {% if request.user.is_superuser %}
+        <li>
+            <a href="{{ dsp_url }}">
+                Diagnostic socio-professionnel
+            </a>
+        </li>
+    {% endif %}
 </ul>
