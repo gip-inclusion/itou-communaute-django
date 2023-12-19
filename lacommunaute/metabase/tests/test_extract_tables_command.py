@@ -48,13 +48,12 @@ def test_extract_forum_tables_command():
 
 @pytest.mark.django_db
 def test_extract_post_tables_command():
-    topic = TopicFactory(with_like=True, with_certified_post=True)
+    topic = TopicFactory(with_certified_post=True)
 
     call_command("extract_tables")
     assert PostTable.objects.count() == 2  # 1 for the post of the topic, 1 for the certified post
     posttable = PostTable.objects.first()
     assert posttable.subject == topic.subject
-    assert posttable.subject_likes_count == 1
     assert posttable.forum_name == topic.forum.name
     assert posttable.poster == topic.poster.username
     assert posttable.is_anonymous_post is False

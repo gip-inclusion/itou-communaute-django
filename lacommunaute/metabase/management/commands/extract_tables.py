@@ -77,7 +77,6 @@ class Command(BaseCommand):
             post_tables.append(
                 PostTable(
                     subject=post.topic.subject,
-                    subject_likes_count=post.topic.likers.count(),
                     forum_name=post.topic.forum.name,
                     poster=_resolve_analytics_username(post),
                     is_anonymous_post=True if post.username else False,

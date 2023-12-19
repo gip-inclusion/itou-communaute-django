@@ -31,7 +31,6 @@ class ForumTable(models.Model):
 
 class PostTable(models.Model):
     subject = models.CharField(max_length=255, verbose_name="Sujet")
-    subject_likes_count = models.PositiveIntegerField(default=0, verbose_name="Nombre de likes du sujet")
     forum_name = models.CharField(max_length=100, verbose_name="Nom du forum")
     poster = models.CharField(max_length=64, verbose_name="Identifiant de l'auteur")
     is_anonymous_post = models.BooleanField(default=False, verbose_name="Anonyme")
