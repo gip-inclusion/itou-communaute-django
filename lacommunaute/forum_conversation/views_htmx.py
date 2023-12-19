@@ -52,40 +52,6 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
         return self.get_forum()
 
 
-class TopicLikeView(PermissionRequiredMixin, View):
-    permission_required = [
-        "can_read_forum",
-    ]
-
-    def get_topic(self):
-        if not hasattr(self, "topic"):
-            self.topic = get_object_or_404(
-                Topic.objects.select_related("forum").all(),
-                pk=self.kwargs["pk"],
-            )
-        return self.topic
-
-    def post(self, request, **kwargs):
-        topic = self.get_topic()
-
-        if not topic.likers.filter(id=request.user.id).exists():
-            topic.likers.add(request.user)
-            topic.has_liked = True
-        else:
-            topic.likers.remove(request.user)
-            topic.has_liked = False
-
-        topic.save()
-        topic.likes = topic.likers.count()
-
-        track_handler.mark_topic_read(topic, request.user)
-
-        return render(request, "forum_conversation/partials/topic_likes.html", context={"topic": topic})
-
-    def get_controlled_object(self):
-        return self.get_topic().forum
-
-
 class TopicContentView(PermissionRequiredMixin, View):
     template = "forum_conversation/partials/topic_content.html"
     permission_required = [
