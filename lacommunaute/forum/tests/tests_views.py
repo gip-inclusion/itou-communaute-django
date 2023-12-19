@@ -2,7 +2,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
-from django.utils.http import urlencode
 from faker import Faker
 from machina.core.loading import get_class
 
@@ -57,20 +56,6 @@ class ForumViewQuerysetTest(TestCase):
     def test_pagination(self):
         self.assertEqual(10, self.view.paginate_by)
 
-    def test_has_liked(self):
-        TopicFactory(forum=self.forum, poster=self.user, with_like=True)
-
-        first_topic = self.view.get_queryset().first()
-        self.assertEqual(first_topic.likes, 1)
-        self.assertTrue(first_topic.has_liked)
-
-    def test_has_not_liked(self):
-        TopicFactory(forum=self.forum, poster=self.user)
-
-        first_topic = self.view.get_queryset().first()
-        self.assertEqual(first_topic.likes, 0)
-        self.assertFalse(first_topic.has_liked)
-
 
 class ForumViewTest(TestCase):
     @classmethod
@@ -122,45 +107,6 @@ class ForumViewTest(TestCase):
         self.assertContains(response, f'hx-get="{topic_url}"', status_code=200)
         self.assertContains(response, "+ voir la suite")
         self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
-
-    def test_has_liked(self):
-        TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        # icon: solid heart
-        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
-
-    def test_has_not_liked(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        # icon: regular heart (outlined)
-        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
-
-    def test_has_liked_TOPIC_ANNOUNCE(self):
-        TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_like=True, type=Topic.TOPIC_ANNOUNCE)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-fill me-1" aria-hidden="true"></i><span>1</span>')
-
-    def test_has_not_liked_TOPIC_ANNOUNCE(self):
-        TopicFactory(forum=self.forum, poster=self.user, with_post=True, type=Topic.TOPIC_ANNOUNCE)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertContains(response, '<i class="ri-heart-3-line me-1" aria-hidden="true"></i><span>0</span>')
-
-    def test_anonymous_like(self):
-        params = {"next": self.url}
-        url = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
-
-        response = self.client.get(self.url)
-        self.assertContains(response, url)
-
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertNotContains(response, url)
 
     def test_moderator_links(self):
         self.client.force_login(self.user)

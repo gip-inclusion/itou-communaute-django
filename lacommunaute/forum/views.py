@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Count, Exists, OuterRef
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.views.generic import ListView
@@ -14,7 +13,6 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.users.models import User
 
 
 logger = logging.getLogger(__name__)
@@ -60,8 +58,6 @@ class ForumView(BaseForumView):
                 "forum",
             )
             .filter(type=Topic.TOPIC_ANNOUNCE)
-            .annotate(likes=Count("likers"))
-            .annotate(has_liked=Exists(User.objects.filter(topic_likes=OuterRef("id"), id=self.request.user.id)))
         )
         if forum.parent and forum.parent.type == Forum.FORUM_CAT:
             context["forums"] = Forum.objects.filter(parent=forum.parent).order_by("lft")
