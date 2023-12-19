@@ -88,8 +88,6 @@ class PostDeleteView(views.PostDeleteView):
 class TopicView(views.TopicView):
     def get_topic(self):
         topic = super().get_topic()
-        topic.has_liked = self.topic.likers.filter(id=self.request.user.id).exists()
-        topic.likes = self.topic.likers.count()
         return topic
 
     def get_context_data(self, **kwargs):
