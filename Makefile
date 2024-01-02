@@ -1,4 +1,4 @@
-.PHONY: console migrate migrations server dependencies
+.PHONY: console migrate migrations server
 
 # DEVELOPMENT
 # ~~~~~~~~~~~
@@ -18,15 +18,12 @@ migrations:
 server:
 	python manage.py runserver
 
-dependencies:
-	poetry lock; poetry run poe export; poetry run poe export_dev
-
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
 # The following rules can be used to check code quality, import sorting, etc.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: quality fix pylint tests
+.PHONY: quality fix pylint test
 quality:
 	black --check lacommunaute
 	isort --check --profile black lacommunaute
@@ -41,7 +38,7 @@ fix:
 pylint:
 	pylint lacommunaute
 
-tests:
+test:
 	pytest --numprocesses=logical --create-db
 
 # Docker shell.
