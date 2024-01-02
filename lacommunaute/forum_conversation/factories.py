@@ -13,6 +13,9 @@ class PostFactory(BasePostFactory):
     content = factory.Faker("sentence", nb_words=40)
     poster = factory.SubFactory(UserFactory)
 
+    class Meta:
+        skip_postgeneration_save = True
+
     @factory.post_generation
     def upvoted_by(self, create, extracted, **kwargs):
         if not create or not extracted:
@@ -37,6 +40,9 @@ class TopicFactory(BaseTopicFactory):
     poster = factory.SubFactory(UserFactory)
     subject = factory.Faker("sentence", nb_words=5)
     type = Topic.TOPIC_POST
+
+    class Meta:
+        skip_postgeneration_save = True
 
     class Params:
         with_post = factory.Trait(

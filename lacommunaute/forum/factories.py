@@ -18,6 +18,9 @@ class ForumFactory(BaseForumFactory):
     description = factory.Faker("sentence", nb_words=100)
     short_description = factory.Faker("sentence", nb_words=10)
 
+    class Meta:
+        skip_postgeneration_save = True
+
     @factory.post_generation
     def with_public_perms(self, create, extracted, **kwargs):
         if not create or not extracted:
