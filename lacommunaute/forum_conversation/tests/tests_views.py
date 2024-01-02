@@ -598,7 +598,7 @@ class NewsFeedTopicListViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context_data["topics"], [topic for topic in news_topics[::-1]])
+        self.assertQuerySetEqual(response.context_data["topics"], [topic for topic in news_topics[::-1]])
 
     def test_context_data(self):
         response = self.client.get(self.url)
