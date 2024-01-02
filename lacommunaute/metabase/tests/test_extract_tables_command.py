@@ -123,7 +123,7 @@ def test_extract_upvoted_post_tables_command():
     assert upvoted_posttable.post_upvotes_count == 1
 
 
-@override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+@override_settings(STORAGES={"default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}})
 @pytest.mark.django_db
 def test_extract_post_with_attachments_tables_command():
     topic = TopicFactory(with_post=True)

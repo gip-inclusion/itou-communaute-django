@@ -27,6 +27,8 @@ faker = Faker()
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
+override_storage = {"default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}}
+
 
 class AttachmentsTemplateTagTests(TestCase):
     @classmethod
@@ -34,7 +36,7 @@ class AttachmentsTemplateTagTests(TestCase):
         topic = TopicFactory(with_post=True)
         cls.post = topic.posts.first()
 
-    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    @override_settings(STORAGES=override_storage)
     def test_is_an_image(self):
         for filename in ["test.png", "test.jpg", "test.JPG", "test.jpeg", "test.JPEG"]:
             with self.subTest(filename=filename):
@@ -50,7 +52,7 @@ class AttachmentsTemplateTagTests(TestCase):
                 )
                 self.assertEqual(out, "True")
 
-    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    @override_settings(STORAGES=override_storage)
     def test_is_not_an_image(self):
         for filename in ["test.csv", "test.xlsx", "test.pdf", "test.html"]:
             with self.subTest(filename=filename):
@@ -66,7 +68,7 @@ class AttachmentsTemplateTagTests(TestCase):
                 )
                 self.assertEqual(out, "False")
 
-    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    @override_settings(STORAGES=override_storage)
     def test_is_available(self):
         f = SimpleUploadedFile("test.png", force_bytes("file_content"))
         attachment = AttachmentFactory(post=self.post, file=f)
@@ -80,7 +82,7 @@ class AttachmentsTemplateTagTests(TestCase):
         )
         self.assertEqual(out, "True")
 
-    @override_settings(DEFAULT_FILE_STORAGE="django.core.files.storage.FileSystemStorage")
+    @override_settings(STORAGES=override_storage)
     def test_is_not_available(self):
         f = SimpleUploadedFile("test.png", force_bytes("file_content"))
         attachment = AttachmentFactory(post=self.post, file=f)
