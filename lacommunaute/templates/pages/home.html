@@ -4,6 +4,7 @@
 {% load forum_permission_tags %}
 {% load mptt_tags %}
 {% load forum_tags %}
+{% load date_filters %}
 {% block title %}Accueil{{ block.super }}{% endblock %}
 {% block meta_description %}
     Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.
@@ -95,6 +96,7 @@
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
                                            data-matomo-option="topic">{{ topic.subject }}</a>
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=topic.first_post.poster_display_name created=topic.created only %}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -116,7 +118,10 @@
                             <ul class="list-unstyled mb-lg-5">
                                 {% for forum in forums_category %}
                                     <li class="mb-3 position-relative">
-                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">[{{ forum.parent.name }}] {{ forum.name }}</a>
+                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
+                                            [{{ forum.parent.name }}] {{ forum.name }}
+                                        </a>
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=None created=forum.created only %}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -143,6 +148,7 @@
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
                                            data-matomo-option="news">{{ topic.subject }}</a>
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=None created=topic.created only %}
                                     </li>
                                 {% endfor %}
                             </ul>

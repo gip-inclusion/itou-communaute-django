@@ -1,0 +1,5 @@
+{% load date_filters %}
+<small class="text-muted">
+    {% if poster %}par : {{ poster }},{% endif %}
+    {{ created|relativetimesince_fr }}
+</small>
