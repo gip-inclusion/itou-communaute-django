@@ -26,14 +26,13 @@ server:
 .PHONY: quality fix pylint test
 quality:
 	black --check lacommunaute
-	isort --check --profile black lacommunaute
-	flake8 lacommunaute --count --show-source --statistics
+	ruff check lacommunaute
+	djlint --lint --check lacommunaute
 
 fix:
 	black lacommunaute
-	isort --profile black lacommunaute
-	flake8 lacommunaute
-	djhtml $(shell find lacommunaute/templates -name "*.html")
+	ruff check --fix lacommunaute
+	djlint --reformat lacommunaute
 
 pylint:
 	pylint lacommunaute

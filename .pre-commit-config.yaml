@@ -7,23 +7,20 @@ repos:
         args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev",]
       - id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/base.txt"]
-  - repo: https://github.com/psf/black
-    rev: 23.11.0
+  - repo: local
     hooks:
       - id: black
-        language_version: python3
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        language_version: python3
-  - repo: https://github.com/rtts/djhtml
-    rev: '3.0.6'  # replace with the latest tag on GitHub
-    hooks:
-      - id: djhtml
-      - id: djcss
-      - id: djjs
+        name: Black
+        entry: black
+        types: [python]
+        language: system
+      - id: ruff
+        name: Ruff
+        entry: ruff
+        types: [python]
+        language: system
+      - id: djlint
+        name: djlint
+        entry: djlint --reformat
+        types: [html]
+        language: system
