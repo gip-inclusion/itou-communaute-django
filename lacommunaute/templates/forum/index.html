@@ -2,21 +2,15 @@
 {% load i18n %}
 {% load mptt_tags %}
 {% load forum_tags %}
-
-{% block title %}{% trans "Index" %}{{ block.super }}{% endblock %}
-
+{% block title %}
+    {% trans "Index" %}{{ block.super }}
+{% endblock %}
 {% block content %}
     <section class="s-section mt-0">
         <div class="s-section__container container">
             <div class="s-section__row row mt-5">
-                <div class="s-section__col col-12">
-
-                    {% forum_list forums %}
-
-                </div>
+                <div class="s-section__col col-12">{% forum_list forums %}</div>
             </div>
         </div>
     </section>
-
-
 {% endblock content %}

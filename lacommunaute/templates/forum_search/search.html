@@ -1,12 +1,11 @@
 {% extends "layouts/base.html" %}
-
 {% load i18n %}
 {% load highlight %}
 {% load date_filters %}
 {% load str_filters %}
-
-{% block title %}{% trans "Search" %}{{ block.super }}{% endblock %}
-
+{% block title %}
+    {% trans "Search" %}{{ block.super }}
+{% endblock %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
@@ -17,17 +16,13 @@
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="row">
                 <div class="col-12">
-                    <div class="c-box">
-                        {% include "forum_search/search_form.html" %}
-                    </div>
+                    <div class="c-box">{% include "forum_search/search_form.html" %}</div>
                 </div>
             </div>
-
             {% if query %}
                 <div class="row mt-3">
                     <div class="col-12">
@@ -46,22 +41,20 @@
                                                                class="btn-link stretched-link btn-ico matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
-                                                               data-matomo-option="topic"
-                                                            >
+                                                               data-matomo-option="topic">
                                                                 <i class="ri-user-line ri-lg" aria-hidden="true"></i>
                                                                 <span>{{ result.topic_subject }}</span>
-                                                            </a><br>
+                                                            </a>
+                                                            <br>
                                                             <small class="text-muted">
                                                                 {% spaceless %}
                                                                     {% blocktrans trimmed with poster_username=result.poster_name creation_date=result.created %}
                                                                         By: {{ poster_username }},
                                                                     {% endblocktrans %}
                                                                 {% endspaceless %}
-                                                                {{result.created|relativetimesince_fr}}
+                                                                {{ result.created|relativetimesince_fr }}
                                                             </small>
-                                                            <div>
-                                                                {% highlight result.text with request.GET.q max_lenght 800 %}
-                                                            </div>
+                                                            <div>{% highlight result.text with request.GET.q max_lenght 800 %}</div>
                                                         </td>
                                                     </tr>
                                                 {% else %}
@@ -71,20 +64,18 @@
                                                                class="btn-link btn-ico stretched-link matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
-                                                               data-matomo-option="forum"
-                                                            >
+                                                               data-matomo-option="forum">
                                                                 <i class="ri-article-line" aria-hidden="true"></i>
                                                                 <span>{{ result.forum_name }}</span>
-                                                            </a><br>
+                                                            </a>
+                                                            <br>
                                                             <small class="text-muted">
                                                                 {% spaceless %}
                                                                     Fiche mise à jour
                                                                 {% endspaceless %}
-                                                                {{result.forum_updated|relativetimesince_fr}}
+                                                                {{ result.forum_updated|relativetimesince_fr }}
                                                             </small>
-                                                            <div>
-                                                                {% highlight result.text with request.GET.q max_lenght 800 %}
-                                                            </div>
+                                                            <div>{% highlight result.text with request.GET.q max_lenght 800 %}</div>
                                                         </td>
                                                     </tr>
                                                 {% endif %}
@@ -108,14 +99,20 @@
             {% endif %}
         </div>
     </section>
-
     {% if page.paginator.count %}
         <section class="s-section">
             <div class="s-section__container container">
                 <div class="row">
                     <div class="col-12">
                         <div class="c-box">
-                            <iframe data-tally-src="https://tally.so/embed/3xDBMv?hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="262" frameborder="0" marginheight="0" marginwidth="0" title="NPS - Communauté"></iframe>
+                            <iframe data-tally-src="https://tally.so/embed/3xDBMv?hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                                    loading="lazy"
+                                    width="100%"
+                                    height="262"
+                                    frameborder="0"
+                                    marginheight="0"
+                                    marginwidth="0"
+                                    title="NPS - Communauté"></iframe>
                         </div>
                     </div>
                 </div>
@@ -123,9 +120,7 @@
         </section>
     {% endif %}
 {% endblock content %}
-
 {% block extra_js %}
     {{ block.super }}
     <script async src="https://tally.so/widgets/embed.js"></script>
 {% endblock extra_js %}
-

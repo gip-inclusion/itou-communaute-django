@@ -2,21 +2,20 @@
 {% load str_filters %}
 {% load js_filters %}
 {% load static %}
-
 {% block title %}Statistiques{{ block.super }}{% endblock %}
 {% block body_class %}p-statistiques{{ block.super }}{% endblock %}
-
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>Statistiques</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>Statistiques</strong>
+                    </h1>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -37,12 +36,10 @@
                                     </div>
                                     <div>
                                         <span class="display-3 text-white mb-3">Utilisateurs engagés</span>
-                                        <span class="h2 mb-3 text-white">{{nb_uniq_engaged_visitors }}</span>
+                                        <span class="h2 mb-3 text-white">{{ nb_uniq_engaged_visitors }}</span>
                                         <span class="fs-sm">{{ engagement_percent }}% des util. actifs</span>
                                     </div>
-                                    <figcaption class="fs-sm text-muted mt-3">
-                                        Période : {{ period }}
-                                    </figcaption>
+                                    <figcaption class="fs-sm text-muted mt-3">Période : {{ period }}</figcaption>
                                 </figure>
                             </div>
                             <div class="col-12 col-lg-6">
@@ -82,7 +79,6 @@
         </div>
     </section>
 {% endblock %}
-
 {% block extra_js %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
@@ -91,19 +87,32 @@
         new Chart(ctx_stats, {
             type: 'line',
             data: {
-                labels: {{ stats.date | js }},
-                datasets: [
+                labels: {
                     {
+                        stats.date | js
+                    }
+                },
+                datasets: [{
                         label: 'Utilisateurs',
-                        data: {{ stats.nb_uniq_visitors | js }},
-                    },
-                    {
+                        data: {
+                            {
+                                stats.nb_uniq_visitors | js
+                            }
+                        },
+                    }, {
                         label: 'Utilisateurs actifs',
-                        data: {{ stats.nb_uniq_active_visitors | js }},
-                    },
-                    {
+                        data: {
+                            {
+                                stats.nb_uniq_active_visitors | js
+                            }
+                        },
+                    }, {
                         label: 'Utilisateurs engagés',
-                        data: {{ stats.nb_uniq_engaged_visitors | js }},
+                        data: {
+                            {
+                                stats.nb_uniq_engaged_visitors | js
+                            }
+                        },
                     },
 
                 ]

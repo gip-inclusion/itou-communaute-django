@@ -1,15 +1,11 @@
 {% load i18n %}
-
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
 {% load str_filters %}
-
 {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
-
-<div id="showmorepostsarea{{topic.pk}}">
+<div id="showmorepostsarea{{ topic.pk }}">
     {% for post in posts %}
-        <div class="card post mb-3 {% if post.is_certified %}bg-communaute-lighter border-communaute {% else %}bg-light {% endif %} has-links-inside ms-3"
-             id="certifiedpostsarea{{post.pk}}">
+        <div class="card post mb-3 {% if post.is_certified %}bg-communaute-lighter border-communaute {% else %}bg-light {% endif %} has-links-inside ms-3" id="certifiedpostsarea{{ post.pk }}">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 post-content-wrapper">
@@ -20,11 +16,11 @@
                             </div>
                             <div>
                                 {% include "forum_conversation/partials/post_certified_badge.html" %}
-                                {% include "partials/upvotes.html" with obj=post kind="post"%}
+                                {% include "partials/upvotes.html" with obj=post kind="post" %}
                             </div>
                         </div>
                         <div class="post-content">
-                            {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid}}
+                            {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid }}
                             {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                         </div>
                         {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=post user_can_download_files=user_can_download_files %}
@@ -33,7 +29,7 @@
             </div>
         </div>
     {% endfor %}
-    <div id="postinfeedarea{{topic.pk}}">
+    <div id="postinfeedarea{{ topic.pk }}">
         {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form inline=1 %}
     </div>
 </div>

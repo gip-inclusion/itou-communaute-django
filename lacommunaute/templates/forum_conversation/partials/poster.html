@@ -1,25 +1,17 @@
 {% load i18n %}
 {% load forum_member_tags %}
 {% load date_filters %}
-
 {% if actions %}
     {% load forum_permission_tags %}
     {% get_permission 'can_edit_post' post request.user as user_can_edit_post %}
 {% endif %}
-
 <small class="text-muted">
     {% spaceless %}
         {% if post.poster %}
             {% url 'members:profile' post.poster.username as poster_url %}
             {% blocktrans trimmed with poster_url=poster_url poster=post.poster_display_name creation_date=post.created %}
                 By:
-                <a href="{{ poster_url }}"
-                   class="matomo-event"
-                   data-matomo-category="engagement"
-                   data-matomo-action="view"
-                   data-matomo-option="member">
-                    {{ poster }}
-                </a>,
+                <a href="{{ poster_url }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">{{ poster }}</a>,
             {% endblocktrans %}
         {% else %}
             {% blocktrans trimmed with poster=post.poster_display_name creation_date=post.created %}
@@ -27,8 +19,9 @@
             {% endblocktrans %}
         {% endif %}
     {% endspaceless %}
-    {{post.created|relativetimesince_fr}}
+    {{ post.created|relativetimesince_fr }}
     {% if user_can_edit_post %}
-        - <a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' topic.forum.slug topic.forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' topic.forum.slug topic.forum.pk topic.slug topic.pk post.pk %}{% endif %}" aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
+        - <a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' topic.forum.slug topic.forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' topic.forum.slug topic.forum.pk topic.slug topic.pk post.pk %}{% endif %}"
+    aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
     {% endif %}
 </small>

@@ -7,12 +7,7 @@
             <div class="input-group input-group-rounded-pill">
                 <input class="form-control" type="search" placeholder="{% trans "Search" %}" aria-label="{% trans "Search" %}" name="q">
                 <div class="input-group-text p-0">
-                    <button type="submit"
-                            class="btn btn-link btn-ico matomo-event"
-                            data-matomo-category="engagement"
-                            data-matomo-action="search"
-                            data-matomo-option="submit_query_header"
-                    >
+                    <button type="submit" class="btn btn-link btn-ico matomo-event" data-matomo-category="engagement" data-matomo-action="search" data-matomo-option="submit_query_header">
                         <i class="ri-search-line font-weight-bold" aria-label="{% trans "Search" %}"></i>
                     </button>
                 </div>
@@ -44,40 +39,16 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a href="{% url 'members:profile' user.username %}"
-                           class="dropdown-item text-primary matomo-event"
-                           data-matomo-category="engagement"
-                           data-matomo-action="view"
-                           data-matomo-option="member">
-                            Accéder à mon profil
-                        </a>
+                        <a href="{% url 'members:profile' user.username %}" class="dropdown-item text-primary matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">Accéder à mon profil</a>
                     </li>
                     <li>
-                        <a href="{% url 'forum_upvote:mine' %}"
-                           class="dropdown-item text-primary matomo-event"
-                           data-matomo-category="engagement"
-                           data-matomo-action="view"
-                           data-matomo-option="upvotes">
-                            Accéder à mes sauvegardes
-                        </a>
+                        <a href="{% url 'forum_upvote:mine' %}" class="dropdown-item text-primary matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="upvotes">Accéder à mes sauvegardes</a>
                     </li>
                     <li>
-                        <a href="{% url 'event:myevents' %}"
-                           class="dropdown-item text-primary matomo-event"
-                           data-matomo-category="engagement"
-                           data-matomo-action="view"
-                           data-matomo-option="event">
-                            Accéder à mes évènements
-                        </a>
+                        <a href="{% url 'event:myevents' %}" class="dropdown-item text-primary matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="event">Accéder à mes évènements</a>
                     </li>
                     <li>
-                        <a href="{% url 'forum_extension:index' %}"
-                           class="dropdown-item text-primary matomo-event"
-                           data-matomo-category="engagement"
-                           data-matomo-action="view"
-                           data-matomo-option="forums">
-                            Accéder à mes thématiques
-                        </a>
+                        <a href="{% url 'forum_extension:index' %}" class="dropdown-item text-primary matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forums">Accéder à mes thématiques</a>
                     </li>
                     {% if user.is_superuser %}
                         <li>

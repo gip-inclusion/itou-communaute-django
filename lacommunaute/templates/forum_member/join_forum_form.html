@@ -1,20 +1,25 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
 {% load static %}
-
-{% block sub_title %}{% trans "Join forum" %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% trans "Join forum" %}
+{% endblock sub_title %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% blocktrans trimmed with name=forum.name %}Join forum {{ name }}{% endblocktrans %}</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>
+                            {% blocktrans trimmed with name=forum.name %}
+                                Join forum {{ name }}
+                            {% endblocktrans %}
+                        </strong>
+                    </h1>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -25,9 +30,7 @@
                             {% if form.non_field_errors %}
                                 {% for error in form.non_field_errors %}
                                     <div class="alert alert-danger" role="alert">
-                                        <p class="mb-0">
-                                            {{ error }}
-                                        </p>
+                                        <p class="mb-0">{{ error }}</p>
                                     </div>
                                 {% endfor %}
                             {% endif %}

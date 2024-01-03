@@ -1,7 +1,6 @@
 {% load i18n %}
 {% load forum_permission_tags %}
 {% load forum_polls_tags %}
-
 <div class="mt-3 mt-md-5 post-poll">
     <hr />
     {% get_permission 'can_vote_in_poll' poll request.user as user_can_vote_in_poll %}

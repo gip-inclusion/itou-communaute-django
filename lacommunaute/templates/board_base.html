@@ -2,11 +2,11 @@
 {% load static %}
 {% load i18n %}
 {% load forum_permission_tags %}
-
 {% block title %}
-    {% block sub_title %}{% endblock sub_title %} - {{ MACHINA_FORUM_NAME|default:"Forum" }}
+    {% block sub_title %}
+    {% endblock sub_title %}
+    - {{ MACHINA_FORUM_NAME|default:"Forum" }}
 {% endblock title %}
-
 {% block main %}
     <section class="s-section" id="main_container">
         <div class="s-section__container container">

@@ -1,7 +1,6 @@
 {% load i18n %}
 {% load forum_permission_tags %}
 {% load attachments_tags %}
-
 {% comment %}'can_download_files' is a forum level permission. It's obtained in parent template to prevent duplicated queries on forum{% endcomment %}
 {% if post.attachments.exists and user_can_download_files %}
     <div class="row attachments mt-3 mt-md-5">
@@ -11,12 +10,16 @@
                     <div class="col-md-12 attachment">
                         <a href="{% url 'forum_conversation:attachment' pk=attachment.id %}"><i class="fa fa-file"></i>&nbsp;{{ attachment.filename }} ({{ attachment.file.size|filesizeformat }})</a>
                         {% if attachment.comment %}
-                            <p class="text-muted"><em>{{ attachment.comment }}</em></p>
+                            <p class="text-muted">
+                                <em>{{ attachment.comment }}</em>
+                            </p>
                         {% endif %}
                     </div>
-                {% endif%}
+                {% endif %}
             {% else %}
-                <p class="text-muted"><i class="ri-file-damage-fill"></i>&nbsp;{{ attachment.filename }}</p>
+                <p class="text-muted">
+                    <i class="ri-file-damage-fill"></i>&nbsp;{{ attachment.filename }}
+                </p>
             {% endif %}
         {% endfor %}
     </div>

@@ -4,14 +4,13 @@
 {% load forum_permission_tags %}
 {% load mptt_tags %}
 {% load forum_tags %}
-
 {% block title %}Actualités de l'inclusion{{ block.super }}{% endblock %}
-{% block meta_description %}Faire sa veille informationnelle grâce aux actualités et informations de l’inclusion (insertion/handicap){% endblock meta_description %}"
-
+{% block meta_description %}
+    Faire sa veille informationnelle grâce aux actualités et informations de l’inclusion (insertion/handicap)
+{% endblock meta_description %}
+"
 {% block body_class %}{{ block.super }}{% endblock %}
-
 {% block content %}
-
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
@@ -22,7 +21,6 @@
             </div>
         </div>
     </section>
-
     <section class="s-section mt-0">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -36,7 +34,6 @@
             </div>
         </div>
     </section>
-
     {% if not user.is_authenticated %}
         <section class="s-section">
             <div class="s-section__container container">
@@ -44,9 +41,7 @@
                     <div class="s-section__col col-12 col-lg-auto">
                         <a href="{% url 'inclusion_connect:authorize' %}" class="btn btn-block btn-ico btn-primary">
                             <i class="ri-login-box-line ri-lg" aria-hidden="true"></i>
-                            <span>
-                                Je me connecte pour accéder à toutes mes thématiques
-                            </span>
+                            <span>Je me connecte pour accéder à toutes mes thématiques</span>
                         </a>
                     </div>
                 </div>
@@ -54,5 +49,3 @@
         </section>
     {% endif %}
 {% endblock %}
-
-

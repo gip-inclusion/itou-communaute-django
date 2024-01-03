@@ -230,9 +230,9 @@ class TopicUpdateViewTest(TestCase):
 
         response = self.client.get(self.url)
 
-        checked_box = f'type="checkbox" name="tags" value="{linked_tag.id}" checked="">'
+        checked_box = f'class="form-check-input" type="checkbox" name="tags" value="{linked_tag.id}" checked="">'
         self.assertContains(response, checked_box, status_code=200)
-        not_checked_box = f'type="checkbox" name="tags" value="{tag.id}">'
+        not_checked_box = f'class="form-check-input" type="checkbox" name="tags" value="{tag.id}" >'
         self.assertContains(response, not_checked_box)
 
 

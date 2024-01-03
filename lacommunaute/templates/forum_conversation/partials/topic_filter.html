@@ -1,12 +1,10 @@
 {% load str_filters %}
-
 {% if display_filter_dropdown %}
     <div class="row align-items-center mb-3">
         <div class="col-12 col-sm">
-
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1">
-                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }} </span>
+                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }}</span>
                 </div>
                 <div>
                     <span class="btn-link fs-sm">Filter par :</span>
@@ -24,9 +22,7 @@
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"
-                                            data-matomo-option="topics">
-                                        {{ filter.1 }}
-                                    </button>
+                                            data-matomo-option="topics">{{ filter.1 }}</button>
                                 </li>
                             {% endfor %}
                         </ul>

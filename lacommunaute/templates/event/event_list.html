@@ -1,32 +1,28 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-
-{% block sub_title %}{% trans "My Events" %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% trans "My Events" %}
+{% endblock sub_title %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row mb-3">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% trans "Manage My Events" %}</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>{% trans "Manage My Events" %}</strong>
+                    </h1>
                 </div>
             </div>
             <div class="s-title-01__row row">
                 <div class="col-12 col-md-auto">
-                    <a href="{% url 'event:create' %}"
-                       role="button" class="btn btn-primary">
-                        {% trans "Post a new Public Event" %}
-                    </a>
+                    <a href="{% url 'event:create' %}" role="button" class="btn btn-primary">{% trans "Post a new Public Event" %}</a>
                 </div>
                 <div class="col-12 col-md-auto mt-3 mt-md-0">
-                    <a href="{% url 'event:current' %}" class="btn btn-outline-primary btn-block">
-                        Accéder au calendrier de tous les évènements
-                    </a>
+                    <a href="{% url 'event:current' %}" class="btn btn-outline-primary btn-block">Accéder au calendrier de tous les évènements</a>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -34,7 +30,7 @@
                     <ul class="list-group">
                         {% for event in object_list %}
                             <li class="list-group-item list-group-item-action">
-                                <a href="{% url 'event:update' pk=event.pk%}">{{ event.date|date }} : {{event.name}}</a>
+                                <a href="{% url 'event:update' pk=event.pk %}">{{ event.date|date }} : {{ event.name }}</a>
                             </li>
                         {% empty %}
                             <li class="list-group-item">{% trans "No event yet" %}</li>

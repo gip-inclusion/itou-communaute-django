@@ -2,9 +2,9 @@
 {% load i18n %}
 {% load date_filters %}
 {% load str_filters %}
-
-{% block title %}{% trans "My UpVotes" %}{{ block.super }}{% endblock %}
-
+{% block title %}
+    {% trans "My UpVotes" %}{{ block.super }}
+{% endblock %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
@@ -15,7 +15,6 @@
             </div>
         </div>
     </section>
-
     {% if upvotes or not hide_if_empty %}
         <section class="s-section">
             <div class="s-section__container container">
@@ -34,34 +33,30 @@
                                                            class="btn-link btn-ico stretched-link matomo-event"
                                                            data-matomo-category="engagement"
                                                            data-matomo-action="view"
-                                                           data-matomo-option="upvoted-forum"
-                                                        >
+                                                           data-matomo-option="upvoted-forum">
                                                             <i class="ri-article-line" aria-hidden="true"></i>
                                                             <span>{{ upvote.content_object.name }}</span>
-                                                        </a><br>
+                                                        </a>
+                                                        <br>
                                                         <small class="text-muted">
                                                             {% spaceless %}
                                                                 Fiche mise à jour
                                                             {% endspaceless %}
-                                                            {{upvote.content_object.updated|relativetimesince_fr}}
+                                                            {{ upvote.content_object.updated|relativetimesince_fr }}
                                                         </small>
-                                                        <div>
-                                                            {{upvote.content_object.short_description}}
-                                                        </div>
+                                                        <div>{{ upvote.content_object.short_description }}</div>
                                                     {% elif upvote.content_type.model == 'post' %}
                                                         <a href="{% url 'forum_conversation:topic' upvote.content_object.topic.forum.slug upvote.content_object.topic.forum.pk upvote.content_object.topic.slug upvote.content_object.topic.pk %}"
                                                            class="btn-link stretched-link btn-ico matomo-event"
                                                            data-matomo-category="engagement"
                                                            data-matomo-action="view"
-                                                           data-matomo-option="upvoted-topic"
-                                                        >
+                                                           data-matomo-option="upvoted-topic">
                                                             <i class="ri-user-line ri-lg" aria-hidden="true"></i>
                                                             <span>{{ upvote.content_object.topic.subject }}</span>
-                                                        </a><br>
+                                                        </a>
+                                                        <br>
                                                         {% include "forum_conversation/partials/poster.html" with post=upvote.content_object topic=upvote.content_object.topic %}
-                                                        <div>
-                                                            {{upvote.content_object.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200}}
-                                                        </div>
+                                                        <div>{{ upvote.content_object.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}</div>
                                                     {% endif %}
                                                 </td>
                                             </tr>
@@ -86,6 +81,4 @@
             </div>
         </section>
     {% endif %}
-
 {% endblock %}
-

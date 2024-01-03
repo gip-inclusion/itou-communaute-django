@@ -4,18 +4,16 @@
 {% load forum_permission_tags %}
 {% load mptt_tags %}
 {% load forum_tags %}
-
 {% block title %}Accueil{{ block.super }}{% endblock %}
-{% block meta_description %}Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.{% endblock meta_description %}"
-
+{% block meta_description %}
+    Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.
+{% endblock meta_description %}
+"
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
-
 {% block content %}
-
     {% url 'forum_conversation_extension:topics' as publicforum_url %}
     {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
     {% url 'forum_extension:documentation' as documentation_url %}
-
     <section>
         <div class="s-section__container container">
             <div class="s-section__row row mt-3 mt-md-5">
@@ -27,17 +25,13 @@
                                 <i class="ri-chat-smile-2-line ri-xl text-info"></i>
                             </div>
                             <div class="col">
-                                <p class="mb-2"><strong>Lancez la discussion !</strong></p>
+                                <p class="mb-2">
+                                    <strong>Lancez la discussion !</strong>
+                                </p>
                                 <p class="mb-0">🤝 Partagez vos experiences et trouvez un binôme en insertion professionnelle.</p>
                             </div>
                             <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
-                                <a href="https://tally.so/r/mOXyWK"
-                                   class="btn btn-sm btn-primary matomo-event"
-                                   data-matomo-category="binome"
-                                   data-matomo-action="click"
-                                   data-matomo-option="tally">
-                                    Trouver un binôme d'entraide
-                                </a>
+                                <a href="https://tally.so/r/mOXyWK" class="btn btn-sm btn-primary matomo-event" data-matomo-category="binome" data-matomo-action="click" data-matomo-option="tally">Trouver un binôme d'entraide</a>
                             </div>
                         </div>
                     </div>
@@ -45,7 +39,6 @@
             </div>
         </div>
     </section>
-
     <section class="s-hero-title-01--communaute">
         <div class="s-hero-title-01__container container">
             <div class="s-hero-title-01__row row align-items-center">
@@ -55,7 +48,9 @@
             </div>
             <div class="s-hero-title-01__row row align-items-center">
                 <div class="s-hero-title-01__col s-hero-title-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
-                    <h2 class="h1 mb-3 mb-lg-5">Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi ✨</h2>
+                    <h2 class="h1 mb-3 mb-lg-5">
+                        Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi ✨
+                    </h2>
                     <ul class="lead list-unstyled mb-md-5">
                         <li class="d-flex mb-2">
                             <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
@@ -78,10 +73,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
-
     <section class="s-section mt-0">
         <div class="s-section__container container">
             <div class="s-section__row row mt-3 mt-md-5">
@@ -101,21 +94,13 @@
                                            class="matomo-event btn-link stretched-link"
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
-                                           data-matomo-option="topic">
-                                            {{ topic.subject }}
-                                        </a>
+                                           data-matomo-option="topic">{{ topic.subject }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="p-3 p-lg-4">
-                            <a href="{{ publicforum_url }}"
-                               class="btn btn-outline-primary btn-block matomo-event"
-                               data-matomo-category="engagement"
-                               data-matomo-action="view"
-                               data-matomo-option="topics">
-                                {% trans "See all questions" %}
-                            </a>
+                            <a href="{{ publicforum_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics">{% trans "See all questions" %}</a>
                         </div>
                     </div>
                 </div>
@@ -131,25 +116,13 @@
                             <ul class="list-unstyled mb-lg-5">
                                 {% for forum in forums_category %}
                                     <li class="mb-3 position-relative">
-                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                                           class="matomo-event btn-link stretched-link"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="view"
-                                           data-matomo-option="forum">
-                                            [{{ forum.parent.name }}] {{ forum.name }}
-                                        </a>
+                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">[{{ forum.parent.name }}] {{ forum.name }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="p-3 p-lg-4">
-                            <a href="{{ documentation_url }}"
-                               class="btn btn-outline-primary btn-block matomo-event"
-                               data-matomo-category="engagement"
-                               data-matomo-action="view"
-                               data-matomo-option="documentation">
-                                {% trans "See all docs" %}
-                            </a>
+                            <a href="{{ documentation_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation">{% trans "See all docs" %}</a>
                         </div>
                     </div>
                 </div>
@@ -169,30 +142,20 @@
                                            class="matomo-event btn-link stretched-link"
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
-                                           data-matomo-option="news">
-                                            {{ topic.subject }}
-                                        </a>
+                                           data-matomo-option="news">{{ topic.subject }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="p-3 p-lg-4">
-                            <a href="{{ newsfeed_url }}"
-                               class="btn btn-outline-primary btn-block matomo-event"
-                               data-matomo-category="engagement"
-                               data-matomo-action="view"
-                               data-matomo-option="news">
-                                {% trans "See all news" %}
-                            </a>
+                            <a href="{{ newsfeed_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="news">{% trans "See all news" %}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 {% endblock %}
-
 {% block extra_js %}
     {{ block.super }}
     <script async src="https://tally.so/widgets/embed.js"></script>

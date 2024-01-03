@@ -1,54 +1,48 @@
-{% extends 'board_base.html' %}
-
+{% extends "board_base.html" %}
 {% load i18n %}
 {% load forum_conversation_tags %}
 {% load forum_permission_tags %}
 {% load str_filters %}
-
 {% block title %}{{ topic.subject }} ({{ topic.forum.name }}){% endblock %}
-{% block meta_description %}{{ topic.first_post.content.raw }}{% endblock meta_description %}
-
-{% block sub_title %}{{ topic.subject }}{% endblock sub_title %}
-
+{% block meta_description %}
+    {{ topic.first_post.content.raw }}
+{% endblock meta_description %}
+{% block sub_title %}
+    {{ topic.subject }}
+{% endblock sub_title %}
 {% block content %}
     {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
-
     <div class="row">
         <div class="col-12">
             <h1>{{ topic.subject }}</h1>
         </div>
     </div>
-
     {% with topic.first_post as post %}
         <div class="row">
             <div class="col-12">
                 <div id="{{ post.id }}" class="my-3 card has-links-inside post">
                     <div class="card-header mb-3 d-flex flex-column flex-md-row align-items-md-center">
                         <div class="h4 mb-0 flex-grow-1">
-                            {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
+                            {% if topic.is_locked %}
+                                &nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>
+                            {% endif %}
                             {% include "forum_conversation/partials/poster.html" with post=post topic=topic is_topic_head=True actions=True %}
-                            <div class="mt-1">
-                                {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
-                            </div>
+                            <div class="mt-1">{% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}</div>
                         </div>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col-12 post-content mb-3">
-                                {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid}}
+                                {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid }}
                                 {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                             </div>
                             <div class="col-12 post-content-wrapper">
                                 {% if post.is_topic_head and poll %}
                                     {% include "forum_conversation/forum_polls/poll_detail.html" %}
                                 {% endif %}
-
                                 {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=post user_can_download_files=user_can_download_files %}
-
                                 {% if post.enable_signature and post.poster.forum_profile.signature %}
-                                    <div class="post-signature">
-                                        {{ post.poster.forum_profile.signature.rendered }}
-                                    </div>
+                                    <div class="post-signature">{{ post.poster.forum_profile.signature.rendered }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -59,9 +53,7 @@
         </div>
     {% endwith %}
     <div class="row align-items-sm-center mb-3">
-        <div class="col-12 col-sm">
-            {% include "forum_conversation/partials/topic_detail_actions.html" %}
-        </div>
+        <div class="col-12 col-sm">{% include "forum_conversation/partials/topic_detail_actions.html" %}</div>
         <div class="col-12 col-sm-auto">
             {% include "partials/social_share_buttons.html" with text=topic.subject instance=topic id=topic.pk %}
         </div>

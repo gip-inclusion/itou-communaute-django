@@ -1,14 +1,14 @@
 {% extends "layouts/base.html" %}
-
 {% block title %}Contact{{ block.super }}{% endblock %}
 {% block body_class %}p-contact{{ block.super }}{% endblock %}
-
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>Contact</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>Contact</strong>
+                    </h1>
                     <iframe data-tally-src="https://tally.so/embed/n0VN1P?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                             loading="lazy"
                             width="100%"
@@ -18,7 +18,20 @@
                             marginwidth="0"
                             title="Contact form">
                     </iframe>
-                    <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+                    <script>
+                        var d = document,
+                            w = "https://tally.so/widgets/embed.js",
+                            v = function() {
+                                "undefined" != typeof Tally ? Tally.loadEmbeds() : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e) {
+                                    e.src = e.dataset.tallySrc
+                                }))
+                            };
+                        if ("undefined" != typeof Tally) v();
+                        else if (d.querySelector('script[src="' + w + '"]') == null) {
+                            var s = d.createElement("script");
+                            s.src = w, s.onload = v, s.onerror = v, d.body.appendChild(s);
+                        }
+                    </script>
                 </div>
             </div>
         </div>

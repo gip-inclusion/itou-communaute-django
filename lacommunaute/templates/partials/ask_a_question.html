@@ -1,5 +1,4 @@
 {% load i18n %}
-
 {% if forum %}
     <div class="row align-items-center">
         <div class="col-12 col-md-auto">
@@ -13,9 +12,7 @@
                 <span>{% trans "New topic" %}</span>
             </a>
         </div>
-        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">
-            ou
-        </div>
+        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">ou</div>
         <div class="col-12 col-md-auto">
             <a href="{% url 'forum_search_extension:search' %}"
                class="btn btn-outline-primary btn-ico btn-block matomo-event"

@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load attachments_tags %}
-
 {% if post.attachments.exists %}
     {% for attachment in post.attachments.all %}
         {% if attachment|is_image %}

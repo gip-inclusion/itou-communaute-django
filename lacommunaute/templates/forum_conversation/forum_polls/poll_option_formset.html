@@ -1,15 +1,12 @@
 {% load i18n %}
 {% load widget_tweaks %}
-
 <label class="font-weight-bold">{% trans "Poll options" %}</label>
 {{ poll_option_formset.management_form }}
 {% for form in poll_option_formset.forms %}
     <div class="poll-option-form row">
         {% for field in form.visible_fields %}
             <div class="{% if field.name == 'DELETE' %}col-md-4{% else %}col-md-8{% endif %}">
-                {% if forloop.first %}
-                    {{ form.id }}
-                {% endif %}
+                {% if forloop.first %}{{ form.id }}{% endif %}
                 {% if field.name == 'DELETE' %}
                     <div class="form-check mt-2">
                         {{ field | add_class:'form-check-input' }}
@@ -26,9 +23,10 @@
     <i class="ri-add-line"></i>
     <span>{% trans "Add a poll option" %}</span>
 </a>
-
 {% if poll_option_formset.initial_form_count %}
     <div class="alert alert-warning mt-3">
-        <p class="mb-0">{% blocktrans %}<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the associated votes.{% endblocktrans %}</p>
+        <p class="mb-0">
+            {% blocktrans %}<b>Note:</b>&nbsp;Deleting poll options of an existing poll will delete the associated votes.{% endblocktrans %}
+        </p>
     </div>
 {% endif %}

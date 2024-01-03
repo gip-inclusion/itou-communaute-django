@@ -7,14 +7,14 @@
     <head>
         {% block head %}
             <meta charset="utf-8">
-            <title>{% block title %} - {{ MACHINA_FORUM_NAME|default:"Forum" }}{% endblock %}</title>
+            <title>
+                {% block title %}- {{ MACHINA_FORUM_NAME|default:"Forum" }}{% endblock %}
+            </title>
             <meta name="created" content="{% now "jS M Y h:i" %}">
             <meta name="description" content="{% block meta_description %}{% endblock meta_description %}">
             <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-
             <meta name="htmx-config" content='{"inlineScriptNonce":"{{ request.csp_nonce }}"}'>
-
             <!-- https://metatags.io Open Graph -->
             <meta property="og:locale" content="fr_FR">
             <meta property="og:type" content="website">
@@ -31,96 +31,94 @@
             <meta property="twitter:site" content="inclusion_gouv">
             <!-- https://metatags.io Facebook -->
             <meta property="fb:page_id" content="inclusion.gouv">
-
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
-
             <!-- Matomo Tag Manager -->
             <script nonce="{{ request.csp_nonce }}">
                 var _mtm = window._mtm = window._mtm || [];
-                _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src='https://matomo.inclusion.beta.gouv.fr/js/container_GTln5jDH.js'; s.parentNode.insertBefore(g,s);
+                _mtm.push({
+                    'mtm.startTime': (new Date().getTime()),
+                    'event': 'mtm.Start'
+                });
+                var d = document,
+                    g = d.createElement('script'),
+                    s = d.getElementsByTagName('script')[0];
+                g.async = true;
+                g.src = 'https://matomo.inclusion.beta.gouv.fr/js/container_GTln5jDH.js';
+                s.parentNode.insertBefore(g, s);
             </script>
         {% endblock head %}
-
         {% block extra_head %}{% endblock %}
-
         {% block css %}
             <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
             {% import_static_CSS_theme_inclusion %}
             <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.vendor.min.css' %}">
             <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.min.css' %}">
         {% endblock %}
-
         {% compress css %}
             <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss">
         {% endcompress %}
-
         {% block extra_css %}{% endblock %}
     </head>
-
     <body id="top" class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <noscript>
             <div class="alert alert-danger" role="status">
                 Javascript doit être activé pour pouvoir assurer l'affichage correct de la page (recherche géographique par exemple).
             </div>
         </noscript>
-
         <nav role="navigation" aria-label="Accès rapide" tabindex="1" class="visually-hidden">
             <ul>
-                <li><a href="#nav-primary">Aller au menu principal</a></li>
-                <li><a href="#main">Aller au contenu principal</a></li>
+                <li>
+                    <a href="#nav-primary">Aller au menu principal</a>
+                </li>
+                <li>
+                    <a href="#main">Aller au contenu principal</a>
+                </li>
             </ul>
         </nav>
-
         {% block header %}
             {% include "partials/header.html" %}
         {% endblock %}
-
         {% block sub_header %}{% endblock %}
-
         <main id="main" role="main" class="s-main">
             {% block messages %}
                 {% if messages %}
                     <section class="s-section m-0">
                         <div class="s-section__container container">
                             <div class="s-section__row row">
-                                <div class="s-section__col col-12">
-                                    {% include 'partials/messages.html' %}
-                                </div>
+                                <div class="s-section__col col-12">{% include 'partials/messages.html' %}</div>
                             </div>
                         </div>
                     </section>
                 {% endif %}
             {% endblock %}
-
             {% block main %}
                 {% block content %}{% endblock %}
             {% endblock %}
         </main>
-
         {% block footer %}
             {% include "partials/footer.html" %}
         {% endblock %}
-
         {% block modals %}{% endblock %}
-
         <div class="visually-hidden visually-hidden-focusable">
             <a href="#header">Retour au début de la page</a>
         </div>
-
         {% block js %}
             {% import_static_JS_theme_inclusion %}
             <script src="{% static 'machina/build/js/machina.min.js' %}" type="text/javascript" charset="utf-8"></script>
             <script type="text/javascript" nonce="{{ request.csp_nonce }}">
                 $(function() {
                     machina.init();
-                    {% block onbodyload %}{% endblock onbodyload %}
+                    {
+                        %
+                        block onbodyload %
+                    } {
+                        %
+                        endblock onbodyload %
+                    }
                 });
             </script>
         {% endblock %}
-
         {% block extra_js %}
             <script src="{% static "vendor/tarteaucitron.js-1.11.0/tarteaucitron.js" %}"></script>
             <script nonce="{{ request.csp_nonce }}">
@@ -131,37 +129,67 @@
                 var tarteaucitronForceLanguage = "fr";
 
                 tarteaucitron.init({
-                    "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-                    "cookieName": "tarteaucitron", /* Cookie name */
-                    "orientation": "top", /* Banner position (top - bottom) */
-                    "groupServices": false, /* Group services by category */
-                    "showAlertSmall": false, /* Show the small banner on bottom right */
-                    "cookieslist": false, /* Show the cookie list */
-                    "closePopup": false, /* Show a close X on the banner */
-                    "showIcon": true, /* Show cookie icon to manage cookies */
+                    "hashtag": "#tarteaucitron",
+                    /* Open the panel with this hashtag */
+                    "cookieName": "tarteaucitron",
+                    /* Cookie name */
+                    "orientation": "top",
+                    /* Banner position (top - bottom) */
+                    "groupServices": false,
+                    /* Group services by category */
+                    "showAlertSmall": false,
+                    /* Show the small banner on bottom right */
+                    "cookieslist": false,
+                    /* Show the cookie list */
+                    "closePopup": false,
+                    /* Show a close X on the banner */
+                    "showIcon": true,
+                    /* Show cookie icon to manage cookies */
                     //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-                    "iconPosition": "BottomLeft", /* BottomRight, BottomLeft, TopRight and TopLeft */
-                    "adblocker": false, /* Show a Warning if an adblocker is detected */
-                    "DenyAllCta" : true, /* Show the deny all button */
-                    "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-                    "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                    "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
-                    "removeCredit": true, /* Remove credit link */
-                    "moreInfoLink": true, /* Show more info link */
-                    "useExternalCss": true, /* If false, the tarteaucitron.css file will be loaded */
-                    "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+                    "iconPosition": "BottomLeft",
+                    /* BottomRight, BottomLeft, TopRight and TopLeft */
+                    "adblocker": false,
+                    /* Show a Warning if an adblocker is detected */
+                    "DenyAllCta": true,
+                    /* Show the deny all button */
+                    "AcceptAllCta": true,
+                    /* Show the accept all button when highPrivacy on */
+                    "highPrivacy": true,
+                    /* HIGHLY RECOMMANDED Disable auto consent */
+                    "handleBrowserDNTRequest": false,
+                    /* If Do Not Track == 1, disallow all */
+                    "removeCredit": true,
+                    /* Remove credit link */
+                    "moreInfoLink": true,
+                    /* Show more info link */
+                    "useExternalCss": true,
+                    /* If false, the tarteaucitron.css file will be loaded */
+                    "useExternalJs": false,
+                    /* If false, the tarteaucitron.js file will be loaded */
                     //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-                    "readmoreLink": "https://doc.inclusion.beta.gouv.fr/mentions/protection-des-donnees", /* Change the default readmore link */
-                    "mandatory": true, /* Show a message about mandatory cookies */
+                    "readmoreLink": "https://doc.inclusion.beta.gouv.fr/mentions/protection-des-donnees",
+                    /* Change the default readmore link */
+                    "mandatory": true,
+                    /* Show a message about mandatory cookies */
                     "mandatoryCta": true /* Show the disabled accept button when mandatory on */
                 });
 
-                {% if MATOMO_BASE_URL %}
-                    // Matomo :
-                    tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
-                    tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
-                    (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
-                {% endif %}
+                {
+                    %
+                    if MATOMO_BASE_URL %
+                }
+                // Matomo :
+                tarteaucitron.user.matomoId = {
+                    {
+                        MATOMO_SITE_ID
+                    }
+                };
+                tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
+                (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
+                {
+                    %
+                    endif %
+                }
             </script>
             {% if MATOMO_BASE_URL %}
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
