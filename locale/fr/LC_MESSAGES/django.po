@@ -262,20 +262,6 @@ msgstr "Thématiques"
 msgid "RSS feed"
 msgstr "Flux RSS"
 
-#: lacommunaute/templates/machina/forum/forum_list.html:77
-#: lacommunaute/templates/machina/forum/forum_list.html:150
-#: lacommunaute/templates/machina/forum_conversation/topic_list.html:54
-#, python-format
-msgid "By: <a href=\"%(poster_url)s\">%(username)s</a>"
-msgstr "Par: <a href=\"%(poster_url)s\">%(username)s</a>"
-
-#: lacommunaute/templates/machina/forum/forum_list.html:81
-#: lacommunaute/templates/machina/forum/forum_list.html:154
-#: lacommunaute/templates/machina/forum_conversation/topic_list.html:58
-#, python-format
-msgid "By: %(poster_username)s"
-msgstr "Par : %(poster_username)s"
-
 #: lacommunaute/templates/machina/forum/forum_list.html:89
 #: lacommunaute/templates/machina/forum/forum_list.html:162
 msgid "No posts"
