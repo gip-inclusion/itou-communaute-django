@@ -7,17 +7,17 @@
 {% endif %}
 <small class="text-muted">
     {% spaceless %}
-        {% if post.poster %}
-            {% url 'members:profile' post.poster.username as poster_url %}
-            {% blocktrans trimmed with poster_url=poster_url poster=post.poster_display_name creation_date=post.created %}
-                By:
-                <a href="{{ poster_url }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">{{ poster }}</a>,
-            {% endblocktrans %}
-        {% else %}
-            {% blocktrans trimmed with poster=post.poster_display_name creation_date=post.created %}
-                By: {{ poster }},
-            {% endblocktrans %}
-        {% endif %}
+        {% with poster=post.poster_display_name %}
+            Par :
+            {% if post.poster %}
+                {% url 'members:profile' post.poster.username as poster_url %}
+                <a href="{{ poster_url }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">
+                    {{ poster }}
+                </a>,
+            {% else %}
+                {{ poster }},
+            {% endif %}
+        {% endwith %}
     {% endspaceless %}
     {{ post.created|relativetimesince_fr }}
     {% if user_can_edit_post %}
