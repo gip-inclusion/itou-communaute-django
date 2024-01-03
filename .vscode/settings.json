@@ -34,5 +34,10 @@
     },
     "explorer.confirmDragAndDrop": false,
     "files.insertFinalNewline": true,
-    "python.defaultInterpreterPath": "./.venv/bin/python"
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "djlint.ignore": [
+        "H006",
+        "T002",
+        "T003"
+    ]
 }
