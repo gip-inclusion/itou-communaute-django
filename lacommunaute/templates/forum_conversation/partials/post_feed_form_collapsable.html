@@ -1,23 +1,20 @@
 {% load i18n %}
-
 {% load forum_permission_tags %}
-
 {% get_permission 'can_add_post' topic request.user as user_can_add_post %}
 {% if user_can_add_post %}
-    <div class="collapse" id="collapsePost{{topic.pk}}">
+    <div class="collapse" id="collapsePost{{ topic.pk }}">
         <div class="card mb-3{% if inline %} ms-3{% endif %}">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 post-content-wrapper">
                         <form hx-post="{% url 'forum_conversation_extension:post_create' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                              hx-target="#postinfeedarea{{topic.pk}}"
+                              hx-target="#postinfeedarea{{ topic.pk }}"
                               hx-swap="outerHTML"
                               class="majorpoints matomo-event"
                               data-matomo-category="engagement"
                               data-matomo-action="contribute"
                               data-matomo-option="post">
                             {% csrf_token %}
-
                             {% if post_form.non_field_errors %}
                                 {% for error in post_form.non_field_errors %}
                                     <div class="alert alert-danger">
@@ -29,7 +26,6 @@
                             {% if post_form.username %}
                                 {% include "partials/form_field.html" with field=post_form.username %}
                             {% endif %}
-
                             <div class="form-actions form-row">
                                 <div class="form-group col-auto">
                                     <input type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />

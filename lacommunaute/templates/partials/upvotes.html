@@ -1,27 +1,25 @@
 {% load i18n %}
 {% load str_filters %}
-
-<div id="upvotesarea{{obj.pk}}" class="d-inline-block">
+<div id="upvotesarea{{ obj.pk }}" class="d-inline-block">
     {% with obj.upvotes_count as counter %}
         {% if user.is_authenticated %}
             <form hx-post="{% if kind == 'post' %}{% url 'forum_upvote:post' %}{% elif kind == 'forum' %}{% url 'forum_upvote:forum' %}{% endif %}"
-                  id="upvote-button{{obj.pk}}"
-                  hx-target="#upvotesarea{{obj.pk}}"
+                  id="upvote-button{{ obj.pk }}"
+                  hx-target="#upvotesarea{{ obj.pk }}"
                   hx-swap="outerHTML">
-                <input type='hidden' name='pk' value="{{obj.pk}}"/>
-                <button type="submit"
-                        title="{% trans "UpVotes" %}"
-                        class="btn btn-sm btn-ico btn-secondary matomo-event px-2"
-                        data-matomo-category="engagement"
-                        data-matomo-action="upvote"
-                        data-matomo-option="post"
-                >
-                    <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{counter}}</span>
+                <input type='hidden' name='pk' value="{{ obj.pk }}" />
+                <button type="submit" title="{% trans "UpVotes" %}" class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-category="engagement" data-matomo-action="upvote" data-matomo-option="post">
+                    <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{ counter }}</span>
                 </button>
             </form>
         {% else %}
-            <a href="{% inclusion_connect_url next_url obj.id %}" rel="nofollow" class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Connectez-vous pour sauvegarder">
-                <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{counter}}</span>
+            <a href="{% inclusion_connect_url next_url obj.id %}"
+               rel="nofollow"
+               class="btn btn-sm btn-ico-only btn-link btn-secondary"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+               title="Connectez-vous pour sauvegarder">
+                <i class="{% if obj.has_upvoted %}ri-bookmark-fill{% else %}ri-bookmark-line{% endif %} me-1" aria-hidden="true"></i><span>{{ counter }}</span>
             </a>
         {% endif %}
     {% endwith %}

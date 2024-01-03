@@ -1,10 +1,10 @@
-{% extends 'board_base.html' %}
+{% extends "board_base.html" %}
 {% load i18n %}
 {% load forum_conversation_tags %}
 {% load forum_permission_tags %}
-
-{% block sub_title %}{% trans "Edit post" %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% trans "Edit post" %}
+{% endblock sub_title %}
 {% block content %}
     <div class="row">
         <div class="col-12">
@@ -18,7 +18,8 @@
                     <h3 class="m-0 h4 card-title">{% trans "Edit post" %}</h3>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+                    <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
                         {% include "forum_conversation/partials/post_form.html" %}
                         <div class="form-actions form-row">
                             <div class="form-group col-auto">
@@ -37,15 +38,12 @@
         </div>
     </div>
 {% endblock content %}
-
 {% block onbodyload %}
     machina.attachment.init();
 {% endblock onbodyload %}
-
 {% block extra_css %}
     {{ post_form.media.css }}
 {% endblock extra_css %}
-
 {% block extra_js %}
     {{ post_form.media.js }}
 {% endblock extra_js %}

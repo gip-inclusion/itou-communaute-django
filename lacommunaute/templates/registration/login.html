@@ -1,19 +1,20 @@
 {% extends "board_base.html" %}
 {% load i18n %}
-
-{% block sub_title %}{% trans "Sign in" %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% trans "Sign in" %}
+{% endblock sub_title %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% trans "Sign in" %}</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>{% trans "Sign in" %}</strong>
+                    </h1>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -34,7 +35,7 @@
                                 {% include "partials/form_field.html" with field=form.password %}
                                 <input type="hidden" name="next" value="/">
                                 <div class="form-actions">
-                                    <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
                                     <input type="submit" class="btn btn-large btn-primary" value="{% trans "Login" %}" />
                                 </div>
                             </form>

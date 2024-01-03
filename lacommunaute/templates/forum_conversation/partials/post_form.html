@@ -1,5 +1,4 @@
 {% load i18n %}
-
 {% if post_form.non_field_errors %}
     {% for error in post_form.non_field_errors %}
         <div class="alert alert-danger">
@@ -18,7 +17,9 @@
 <!-- Sub "forms" tabs -->
 {% if attachment_formset %}
     <ul class="nav nav-tabs nav-tabs--communaute">
-        <li class="nav-item"><a href="#attachments" class="nav-link" data-bs-toggle="tab">{% trans "Attachments" %}</a></li>
+        <li class="nav-item">
+            <a href="#attachments" class="nav-link" data-bs-toggle="tab">{% trans "Attachments" %}</a>
+        </li>
     </ul>
 {% endif %}
 <!-- Sub "forms" panes -->

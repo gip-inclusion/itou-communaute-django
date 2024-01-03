@@ -1,21 +1,21 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-
 {% load widget_tweaks %}
-
-{% block sub_title %}{% trans "Post a new Public Event" %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% trans "Post a new Public Event" %}
+{% endblock sub_title %}
 {% block content %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>{% trans "Post a new Public Event" %}</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>{% trans "Post a new Public Event" %}</strong>
+                    </h1>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
@@ -23,32 +23,18 @@
                     <div class="c-form">
                         <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
                             {% csrf_token %}
-
-                            {% for hidden_field in form.hidden_fields %}
-                                {{ hidden_field }}
-                            {% endfor %}
-
+                            {% for hidden_field in form.hidden_fields %}{{ hidden_field }}{% endfor %}
                             {% include "partials/form_field.html" with field=form.name %}
                             <div class="row">
-                                <div class="col-6">
-                                    {% include "partials/form_field.html" with field=form.date %}
-                                </div>
-                                <div class="col-6">
-                                    {% include "partials/form_field.html" with field=form.time %}
-                                </div>
+                                <div class="col-6">{% include "partials/form_field.html" with field=form.date %}</div>
+                                <div class="col-6">{% include "partials/form_field.html" with field=form.time %}</div>
                             </div>
-
                             <div class="row">
-                                <div class="col-6">
-                                    {% include "partials/form_field.html" with field=form.end_date %}
-                                </div>
-                                <div class="col-6">
-                                    {% include "partials/form_field.html" with field=form.end_time %}
-                                </div>
+                                <div class="col-6">{% include "partials/form_field.html" with field=form.end_date %}</div>
+                                <div class="col-6">{% include "partials/form_field.html" with field=form.end_time %}</div>
                             </div>
                             {% include "partials/form_field.html" with field=form.location %}
                             {% include "partials/form_field.html" with field=form.description %}
-
                             <hr>
                             <div class="form-row align-items-center justify-content-lg-end gx-3">
                                 {% if event %}
@@ -73,7 +59,3 @@
         </div>
     </section>
 {% endblock content %}
-
-
-
-

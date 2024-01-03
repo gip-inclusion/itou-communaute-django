@@ -1,9 +1,9 @@
-{% extends 'board_base.html' %}
+{% extends "board_base.html" %}
 {% load i18n %}
 {% load forum_member_tags %}
-
-{% block sub_title %}{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}{% endblock sub_title %}
-
+{% block sub_title %}
+    {% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}
+{% endblock sub_title %}
 {% block content %}
     <div class="mb-3 row">
         <div class="col-12">
@@ -14,9 +14,7 @@
         <div class="col-md-3">
             <div class="mb-3 profile-sidebar">
                 <div class="card">
-                    <div class="profile-avatar">
-                        {% include "partials/avatar.html" with profile=profile show_placeholder=True %}
-                    </div>
+                    <div class="profile-avatar">{% include "partials/avatar.html" with profile=profile show_placeholder=True %}</div>
                     <div class="profile-username">
                         <h3 class="my-3 text-center text-muted">{{ profile.user|forum_member_display_name }}</h3>
                     </div>
@@ -26,7 +24,7 @@
                 </div>
             </div>
             {% if profile.user == request.user %}
-                <a href="{%url 'members:profile_update' %}" class="btn btn-block btn-primary">{% trans "Edit profile" %}</a>
+                <a href="{% url 'members:profile_update' %}" class="btn btn-block btn-primary">{% trans "Edit profile" %}</a>
             {% endif %}
         </div>
         <div class="col-md-9">
@@ -42,18 +40,14 @@
                                                class="matomo-event"
                                                data-matomo-category="engagement"
                                                data-matomo-action="view"
-                                               data-matomo-option="topic">
-                                                {{ post.topic.subject }}
-                                            </a>
+                                               data-matomo-option="topic">{{ post.topic.subject }}</a>
                                         </div>
                                         <p>
                                             <small class="text-muted">
                                                 <i class="fa fa-clock-o"></i>&nbsp;{% blocktrans with creation_date=post.created %}On {{ creation_date }}{% endblocktrans %}
                                             </small>
                                         </p>
-                                        <div class="post-content">
-                                            {{ post.content.rendered|truncatechars_html:160 }}
-                                        </div>
+                                        <div class="post-content">{{ post.content.rendered|truncatechars_html:160 }}</div>
                                     </div>
                                 </div>
                             {% endfor %}

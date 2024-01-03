@@ -1,17 +1,16 @@
 {% extends "layouts/base.html" %}
 {% load flatpages %}
-
-
 {% block title %}{{ flatpage.title }}{{ block.super }}{% endblock %}
 {% block body_class %}{{ block.super }}{% endblock %}
-
 {% block content %}
     {% get_flatpages as flatpages %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1"><strong>Liste des landing pages actives sur le site</strong></h1>
+                    <h1 class="s-title-01__title h1">
+                        <strong>Liste des landing pages actives sur le site</strong>
+                    </h1>
                 </div>
             </div>
         </div>
@@ -23,7 +22,9 @@
                     <article>
                         <ul>
                             {% for page in flatpages %}
-                                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                                <li>
+                                    <a href="{{ page.url }}">{{ page.title }}</a>
+                                </li>
                             {% endfor %}
                         </ul>
                     </article>

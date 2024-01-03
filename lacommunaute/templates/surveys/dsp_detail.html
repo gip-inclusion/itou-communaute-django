@@ -1,11 +1,11 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-
 {% block title %}Diagnostic Socio Professionnel{{ block.super }}{% endblock %}
-{% block meta_description %}Recommandations{% endblock meta_description %}"
-
+{% block meta_description %}
+    Recommandations
+{% endblock meta_description %}
+"
 {% block content %}
-
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
@@ -15,17 +15,14 @@
             </div>
         </div>
     </section>
-
     <section class="s-section">
         <div class="s-section__container container">
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-8">
                     {% for label, recommendation in recommendations.items %}
                         <div>
-                            <h2 class="h3">{{label}}</h2>
-                            <div>
-                                {{ recommendation }}
-                            </div>
+                            <h2 class="h3">{{ label }}</h2>
+                            <div>{{ recommendation }}</div>
                             <hr class="mt-5">
                         </div>
                     {% endfor %}
@@ -43,9 +40,7 @@
                             <strong>{{ field.label }} :</strong>
                             {% if field.field.choices %}
                                 {% for choice in field.field.choices %}
-                                    {% if choice.0 == field.value %}
-                                        {{ choice.1 }}
-                                    {% endif %}
+                                    {% if choice.0 == field.value %}{{ choice.1 }}{% endif %}
                                 {% endfor %}
                             {% endif %}
                         </p>
@@ -54,5 +49,4 @@
             </div>
         </div>
     </section>
-
 {% endblock content %}

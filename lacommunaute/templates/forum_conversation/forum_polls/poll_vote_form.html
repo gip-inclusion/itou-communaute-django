@@ -1,5 +1,4 @@
 {% load i18n %}
-
 <form method="post" action="{% url 'forum_conversation:topic_poll_vote' poll.pk %}" novalidate>
     {% csrf_token %}
     <ul class="list-unstyled mb-3">
@@ -7,7 +6,7 @@
             <li>
                 {% if poll.max_options == 1 %}
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ option.id }}"  >
+                        <input type="radio" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ option.id }}">
                         <label class="form-check-label" for="option{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% else %}

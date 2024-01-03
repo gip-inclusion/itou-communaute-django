@@ -1,19 +1,19 @@
 {% load i18n %}
 {% load forum_permission_tags %}
-
 {% get_permission 'can_edit_post' poll.topic.first_post request.user as user_can_edit_first_post %}
-
 {% if poll.hide_results %}
     <p>{% trans "Results are currently hidden." %}</p>
 {% endif %}
-
 {% if not poll.hide_results or user_can_edit_first_post %}
     {% for option in poll.options.all %}
         <div class="row mb-3">
             <div class="col-md-9">
-                <p>{{ option.text }} - <strong>{{ option.percentage|floatformat }}%</strong></p>
+                <p>
+                    {{ option.text }} - <strong>{{ option.percentage|floatformat }}%</strong>
+                </p>
                 <div class="progress progress--communaute">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ option.percentage|floatformat }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ option.percentage|stringformat:"f" }}%;"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ option.percentage|floatformat }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ option.percentage|stringformat:"f" }}%">
+                    </div>
                 </div>
             </div>
         </div>

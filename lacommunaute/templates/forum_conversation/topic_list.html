@@ -5,16 +5,12 @@
 {% load forum_permission_tags %}
 {% load str_filters %}
 {% load url_add_query %}
-
 {% if forum %}
     {% get_permission 'can_download_files' forum request.user as user_can_download_files %}
 {% endif %}
-
 <div id="topicsarea">
     {% include "forum_conversation/partials/topic_filter.html" %}
-
     {% if topics or not hide_if_empty %}
-
         {% for topic in topics %}
             <div class="row">
                 <div class="col-12">
@@ -29,14 +25,17 @@
                             </div>
                             <p class="h4 mb-0 flex-grow-1">
                                 <span class="topic-icon font-weight-normal">
-                                    <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl aria-hidden="true""></i>
+                                    <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl aria-hidden=" true " "></i>
                                 </span>
                                 <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                                    class="matomo-event"
                                    data-matomo-category="engagement"
                                    data-matomo-action="view"
                                    data-matomo-option="topic">
-                                    {{ topic.subject }} {% if topic.is_locked %}&nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>{% endif %}
+                                    {{ topic.subject }}
+                                    {% if topic.is_locked %}
+                                        &nbsp;<i class="fas fa-times-circle locked-indicator" aria-label="{% trans 'This topic is locked' %}"></i>
+                                    {% endif %}
                                 </a>
                             </p>
                         </div>
@@ -49,44 +48,36 @@
                                     {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
                                 </div>
                                 <div class="col-12 post-content">
-                                    <div id="showmoretopicsarea{{topic.pk}}">
+                                    <div id="showmoretopicsarea{{ topic.pk }}">
                                         {{ topic.first_post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
                                         {% if topic.first_post.content.rendered|length > 200 %}
                                             <a hx-get="{% url 'forum_conversation_extension:showmore_topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                               id="showmoretopic-button{{topic.pk}}"
-                                               hx-target="#showmoretopicsarea{{topic.pk}}"
+                                               id="showmoretopic-button{{ topic.pk }}"
+                                               hx-target="#showmoretopicsarea{{ topic.pk }}"
                                                hx-swap="outerHTML"
                                                class="btn btn-link p-0 mh-auto matomo-event"
                                                data-matomo-category="engagement"
                                                data-matomo-action="showmore"
-                                               data-matomo-option="topic"
-                                            >
-                                                {% trans "+ show more" %}
-                                            </a>
+                                               data-matomo-option="topic">{% trans "+ show more" %}</a>
                                         {% endif %}
                                     </div>
                                     {% include "forum_conversation/forum_attachments/attachments_images.html" with post=topic.first_post %}
-
                                     {% if not forum %}
                                         {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
                                     {% endif %}
                                     {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=topic.first_post user_can_download_files=user_can_download_files %}
-
                                     {% if topic.poll %}
-                                        {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll%}
+                                        {% include "forum_conversation/forum_polls/topic_list_poll_detail.html" with poll=topic.poll %}
                                     {% endif %}
-
                                     {% if topic.first_post.enable_signature and topic.poster.forum_profile.signature %}
-                                        <div class="post-signature">
-                                            {{ topic.poster.forum_profile.signature.rendered }}
-                                        </div>
+                                        <div class="post-signature">{{ topic.poster.forum_profile.signature.rendered }}</div>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="showmorepostsarea{{topic.pk}}">
-                        <div id="postinfeedarea{{topic.pk}}">
+                    <div id="showmorepostsarea{{ topic.pk }}">
+                        <div id="postinfeedarea{{ topic.pk }}">
                             {% if topic.is_certified %}
                                 {% include "forum_conversation/partials/post_certified.html" with post=topic.certified_post.post certifier=topic.certified_post.user %}
                             {% endif %}
@@ -114,7 +105,7 @@
                 </div>
             </div>
         {% endfor %}
-        {% if loadmoretopic_url and is_paginated and page_obj.has_next%}
+        {% if loadmoretopic_url and is_paginated and page_obj.has_next %}
             <div id="loadmoretopicsarea{{ loadmoretopic_suffix }}" class="row mx-3 mt-md-5 justify-content-center">
                 <div class="col-12 col-md-auto">
                     <a hx-get="{% url_add_query loadmoretopic_url page=page_obj.next_page_number %}"
@@ -133,10 +124,9 @@
         {% endif %}
     {% endif %}
 </div>
-
 <script nonce="{{ request.csp_nonce }}">
     var showmorepostsButtons = document.querySelectorAll('.showmoreposts-button')
-    showmorepostsButtons.forEach((button) => button.addEventListener('click', function () {
+    showmorepostsButtons.forEach((button) => button.addEventListener('click', function() {
         button.classList.add('d-none');
     }));
 </script>

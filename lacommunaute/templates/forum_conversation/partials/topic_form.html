@@ -1,8 +1,8 @@
 {% load i18n %}
 {% load widget_tweaks %}
 {% load forum_permission_tags %}
-
-<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
     {% for error in post_form.non_field_errors %}
         <div class="alert alert-danger">
             <i class="icon-exclamation-sign"></i> {{ error }}
@@ -16,16 +16,24 @@
     {% if post_form.update_reason %}
         {% include "partials/form_field.html" with field=post_form.update_reason %}
     {% endif %}
-
     <!-- Sub "forms" tabs -->
     {% if poll_option_formset or attachment_formset %}
         <ul class="nav nav-tabs nav-tabs--communaute border-bottom-0">
-            <li class="nav-item"><a href="#tags" class="nav-link" data-bs-toggle="tab">{% trans "Tags" %}</a></li>
-            {% if attachment_formset %}<li class="nav-item"><a href="#attachments" class="nav-link" data-bs-toggle="tab">{% trans "Attachments" %}</a></li>{% endif %}
-            {% if poll_option_formset %}<li class="nav-item"><a href="#poll" class="nav-link" data-bs-toggle="tab">{% trans "Poll" %}</a></li>{% endif %}
+            <li class="nav-item">
+                <a href="#tags" class="nav-link" data-bs-toggle="tab">{% trans "Tags" %}</a>
+            </li>
+            {% if attachment_formset %}
+                <li class="nav-item">
+                    <a href="#attachments" class="nav-link" data-bs-toggle="tab">{% trans "Attachments" %}</a>
+                </li>
+            {% endif %}
+            {% if poll_option_formset %}
+                <li class="nav-item">
+                    <a href="#poll" class="nav-link" data-bs-toggle="tab">{% trans "Poll" %}</a>
+                </li>
+            {% endif %}
         </ul>
     {% endif %}
-
     <!-- Sub "forms" panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="options">
@@ -46,14 +54,14 @@
         </div>
         <div class="tab-pane" id="tags">
             <div class="row">
-                <div id="tags_formset" class="col-md-12">
-                    {% include "partials/form_field.html" with field=post_form.tags %}
-                </div>
+                <div id="tags_formset" class="col-md-12">{% include "partials/form_field.html" with field=post_form.tags %}</div>
             </div>
         </div>
         {% if poll_option_formset %}
             <div class="tab-pane" id="poll">
-                {% if poll_options_validated and poll_option_formset.non_form_errors %}<div class="alert alert-danger">{{ poll_option_formset.non_form_errors|striptags }}</div>{% endif %}
+                {% if poll_options_validated and poll_option_formset.non_form_errors %}
+                    <div class="alert alert-danger">{{ poll_option_formset.non_form_errors|striptags }}</div>
+                {% endif %}
                 <div class="row">
                     <div class="col-md-6">
                         {% include "partials/form_field.html" with field=post_form.poll_question %}
@@ -62,21 +70,23 @@
                         <div class="form-group{% if post_form.poll_user_changes.errors %} has-error{% endif %}">
                             <div class="form-check mt-3">
                                 {{ post_form.poll_user_changes | add_class:'form-check-input' }}
-                                <label class="form-check-label" for="{{ post_form.poll_user_changes.auto_id }}">{{ post_form.poll_user_changes.label }}</label>
+                                <label class="form-check-label" for="{{ post_form.poll_user_changes.auto_id }}">
+                                    {{ post_form.poll_user_changes.label }}
+                                </label>
                             </div>
                         </div>
                         {% if post_form.poll_hide_results %}
                             <div class="form-group{% if post_form.poll_hide_results.errors %} has-error{% endif %}">
                                 <div class="form-check mt-3">
                                     {{ post_form.poll_hide_results | add_class:'form-check-input' }}
-                                    <label class="form-check-label" for="{{ post_form.poll_hide_results.auto_id }}">{{ post_form.poll_hide_results.label }}</label>
+                                    <label class="form-check-label" for="{{ post_form.poll_hide_results.auto_id }}">
+                                        {{ post_form.poll_hide_results.label }}
+                                    </label>
                                 </div>
                             </div>
                         {% endif %}
                     </div>
-                    <div id="poll_formset" class="col-md-6">
-                        {% include "forum_conversation/forum_polls/poll_option_formset.html" %}
-                    </div>
+                    <div id="poll_formset" class="col-md-6">{% include "forum_conversation/forum_polls/poll_option_formset.html" %}</div>
                 </div>
             </div>
         {% endif %}
@@ -93,16 +103,13 @@
     <hr class="mb-5">
     <div class="form-actions form-row">
         <div class="form-group col-auto">
-            <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}"
-                   data-matomo-category="engagement"
-                   data-matomo-action="contribute"
-                   data-matomo-option="submit_topic" />
+            <input type="submit" class="btn btn-primary matomo-event" value="{% trans "Submit" %}" data-matomo-category="engagement" data-matomo-action="contribute" data-matomo-option="submit_topic" />
         </div>
         {% if post %}
             {% get_permission 'can_delete_post' post request.user as user_can_delete_post %}
             {% if user_can_delete_post %}
                 <div class="form-group col-auto">
-                    <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" aria-label="{% trans "Delete" %}"  role="button" class="btn btn-outline-danger" >{% trans "Delete" %}</a>
+                    <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" aria-label="{% trans "Delete" %}" role="button" class="btn btn-outline-danger">{% trans "Delete" %}</a>
                 </div>
             {% endif %}
         {% endif %}

@@ -1,36 +1,30 @@
 {% load i18n %}
-
 <form method="post"
       action=""
       hx-post="{% url 'forum_polls_extension:topic_poll_vote' poll.topic.forum.slug poll.topic.forum.pk poll.pk %}"
-      id="poll-form{{poll.pk}}"
-      hx-target="#pollarea{{poll.pk}}"
+      id="poll-form{{ poll.pk }}"
+      hx-target="#pollarea{{ poll.pk }}"
       hx-swap="outerHTML"
       novalidate>
     {% csrf_token %}
-
     <ul class="list-unstyled mb-3">
         {% for option in poll.options.all %}
             <li>
                 {% if poll.max_options == 1 %}
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="options" value="{{ option.id }}" id="option{{poll.pk}}_{{ option.id }}">
-                        <label class="form-check-label" for="option{{poll.pk}}_{{ option.id }}">{{ option.text }}</label>
+                        <input type="radio" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ poll.pk }}_{{ option.id }}">
+                        <label class="form-check-label" for="option{{ poll.pk }}_{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% else %}
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="options" value="{{ option.id }}" id="option{{poll.pk}}_{{ option.id }}">
-                        <label class="form-check-label" for="option{{poll.pk}}_{{ option.id }}">{{ option.text }}</label>
+                        <input type="checkbox" class="form-check-input" name="options" value="{{ option.id }}" id="option{{ poll.pk }}_{{ option.id }}">
+                        <label class="form-check-label" for="option{{ poll.pk }}_{{ option.id }}">{{ option.text }}</label>
                     </div>
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
     <div class="form-actions">
-        <input type="submit" class="btn btn-sm btn-secondary matomo-event"
-               value="{% trans "Submit" %}"
-               data-matomo-category="engagement"
-               data-matomo-action="vote"
-               data-matomo-option="poll"/>
+        <input type="submit" class="btn btn-sm btn-secondary matomo-event" value="{% trans "Submit" %}" data-matomo-category="engagement" data-matomo-action="vote" data-matomo-option="poll" />
     </div>
 </form>
