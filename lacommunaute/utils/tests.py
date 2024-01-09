@@ -235,6 +235,7 @@ class UtilsGetMatomoDataTest(TestCase):
 class UtilsGetMatomoVisitsDataTest(TestCase):
     def test_get_matomo_visits_data(self):
         nb_uniq_visitors = faker.random_int()
+        nb_uniq_visitors_returning = faker.random_int()
         today = datetime.now().date()
         expected_res = [
             {
@@ -242,10 +243,19 @@ class UtilsGetMatomoVisitsDataTest(TestCase):
                 "date": today.strftime("%Y-%m-%d"),
                 "name": "nb_uniq_visitors",
                 "value": nb_uniq_visitors,
-            }
+            },
+            {
+                "period": "day",
+                "date": today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_visitors_returning",
+                "value": nb_uniq_visitors_returning,
+            },
         ]
         with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
-            mock_get_matomo_data.return_value = {"nb_uniq_visitors": nb_uniq_visitors}
+            mock_get_matomo_data.return_value = {
+                "nb_uniq_visitors": nb_uniq_visitors,
+                "nb_uniq_visitors_returning": nb_uniq_visitors_returning,
+            }
             self.assertEqual(get_matomo_visits_data(period="day", search_date=today), expected_res)
 
     def test_get_matomo_visits_data_without_nb_uniq_visitors(self):
@@ -256,7 +266,13 @@ class UtilsGetMatomoVisitsDataTest(TestCase):
                 "date": today.strftime("%Y-%m-%d"),
                 "name": "nb_uniq_visitors",
                 "value": 0,
-            }
+            },
+            {
+                "period": "day",
+                "date": today.strftime("%Y-%m-%d"),
+                "name": "nb_uniq_visitors_returning",
+                "value": 0,
+            },
         ]
         with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
             mock_get_matomo_data.return_value = {}
