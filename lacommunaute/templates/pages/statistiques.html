@@ -87,34 +87,20 @@
         new Chart(ctx_stats, {
             type: 'line',
             data: {
-                labels: {
+                labels: {{ stats.date | js }},
+                datasets: [
                     {
-                        stats.date | js
-                    }
-                },
-                datasets: [{
                         label: 'Utilisateurs',
-                        data: {
-                            {
-                                stats.nb_uniq_visitors | js
-                            }
-                        },
-                    }, {
-                        label: 'Utilisateurs actifs',
-                        data: {
-                            {
-                                stats.nb_uniq_active_visitors | js
-                            }
-                        },
-                    }, {
-                        label: 'Utilisateurs engagés',
-                        data: {
-                            {
-                                stats.nb_uniq_engaged_visitors | js
-                            }
-                        },
+                        data: {{ stats.nb_uniq_visitors | js }},
                     },
-
+                    {
+                        label: 'Utilisateurs actifs',
+                        data: {{ stats.nb_uniq_active_visitors | js }},
+                    },
+                    {
+                        label: 'Utilisateurs engagés',
+                        data: {{ stats.nb_uniq_engaged_visitors | js }},
+                    },
                 ]
             },
             options: {
@@ -127,3 +113,4 @@
         });
     </script>
 {% endblock %}
+

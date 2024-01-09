@@ -109,13 +109,7 @@
             <script type="text/javascript" nonce="{{ request.csp_nonce }}">
                 $(function() {
                     machina.init();
-                    {
-                        %
-                        block onbodyload %
-                    } {
-                        %
-                        endblock onbodyload %
-                    }
+                    {% block onbodyload %}{% endblock onbodyload %}
                 });
             </script>
         {% endblock %}
@@ -174,22 +168,12 @@
                     "mandatoryCta": true /* Show the disabled accept button when mandatory on */
                 });
 
-                {
-                    %
-                    if MATOMO_BASE_URL %
-                }
-                // Matomo :
-                tarteaucitron.user.matomoId = {
-                    {
-                        MATOMO_SITE_ID
-                    }
-                };
-                tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
-                (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
-                {
-                    %
-                    endif %
-                }
+                {% if MATOMO_BASE_URL %}
+	                // Matomo :
+	                tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
+	                tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
+	                (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
+                {% endif %}
             </script>
             {% if MATOMO_BASE_URL %}
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
