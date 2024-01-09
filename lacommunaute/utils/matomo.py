@@ -19,7 +19,7 @@ def get_matomo_data(
     function to request matomo api
     * period: day, week, month
     * date: 2023-01-16
-    * method: VisitSummary, Events.getCategory
+    * method: VisitSummary, Events.getCategory, VisitFrequency.get
     """
 
     params = {
@@ -48,17 +48,33 @@ def get_matomo_data(
 
 def get_matomo_visits_data(period, search_date):
     """
-    function to extract data from matomo api VisitSummary call
+    function to extract data from matomo api VisitSummary call & VisitFrequency.get
     """
+    stats = []
+
+    # collect nb_uniq_visitors
     data = get_matomo_data(period=period, search_date=search_date, method="VisitsSummary.get")
-    return [
+    stats.append(
         {
             "period": period,
             "date": search_date.strftime("%Y-%m-%d"),
             "name": "nb_uniq_visitors",
             "value": data.get("nb_uniq_visitors", 0),
         }
-    ]
+    )
+
+    # collect nb_uniq_visitors_returning
+    data = get_matomo_data(period=period, search_date=search_date, method="VisitFrequency.get")
+    stats.append(
+        {
+            "period": period,
+            "date": search_date.strftime("%Y-%m-%d"),
+            "name": "nb_uniq_visitors_returning",
+            "value": data.get("nb_uniq_visitors_returning", 0),
+        }
+    )
+
+    return stats
 
 
 def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_visitors", label=None):
