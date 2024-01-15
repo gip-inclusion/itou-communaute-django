@@ -96,7 +96,7 @@
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
                                            data-matomo-option="topic">{{ topic.subject }}</a>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=topic.first_post.poster_display_name created=topic.created only %}
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=topic.first_post.poster_display_name dated=topic.created only %}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -121,7 +121,7 @@
                                         <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
                                             [{{ forum.parent.name }}] {{ forum.name }}
                                         </a>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=None created=forum.created only %}
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=None dated=forum.updated only %}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -148,7 +148,7 @@
                                            data-matomo-category="engagement"
                                            data-matomo-action="view"
                                            data-matomo-option="news">{{ topic.subject }}</a>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=None created=topic.created only %}
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=None dated=topic.created only %}
                                     </li>
                                 {% endfor %}
                             </ul>
