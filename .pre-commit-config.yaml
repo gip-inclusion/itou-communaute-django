@@ -19,8 +19,8 @@ repos:
         entry: ruff
         types: [python]
         language: system
-      - id: djlint
-        name: djlint
-        entry: djlint --reformat
+      - id: djhtml
+        name: djhtml
+        entry: djhtml
         types: [html]
         language: system
