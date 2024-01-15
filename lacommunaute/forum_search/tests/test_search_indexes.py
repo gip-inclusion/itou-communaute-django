@@ -4,6 +4,7 @@ import pytest
 from django.conf import settings
 from django.core.management import call_command
 from django.urls import reverse
+from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.factories import ForumFactory
@@ -40,45 +41,39 @@ def test_search_on_post(client, db, search_url, public_topics):
     query = public_topics[0].first_post.content.raw.split()[:4]
     response = client.get(search_url, {"q": " ".join(query)})
 
-    assert response.status_code == 200
-    assert public_topics[1].subject not in response.content.decode("utf-8")
+    assertNotContains(response, public_topics[1].subject)
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_search_on_forum(client, db, search_url, public_forums):
     query = public_forums[0].description.raw.split()[:3]
     response = client.get(search_url, {"q": " ".join(query)})
 
-    assert response.status_code == 200
-    assert public_forums[1].description.raw not in response.content.decode("utf-8")
+    assertNotContains(response, public_forums[1].description.raw)
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_search_with_no_query(client, db, search_url):
     response = client.get(search_url)
-    assert response.status_code == 200
-    assert '<input type="search" name="q"' in response.content.decode("utf-8")
+    assertContains(response, '<input type="search" name="q"')
 
 
 def test_empty_search(client, db, search_url):
     response = client.get(search_url, {"q": ""})
-    assert response.status_code == 200
-    assert '<input type="search" name="q"' in response.content.decode("utf-8")
+    assertContains(response, '<input type="search" name="q"')
 
 
 def test_search_with_no_results(client, db, search_url):
     response = client.get(search_url, {"q": "test"})
-    assert response.status_code == 200
-    assert "Aucun résultat" in response.content.decode("utf-8")
+    assertContains(response, "Aucun résultat")
 
 
 def test_search_with_non_unicode_characters(client, db, search_url):
     encoded_char = urllib.parse.quote("\x1f")
     response = client.get(search_url, {"q": encoded_char})
-    assert response.status_code == 200
-    assert "Aucun résultat" in response.content.decode("utf-8")
+    assertContains(response, "Aucun résultat")
 
 
 def test_search_on_post_model_only(client, db, search_url, public_topics, public_forums):
@@ -88,17 +83,15 @@ def test_search_on_post_model_only(client, db, search_url, public_topics, public
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
     query = public_forums[0].description.raw.split()[:3]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' not in response.content.decode("utf-8")
+        assertNotContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_search_on_forum_model_only(client, db, search_url, public_topics, public_forums):
@@ -108,17 +101,15 @@ def test_search_on_forum_model_only(client, db, search_url, public_topics, publi
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' not in response.content.decode("utf-8")
+        assertNotContains(response, f'<span class="highlighted">{word}</span>')
 
     query = public_forums[0].description.raw.split()[:3]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_search_on_both_models(client, db, search_url, public_topics, public_forums):
@@ -128,17 +119,15 @@ def test_search_on_both_models(client, db, search_url, public_topics, public_for
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
     query = public_forums[0].description.raw.split()[:3]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
-    assert response.status_code == 200
     for word in query:
-        assert f'<span class="highlighted">{word}</span>' in response.content.decode("utf-8")
+        assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_non_public_forums_are_excluded(client, db, search_url):
@@ -146,8 +135,7 @@ def test_non_public_forums_are_excluded(client, db, search_url):
         ForumFactory(kind=kind, name=f"invisible {i}")
     call_command("rebuild_index", noinput=True, interactive=False)
     response = client.get(search_url, {"q": "invisible"})
-    assert response.status_code == 200
-    assert "Aucun résultat" in response.content.decode("utf-8")
+    assertContains(response, "Aucun résultat")
 
 
 def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
@@ -155,8 +143,7 @@ def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
         TopicFactory(forum=ForumFactory(kind=kind), subject=f"invisible {i}", with_post=True)
     call_command("rebuild_index", noinput=True, interactive=False)
     response = client.get(search_url, {"q": "invisible"})
-    assert response.status_code == 200
-    assert "Aucun résultat" in response.content.decode("utf-8")
+    assertContains(response, "Aucun résultat")
 
 
 def test_unapproved_post_is_exclude(client, db, search_url, public_forums):
@@ -165,5 +152,4 @@ def test_unapproved_post_is_exclude(client, db, search_url, public_forums):
     topic.first_post.save()
     call_command("rebuild_index", noinput=True, interactive=False)
     response = client.get(search_url, {"q": topic.first_post.content.raw.split()[0]})
-    assert response.status_code == 200
-    assert "Aucun résultat" in response.content.decode("utf-8")
+    assertContains(response, "Aucun résultat")
