@@ -170,9 +170,9 @@
 
                 {% if MATOMO_BASE_URL %}
 	                // Matomo :
-	                tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
-	                tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
-	                (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
+                    tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
+                    tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
+                    (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
             </script>
             {% if MATOMO_BASE_URL %}
