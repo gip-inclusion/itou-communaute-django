@@ -18,6 +18,7 @@
                             marginwidth="0"
                             title="Contact form">
                     </iframe>
+                    {# djlint: off #}
                     <script>
                         var d = document,
                             w = "https://tally.so/widgets/embed.js",
@@ -31,7 +32,8 @@
                             var s = d.createElement("script");
                             s.src = w, s.onload = v, s.onerror = v, d.body.appendChild(s);
                         }
-                    </script>
+</script>
+                    {# djlint: on #}
                 </div>
             </div>
         </div>

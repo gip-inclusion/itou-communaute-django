@@ -47,7 +47,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements/dev.txt
-      - name: ✨ Black, isort, flake8 & djhtml
+      - name: ✨ Black, ruff & djlint
         run: make quality
       - name: 🚧 collect static for testing purposes
         run: python manage.py collectstatic

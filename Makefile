@@ -27,12 +27,12 @@ server:
 quality:
 	black --check lacommunaute
 	ruff check lacommunaute
-	djhtml --check $(shell find lacommunaute/templates -name "*.html")
+	djlint --lint --check lacommunaute
 
 fix:
 	black lacommunaute
 	ruff check --fix lacommunaute
-	djhtml $(shell find lacommunaute/templates -name "*.html")
+	djlint --reformat lacommunaute
 
 pylint:
 	pylint lacommunaute
