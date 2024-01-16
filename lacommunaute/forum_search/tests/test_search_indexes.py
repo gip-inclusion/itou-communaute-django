@@ -8,7 +8,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -25,29 +25,69 @@ def search_url_fixture():
 
 @pytest.fixture(name="public_forums")
 def public_forums_fixture():
-    forums = ForumFactory.create_batch(2, with_public_perms=True)
+    forum1 = ForumFactory.create(
+        with_public_perms=True,
+        name="Le PASS IAE",
+        description="Tout savoir sur le PASS IAE, l’insertion par l’activité économique, et plus encore !",
+        short_description="Tout savoir sur le PASS IAE",
+    )
+    topic1 = TopicFactory(forum=forum1, subject="Obtention d’un PASS IAE")
+    PostFactory(
+        topic=topic1,
+        subject="Qui contacter ?",
+        content="L’équipe des emplois de l’inclusion",
+    )
+    forum2 = ForumFactory.create(
+        with_public_perms=True,
+        name="Administrateur de structure",
+        description="Gérer votre structure, ses membres, sa localisation et ses fiches de postes.",
+        short_description="Gestion de la structure",
+    )
+    topic2 = TopicFactory(forum=forum2, subject="Inviter un collaborateur")
+    PostFactory(
+        topic=topic2,
+        subject="Inviter ses collaborateurs par email",
+        content="Listez les emails de vos collaborateurs, ils recevront un email avec les instructions.",
+    )
     call_command("rebuild_index", noinput=True, interactive=False)
-    return forums
+    return [forum1, forum2]
 
 
 @pytest.fixture(name="public_topics")
 def public_topics_fixture():
-    topics = TopicFactory.create_batch(2, forum=ForumFactory(with_public_perms=True), with_post=True)
+    forum = ForumFactory.create(
+        with_public_perms=True,
+        name="Le rôle de prescripteur",
+        description="Explication du rôle de prescripteur, un acteur clé de l’insertion.",
+        short_description="Détails du rôle de prescripteur",
+    )
+    topic1 = TopicFactory(forum=forum, subject="Qui sont les prescripteurs ?")
+    PostFactory(
+        topic=topic1,
+        subject="Les missions locales",
+        content="La mission locale est un espace d'intervention au service des jeunes.",
+    )
+    topic2 = TopicFactory(forum=forum, subject="Habilitation des prescripteurs")
+    PostFactory(
+        topic=topic2,
+        subject="Demander une habilitation",
+        content="La demande d’habilitation se fait auprès du préfet.",
+    )
     call_command("rebuild_index", noinput=True, interactive=False)
-    return topics
+    return [topic1, topic2]
 
 
 def test_search_on_post(client, db, search_url, public_topics):
-    query = public_topics[0].first_post.content.raw.split()[:4]
+    query = ["au", "service", "des", "jeunes"]
     response = client.get(search_url, {"q": " ".join(query)})
 
-    assertNotContains(response, public_topics[1].subject)
+    assertNotContains(response, "Demander une habilitation")
     for word in query:
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
 def test_search_on_forum(client, db, search_url, public_forums):
-    query = public_forums[0].description.raw.split()[:3]
+    query = ["Tout", "savoir", "sur"]
     response = client.get(search_url, {"q": " ".join(query)})
 
     assertNotContains(response, public_forums[1].description.raw)
@@ -79,14 +119,14 @@ def test_search_with_non_unicode_characters(client, db, search_url):
 def test_search_on_post_model_only(client, db, search_url, public_topics, public_forums):
     datas = {"m": "post"}
 
-    query = public_topics[0].first_post.content.raw.split()[:4]
+    query = ["La", "mission", "locale", "est"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
     for word in query:
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
-    query = public_forums[0].description.raw.split()[:3]
+    query = ["Tout", "savoir", "sur"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
@@ -97,14 +137,14 @@ def test_search_on_post_model_only(client, db, search_url, public_topics, public
 def test_search_on_forum_model_only(client, db, search_url, public_topics, public_forums):
     datas = {"m": "forum"}
 
-    query = public_topics[0].first_post.content.raw.split()[:4]
+    query = ["La", "mission", "locale", "est"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
     for word in query:
         assertNotContains(response, f'<span class="highlighted">{word}</span>')
 
-    query = public_forums[0].description.raw.split()[:3]
+    query = ["Tout", "savoir", "sur"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
@@ -114,15 +154,14 @@ def test_search_on_forum_model_only(client, db, search_url, public_topics, publi
 
 def test_search_on_both_models(client, db, search_url, public_topics, public_forums):
     datas = {"m": "all"}
-
-    query = public_topics[0].first_post.content.raw.split()[:4]
+    query = ["La", "mission", "locale", "est"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
     for word in query:
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
-    query = public_forums[0].description.raw.split()[:3]
+    query = ["Tout", "savoir", "sur", "le"]
     datas["q"] = " ".join(query)
 
     response = client.get(search_url, datas)
@@ -146,10 +185,20 @@ def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
     assertContains(response, "Aucun résultat")
 
 
-def test_unapproved_post_is_exclude(client, db, search_url, public_forums):
-    topic = TopicFactory(forum=public_forums[0], with_post=True)
-    topic.first_post.approved = False
-    topic.first_post.save()
+def test_unapproved_post_is_exclude(client, db, search_url):
+    forum = ForumFactory.create(
+        with_public_perms=True,
+        name="Le PASS IAE",
+        description="Tout savoir sur le PASS IAE, l’insertion par l’activité économique, et plus encore !",
+        short_description="Tout savoir sur le PASS IAE",
+    )
+    topic = TopicFactory(forum=forum, subject="Obtention d’un PASS IAE")
+    PostFactory(
+        topic=topic,
+        approved=False,  # Not approved, should not appear in search results.
+        subject="Qui contacter ?",
+        content="L’équipe des emplois de l’inclusion",
+    )
     call_command("rebuild_index", noinput=True, interactive=False)
-    response = client.get(search_url, {"q": topic.first_post.content.raw.split()[0]})
+    response = client.get(search_url, {"q": "emplois"})
     assertContains(response, "Aucun résultat")
