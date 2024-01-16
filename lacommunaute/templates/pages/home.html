@@ -168,7 +168,7 @@
     <script defer nonce="{{ request.csp_nonce }}">
         // Any given Tally popup will not be shown more than once every `minDaysBetweenDisplays` days.
         const minDaysBetweenDisplays = 14;
-        const delayBeforeShowingPopupInSeconds = 10;
+        const delayBeforeShowingPopupInSeconds = 90;
         const formId = 'mVGEr6';
         const key = 'statsTallyPopupLastShown-' + formId;
         const todaysDate = new Date();
