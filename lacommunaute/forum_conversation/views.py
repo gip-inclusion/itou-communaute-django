@@ -115,7 +115,7 @@ class TopicListView(ListView):
 
     def get_tags(self):
         if not hasattr(self, "tags"):
-            self.tags = self.request.GET.get("tags", None)
+            self.tags = self.request.GET.get("tags", "").lower()
         return self.tags
 
     def get_queryset(self):
