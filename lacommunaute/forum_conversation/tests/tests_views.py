@@ -540,7 +540,7 @@ class TopicListViewTest(TestCase):
         self.assertContains(response, self.url + "?page=2", status_code=200)
 
     def test_showmoretopics_url_with_params(self):
-        tag_list = [faker.word() for _ in range(3)]
+        tag_list = ["iae", "siae", "prescripteur"]
         TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user, with_tags=tag_list)
         self.client.force_login(self.user)
 
