@@ -22,6 +22,6 @@
     {{ post.created|relativetimesince_fr }}
     {% if user_can_edit_post %}
         - <a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' topic.forum.slug topic.forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' topic.forum.slug topic.forum.pk topic.slug topic.pk post.pk %}{% endif %}"
-             aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
+    aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>
     {% endif %}
 </small>

@@ -45,7 +45,7 @@ pillow = "^10.0.0"
 moto = "^4.2.2"
 virtualenv = "^20.24.6"
 ruff = "^0.1.9"
-djhtml = "^3.0.6"
+djlint = "^1.34.1"
 
 [build-system]
 requires = ["poetry-core"]

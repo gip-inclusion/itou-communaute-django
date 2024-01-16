@@ -106,15 +106,18 @@
         {% block js %}
             {% import_static_JS_theme_inclusion %}
             <script src="{% static 'machina/build/js/machina.min.js' %}" type="text/javascript" charset="utf-8"></script>
+            {# djlint: off #}
             <script type="text/javascript" nonce="{{ request.csp_nonce }}">
                 $(function() {
                     machina.init();
                     {% block onbodyload %}{% endblock onbodyload %}
                 });
-            </script>
+</script>
+            {# djlint: on #}
         {% endblock %}
         {% block extra_js %}
             <script src="{% static "vendor/tarteaucitron.js-1.11.0/tarteaucitron.js" %}"></script>
+            {# djlint: off #}
             <script nonce="{{ request.csp_nonce }}">
                 // Tarteaucitron's language is set according to the browser configuration
                 // but a lot of users don't know how to change it.
@@ -174,7 +177,8 @@
                     tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
                     (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
-            </script>
+</script>
+            {# djlint: on #}
             {% if MATOMO_BASE_URL %}
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
             {% endif %}

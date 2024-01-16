@@ -82,6 +82,7 @@
 {% block extra_js %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+    {# djlint: off #}
     <script nonce="{{ request.csp_nonce }}">
         const ctx_stats = document.getElementById('statChart');
         new Chart(ctx_stats, {
@@ -111,6 +112,6 @@
                 }
             }
         });
-    </script>
+</script>
+    {# djlint: on #}
 {% endblock %}
-
