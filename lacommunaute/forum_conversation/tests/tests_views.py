@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import pytest
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -9,6 +10,7 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+from pytest_django.asserts import assertContains, assertNotContains
 from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
@@ -441,6 +443,18 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+@pytest.mark.parametrize("tag", ["lower", "UPPER"])
+def test_queryset_filtered_on_tag(client, db, tag):
+    forum = ForumFactory(with_public_perms=True)
+    other_topic = TopicFactory(with_post=True, forum=forum)
+    tagged_topic = TopicFactory(with_post=True, forum=forum, with_tags=[tag])
+
+    response = client.get(reverse("forum_conversation_extension:topics"), data={"tags": tag})
+    assert response.context_data["total"] == 1
+    assertContains(response, tagged_topic.subject, status_code=200)
+    assertNotContains(response, other_topic.subject)
+
+
 class TopicListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -517,15 +531,6 @@ class TopicListViewTest(TestCase):
         for topic in Topic.objects.exclude(id=certified_topic.id):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
-
-    def test_queryset_filtered_on_tag(self):
-        tag = faker.word()
-        tagged_topic = TopicFactory(with_post=True, forum=self.forum, with_tags=[tag])
-
-        response = self.client.get(self.url + f"?tags={tag}")
-        self.assertEqual(response.context_data["total"], 1)
-        self.assertContains(response, tagged_topic.subject, status_code=200)
-        self.assertNotContains(response, self.topic.subject)
 
     def test_pagination(self):
         self.client.force_login(self.user)
