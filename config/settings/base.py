@@ -191,7 +191,6 @@ AUTHENTICATION_BACKENDS = (
 
 LANGUAGE_CODE = "fr-FR"
 USE_I18N = True
-USE_L10N = True
 LOCALE_PATHS = (os.path.join(ROOT_DIR, "locale"),)
 
 TIME_ZONE = "Europe/Paris"
