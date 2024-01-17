@@ -23,13 +23,13 @@ echo "Going to inject DB_BACKUP_PATH=$DB_BACKUP_PATH"
 docker cp $DB_BACKUP_PATH commu_postgres:/backups
 
 echo "dropping current db"
-docker exec -ti commu_postgres dropdb $POSTGRESQL_ADDON_DB -U $POSTGRES_USER --if-exists --echo
+docker exec -ti commu_postgres dropdb $POSTGRESQL_ADDON_DB -U $POSTGRESQL_ADDON_USER --if-exists --echo
 
 echo "creating new db"
-docker exec -ti commu_postgres createdb $POSTGRESQL_ADDON_DB -O $POSTGRES_USER -U $POSTGRES_USER --echo
+docker exec -ti commu_postgres createdb $POSTGRESQL_ADDON_DB -O $POSTGRESQL_ADDON_USER -U $POSTGRESQL_ADDON_USER --echo
 
 echo "restoring db"
-docker exec -ti commu_postgres pg_restore -U $POSTGRES_USER --dbname=$POSTGRESQL_ADDON_DB --format=c --clean --no-owner --verbose /backups/$DB_BACKUP_NAME
+docker exec -ti commu_postgres pg_restore -U $POSTGRESQL_ADDON_USER --dbname=$POSTGRESQL_ADDON_DB --format=c --clean --no-owner --verbose /backups/$DB_BACKUP_NAME
 
 echo "restarting db"
 docker-compose down; docker-compose up postgres -d
@@ -39,5 +39,3 @@ python manage.py set_fake_passwords
 
 echo "import is over"
 echo "**************"
-
-
