@@ -1,7 +1,12 @@
-# Debian Buster slim variant.
-FROM python:3.10.4-slim-buster
+ARG PYTHON_VERSION
 
-ENV DOCKER_DEFAULT_PLATFORM=linux/amd64
+# https://hub.docker.com/_/python
+FROM python:$PYTHON_VERSION-slim
+
+ARG APP_USER
+ARG APP_DIR
+ARG PG_MAJOR
+
 # Inspiration
 # https://github.com/azavea/docker-django/blob/1ef366/Dockerfile-slim.template
 # https://github.com/docker-library/postgres/blob/9d8e24/11/Dockerfile
@@ -10,61 +15,42 @@ ENV PYTHONIOENCODING="UTF-8"
 ENV PYTHONUNBUFFERED=1
 ENV APP_DIR="/app"
 
-# Add new user to run the whole thing as non-root.
-RUN set -ex \
-    && addgroup app \
-    && adduser --ingroup app --home $APP_DIR --disabled-password app;
-
+# Install tools to setup the PostgreSQL reposity
 RUN set -ex; \
-    if ! command -v gpg > /dev/null; then \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-    gnupg \
-    dirmngr \
+      curl \
+      lsb-release \
     ; \
-    rm -rf /var/lib/apt/lists/*; \
-    fi
+    rm -rf /var/lib/apt/lists/*;
+# Add the PostgreSQL key to verify their Debian packages.
+RUN curl --silent https://www.postgresql.org/media/keys/ACCC4CF8.asc --output /etc/apt/keyrings/postgresql.asc --create-dirs
+# Add PostgreSQL's repository. It contains the most recent stable release.
+RUN echo "deb [signed-by=/etc/apt/keyrings/postgresql.asc] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-# Add the PostgreSQL PGP key to verify their Debian packages.
-RUN set -ex; \
-    # pub   4096R/ACCC4CF8 2011-10-13 [expires: 2019-07-02]
-    #       Key fingerprint = B97B 0AFC AA1A 47F0 44F2  44A0 7FCC 7D46 ACCC 4CF8
-    # uid                  PostgreSQL Debian Repository
-    key='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8'; \
-    export GNUPGHOME="$(mktemp -d)"; \
-    gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
-    gpg --batch --export "$key" > /etc/apt/trusted.gpg.d/postgres.gpg; \
-    command -v gpgconf > /dev/null && gpgconf --kill all; \
-    rm -rf "$GNUPGHOME"; \
-    apt-key list;
-
-ENV PG_MAJOR="14"
-
-# Add PostgreSQL's repository to install client. It contains the most recent stable release.
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main $PG_MAJOR" > /etc/apt/sources.list.d/pgdg.list
-
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    gettext \
+    build-essential \
+    libpq-dev \
+    gdal-bin \
+    git \
     postgresql-client-$PG_MAJOR \
+    jq \
+    moreutils \
+    python3-venv \
     --no-install-recommends
 
-# Requirements are installed here to ensure they will be cached.
-COPY ./requirements /requirements
-RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r /requirements/dev.txt \
-    && rm -rf /requirements
+# Add new user to run the whole thing as non-root.
+RUN set -ex \
+    && addgroup $APP_USER \
+    && adduser --ingroup $APP_USER --disabled-password $APP_USER;
 
-RUN apt-get purge -y --auto-remove $(! command -v gpg > /dev/null || echo 'gnupg dirmngr') \
-    && rm -rf /var/lib/apt/lists/*
+RUN echo '. ~/venv/bin/activate' >> /home/$APP_USER/.bashrc
 
-COPY --chown=app:app . $APP_DIR
+# Setup the entrypoint
+COPY --chown=$APP_USER:$APP_USER --chmod=755 ./docker/django/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
-RUN chmod +x $APP_DIR/docker/django/entrypoint.sh
-
-RUN ls -lha $APP_DIR/docker/django/
-
-USER app
-
+# Don't use root as default user
+USER $APP_USER
 WORKDIR $APP_DIR
-
-ENTRYPOINT ["./docker/django/entrypoint.sh"]
