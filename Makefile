@@ -53,9 +53,9 @@ shell_on_postgres_container:
 
 .PHONY: psql postgres_restore_latest_backup
 
-# Connect to the `postgres` container as the POSTGRES_USER user.
+# Connect to the `postgres` container as the POSTGRESQL_ADDON_USER user.
 psql:
-	docker exec -ti -e PGPASSWORD=$(POSTGRES_PASSWORD) commu_postgres psql -U $(POSTGRES_USER)
+	docker exec -ti -e PGPASSWORD=$(POSTGRESQL_ADDON_PASSWORD) commu_postgres psql -U $(POSTGRESQL_ADDON_USER)
 
 # Download last prod backup and inject it locally.
 # ----------------------------------------------------
