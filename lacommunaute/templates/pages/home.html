@@ -207,7 +207,7 @@
         };
     </script>
     <!-- Matomo A/B Test -->
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="{{ request.csp_nonce }}">
         var _paq = _paq || [];
         _paq.push(['AbTesting::create', {
             name: 'first_dummy_test', // you can also use '2' (ID of the experiment) to hide the name
