@@ -48,12 +48,16 @@
                             <span class="ms-2">Progressez grâce à des ressources exclusives</span>
                         </li>
                     </ul>
-                    {% include "partials/ask_a_question.html" %}
                 </div>
                 <div class="s-hero-title-01__col col-12 d-none d-lg-inline-flex col-md-4">
                     <div>
                         <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid w-lg-75" loading="lazy" alt="">
                     </div>
+                </div>
+            </div>
+            <div class="s-hero-title-01__row row align-items-center">
+                <div class="s-hero-title-01__col s-hero-title-01__col--title col-12 mt-3 mt-lg-5">
+                    {% include "partials/ask_a_question.html" %}
                 </div>
             </div>
         </div>
@@ -202,4 +206,39 @@
             setTimeout(displayTallyPopup, delayBeforeShowingPopupInSeconds * 1000);
         };
     </script>
+    <!-- Matomo A/B Test -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        _paq.push(['AbTesting::create', {
+            name: 'first_dummy_test', // you can also use '2' (ID of the experiment) to hide the name
+            percentage: 100,
+            includedTargets: [{
+                "attribute": "url",
+                "inverted": "0",
+                "type": "equals_simple",
+                "value": "https:\/\/communaute.inclusion.beta.gouv.fr\/"
+            }],
+            excludedTargets: [],
+            variations: [{
+                name: 'original',
+                activate: function(event) {
+                    // usually nothing needs to be done here
+                }
+            }, {
+                name: 'bouton_plein', // you can also use '2' (ID of the variation) to hide the name
+                activate: function(event) {
+                    event.redirect('https://communaute.inclusion.beta.gouv.fr/?btn=pl');
+                }
+            }, {
+                name: 'bouton_outlined', // you can also use '3' (ID of the variation) to hide the name
+                activate: function(event) {
+                    event.redirect('https://communaute.inclusion.beta.gouv.fr/?btn=outl');
+                }
+            }],
+            trigger: function() {
+                return true; // here you can further customize which of your visitors will participate in this experiment
+            }
+        }]);
+    </script>
+    <!-- Matomo A/B Test -->
 {% endblock %}
