@@ -210,13 +210,13 @@
     <script type="text/javascript" nonce="{{ request.csp_nonce }}">
         var _paq = _paq || [];
         _paq.push(['AbTesting::create', {
-            name: 'first_dummy_test', // you can also use '2' (ID of the experiment) to hide the name
+            name: 'Documentation_sur_la_homepage', // you can also use '4' (ID of the experiment) to hide the name
             percentage: 100,
             includedTargets: [{
                 "attribute": "url",
                 "inverted": "0",
-                "type": "equals_simple",
-                "value": "https:\/\/communaute.inclusion.beta.gouv.fr\/"
+                "type": "any",
+                "value": ""
             }],
             excludedTargets: [],
             variations: [{
@@ -225,14 +225,17 @@
                     // usually nothing needs to be done here
                 }
             }, {
-                name: 'bouton_plein', // you can also use '2' (ID of the variation) to hide the name
+                name: 'btn_plein', // you can also use '6' (ID of the variation) to hide the name
                 activate: function(event) {
-                    event.redirect('https://communaute.inclusion.beta.gouv.fr/?btn=pl');
+                    $("#btn_plein").removeClass("d-none")
+                    $("#btn_sep").removeClass("d-none")
+
                 }
             }, {
-                name: 'bouton_outlined', // you can also use '3' (ID of the variation) to hide the name
+                name: 'btn_outlined', // you can also use '7' (ID of the variation) to hide the name
                 activate: function(event) {
-                    event.redirect('https://communaute.inclusion.beta.gouv.fr/?btn=outl');
+                    $("#btn_outlined").removeClass("d-none")
+                    $("#btn_sep").removeClass("d-none")
                 }
             }],
             trigger: function() {
