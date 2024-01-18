@@ -1,0 +1,164 @@
+# serializer version: 1
+# name: test_extra_context[no_query]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1>Chercher dans la communauté</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="c-box">
+  <form action="." class="form" method="get" name="search_form">
+      <div class="form-row align-items-end">
+          <div class="col">
+  
+  <div class="form-group" id="div_id_q">
+      
+          <label class="control-label" for="id_q">
+              Rechercher par mots clés
+              
+          </label>
+      
+      
+          <input class="form-control" id="id_q" name="q" placeholder="Mots clés ou phrase" required="" type="search"/>
+      
+      
+      
+      
+  </div>
+  </div>
+          <div class="col-auto mb-3">
+              <button class="btn btn-primary btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query" type="submit">
+                  <i class="ri-search-line"></i>
+                  <span>Rechercher</span>
+              </button>
+          </div>
+      </div>
+      <div class="form-row align-items-end">
+          <div class="col-auto">Rechercher dans</div>
+          <div class="col">
+              <ul class="list-inline mb-0">
+                  <li class="list-inline-item me-3"><label for="id_m_0"><input checked="" id="id_m_0" name="m" type="radio" value="all"/>
+   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input id="id_m_1" name="m" type="radio" value="post"/>
+   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="forum"/>
+   la documentation</label></li>
+              </ul>
+          </div>
+      </div>
+  </form>
+  </div>
+                  </div>
+              </div>
+              
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: test_extra_context[no_results]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1>Chercher dans la communauté</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="c-box">
+  <form action="." class="form" method="get" name="search_form">
+      <div class="form-row align-items-end">
+          <div class="col">
+  
+  <div class="form-group" id="div_id_q">
+      
+          <label class="control-label" for="id_q">
+              Rechercher par mots clés
+              
+          </label>
+      
+      
+          <input class="form-control" id="id_q" name="q" placeholder="Mots clés ou phrase" required="" type="search" value="Bubba Gump Shrimp Co."/>
+      
+      
+      
+      
+  </div>
+  </div>
+          <div class="col-auto mb-3">
+              <button class="btn btn-primary btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query" type="submit">
+                  <i class="ri-search-line"></i>
+                  <span>Rechercher</span>
+              </button>
+          </div>
+      </div>
+      <div class="form-row align-items-end">
+          <div class="col-auto">Rechercher dans</div>
+          <div class="col">
+              <ul class="list-inline mb-0">
+                  <li class="list-inline-item me-3"><label for="id_m_0"><input id="id_m_0" name="m" type="radio" value="all"/>
+   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input checked="" id="id_m_1" name="m" type="radio" value="post"/>
+   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="forum"/>
+   la documentation</label></li>
+              </ul>
+          </div>
+      </div>
+  </form>
+  </div>
+                  </div>
+              </div>
+              
+                  <div class="row mt-3">
+                      <div class="col-12">
+                          <div class="c-box">
+                              
+                                  <div class="row align-items-center">
+                                      <div class="col">
+                                          <h3 class="h4 mb-0">Aucun résultat ? Posez votre question dans l'espace d'échanges !</h3>
+                                      </div>
+                                      <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                          <a class="btn btn-outline-primary btn-ico btn-block matomo-event" data-matomo-action="contribute" data-matomo-category="engagement" data-matomo-option="new_topic_after_search" href="/forum/forrest-gump-42/topic/create/" rel="nofollow">
+                                              <i class="ri-chat-new-line ri-lg"></i>
+                                              <span>Poser une question</span>
+                                          </a>
+                                      </div>
+                                  </div>
+                              
+                              
+                          </div>
+                      </div>
+                  </div>
+              
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
