@@ -10,9 +10,7 @@
         </div>
     </div>
     <div class="form-row align-items-end">
-        <div class="col">
-            {{ form.m.label }}
-            {% for m in form.m %}{{ m }}{{ m.label }}{% endfor %}
-        </div>
+        <div class="col-auto">{{ form.m.label }}</div>
+        {% for m in form.m %}<div class="col-auto">{{ m }}{{ m.label }}</div>{% endfor %}
     </div>
 </form>
