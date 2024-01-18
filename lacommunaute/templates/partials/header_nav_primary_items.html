@@ -3,7 +3,7 @@
 {% load theme_inclusion %}
 <ul>
     <li>
-        <form class="mb-3 mb-xl-0 me-xl-2" action="{% url 'forum_search_extension:search' %}" name="header_search_form">
+        <form class="mb-3 mb-xl-0 me-xl-2" action="{% url 'search:index' %}" name="header_search_form">
             <div class="input-group input-group-rounded-pill">
                 <input class="form-control" type="search" placeholder="{% trans "Search" %}" aria-label="{% trans "Search" %}" name="q">
                 <div class="input-group-text p-0">

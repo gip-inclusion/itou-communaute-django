@@ -30,10 +30,12 @@
           <label class="control-label" for="id_q">
               Rechercher par mots clés
               
+                  <span class="text-muted">(optional)</span>
+              
           </label>
       
       
-          <input class="form-control" id="id_q" name="q" placeholder="Mots clés ou phrase" required="" type="search"/>
+          <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search"/>
       
       
       
@@ -52,8 +54,8 @@
           <div class="col">
               <ul class="list-inline mb-0">
                   <li class="list-inline-item me-3"><label for="id_m_0"><input checked="" id="id_m_0" name="m" type="radio" value="all"/>
-   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input id="id_m_1" name="m" type="radio" value="post"/>
-   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="forum"/>
+   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input id="id_m_1" name="m" type="radio" value="TOPIC"/>
+   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="FORUM"/>
    la documentation</label></li>
               </ul>
           </div>
@@ -101,10 +103,12 @@
           <label class="control-label" for="id_q">
               Rechercher par mots clés
               
+                  <span class="text-muted">(optional)</span>
+              
           </label>
       
       
-          <input class="form-control" id="id_q" name="q" placeholder="Mots clés ou phrase" required="" type="search" value="Bubba Gump Shrimp Co."/>
+          <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search" value="Bubba Gump Shrimp Co."/>
       
       
       
@@ -123,8 +127,8 @@
           <div class="col">
               <ul class="list-inline mb-0">
                   <li class="list-inline-item me-3"><label for="id_m_0"><input id="id_m_0" name="m" type="radio" value="all"/>
-   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input checked="" id="id_m_1" name="m" type="radio" value="post"/>
-   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="forum"/>
+   tout le site</label></li><li class="list-inline-item me-3"><label for="id_m_1"><input checked="" id="id_m_1" name="m" type="radio" value="TOPIC"/>
+   les échanges</label></li><li class="list-inline-item me-3"><label for="id_m_2"><input id="id_m_2" name="m" type="radio" value="FORUM"/>
    la documentation</label></li>
               </ul>
           </div>

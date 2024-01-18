@@ -1,6 +1,5 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
-{% load highlight %}
 {% load date_filters %}
 {% load str_filters %}
 {% block title %}
@@ -20,17 +19,17 @@
         <div class="s-section__container container">
             <div class="row">
                 <div class="col-12">
-                    <div class="c-box">{% include "forum_search/search_form.html" %}</div>
+                    <div class="c-box">{% include "search/search_form.html" %}</div>
                 </div>
             </div>
-            {% if query %}
+            {% if form.q.value %}
                 <div class="row mt-3">
                     <div class="col-12">
                         <div class="c-box">
-                            {% if page.paginator.count %}
+                            {% if page_obj.paginator.count %}
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h3 class="h4 mb-0">{{ page.paginator.count }} {% trans "result" %}{{ page.paginator.count|pluralizefr }}</h3>
+                                        <h3 class="h4 mb-0">{{ page_obj.paginator.count }} {% trans "result" %}{{ page_obj.paginator.count|pluralizefr }}</h3>
                                     </div>
                                     <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
                                         <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
@@ -48,40 +47,31 @@
                                     <table class="table table-hover mt-3 mt-md-4">
                                         <caption class="visually-hidden">Liste de résultats</caption>
                                         <tbody>
-                                            {% for result in page.object_list %}
-                                                {% if result.topic %}
+                                            {% for result in page_obj.object_list %}
+                                                {% if result.kind == "TOPIC" %}
                                                     <tr>
                                                         <td class="position-relative">
-                                                            <a href="{% url 'forum_conversation:topic' result.forum_slug result.forum result.topic_slug result.topic %}"
+                                                            <a href="{% url 'forum_conversation:topic' result.forum_slug result.forum_id result.topic_slug result.topic_id %}"
                                                                class="btn-link stretched-link btn-ico matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
                                                                data-matomo-option="topic">
                                                                 <i class="ri-user-line ri-lg" aria-hidden="true"></i>
-                                                                <span>{{ result.topic_subject }}</span>
+                                                                <span>{{ result.title }}</span>
                                                             </a>
-                                                            <br>
-                                                            <small class="text-muted">
-                                                                {% spaceless %}
-                                                                    {% blocktrans trimmed with poster_username=result.poster_name creation_date=result.created %}
-                                                                        By: {{ poster_username }},
-                                                                    {% endblocktrans %}
-                                                                {% endspaceless %}
-                                                                {{ result.created|relativetimesince_fr }}
-                                                            </small>
-                                                            <div>{% highlight result.text with request.GET.q max_lenght 800 %}</div>
+                                                            <div>{{ result.headline|safe }}</div>
                                                         </td>
                                                     </tr>
                                                 {% else %}
                                                     <tr>
                                                         <td class="position-relative">
-                                                            <a href="{% url 'forum_extension:forum' result.forum_slug result.forum %}"
+                                                            <a href="{% url 'forum_extension:forum' result.forum_slug result.forum_id %}"
                                                                class="btn-link btn-ico stretched-link matomo-event"
                                                                data-matomo-category="engagement"
                                                                data-matomo-action="view"
                                                                data-matomo-option="forum">
                                                                 <i class="ri-article-line" aria-hidden="true"></i>
-                                                                <span>{{ result.forum_name }}</span>
+                                                                <span>{{ result.title }}</span>
                                                             </a>
                                                             <br>
                                                             <small class="text-muted">
@@ -90,7 +80,7 @@
                                                                 {% endspaceless %}
                                                                 {{ result.forum_updated|relativetimesince_fr }}
                                                             </small>
-                                                            <div>{% highlight result.text with request.GET.q max_lenght 800 %}</div>
+                                                            <div>{{ result.headline|safe }}</div>
                                                         </td>
                                                     </tr>
                                                 {% endif %}
@@ -116,9 +106,9 @@
                                     </div>
                                 </div>
                             {% endif %}
-                            {% if page.has_previous or page.has_next %}
+                            {% if page_obj.has_previous or page_obj.has_next %}
                                 {% with pagination_size="pagination-sm justify-content-center mt-5" %}
-                                    {% include "forum_search/pagination.html" %}
+                                    {% include "search/pagination.html" %}
                                 {% endwith %}
                             {% endif %}
                         </div>
