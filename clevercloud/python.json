@@ -7,8 +7,7 @@
         "managetasks": [
             "migrate --no-input",
             "collectstatic --no-input",
-            "compress --force",
-            "rebuild_index --noinput"
+            "compress --force"
         ]
     }
 }

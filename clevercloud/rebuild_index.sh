@@ -11,7 +11,4 @@ if [[ "$INSTANCE_NUMBER" != "0" ]]; then
     exit 0
 fi
 
-# $APP_HOME is set by default by clever cloud.
-cd $APP_HOME
-
-python manage.py rebuild_index --noinput
+psql $POSTGRESQL_ADDON_DIRECT_URI -c "REFRESH MATERIALIZED VIEW search_commonindex;"

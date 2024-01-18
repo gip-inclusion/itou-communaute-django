@@ -41,7 +41,6 @@ THIRD_PARTIES_APPS = [
     "storages",
     # Machina dependencies:
     "mptt",  # to handle the tree of forum instances
-    "haystack",  # search capabilities
     "widget_tweaks",
     # Machina apps:
     "machina",
@@ -74,12 +73,12 @@ LOCAL_APPS = [
     "lacommunaute.forum_upvote",
     "lacommunaute.forum_stats",
     "lacommunaute.notification",
-    "lacommunaute.forum_search",
     "lacommunaute.event",
     "lacommunaute.inclusion_connect",
     "lacommunaute.pages",
     "lacommunaute.forum_file",
     "lacommunaute.metabase",
+    "lacommunaute.search",
     "lacommunaute.surveys",
 ]
 
@@ -266,14 +265,6 @@ MEDIA_ROOT = os.path.join(APPS_DIR, "media")
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"  # noqa
 
-# Search Backend
-# ------------------------------------------------------------------------------
-HAYSTACK_CONNECTIONS = {
-    "default": {
-        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
-        "PATH": os.path.join(ROOT_DIR, "whoosh_index"),
-    },
-}
 # Forum - Machina settings
 # ------------------------------------------------------------------------------
 MACHINA_FORUM_NAME = "La communauté de l'inclusion"

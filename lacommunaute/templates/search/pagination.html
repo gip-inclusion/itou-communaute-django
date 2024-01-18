@@ -1,0 +1,44 @@
+{% load i18n %}
+<ul class="m-0 pagination {{ pagination_size|default:"" }}">
+    <li class="page-item{% if not page_obj.has_previous %} disabled{% endif %}">
+        <a href="{% if page_obj.has_previous %}?q={{ form.q.value }}&amp;page={{ page_obj.previous_page_number }}{% endif %}" class="page-link">&laquo;</a>
+    </li>
+    {% for number in paginator.page_range %}
+        {% if forloop.first %}
+            <li class="page-item{% if page_obj.number == number %} active{% endif %}">
+                <a href="?q={{ form.q.value }}&amp;page={{ number }}" class="page-link">{{ number }}</a>
+            </li>
+            {% if page_obj.number > 4 %}
+                <li class="page-item disabled">
+                    <a href="#" class="page-link">...</a>
+                </li>
+            {% endif %}
+        {% elif forloop.last %}
+            {% if page_obj.number < paginator.num_pages|add:"-3" %}
+                <li class="page-item disabled">
+                    <a href="#" class="page-link">...</a>
+                </li>
+            {% endif %}
+            <li class="page-item{% if page_obj.number == number %} active{% endif %}">
+                <a href="?q={{ form.q.value }}&amp;page={{ number }}" class="page-link">{{ number }}</a>
+            </li>
+        {% else %}
+            {% if page_obj.number < 3 and number <= 5 %}
+                <li class="page-item{% if page_obj.number == number %} active{% endif %}">
+                    <a href="?q={{ form.q.value }}&amp;page={{ number }}" class="page-link">{{ number }}</a>
+                </li>
+            {% elif page_obj.number > paginator.num_pages|add:"-2" and number >= paginator.num_pages|add:"-4" %}
+                <li class="page-item{% if page_obj.number == number %} active{% endif %}">
+                    <a href="?q={{ form.q.value }}&amp;page={{ number }}" class="page-link">{{ number }}</a>
+                </li>
+            {% elif number >= page_obj.previous_page_number|add:"-1" and number <= page_obj.next_page_number|add:"1" %}
+                <li class="page-item{% if page_obj.number == number %} active{% endif %}">
+                    <a href="?q={{ form.q.value }}&amp;page={{ number }}" class="page-link">{{ number }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    <li class="page-item{% if not page_obj.has_next %} disabled{% endif %}">
+        <a href="{% if page_obj.has_next %}?q={{ form.q.value }}&amp;page={{ page_obj.next_page_number }}{% endif %}" class="page-link">&raquo;</a>
+    </li>
+</ul>
