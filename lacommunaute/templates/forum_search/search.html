@@ -28,7 +28,22 @@
                     <div class="col-12">
                         <div class="c-box">
                             {% if page.paginator.count %}
-                                <h3 class="h4 mb-0">{{ page.paginator.count }} {% trans "result" %}{{ page.paginator.count|pluralizefr }}</h3>
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 class="h4 mb-0">{{ page.paginator.count }} {% trans "result" %}{{ page.paginator.count|pluralizefr }}</h3>
+                                    </div>
+                                    <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                           rel="nofollow"
+                                           class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="contribute"
+                                           data-matomo-option="new_topic_after_search">
+                                            <i class="ri-chat-new-line ri-lg"></i>
+                                            <span>Poser une question</span>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="table-responsive-lg">
                                     <table class="table table-hover mt-3 mt-md-4">
                                         <caption class="visually-hidden">Liste de résultats</caption>
@@ -84,8 +99,21 @@
                                     </table>
                                 </div>
                             {% else %}
-                                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
-                                    <h3 class="h4 mb-0">{% trans "No results." %}</h3>
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 class="h4 mb-0">Aucun résultat ? Posez votre question dans l'espace d'échanges !</h3>
+                                    </div>
+                                    <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                        <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                           rel="nofollow"
+                                           class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="contribute"
+                                           data-matomo-option="new_topic_after_search">
+                                            <i class="ri-chat-new-line ri-lg"></i>
+                                            <span>Poser une question</span>
+                                        </a>
+                                    </div>
                                 </div>
                             {% endif %}
                             {% if page.has_previous or page.has_next %}

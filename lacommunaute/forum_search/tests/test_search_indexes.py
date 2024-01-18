@@ -9,6 +9,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -96,21 +97,25 @@ def test_search_on_forum(client, db, search_url, public_forums):
 
 
 def test_search_with_no_query(client, db, search_url):
+    ForumFactory()
     response = client.get(search_url)
     assertContains(response, '<input type="search" name="q"')
 
 
 def test_empty_search(client, db, search_url):
+    ForumFactory()
     response = client.get(search_url, {"q": ""})
     assertContains(response, '<input type="search" name="q"')
 
 
 def test_search_with_no_results(client, db, search_url):
+    ForumFactory()
     response = client.get(search_url, {"q": "test"})
     assertContains(response, "Aucun résultat")
 
 
 def test_search_with_non_unicode_characters(client, db, search_url):
+    ForumFactory()
     encoded_char = urllib.parse.quote("\x1f")
     response = client.get(search_url, {"q": encoded_char})
     assertContains(response, "Aucun résultat")
@@ -170,6 +175,7 @@ def test_search_on_both_models(client, db, search_url, public_topics, public_for
 
 
 def test_non_public_forums_are_excluded(client, db, search_url):
+    ForumFactory()
     for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
         ForumFactory(kind=kind, name=f"invisible {i}")
     call_command("rebuild_index", noinput=True, interactive=False)
@@ -178,6 +184,7 @@ def test_non_public_forums_are_excluded(client, db, search_url):
 
 
 def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
+    ForumFactory()
     for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
         TopicFactory(forum=ForumFactory(kind=kind), subject=f"invisible {i}", with_post=True)
     call_command("rebuild_index", noinput=True, interactive=False)
@@ -202,3 +209,18 @@ def test_unapproved_post_is_exclude(client, db, search_url):
     call_command("rebuild_index", noinput=True, interactive=False)
     response = client.get(search_url, {"q": "emplois"})
     assertContains(response, "Aucun résultat")
+
+
+def test_extra_context(client, db, search_url, snapshot):
+    forum = ForumFactory()
+
+    response = client.get(search_url)
+    content = parse_response_to_soup(response, selector="main")
+    assert str(content) == snapshot(name="no_query")
+
+    datas = {"m": "post", "q": " ".join(["Bubba", "Gump", "Shrimp", "Co."])}
+    response = client.get(search_url, datas)
+    content = parse_response_to_soup(
+        response, selector="main", replace_in_href=[(forum.slug, "forrest-gump"), (str(forum.pk), "42")]
+    )
+    assert str(content) == snapshot(name="no_results")
