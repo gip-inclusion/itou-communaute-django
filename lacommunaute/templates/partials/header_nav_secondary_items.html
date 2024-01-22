@@ -5,7 +5,7 @@
 {% url 'forum_conversation_extension:topics' as publicforum_url %}
 {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
 {% url 'forum_extension:documentation' as documentation_url %}
-{% url 'event:current' as calendar_url %}
+{% comment %}{% url 'event:current' as calendar_url %}{% endcomment %}
 {% url 'forum_search_extension:search' as search_url %}
 {% url 'surveys:dsp_create' as dsp_url %}
 <ul>
@@ -26,7 +26,8 @@
            data-matomo-option="documentation_header">{% trans "Documents" %}</a>
     </li>
     <li>
-        <a href="{{ calendar_url }}" class="{% if request.path == calendar_url %}is-active{% endif %}">{% trans "Events" %}</a>
+        {% comment %}<a href="{{ calendar_url }}" class="{% if request.path == calendar_url %}is-active{% endif %}">{% trans "Events" %}</a>{% endcomment %}
+        <a href="https://www.inclusion-demain.fr/" target="_blank"><b>Evènement 01 Février - inclusion-demain.fr <i class="ri-external-link-line"></i></b></a>
     </li>
     {% if request.user.is_superuser %}
         <li>
