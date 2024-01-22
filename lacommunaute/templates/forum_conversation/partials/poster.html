@@ -20,6 +20,9 @@
         {% endwith %}
     {% endspaceless %}
     {{ post.created|relativetimesince_fr }}
+    {% if show_forum_origin_if_not_id and show_forum_origin_if_not_id != topic.forum.id %}
+        , dans <a href="{% url 'forum_extension:forum' topic.forum.slug topic.forum.pk %}">{{ topic.forum.name }}</a>
+    {% endif %}
     {% if user_can_edit_post %}
         - <a href="{% if is_topic_head %}{% url 'forum_conversation:topic_update' topic.forum.slug topic.forum.pk topic.slug topic.pk %}{% else %}{% url 'forum_conversation:post_update' topic.forum.slug topic.forum.pk topic.slug topic.pk post.pk %}{% endif %}"
     aria-label="{% trans "Edit" %}">{% trans "Edit" %}</a>

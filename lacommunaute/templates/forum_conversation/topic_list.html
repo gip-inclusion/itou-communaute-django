@@ -42,7 +42,11 @@
                         <div class="card-body pt-0">
                             <div class="row">
                                 <div class="col-12 post-content-wrapper mb-1">
-                                    {% include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True %}
+                                    {% if show_forum_origin_if_not_id %}
+                                        {% include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True show_forum_origin_if_not_id=show_forum_origin_if_not_id %}
+                                    {% else %}
+                                        {% include "forum_conversation/partials/poster.html" with post=topic.first_post topic=topic is_topic_head=True %}
+                                    {% endif %}
                                 </div>
                                 <div class="col-12 post-content mb-3">
                                     {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
