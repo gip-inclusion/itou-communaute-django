@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+from bs4 import BeautifulSoup
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.http import HttpResponse
 from django.template import Context, Template
 from django.template.defaultfilters import date, time
 from django.test import TestCase, override_settings
@@ -17,6 +19,7 @@ from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
+from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
 
@@ -427,3 +430,32 @@ class UtilsMathPercent(TestCase):
         self.assertEqual(percent(0, 1), 0)
         self.assertEqual(percent(1, 0), 0)
         self.assertEqual(percent(0, 0), 0)
+
+
+class UtilsParseResponseToSoupTest(TestCase):
+    def test_parse_wo_selector(self):
+        html = '<html><head></head><body><div id="foo">bar</div></body></html>'
+        response = HttpResponse(html)
+        assert parse_response_to_soup(response) == BeautifulSoup(html, "html.parser")
+
+    def test_parse_with_selector(self):
+        response = HttpResponse('<html><head></head><body><div id="foo">bar</div></body></html>')
+        assert str(parse_response_to_soup(response, selector="#foo")) == '<div id="foo">bar</div>'
+
+    def test_replace_in_href_mixing_tuple_and_object(self):
+        topic = TopicFactory()
+        response = HttpResponse(
+            "<html><head></head><body>"
+            f'<div><a href="http://server.com/{topic.pk}/">salmon</a></div>'
+            '<div><a href="http://server.com/bream/">bream</a></div>'
+            '<div><a href="http://server.com/red_mullet/">red mullet</a></div>'
+            "</body></html>"
+        )
+        soup = parse_response_to_soup(response, replace_in_href=[topic, ("red_mullet", "slug2")])
+        assert str(soup) == (
+            "<html><head></head><body>"
+            '<div><a href="http://server.com/[PK of Topic]/">salmon</a></div>'
+            '<div><a href="http://server.com/bream/">bream</a></div>'
+            '<div><a href="http://server.com/slug2/">red mullet</a></div>'
+            "</body></html>"
+        )
