@@ -65,8 +65,6 @@ class TestDSPDetailView:
         url = reverse("surveys:dsp_detail", kwargs={"pk": dsp.pk})
         response = client.get(url)
         assert response.status_code == 200
-        assert "form" in response.context
-        assert "recommendations" in response.context
 
 
 class TestHomeView:

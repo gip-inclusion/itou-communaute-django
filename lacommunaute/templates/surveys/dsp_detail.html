@@ -4,45 +4,55 @@
 {% block meta_description %}
     Recommandations
 {% endblock meta_description %}
-"
 {% block content %}
-    <section class="s-title-01 mt-lg-5">
-        <div class="s-title-01__container container">
-            <div class="s-title-01__row row">
-                <div class="s-title-01__col col-12">
-                    <h1 class="s-title-01__title h1">Les recommandations suite à votre diagnostic</h1>
+    {% if global_recommendations or grouped_recommendations %}
+        <section class="s-title-01 mt-lg-5">
+            <div class="s-title-01__container container">
+                <div class="s-title-01__row row">
+                    <div class="s-title-01__col col-12">
+                        <h1 class="s-title-01__title h1">Les recommandations suite à votre diagnostic</h1>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endif %}
     <section class="s-section">
         <div class="s-section__container container">
+            {% if global_recommendations or grouped_recommendations %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12 col-lg-8 c-box mb-5">
+                        {% if global_recommendations %}
+                            <div>
+                                <h2>Général</h2>
+                                <ul>
+                                    {% for recommendation in global_recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
+                                </ul>
+                                <hr>
+                            </div>
+                        {% endif %}
+                        {% for category, recommendations in grouped_recommendations %}
+                            <div>
+                                <h2 class="h3">{{ category }}</h2>
+                                <ul>
+                                    {% for recommendation in recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
+                                </ul>
+                                {% if not forloop.last %}<hr>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-8">
-                    {% for label, recommendation in recommendations.items %}
-                        <div>
-                            <h2 class="h3">{{ label }}</h2>
-                            <div>{{ recommendation }}</div>
-                            <hr class="mt-5">
-                        </div>
-                    {% endfor %}
+                    <h2>Rappel de votre diagnostic</h2>
                 </div>
             </div>
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-8">
-                    <h2 class="h3">Rappel de votre diagnostic</h2>
-                </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-12 col-lg-8">
-                    {% for field in form %}
+                    {% for category, choice in dsp_fields.items %}
                         <p>
-                            <strong>{{ field.label }} :</strong>
-                            {% if field.field.choices %}
-                                {% for choice in field.field.choices %}
-                                    {% if choice.0 == field.value %}{{ choice.1 }}{% endif %}
-                                {% endfor %}
-                            {% endif %}
+                            <strong>{{ category|capfirst }} :</strong>
+                            {{ choice }}
                         </p>
                     {% endfor %}
                 </div>

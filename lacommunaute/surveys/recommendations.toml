@@ -1,0 +1,179 @@
+[[recommendations]]
+codename = "capacite-travail-0"
+category = "Capacité à occuper un poste de travail"
+text = "Évaluer les nécessités d’adaptation du poste de travail"
+
+[[recommendations]]
+codename = "capacite-travail-1"
+category = "Capacité à occuper un poste de travail"
+text = "Identifier des aménagements spécifiques nécessaires (horaires flexibles, travail à distance, etc.)"
+
+[[recommendations]]
+codename = "capacite-travail-2"
+category = "Capacité à occuper un poste de travail"
+text = """
+       Joindre la liste des aménagements du poste de travail avec les candidatures, \
+       orienter vers les SIAE avec ces aménagements\
+       """
+
+[[recommendations]]
+codename = "capacite-travail-3"
+category = "Capacité à occuper un poste de travail"
+text = "Détection des compétences transverses et transférables à développer"
+
+[[recommendations]]
+codename = "cours-langue-0"
+category = "Langage"
+text = "Prendre des cours de langue française pour débutants"
+
+[[recommendations]]
+codename = "cours-langue-1"
+category = "Langage"
+text = "Prendre des cours de langue française"
+
+[[recommendations]]
+codename = "cours-langue-2"
+category = "Langage"
+text = "Proposer des formations en langue française adaptées à ses besoins"
+
+[[recommendations]]
+codename = "cours-langue-3"
+category = "Langage"
+text = "Formations complémentaires mode de communication (savoir-être…)"
+
+[[recommendations]]
+codename = "logement-0"
+category = "Logement"
+text = "Trouver un logement d’urgence"
+
+[[recommendations]]
+codename = "logement-1"
+category = "Logement"
+text = "Trouver un logement moyen terme"
+
+[[recommendations]]
+codename = "logement-2"
+category = "Logement"
+text = "Orienter vers des services d’aide au logement et des structures d’urgence si nécessaire"
+
+[[recommendations]]
+codename = "logement-3"
+category = "Logement"
+text = "Surveillance de la stabilité du logement"
+
+[[recommendations]]
+codename = "access-droits-0"
+category = "Accès aux droits"
+text = "Faire un bilan de la situation et lister les droits du demandeur"
+
+[[recommendations]]
+codename = "access-droits-1"
+category = "Accès aux droits"
+text = "Accompagner le demandeur dans ses démarches"
+
+[[recommendations]]
+codename = "access-droits-2"
+category = "Accès aux droits"
+text = """
+       Soutien dans les démarches administratives, \
+       notamment pour stabiliser la situation de logement et de garde des enfants\
+       """
+
+[[recommendations]]
+codename = "access-droits-3"
+category = "Accès aux droits"
+text = "Vérifier la continuité des droits et assurer un suivi administratif"
+
+[[recommendations]]
+codename = "mobilite-0"
+category = "Mobilité"
+text = "Prévoir un transport pour emmener le demandeur à son lieu de travail"
+
+[[recommendations]]
+codename = "mobilite-1"
+category = "Mobilité"
+text = "Trouver un plan B en cas de problème avec le mode de transport principal"
+
+[[recommendations]]
+codename = "mobilite-2"
+category = "Mobilité"
+text = """
+       Évaluer les besoins de mobilité spécifiques liés à la garde des enfants et  \
+       au travail possibilité de mise en place de mobilité solidaire\
+       """
+
+[[recommendations]]
+codename = "mobilite-3"
+category = "Mobilité"
+text = "Encourager l’usage du covoiturage, valoriser la mobilité dans la recherche d’emploi"
+
+[[recommendations]]
+codename = "ressources-0"
+category = "Situation financière"
+text = "Déposer un dossier pour être accompagné"
+
+[[recommendations]]
+codename = "ressources-1"
+category = "Situation financière"
+text = "Accompagner vers une stabilité financière"
+
+[[recommendations]]
+codename = "ressources-2"
+category = "Situation financière"
+text = """
+       Accompagnement en gestion budgétaire, orientation vers des aides financières et \
+       des conseils en économie sociale et familiale\
+       """
+
+[[recommendations]]
+codename = "ressources-3"
+category = "Situation financière"
+text = "Ateliers de gestion budgétaire avancée si nécessaire"
+
+[[recommendations]]
+codename = "judiciaire-0"
+category = "Situation judiciaire"
+text = "Préparation à la sortie et la réinsertion"
+
+[[recommendations]]
+codename = "judiciaire-1"
+category = "Situation judiciaire"
+text = """
+       Coordination avec les services judiciaires pour un accompagnement adapté et \
+       respectueux des obligations judiciaires\
+       """
+
+[[recommendations]]
+codename = "judiciaire-2"
+category = "Situation judiciaire"
+text = "Sensibilisation aux conséquences de comportements à risque"
+
+[[recommendations]]
+codename = "disponibilite-0"
+category = "Disponibilité"
+text = "Présenter des solutions de garde ou de soutien aux accompagnants"
+
+[[recommendations]]
+codename = "disponibilite-1"
+category = "Disponibilité"
+text = "Accompagner le recours à une solution de garde ou de soutien aux accompagnants"
+
+[[recommendations]]
+codename = "disponibilite-2"
+category = "Disponibilité"
+text = "Recherche d'emplois compatibles avec les horaires de garde des enfants, exploration d'opportunités de travail à temps partiel ou flexible"
+
+[[recommendations]]
+codename = "disponibilite-3"
+category = "Disponibilité"
+text = "Prêt à l’emploi, proposition d’atelier TRE"
+
+[[recommendations]]
+codename = "toutes-les-formations"
+category = "Général"
+text = "Se diriger vers le conseil départemental pour définir les priorités d’accompagnement"
+
+[[recommendations]]
+codename = "pret-a-emploi"
+category = "Général"
+text = "Démarrer un parcours dans l’IAE sur les emplois de l’inclusion"
