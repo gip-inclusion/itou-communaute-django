@@ -221,3 +221,20 @@ def test_extra_context(client, db, search_url, snapshot):
         response, selector="main", replace_in_href=[(forum.slug, "forrest-gump"), (str(forum.pk), "42")]
     )
     assert str(content) == snapshot(name="no_results")
+
+
+def test_search_all_site_is_checked(client, db, search_url):
+    response = client.get(search_url)
+    assertContains(
+        response,
+        """
+        <li class="list-inline-item me-3">
+        <label for="id_m_0">
+        <input type="radio" name="m" value="all" id="id_m_0" checked="">
+        tout le site
+        </label>
+        </li>
+        """,
+        html=True,
+        count=1,
+    )
