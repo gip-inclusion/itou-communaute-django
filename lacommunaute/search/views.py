@@ -17,7 +17,9 @@ class SearchView(FormMixin, ListView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["data"] = self.request.GET
+        data = self.request.GET.copy()
+        data.setdefault("m", "all")
+        kwargs["data"] = data
         return kwargs
 
     def get_queryset(self):
