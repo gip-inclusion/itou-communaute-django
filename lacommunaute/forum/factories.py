@@ -14,7 +14,7 @@ UserForumPermission = get_model("forum_permission", "UserForumPermission")
 class ForumFactory(BaseForumFactory):
     type = Forum.FORUM_POST
     members_group = factory.SubFactory(GroupFactory, name=factory.SelfAttribute("..name"))
-    name = factory.Faker("name")
+    name = factory.Sequence(lambda n: f"Forum {n}")
     description = factory.Faker("sentence", nb_words=100)
     short_description = factory.Faker("sentence", nb_words=10)
 
