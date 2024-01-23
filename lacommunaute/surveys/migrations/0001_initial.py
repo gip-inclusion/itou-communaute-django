@@ -36,8 +36,8 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name": "Diagnostic socio-professionnel",
-                "verbose_name_plural": "Diagnostics socio-professionnels",
+                "verbose_name": "diagnostic socio-professionnel",
+                "verbose_name_plural": "diagnostics socio-professionnels",
             },
         ),
     ]
