@@ -1,4 +1,4 @@
-{% extends BASE_TEMPLATE %}
+{% extends "layouts/base.html" %}
 {% block title %}Erreur 404{{ block.super }}{% endblock %}
 {% block body_class %}p-error{{ block.super }}{% endblock %}
 {% block content %}
@@ -8,13 +8,22 @@
                 <div class="s-title-01__row row">
                     <div class="s-title-01__col col-12">
                         <h1 class="h1">Bienvenue sur le site de la Communauté de l'Inclusion.</h1>
-                        <p>Le site a fait peau neuve et le lien sur lequel vous avez cliqué n'est plus disponible.</p>
-                        <p>
-                            L'aide reste accessible à l'adresse <a href="https://documentation.inclusion.beta.gouv.fr/aide/">documentation.inclusion.beta.gouv.fr/aide/</a>
-                        </p>
-                        <p>
-                            La liste des communautés publiques est accessible à l'adresse <a href="{% url 'pages:home' %}">communaute.inclusion.beta.gouv.fr</a>
-                        </p>
+                        <p>Le lien que vous avez suivi n'est pas disponible.</p>
+                        <p>Vous pouvez accéder aux fonctionnalités du site grâce aux liens suivants :</p>
+                        <ul>
+                            <li>
+                                <a href="\{% url 'forum_conversation_extension:topics' %}">Espace d'échanges</a>
+                            </li>
+                            <li>
+                                <a href="\{% url 'forum_conversation_extension:newsfeed' %}">Actualités</a>
+                            </li>
+                            <li>
+                                <a href="\{% url 'forum_extension:documentation' %}">Documentation</a>
+                            </li>
+                            <li>
+                                <a href="\{% url 'forum_search_extension:search' %}">Recherche</a>
+                            </li>
+                        </ul>
                         <p>
                             Pour retrouver l'intégralité des services, vous pouvez consulter le site <a href="https://inclusion.beta.gouv.fr/">inclusion.beta.gouv.fr</a>
                         </p>
