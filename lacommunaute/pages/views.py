@@ -51,11 +51,11 @@ class StatistiquesPageView(TemplateView):
         stats["engagement_percent"] = percent(stats["nb_uniq_engaged_visitors"], stats["nb_uniq_active_visitors"])
         return stats
 
-    def get_context_data(self, **kwargs):
+    def get_daily_stats(self):
         indicator_names = [
-            "nb_uniq_engaged_visitors",
             "nb_uniq_visitors",
             "nb_uniq_active_visitors",
+            "nb_uniq_engaged_visitors",
         ]
         after_date = timezone.now() - timezone.timedelta(days=90)
         datas = (
@@ -63,9 +63,22 @@ class StatistiquesPageView(TemplateView):
             .values("name", "value")
             .annotate(date=Cast("date", CharField()))
         )
+        return extract_values_in_list(datas, indicator_names)
 
+    def get_monthly_visitors(self):
+        indicator_names = ["nb_uniq_visitors_returning"]
+        after_date = timezone.now() - timezone.timedelta(days=124)  # 4 months
+        datas = (
+            Stat.objects.filter(period="month", name__in=indicator_names, date__gte=after_date)
+            .values("name", "value")
+            .annotate(date=Cast("date", CharField()))
+        )
+        return extract_values_in_list(datas, indicator_names)
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["stats"] = extract_values_in_list(datas, indicator_names)
+        context["stats"] = self.get_daily_stats()
+        context["impact"] = self.get_monthly_visitors()
         context = {**context, **self.get_funnel_data()}
 
         return context

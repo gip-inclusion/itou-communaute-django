@@ -88,6 +88,31 @@ class StatistiquesPageTest(TestCase):
             response.context["engagement_percent"], percent(uniq_engaged_visitors.value, uniq_active_visitors.value)
         )
 
+    def test_impact_in_context_data(self):
+        url = reverse("pages:statistiques")
+        today = localdate()
+        empty_res = {"date": [], "nb_uniq_visitors_returning": []}
+
+        # no data
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["impact"], empty_res)
+
+        # undesired data
+        StatFactory(name="nb_uniq_visitors_returning", period=Period.DAY, date=today)
+        StatFactory(name=faker.word(), period=Period.MONTH, date=today)
+        StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today - timezone.timedelta(days=125))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["impact"], empty_res)
+
+        # desired data
+        StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today, value=1)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["impact"]["date"][0], today.strftime("%Y-%m-%d"))
+        self.assertEqual(response.context["impact"]["nb_uniq_visitors_returning"][0], 1)
+
 
 class LandingPagesListViewTest(TestCase):
     def test_context_data(self):
