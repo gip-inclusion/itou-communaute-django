@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
+
 load_dotenv()
 
 # Django settings
@@ -58,7 +59,9 @@ THIRD_PARTIES_APPS = [
 # ------------------------------------------------------------------------------
 
 MIGRATION_MODULES = {
-    "forum_member": "machina.apps.forum_member.migrations",
+    "forum_member": "lacommunaute.forum_member.migrations",
+    "forum_tracking": "lacommunaute.forum_tracking.migrations",
+    "forum_permission": "lacommunaute.forum_permission.migrations",
 }
 
 LOCAL_APPS = [

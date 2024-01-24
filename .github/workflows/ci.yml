@@ -53,9 +53,8 @@ jobs:
         run: make quality
       - name: 🚧 collect static for testing purposes
         run: python manage.py collectstatic
-      # disabled until we fix the issue for machina apps
-      #- name: 🚧 Check pending migrations
-      #  run: python manage.py makemigrations --check --dry-run --noinput
+      - name: 🚧 Check pending migrations
+        run: python manage.py makemigrations --check --dry-run --noinput
       - name: 🤹‍ Django tests
         run: pytest --numprocesses=logical --create-db
         env:
