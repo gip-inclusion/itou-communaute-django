@@ -131,9 +131,6 @@ Créer les variables d'environnement suivantes dans le configuration provider
 - INCLUSION_CONNECT_REALM
 - PORT
 - PYTHONPATH
-- S3_STORAGE_BUCKET_NAME
-- S3_STORAGE_BUCKET_NAME_PUBLIC"
-- S3_STORAGE_BUCKET_REGION
 - SENTRY_DSN
 - SIB_API_KEY
 - STATIC_FILES_PATH
