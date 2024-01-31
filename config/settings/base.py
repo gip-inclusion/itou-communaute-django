@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
+from machina.conf.settings import BASE_TEMPLATE_NAME
 
 
 load_dotenv()
@@ -39,6 +40,7 @@ THIRD_PARTIES_APPS = [
     # Django Storage for S3
     "storages",
     # Machina dependencies:
+    "haystack",  # Provides search, but is unused.
     "mptt",  # to handle the tree of forum instances
     "widget_tweaks",
     # Machina apps:
@@ -226,6 +228,11 @@ STATICFILES_FINDERS = [
 ]
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
+COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE_CONTEXT = {
+    "BASE_TEMPLATE": "layouts/base.html",
+    "MACHINA_BASE_TEMPLATE_NAME": BASE_TEMPLATE_NAME,
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -276,6 +283,13 @@ FORUM_TOPICS_NUMBER_PER_PAGE = 10
 FORUM_NUMBER_POSTS_PER_TOPIC = 5
 MACHINA_FORUM_IMAGE_WIDTH = 300
 MACHINA_FORUM_IMAGE_HEIGHT = 300
+
+# Actually unused, but required by Machina.
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack.backends.simple_backend.SimpleEngine",
+    },
+}
 
 # Inclusion Connect
 # ------------------------------------------------------------------------------
