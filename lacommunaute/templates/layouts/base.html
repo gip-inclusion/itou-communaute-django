@@ -33,6 +33,9 @@
             <meta property="fb:page_id" content="inclusion.gouv">
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
+            {% if not debug %}
+                <script src="https://js.sentry-cdn.com/315adbc1472b4c5f875aa426db1fe8f2.min.js" crossorigin="anonymous"></script>
+            {% endif %}
             <!-- Matomo Tag Manager -->
             <script nonce="{{ request.csp_nonce }}">
                 var _mtm = window._mtm = window._mtm || [];
