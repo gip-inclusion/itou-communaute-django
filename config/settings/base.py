@@ -18,9 +18,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS", "communaute-experimentation.inclusion.beta.gouv.fr,communaute.inclusion.beta.gouv.fr,"
-).split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "communaute.inclusion.beta.gouv.fr,").split(",")
 
 # Application definition
 DJANGO_APPS = [
