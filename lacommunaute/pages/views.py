@@ -117,10 +117,3 @@ def mentions_legales(request):
 
 def politique_de_confidentialite(request):
     return render(request, "pages/politique_de_confidentialite.html")
-
-
-def trigger_error(request):
-    if request.POST:
-        raise Exception("%s error: %s" % (request.POST.get("status_code"), request.POST.get("error_message")))
-
-    print(1 / 0)  # Should raise a ZeroDivisionError.
