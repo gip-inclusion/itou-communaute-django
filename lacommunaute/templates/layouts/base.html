@@ -51,9 +51,9 @@
         {% block extra_head %}{% endblock %}
         {% block css %}
             <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
-            {% import_static_CSS_theme_inclusion %}
             <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.vendor.min.css' %}">
             <link rel="stylesheet" href="{% static 'machina/build/css/machina.board_theme.min.css' %}">
+            {% import_static_CSS_theme_inclusion %}
         {% endblock %}
         {% compress css %}
             <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss">
