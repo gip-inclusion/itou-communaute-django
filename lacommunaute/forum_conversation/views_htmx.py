@@ -27,7 +27,7 @@ class ForumTopicListView(PermissionRequiredMixin, ListView):
     ]
     template_name = "forum_conversation/topic_list.html"
 
-    paginate_by = paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
+    paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
     context_object_name = "topics"
 
     def get_queryset(self):
