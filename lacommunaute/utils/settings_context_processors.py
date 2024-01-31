@@ -10,7 +10,6 @@ def expose_settings(request):
 
     return {
         "BASE_TEMPLATE": base_template,
-        "ALLOWED_HOSTS": settings.ALLOWED_HOSTS,
         "MATOMO_SITE_ID": settings.MATOMO_SITE_ID,
         "MATOMO_BASE_URL": settings.MATOMO_BASE_URL,
     }
