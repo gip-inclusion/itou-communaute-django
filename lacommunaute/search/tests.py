@@ -238,3 +238,17 @@ def test_search_all_site_is_checked(client, db, search_url):
         html=True,
         count=1,
     )
+
+
+def test_pagination_perserves_get_params(client, db, search_url):
+    forum = ForumFactory()
+    topics = TopicFactory.create_batch(11, forum=forum, subject="Obtention d’un PASS IAE")
+    for topic in topics:
+        PostFactory(topic=topic, poster=topic.poster, subject=topic.subject)
+    refresh_search_index()
+    response = client.get(search_url, data={"m": "TOPIC", "q": "Obtention"})
+    assertContains(
+        response,
+        f'<a href="{search_url}?m=TOPIC&amp;q=Obtention&amp;page=2" class="page-link">2</a>',
+        count=1,
+    )
