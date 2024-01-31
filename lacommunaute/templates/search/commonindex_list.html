@@ -108,7 +108,7 @@
                             {% endif %}
                             {% if page_obj.has_previous or page_obj.has_next %}
                                 {% with pagination_size="pagination-sm justify-content-center mt-5" %}
-                                    {% include "search/pagination.html" %}
+                                    {% include "partials/pagination.html" %}
                                 {% endwith %}
                             {% endif %}
                         </div>

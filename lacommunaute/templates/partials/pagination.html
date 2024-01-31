@@ -1,13 +1,14 @@
 {% load i18n %}
+{% load url_add_query %}
 {% if is_paginated %}
     <ul class="m-0 pagination {{ pagination_size|default:"" }}">
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-            <a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" class="page-link" aria-label="Précédent"><i class="ri-arrow-left-s-line"></i></a>
+            <a href="{% if page_obj.has_previous %}{% url_add_query request.get_full_path page=page_obj.previous_page_number %}{% endif %}" class="page-link" aria-label="Précédent"><i class="ri-arrow-left-s-line"></i></a>
         </li>
         {% for number in paginator.page_range %}
             {% if forloop.first %}
                 <li class="page-item{% if page_obj.number == number %} active{% endif %}">
-                    <a href="?page={{ number }}" class="page-link">{{ number }}</a>
+                    <a href="{% url_add_query request.get_full_path page=number %}" class="page-link">{{ number }}</a>
                 </li>
                 {% if page_obj.number > 4 and paginator.num_pages > 6 %}
                     <li class="page-item disabled">
@@ -21,26 +22,26 @@
                     </li>
                 {% endif %}
                 <li class="page-item{% if page_obj.number == number %} active{% endif %}">
-                    <a href="?page={{ number }}" class="page-link">{{ number }}</a>
+                    <a href="{% url_add_query request.get_full_path page=number %}" class="page-link">{{ number }}</a>
                 </li>
             {% else %}
                 {% if page_obj.number < 3 and number <= 5 %}
                     <li class="page-item{% if page_obj.number == number %} active{% endif %}">
-                        <a href="?page={{ number }}" class="page-link">{{ number }}</a>
+                        <a href="{% url_add_query request.get_full_path page=number %}" class="page-link">{{ number }}</a>
                     </li>
                 {% elif page_obj.number > paginator.num_pages|add:"-2" and number >= paginator.num_pages|add:"-4" %}
                     <li class="page-item{% if page_obj.number == number %} active{% endif %}">
-                        <a href="?page={{ number }}" class="page-link">{{ number }}</a>
+                        <a href="{% url_add_query request.get_full_path page=number %}" class="page-link">{{ number }}</a>
                     </li>
                 {% elif number >= page_obj.previous_page_number|add:"-1" and number <= page_obj.next_page_number|add:"1" %}
                     <li class="page-item{% if page_obj.number == number %} active{% endif %}">
-                        <a href="?page={{ number }}" class="page-link">{{ number }}</a>
+                        <a href="{% url_add_query request.get_full_path page=number %}" class="page-link">{{ number }}</a>
                     </li>
                 {% endif %}
             {% endif %}
         {% endfor %}
         <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-            <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" class="page-link" aria-label="Suivant"><i class="ri-arrow-right-s-line"></i></a>
+            <a href="{% if page_obj.has_next %}{% url_add_query request.get_full_path page=page_obj.next_page_number %}{% endif %}" class="page-link" aria-label="Suivant"><i class="ri-arrow-right-s-line"></i></a>
         </li>
     </ul>
 {% endif %}
