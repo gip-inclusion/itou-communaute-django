@@ -186,6 +186,9 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
 )
 
+# TODO: Remove with Django 6.0
+FORMS_URLFIELD_ASSUME_HTTPS = True
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
