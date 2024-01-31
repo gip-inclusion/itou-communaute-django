@@ -36,8 +36,8 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name": "diagnostic socio-professionnel",
-                "verbose_name_plural": "diagnostics socio-professionnels",
+                "verbose_name": "diagnostic parcours IAE",
+                "verbose_name_plural": "diagnostics parcours IAE",
             },
         ),
     ]

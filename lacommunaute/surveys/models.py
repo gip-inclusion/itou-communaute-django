@@ -62,5 +62,5 @@ class DSP(DatedModel):
     recommendations = models.ManyToManyField(Recommendation)
 
     class Meta:
-        verbose_name = "diagnostic socio-professionnel"
-        verbose_name_plural = "diagnostics socio-professionnels"
+        verbose_name = "diagnostic parcours IAE"
+        verbose_name_plural = "diagnostics parcours IAE"
