@@ -52,7 +52,9 @@ jobs:
       - name: ✨ Black, ruff & djlint
         run: make quality
       - name: 🚧 collect static for testing purposes
-        run: python manage.py collectstatic
+        run: |
+          python manage.py collectstatic
+          python manage.py compress
       - name: 🚧 Check pending migrations
         run: python manage.py makemigrations --check --dry-run --noinput
       - name: 🤹‍ Django tests
