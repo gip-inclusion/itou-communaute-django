@@ -67,9 +67,8 @@ class StatistiquesPageView(TemplateView):
 
     def get_monthly_visitors(self):
         indicator_names = ["nb_uniq_visitors_returning"]
-        after_date = timezone.now() - timezone.timedelta(days=124)  # 4 months
         datas = (
-            Stat.objects.filter(period="month", name__in=indicator_names, date__gte=after_date)
+            Stat.objects.filter(period="month", name__in=indicator_names)
             .values("name", "value")
             .annotate(date=Cast("date", CharField()))
         )

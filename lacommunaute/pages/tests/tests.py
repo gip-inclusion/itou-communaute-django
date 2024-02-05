@@ -101,7 +101,6 @@ class StatistiquesPageTest(TestCase):
         # undesired data
         StatFactory(name="nb_uniq_visitors_returning", period=Period.DAY, date=today)
         StatFactory(name=faker.word(), period=Period.MONTH, date=today)
-        StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today - timezone.timedelta(days=125))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["impact"], empty_res)
