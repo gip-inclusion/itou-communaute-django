@@ -19,14 +19,8 @@
                 <span>{% trans "Search forums" %}</span>
             </a>
         </div>
-        {% comment %}AB Test - variation bouton documentation{% endcomment %}
-        <div id="btn_sep" class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center d-none">ou</div>
-        <div id="btn_plein" class="col-12 col-md-auto d-none">
-            <a href="{% url 'forum_extension:documentation' %}" class="btn btn-primary btn-ico btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation">
-                <span>Consulter la documentation</span>
-            </a>
-        </div>
-        <div id="btn_outlined" class="col-12 col-md-auto d-none">
+        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">ou</div>
+        <div class="col-12 col-md-auto">
             <a href="{% url 'forum_extension:documentation' %}"
                class="btn btn-outline-primary btn-ico btn-block matomo-event"
                data-matomo-category="engagement"
@@ -35,6 +29,5 @@
                 <span>Consulter la documentation</span>
             </a>
         </div>
-        {% comment %}END AB Test - variation bouton documentation{% endcomment %}
     </div>
 {% endif %}
