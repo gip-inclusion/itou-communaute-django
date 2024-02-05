@@ -206,42 +206,4 @@
             setTimeout(displayTallyPopup, delayBeforeShowingPopupInSeconds * 1000);
         };
     </script>
-    <!-- Matomo A/B Test -->
-    <script type="text/javascript" nonce="{{ request.csp_nonce }}">
-        var _paq = _paq || [];
-        _paq.push(['AbTesting::create', {
-            name: 'Documentation_sur_la_homepage', // you can also use '4' (ID of the experiment) to hide the name
-            percentage: 100,
-            includedTargets: [{
-                "attribute": "url",
-                "inverted": "0",
-                "type": "any",
-                "value": ""
-            }],
-            excludedTargets: [],
-            variations: [{
-                name: 'original',
-                activate: function(event) {
-                    // usually nothing needs to be done here
-                }
-            }, {
-                name: 'btn_plein', // you can also use '6' (ID of the variation) to hide the name
-                activate: function(event) {
-                    $("#btn_plein").removeClass("d-none")
-                    $("#btn_sep").removeClass("d-none")
-
-                }
-            }, {
-                name: 'btn_outlined', // you can also use '7' (ID of the variation) to hide the name
-                activate: function(event) {
-                    $("#btn_outlined").removeClass("d-none")
-                    $("#btn_sep").removeClass("d-none")
-                }
-            }],
-            trigger: function() {
-                return true; // here you can further customize which of your visitors will participate in this experiment
-            }
-        }]);
-    </script>
-    <!-- Matomo A/B Test -->
 {% endblock %}
