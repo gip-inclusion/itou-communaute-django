@@ -12,6 +12,15 @@
 {% endblock meta_description %}
 "
 {% block content %}
+    {% if forum.is_category %}
+        <section>
+            <div class="s-section__container container">
+                <div class="s-section__row row mt-3 mt-md-5">
+                    <div class="s-section__col col-12">{% include 'partials/banners/call_for_contributers.html' %}</div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
     {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
