@@ -46,6 +46,9 @@
                                 </div>
                                 <div class="col-12 post-content mb-3">
                                     {% include "forum_conversation/partials/topic_tags.html" with tags=topic.tags.all %}
+                                    {% if forum != topic.forum %}
+                                        <a href="{% url 'forum_extension:forum' topic.forum.slug topic.forum.pk %}"><span class="badge badge-xs rounded-pill bg-info-lighter text-info text-decoration-underline">{{ topic.forum }}</span></a>
+                                    {% endif %}
                                 </div>
                                 <div class="col-12 post-content">
                                     <div id="showmoretopicsarea{{ topic.pk }}">
