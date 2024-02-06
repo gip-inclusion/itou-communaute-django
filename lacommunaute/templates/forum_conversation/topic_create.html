@@ -7,7 +7,9 @@
 {% block content %}
     <div class="row">
         <div class="col-12 mb-3 mb-lg-5">
-            {% if not user.is_authenticated %}
+            {% if user.is_authenticated %}
+                {% include 'partials/banners/emplois_helpdesk.html' %}
+            {% else %}
                 {% include 'partials/banners/anonymous_users.html' %}
             {% endif %}
         </div>
