@@ -20,9 +20,9 @@
             <div class="s-section__row row mt-3 mt-md-5">
                 <div class="s-section__col col-12">
                     {% if user.is_authenticated %}
-                        {% include 'partials/promotion_banner.html' %}
+                        {% include 'partials/banners/twins_promotion.html' %}
                     {% else %}
-                        {% include 'partials/anonymous_banner.html' %}
+                        {% include 'partials/banners/anonymous_users.html' %}
                     {% endif %}
                 </div>
             </div>
