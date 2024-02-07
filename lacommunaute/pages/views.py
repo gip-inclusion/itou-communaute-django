@@ -20,10 +20,6 @@ from lacommunaute.utils.math import percent
 logger = logging.getLogger(__name__)
 
 
-def contact(request):
-    return render(request, "pages/contact.html")
-
-
 class StatistiquesPageView(TemplateView):
     template_name = "pages/statistiques.html"
 
