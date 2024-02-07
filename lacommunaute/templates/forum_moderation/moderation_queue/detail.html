@@ -10,6 +10,13 @@
             <h1>{% trans "Moderation queue" %}</h1>
         </div>
     </div>
+    {% if post.update_reason %}
+        <div class="row">
+            <div class="col-12">
+                <span class="badge badge-base rounded-pill bg-danger">{{ post.update_reason }}</span>
+            </div>
+        </div>
+    {% endif %}
     <div class="alert alert-warning" role="alert">
         <div class="float-right">
             <a href="{% url 'forum_moderation:disapprove_queued_post' post.pk %}" class="btn btn-warning">{% trans "Disapprove" %}</a>
@@ -134,7 +141,7 @@
             <div class="col-12">
                 <div class="card topic-review">
                     <div class="card-header">
-                        <h3 class="m-0 h5 card-title">{% trans "Topic review" %}&nbsp;&ndash;&nbsp;{{ post.topic.subject }}</h3>
+                        <h3 class="m-0 h5 card-title">{% trans "Topic review" %}&nbsp;{{ post.topic.subject }}</h3>
                     </div>
                     <div class="card-body">
                         {% for post in previous_posts %}
