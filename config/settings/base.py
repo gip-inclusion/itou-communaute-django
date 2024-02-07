@@ -435,3 +435,7 @@ PERMISSIONS_POLICY = {
     "sync-xhr": [],
     "usb": [],
 }
+
+# EXPERIMENTAL
+# ---------------------------------------
+HIGHLIGHTED_FORUM_PK = 105

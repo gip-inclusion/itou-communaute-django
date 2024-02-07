@@ -1,4 +1,5 @@
 import pytest  # noqa
+from django.test import override_settings
 from django.urls import reverse
 
 from lacommunaute.forum.enums import Kind as ForumKind
@@ -40,3 +41,18 @@ def test_new_topics_order(client, db):
     response = client.get(url)
     assert response.status_code == 200
     assert list(response.context_data["topics_public"]) == [topic2, topic1]
+
+
+def test_highlighted_forum(client, db):
+    forum = ForumFactory()
+    url = reverse("pages:home")
+
+    with override_settings(HIGHLIGHTED_FORUM_PK=None):
+        response = client.get(url)
+    assert "highlighted_forum" not in response.context_data
+    assert "topics_of_highlighted_forum" not in response.context_data
+
+    with override_settings(HIGHLIGHTED_FORUM_PK=forum.pk):
+        response = client.get(url)
+    assert "highlighted_forum" in response.context_data
+    assert "topics_of_highlighted_forum" in response.context_data
