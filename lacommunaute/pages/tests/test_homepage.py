@@ -56,3 +56,8 @@ def test_highlighted_forum(client, db):
         response = client.get(url)
     assert "highlighted_forum" in response.context_data
     assert "topics_of_highlighted_forum" in response.context_data
+
+    with override_settings(HIGHLIGHTED_FORUM_PK=999):
+        response = client.get(url)
+    assert "highlighted_forum" not in response.context_data
+    assert "topics_of_highlighted_forum" not in response.context_data

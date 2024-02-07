@@ -102,10 +102,11 @@ class HomeView(TemplateView):
         context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
 
         if getattr(settings, "HIGHLIGHTED_FORUM_PK", None):
-            context["topics_of_highlighted_forum"] = Topic.objects.filter(
-                forum__pk=settings.HIGHLIGHTED_FORUM_PK
-            ).order_by("-created")[:4]
-            context["highlighted_forum"] = Forum.objects.get(pk=settings.HIGHLIGHTED_FORUM_PK)
+            if Forum.objects.filter(pk=settings.HIGHLIGHTED_FORUM_PK).exists():
+                context["topics_of_highlighted_forum"] = Topic.objects.filter(
+                    forum__pk=settings.HIGHLIGHTED_FORUM_PK
+                ).order_by("-created")[:4]
+                context["highlighted_forum"] = Forum.objects.get(pk=settings.HIGHLIGHTED_FORUM_PK)
         return context
 
 
