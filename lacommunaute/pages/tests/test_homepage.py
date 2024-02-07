@@ -4,6 +4,7 @@ from django.urls import reverse
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from pytest_django.asserts import assertContains
 
 
 def test_context_data(client, db):
@@ -40,3 +41,8 @@ def test_new_topics_order(client, db):
     response = client.get(url)
     assert response.status_code == 200
     assert list(response.context_data["topics_public"]) == [topic2, topic1]
+
+
+def test_page_title(db, client):
+    response = client.get(reverse("pages:home"))
+    assertContains(response, "<title>Accueil- La communauté de l'inclusion</title>", html=True, count=1)

@@ -2,7 +2,6 @@ import os
 
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
-from machina.conf.settings import BASE_TEMPLATE_NAME
 
 
 load_dotenv()
@@ -231,7 +230,10 @@ COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_OFFLINE = True
 COMPRESS_OFFLINE_CONTEXT = {
     "BASE_TEMPLATE": "layouts/base.html",
-    "MACHINA_BASE_TEMPLATE_NAME": BASE_TEMPLATE_NAME,
+    # Do not import machina settings for that value. It forces evaluation
+    # of machina’s getattr(settings, "XXX", MACHINA_DEFAULT) before our
+    # settings have be defined, thus preventing our overrides.
+    "MACHINA_BASE_TEMPLATE_NAME": "_base.html",
 }
 
 # Default primary key field type
