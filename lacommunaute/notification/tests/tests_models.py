@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 
-from lacommunaute.notification.factories import BouncedEmailFactory
+from lacommunaute.notification.factories import BouncedDomainNameFactory, BouncedEmailFactory
 from lacommunaute.notification.models import EmailSentTrack
 
 
@@ -16,3 +16,10 @@ class BouncedEmailModelTest(TestCase):
         bounced = BouncedEmailFactory()
         with self.assertRaises(IntegrityError):
             BouncedEmailFactory(email=bounced.email)
+
+
+class BouncedDomainNameModelTest(TestCase):
+    def test_uniqueness(self):
+        bounced = BouncedDomainNameFactory()
+        with self.assertRaises(IntegrityError):
+            BouncedDomainNameFactory(domain=bounced.domain)
