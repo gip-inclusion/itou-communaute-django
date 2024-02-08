@@ -8,7 +8,18 @@ from taggit.models import Tag
 from lacommunaute.notification.utils import should_not_be_approved
 
 
-class PostForm(AbstractPostForm):
+class UpdatePostMixin:
+    def update_post(self, post):
+        if self.user.is_anonymous:
+            post.username = self.cleaned_data["username"]
+            if should_not_be_approved(self.cleaned_data["username"]):
+                post.approved = False
+        else:
+            post.updated_by = self.user
+        post.updates_count = F("updates_count") + 1
+
+
+class PostForm(UpdatePostMixin, AbstractPostForm):
     subject = CharField(widget=HiddenInput(), required=False)
 
     def create_post(self):
@@ -21,17 +32,8 @@ class PostForm(AbstractPostForm):
 
         return post
 
-    def update_post(self, post):
-        if self.user.is_anonymous:
-            post.username = self.cleaned_data["username"]
-            if should_not_be_approved(self.cleaned_data["username"]):
-                post.approved = False
-        else:
-            post.updated_by = self.user
-        post.updates_count = F("updates_count") + 1
 
-
-class TopicForm(AbstractTopicForm):
+class TopicForm(UpdatePostMixin, AbstractTopicForm):
     tags = ModelMultipleChoiceField(
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )

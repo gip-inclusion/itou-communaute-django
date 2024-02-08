@@ -18,7 +18,7 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import BouncedEmailFactory
@@ -236,6 +236,44 @@ class TopicUpdateViewTest(TestCase):
         self.assertContains(response, checked_box, status_code=200)
         not_checked_box = f'class="form-check-input" type="checkbox" name="tags" value="{tag.id}" >'
         self.assertContains(response, not_checked_box)
+
+    def test_update_by_anonymous_user(self):
+        response = self.client.post(
+            reverse(
+                "forum_conversation:topic_create",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                },
+            ),
+            {"subject": "subject", "content": "La communauté", "username": "foo@email.com"},
+        )
+        post = Post.objects.select_related("topic").get(username="foo@email.com")
+        topic = post.topic
+        response = self.client.post(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            ),
+            {"subject": "subject", "content": "La communauté", "username": "foo@email.com"},
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "forum_conversation:topic",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            ),
+        )
 
 
 class PostCreateViewTest(TestCase):
