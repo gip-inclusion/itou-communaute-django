@@ -19,17 +19,18 @@
     <section class="s-section">
         <div class="s-section__container container">
             {% if global_recommendations or grouped_recommendations %}
+                {% if global_recommendations %}
+                    <div class="s-section__row row">
+                        <div class="s-section__col col-12 col-lg-8 c-box mb-5">
+                            <h2>Général</h2>
+                            <ul>
+                                {% for recommendation in global_recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="s-section__row row">
                     <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-                        {% if global_recommendations %}
-                            <div>
-                                <h2>Général</h2>
-                                <ul>
-                                    {% for recommendation in global_recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
-                                </ul>
-                                <hr>
-                            </div>
-                        {% endif %}
                         {% for category, recommendations in grouped_recommendations %}
                             <div>
                                 <h2 class="h3">{{ category }}</h2>
@@ -43,18 +44,21 @@
                 </div>
             {% endif %}
             <div class="s-section__row row">
-                <div class="s-section__col col-12 col-lg-8">
+                <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                     <h2>Rappel de votre diagnostic</h2>
+                    {% for category, choice in dsp_fields.items %}
+                        <ul>
+                            <li>
+                                <strong>{{ category|capfirst }} :</strong>
+                                {{ choice }}
+                            </li>
+                        </ul>
+                    {% endfor %}
                 </div>
             </div>
             <div class="s-section__row row">
-                <div class="s-section__col col-12 col-lg-8">
-                    {% for category, choice in dsp_fields.items %}
-                        <p>
-                            <strong>{{ category|capfirst }} :</strong>
-                            {{ choice }}
-                        </p>
-                    {% endfor %}
+                <div class="s-section__col col-12 col-lg-8 mb-5">
+                    <a href="{% url 'surveys:dsp_create' %}" class="btn btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="submit-an-other-dsp">Faire un nouveau diagnostic</a>
                 </div>
             </div>
         </div>
