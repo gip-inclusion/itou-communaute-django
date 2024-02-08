@@ -4,9 +4,9 @@ from lacommunaute.surveys.models import DSP, Recommendation
 def get_recommendations(dsp):
     recommendations = []
 
-    if all(getattr(dsp, category) <= 2 for category in DSP.CATEGORIES):
+    if all(getattr(dsp, category) < 2 for category in DSP.CATEGORIES):
         recommendations.append(Recommendation.objects.get(codename="toutes-les-formations"))
-    if all(getattr(dsp, category) >= 3 for category in DSP.CATEGORIES):
+    if all(getattr(dsp, category) >= 2 for category in DSP.CATEGORIES):
         recommendations.append(Recommendation.objects.get(codename="pret-a-emploi"))
     recommendations.append(Recommendation.objects.get(codename=f"capacite-travail-{dsp.work_capacity}"))
     recommendations.append(Recommendation.objects.get(codename=f"cours-langue-{dsp.language_skills}"))
