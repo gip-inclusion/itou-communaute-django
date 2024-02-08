@@ -17,10 +17,15 @@ class TopicDeleteView(BaseTopicDeleteView):
 class PostDisapproveView(BasePostDisapproveView):
     def post(self, request, *args, **kwargs):
         post = self.get_object()
-        username = post.username
-        if username:
-            BouncedEmail.objects.create(email=username, reason="Post disapproved")
-            messages.success(
-                self.request, "l'adresse email de l'utilisateur a été ajoutée à la liste des emails bloqués."
-            )
+        if post.username:
+            if BouncedEmail.objects.filter(email=post.username).exists():
+                messages.warning(
+                    self.request,
+                    "l'adresse email de l'utilisateur est déjà dans la liste des emails bloqués.",
+                )
+            else:
+                BouncedEmail.objects.create(email=post.username, reason="Post disapproved")
+                messages.warning(
+                    self.request, "l'adresse email de l'utilisateur a été ajoutée à la liste des emails bloqués."
+                )
         return self.disapprove(request, *args, **kwargs)
