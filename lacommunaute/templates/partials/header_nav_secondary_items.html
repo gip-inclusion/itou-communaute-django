@@ -28,9 +28,7 @@
     <li>
         <a href="{{ calendar_url }}" class="{% if request.path == calendar_url %}is-active{% endif %}">{% trans "Events" %}</a>
     </li>
-    {% if request.user.is_superuser %}
-        <li>
-            <a href="{{ dsp_url }}">Diagnostic Parcours IAE</a>
-        </li>
-    {% endif %}
+    <li>
+        <a href="{{ dsp_url }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="dsp">Diagnostic Parcours IAE</a>
+    </li>
 </ul>

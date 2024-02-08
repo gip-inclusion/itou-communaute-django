@@ -33,3 +33,9 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker("last_name")
     email = factory.Faker("email")
     password = factory.LazyFunction(default_password)
+
+    @factory.post_generation
+    def with_perm(obj, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+        obj.user_permissions.add(*extracted)
