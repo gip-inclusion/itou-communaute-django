@@ -18,13 +18,7 @@
     <section>
         <div class="s-section__container container">
             <div class="s-section__row row mt-3 mt-md-5">
-                <div class="s-section__col col-12">
-                    {% if user.is_authenticated %}
-                        {% include 'partials/banners/twins_promotion.html' %}
-                    {% else %}
-                        {% include 'partials/banners/anonymous_users.html' %}
-                    {% endif %}
-                </div>
+                <div class="s-section__col col-12">{% include 'partials/banners/twins_promotion.html' %}</div>
             </div>
         </div>
     </section>
