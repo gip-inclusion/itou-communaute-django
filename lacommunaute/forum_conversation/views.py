@@ -33,10 +33,6 @@ class FormValidMixin:
 class TopicCreateView(FormValidMixin, views.TopicCreateView):
     post_form_class = TopicForm
 
-    def form_valid(self, *args, **kwargs):
-        valid = super().form_valid(*args, **kwargs)
-        return valid
-
     def get_success_url(self):
         if not self.forum_post.approved:
             return reverse(
