@@ -1,4 +1,6 @@
 import factory
+from django.conf import settings
+from faker import Faker
 from machina.test.factories.conversation import PostFactory as BasePostFactory, TopicFactory as BaseTopicFactory
 
 from lacommunaute.forum.factories import ForumFactory
@@ -8,9 +10,12 @@ from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.factories import UserFactory
 
 
+faker = Faker(settings.LANGUAGE_CODE)
+
+
 class PostFactory(BasePostFactory):
     subject = factory.Faker("sentence", nb_words=5)
-    content = factory.Faker("sentence", nb_words=40)
+    content = factory.Faker("paragraph", nb_sentences=5, locale=settings.LANGUAGE_CODE)
     poster = factory.SubFactory(UserFactory)
 
     class Meta:

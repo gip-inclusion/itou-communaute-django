@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 import pytest
+from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -25,7 +26,7 @@ from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
-faker = Faker()
+faker = Faker(settings.LANGUAGE_CODE)
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
@@ -46,7 +47,7 @@ class TopicCreateViewTest(TestCase):
             },
         )
 
-        cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.text(max_nb_chars=30)}
+        cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.paragraph(nb_sentences=5)}
 
     def test_get_success_url(self):
         view = TopicCreateView()
@@ -152,7 +153,7 @@ class TopicCreateViewTest(TestCase):
         self.client.force_login(self.poster)
         post_data = {
             "subject": faker.text(max_nb_chars=5),
-            "content": faker.text(max_nb_chars=5),
+            "content": faker.paragraph(nb_sentences=5),
             "tags": [Tag.objects.first().pk, Tag.objects.last().pk],
         }
 
@@ -209,7 +210,7 @@ class TopicUpdateViewTest(TestCase):
 
         self.client.force_login(self.poster)
 
-        post_data = {"subject": "s", "content": "c"}
+        post_data = {"subject": "s", "content": faker.paragraph(nb_sentences=5)}
         response = self.client.post(
             self.url,
             post_data,
@@ -316,7 +317,7 @@ class PostUpdateViewTest(TestCase):
             "pk": cls.post.pk,
         }
         cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
-        cls.post_data = {"content": faker.text(max_nb_chars=20)}
+        cls.post_data = {"content": faker.paragraph(nb_sentences=5)}
 
     def test_delete_post_button_is_visible(self, *args):
         self.client.force_login(self.poster)
