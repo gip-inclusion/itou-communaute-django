@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 import pytest
 from django.conf import settings
 from django.contrib.messages.api import get_messages
@@ -19,12 +17,13 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import (
     AnonymousPostFactory,
+    AnonymousTopicFactory,
     CertifiedPostFactory,
     PostFactory,
     TopicFactory,
 )
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import BouncedDomainNameFactory, BouncedEmailFactory
@@ -287,6 +286,38 @@ class TopicUpdateViewTest(TestCase):
         not_checked_box = f'class="form-check-input" type="checkbox" name="tags" value="{tag.id}" >'
         self.assertContains(response, not_checked_box)
 
+    def test_update_by_anonymous_user(self):
+        topic = AnonymousTopicFactory(with_post=True, forum=self.forum)
+        session = self.client.session
+        session["_anonymous_forum_key"] = topic.first_post.anonymous_key
+        session.save()
+        updated_subject = faker.word()
+
+        response = self.client.post(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            ),
+            {"subject": updated_subject, "content": faker.paragraph(nb_sentences=5), "username": "foo@email.com"},
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "forum_conversation:topic",
+                kwargs={
+                    "forum_slug": self.forum.slug,
+                    "forum_pk": self.forum.pk,
+                    "slug": updated_subject,
+                    "pk": topic.pk,
+                },
+            ),
+        )
+
     def test_topic_update_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
         post_data = {"subject": "s", "content": "популярные лучшие песни слушать онлайн"}
@@ -319,48 +350,10 @@ class TopicUpdateViewTest(TestCase):
         self.assertFalse(self.topic.first_post.approved)
         self.assertEqual("HTML tags detected", self.topic.first_post.update_reason)
 
-    def test_update_by_anonymous_user(self):
-        response = self.client.post(
-            reverse(
-                "forum_conversation:topic_create",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                },
-            ),
-            {"subject": "subject", "content": "La communauté", "username": "foo@email.com"},
-        )
-        post = Post.objects.select_related("topic").get(username="foo@email.com")
-        topic = post.topic
-        response = self.client.post(
-            reverse(
-                "forum_conversation:topic_update",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                    "slug": topic.slug,
-                    "pk": topic.pk,
-                },
-            ),
-            {"subject": "subject", "content": "La communauté", "username": "foo@email.com"},
-        )
-        self.assertRedirects(
-            response,
-            reverse(
-                "forum_conversation:topic",
-                kwargs={
-                    "forum_slug": self.forum.slug,
-                    "forum_pk": self.forum.pk,
-                    "slug": topic.slug,
-                    "pk": topic.pk,
-                },
-            ),
-        )
-
     def test_topic_update_with_bounced_domain_name(self, *args):
-        post = AnonymousPostFactory(topic=TopicFactory(forum=self.forum))
+        topic = AnonymousTopicFactory(with_post=True, forum=self.forum)
         session = self.client.session
-        session["_anonymous_forum_key"] = post.anonymous_key
+        session["_anonymous_forum_key"] = topic.first_post.anonymous_key
         session.save()
         BouncedDomainNameFactory(domain="blackhat.com")
 
@@ -370,17 +363,17 @@ class TopicUpdateViewTest(TestCase):
                 kwargs={
                     "forum_slug": self.forum.slug,
                     "forum_pk": self.forum.pk,
-                    "slug": post.topic.slug,
-                    "pk": post.topic.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
                 },
             ),
             {"subject": "subject", "content": "La communauté", "username": "foo@blackhat.com"},
         )
 
         self.assertEqual(response.status_code, 302)
-        post.refresh_from_db()
-        self.assertFalse(post.approved)
-        self.assertEqual("Bounced Domain detected", post.update_reason)
+        topic.refresh_from_db()
+        self.assertFalse(topic.first_post.approved)
+        self.assertEqual("Bounced Domain detected", topic.first_post.update_reason)
 
 
 class PostCreateViewTest(TestCase):
@@ -450,33 +443,45 @@ class PostUpdateViewTest(TestCase):
         self.assertIsNone(self.post.username)
         self.assertTrue(self.post.approved)
 
-    @patch("machina.apps.forum_conversation.views.PostUpdateView.perform_permissions_check", return_value=True)
     def test_update_post_as_anonymous_user(self, *args):
-        self.post_data["username"] = faker.email()
-        url = reverse("forum_conversation:post_update", kwargs=self.kwargs)
+        post = AnonymousPostFactory(topic=self.topic)
+        session = self.client.session
+        session["_anonymous_forum_key"] = post.anonymous_key
+        session.save()
+        url = reverse(
+            "forum_conversation:post_update",
+            kwargs={
+                "forum_slug": self.forum.slug,
+                "forum_pk": self.forum.pk,
+                "topic_slug": self.topic.slug,
+                "topic_pk": self.topic.pk,
+                "pk": post.pk,
+            },
+        )
+
+        post_data = {"content": faker.paragraph(nb_sentences=5), "username": post.username}
 
         response = self.client.post(
             url,
-            self.post_data,
+            post_data,
             follow=True,
         )
 
         self.assertEqual(response.status_code, 200)
-        self.post.refresh_from_db()
-        self.assertEqual(self.post.username, self.post_data["username"])
-        self.assertTrue(self.post.approved)
+        post.refresh_from_db()
+        self.assertTrue(post.approved)
 
-        BouncedEmailFactory(email=self.post_data["username"])
+        BouncedEmailFactory(email=post.username)
 
         response = self.client.post(
             url,
-            self.post_data,
+            post_data,
             follow=True,
         )
 
         self.assertEqual(response.status_code, 200)
-        self.post.refresh_from_db()
-        self.assertFalse(self.post.approved)
+        post.refresh_from_db()
+        self.assertFalse(post.approved)
 
     def test_update_post_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
