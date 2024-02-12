@@ -13,7 +13,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
 from lacommunaute.forum_upvote.factories import UpVoteFactory
-from lacommunaute.notification.factories import BouncedEmailFactory
+from lacommunaute.notification.factories import BouncedDomainNameFactory, BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -348,8 +348,8 @@ class PostFeedCreateViewTest(TestCase):
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
         self.assertEqual(
-            self.topic.posts.values("content", "username", "approved").last(),
-            {"content": self.content, "username": None, "approved": True},
+            self.topic.posts.values("content", "username", "approved", "update_reason").last(),
+            {"content": self.content, "username": None, "approved": True, "update_reason": None},
         )
 
     @patch(
@@ -365,8 +365,8 @@ class PostFeedCreateViewTest(TestCase):
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
         self.assertEqual(
-            self.topic.posts.values("content", "username", "approved").last(),
-            {"content": self.content, "username": username, "approved": True},
+            self.topic.posts.values("content", "username", "approved", "update_reason").last(),
+            {"content": self.content, "username": username, "approved": True, "update_reason": None},
         )
 
         BouncedEmailFactory(email=username).save()
@@ -379,6 +379,63 @@ class PostFeedCreateViewTest(TestCase):
         self.assertEqual(
             self.topic.posts.values("content", "username", "approved").last(),
             {"content": self.content, "username": username, "approved": False},
+        )
+
+    @patch(
+        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
+    )
+    def test_create_post_with_nonfr_content(self, *args):
+        response = self.client.post(
+            self.url, {"content": "популярные лучшие песни слушать онлайн", "username": faker.email()}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.topic.refresh_from_db()
+        self.assertEqual(
+            self.topic.posts.values("content", "update_reason", "approved")[1],
+            {
+                "content": "популярные лучшие песни слушать онлайн",
+                "update_reason": "Alternative Language detected",
+                "approved": False,
+            },
+        )
+
+    @patch(
+        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
+    )
+    def test_create_post_with_html_content(self, *args):
+        response = self.client.post(
+            self.url,
+            {
+                "content": "<p>Hello, <a href='https://www.example.com'>click here</a> to visit example.com</p>",
+                "username": faker.email(),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.topic.refresh_from_db()
+        self.assertEqual(
+            self.topic.posts.values("content", "update_reason", "approved")[1],
+            {
+                "content": "<p>Hello, <a href='https://www.example.com'>click here</a> to visit example.com</p>",
+                "update_reason": "HTML tags detected",
+                "approved": False,
+            },
+        )
+
+    @patch(
+        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
+    )
+    def test_create_post_with_bounced_domain_name(self, *args):
+        BouncedDomainNameFactory(domain="blocked.com")
+
+        response = self.client.post(self.url, {"content": "la communauté", "username": "spam@blocked.com"})
+
+        self.assertEqual(response.status_code, 200)
+        self.topic.refresh_from_db()
+        self.assertEqual(
+            self.topic.posts.values("content", "update_reason", "approved")[1],
+            {"content": "la communauté", "update_reason": "Bounced Domain detected", "approved": False},
         )
 
 

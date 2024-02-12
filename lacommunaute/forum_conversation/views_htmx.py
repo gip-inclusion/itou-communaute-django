@@ -11,6 +11,7 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
 logger = logging.getLogger(__name__)
@@ -141,6 +142,8 @@ class PostFeedCreateView(PermissionRequiredMixin, View):
             post = form.save()
             # set count to zero by default. no need to annotate queryset when saving new post
             post.upvotes_count = 0
+            post = check_post_approbation(post)
+            post.save()
 
             track_handler.mark_topic_read(self.topic, request.user)
 
