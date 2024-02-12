@@ -102,8 +102,7 @@ class TopicCreateViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, Topic.objects.count())
-        topic = Topic.objects.first()
+        topic = Topic.objects.get()
         self.assertEqual(self.post_data["subject"], topic.subject)
         self.assertEqual(self.post_data["subject"], topic.first_post.subject)
         self.assertEqual(self.post_data["content"], topic.first_post.content.raw)
@@ -122,8 +121,7 @@ class TopicCreateViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, Topic.objects.count())
-        topic = Topic.objects.first()
+        topic = Topic.objects.get()
         self.assertFalse(topic.approved)
         self.assertFalse(topic.first_post.approved)
 
@@ -165,8 +163,7 @@ class TopicCreateViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, Topic.objects.count())
-        topic = Topic.objects.first()
+        topic = Topic.objects.get()
         self.assertEqual(2, topic.tags.count())
         self.assertEqual(list(topic.tags.all()), [Tag.objects.first(), Tag.objects.last()])
 
