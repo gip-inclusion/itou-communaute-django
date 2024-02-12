@@ -33,6 +33,7 @@ class PostFactory(BasePostFactory):
 class AnonymousPostFactory(PostFactory):
     username = factory.Faker("email")
     poster = None
+    anonymous_key = factory.Faker("uuid4")
 
 
 class CertifiedPostFactory(factory.django.DjangoModelFactory):
@@ -80,3 +81,18 @@ class TopicFactory(BaseTopicFactory):
         if isinstance(extracted, list):
             for tag in extracted:
                 self.tags.add(tag)
+
+
+class AnonymousTopicFactory(TopicFactory):
+    poster = None
+
+    class Meta:
+        skip_postgeneration_save = True
+
+    class Params:
+        with_post = factory.Trait(
+            post=factory.RelatedFactory(
+                AnonymousPostFactory,
+                factory_related_name="topic",
+            )
+        )
