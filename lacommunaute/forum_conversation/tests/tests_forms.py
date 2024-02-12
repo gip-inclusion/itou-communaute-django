@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import F
 from django.forms import HiddenInput
 from django.test import TestCase
@@ -8,7 +9,7 @@ from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 
 
-faker = Faker()
+faker = Faker(settings.LANGUAGE_CODE)
 
 
 class PostFormTest(TestCase):
@@ -17,7 +18,7 @@ class PostFormTest(TestCase):
         cls.topic = TopicFactory(with_post=True)
         cls.user = cls.topic.poster
         cls.forum = cls.topic.forum
-        cls.form_data = {"subject": faker.text(max_nb_chars=10), "content": faker.text(max_nb_chars=30)}
+        cls.form_data = {"subject": faker.text(max_nb_chars=10), "content": faker.paragraph(nb_sentences=5)}
 
     def test_subject_is_hidden(self):
         form = PostForm()

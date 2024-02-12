@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from django.conf import settings
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from faker import Faker
@@ -16,11 +17,12 @@ from lacommunaute.notification.factories import BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
+faker = Faker(settings.LANGUAGE_CODE)
+
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-faker = Faker()
 
 
 class ForumTopicListViewTest(TestCase):
@@ -291,7 +293,7 @@ class PostFeedCreateViewTest(TestCase):
                 "slug": cls.topic.slug,
             },
         )
-        cls.content = faker.text(max_nb_chars=20)
+        cls.content = faker.paragraph(nb_sentences=5)
 
     def test_get_method_unallowed(self):
         self.client.force_login(self.user)
