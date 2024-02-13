@@ -44,7 +44,6 @@ THIRD_PARTIES_APPS = [
     "widget_tweaks",
     # Machina apps:
     "machina",
-    "machina.apps.forum_moderation",
     "machina.apps.forum_tracking",
     "machina.apps.forum_permission",
     # django-compressor
@@ -74,6 +73,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_member",
     "lacommunaute.forum_upvote",
     "lacommunaute.forum_stats",
+    "lacommunaute.forum_moderation",
     "lacommunaute.notification",
     "lacommunaute.event",
     "lacommunaute.inclusion_connect",
