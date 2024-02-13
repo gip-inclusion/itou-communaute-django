@@ -5,18 +5,18 @@ from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, 
 from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
-from lacommunaute.notification.utils import should_not_be_approved
+from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
 class UpdatePostMixin:
     def update_post(self, post):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
-            if should_not_be_approved(self.cleaned_data["username"]):
-                post.approved = False
         else:
             post.updated_by = self.user
+
         post.updates_count = F("updates_count") + 1
+        post = check_post_approbation(post)
 
 
 class PostForm(UpdatePostMixin, AbstractPostForm):
@@ -27,9 +27,9 @@ class PostForm(UpdatePostMixin, AbstractPostForm):
         post.subject = f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}"
 
         if self.user.is_anonymous:
-            if should_not_be_approved(self.cleaned_data["username"]):
-                post.approved = False
+            post.username = self.cleaned_data["username"]
 
+        post = check_post_approbation(post)
         return post
 
 
@@ -50,12 +50,13 @@ class TopicForm(UpdatePostMixin, AbstractTopicForm):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
 
-        if not self.user.is_authenticated:
-            if should_not_be_approved(self.cleaned_data["username"]):
-                post.topic.approved = False
+        if self.user.is_anonymous:
+            post.username = self.cleaned_data["username"]
 
-                post.approved = False
-                post.save()
+        post = check_post_approbation(post)
+        post.topic.approved = post.approved
 
+        post.save()
         post.topic.save()
+
         return post
