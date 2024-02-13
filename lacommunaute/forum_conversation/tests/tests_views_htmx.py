@@ -1,6 +1,5 @@
-from unittest.mock import patch
-
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from faker import Faker
@@ -332,11 +331,9 @@ class PostFeedCreateViewTest(TestCase):
 
         self.assertEqual(response.status_code, 500)
 
-    @patch(
-        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
-    )
-    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_create_post_as_authenticated_user(self, *args):
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        assign_perm("can_post_without_approval", self.user, self.topic.forum)
         self.client.force_login(self.user)
 
         response = self.client.post(self.url, data={"content": self.content})
@@ -352,11 +349,10 @@ class PostFeedCreateViewTest(TestCase):
             {"content": self.content, "username": None, "approved": True, "update_reason": None},
         )
 
-    @patch(
-        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
-    )
-    @patch("machina.apps.forum_permission.handler.PermissionHandler.can_post_without_approval", return_value=True)
     def test_create_post_as_bounced_not_bounced_anonymous(self, *args):
+        user = AnonymousUser()
+        assign_perm("can_reply_to_topics", user, self.topic.forum)
+        assign_perm("can_post_without_approval", user, self.topic.forum)
         username = faker.email()
 
         response = self.client.post(self.url, {"content": self.content, "username": username})
@@ -381,10 +377,9 @@ class PostFeedCreateViewTest(TestCase):
             {"content": self.content, "username": username, "approved": False},
         )
 
-    @patch(
-        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
-    )
-    def test_create_post_with_nonfr_content(self, *args):
+    def test_create_post_with_nonfr_content(self):
+        user = AnonymousUser()
+        assign_perm("can_reply_to_topics", user, self.topic.forum)
         response = self.client.post(
             self.url, {"content": "популярные лучшие песни слушать онлайн", "username": faker.email()}
         )
@@ -400,10 +395,9 @@ class PostFeedCreateViewTest(TestCase):
             },
         )
 
-    @patch(
-        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
-    )
-    def test_create_post_with_html_content(self, *args):
+    def test_create_post_with_html_content(self):
+        user = AnonymousUser()
+        assign_perm("can_reply_to_topics", user, self.topic.forum)
         response = self.client.post(
             self.url,
             {
@@ -423,11 +417,11 @@ class PostFeedCreateViewTest(TestCase):
             },
         )
 
-    @patch(
-        "lacommunaute.forum_conversation.views_htmx.PostFeedCreateView.perform_permissions_check", return_value=True
-    )
-    def test_create_post_with_bounced_domain_name(self, *args):
+    def test_create_post_with_bounced_domain_name(self):
         BouncedDomainNameFactory(domain="blocked.com")
+
+        user = AnonymousUser()
+        assign_perm("can_reply_to_topics", user, self.topic.forum)
 
         response = self.client.post(self.url, {"content": "la communauté", "username": "spam@blocked.com"})
 
