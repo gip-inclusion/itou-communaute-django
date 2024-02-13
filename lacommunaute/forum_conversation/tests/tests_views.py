@@ -25,8 +25,8 @@ from lacommunaute.forum_conversation.factories import (
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
+from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
-from lacommunaute.notification.factories import BouncedDomainNameFactory, BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -117,7 +117,7 @@ class TopicCreateViewTest(TestCase):
 
     def test_topic_create_as_unapproved_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
-        BouncedEmailFactory(email=self.post_data["username"])
+        BlockedEmailFactory(email=self.post_data["username"])
 
         response = self.client.post(
             self.url,
@@ -162,9 +162,9 @@ class TopicCreateViewTest(TestCase):
         self.assertFalse(topic.first_post.approved)
         self.assertEqual("HTML tags detected", topic.first_post.update_reason)
 
-    def test_topic_create_as_anonymous_user_with_bounced_domain_name(self, *args):
+    def test_topic_create_as_anonymous_user_with_blocked_domain_name(self, *args):
         self.post_data["username"] = "spam@blocked.com"
-        BouncedDomainNameFactory(domain="blocked.com")
+        BlockedDomainNameFactory(domain="blocked.com")
         response = self.client.post(
             self.url,
             self.post_data,
@@ -175,7 +175,7 @@ class TopicCreateViewTest(TestCase):
         topic = Topic.objects.get()
         self.assertFalse(topic.approved)
         self.assertFalse(topic.first_post.approved)
-        self.assertEqual("Bounced Domain detected", topic.first_post.update_reason)
+        self.assertEqual("Blocked Domain detected", topic.first_post.update_reason)
 
     def test_topic_create_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
@@ -350,12 +350,12 @@ class TopicUpdateViewTest(TestCase):
         self.assertFalse(self.topic.first_post.approved)
         self.assertEqual("HTML tags detected", self.topic.first_post.update_reason)
 
-    def test_topic_update_with_bounced_domain_name(self, *args):
+    def test_topic_update_with_blocked_domain_name(self, *args):
         topic = AnonymousTopicFactory(with_post=True, forum=self.forum)
         session = self.client.session
         session["_anonymous_forum_key"] = topic.first_post.anonymous_key
         session.save()
-        BouncedDomainNameFactory(domain="blackhat.com")
+        BlockedDomainNameFactory(domain="blackhat.com")
 
         response = self.client.post(
             reverse(
@@ -373,7 +373,7 @@ class TopicUpdateViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
         topic.refresh_from_db()
         self.assertFalse(topic.first_post.approved)
-        self.assertEqual("Bounced Domain detected", topic.first_post.update_reason)
+        self.assertEqual("Blocked Domain detected", topic.first_post.update_reason)
 
 
 class PostCreateViewTest(TestCase):
@@ -471,7 +471,7 @@ class PostUpdateViewTest(TestCase):
         post.refresh_from_db()
         self.assertTrue(post.approved)
 
-        BouncedEmailFactory(email=post.username)
+        BlockedEmailFactory(email=post.username)
 
         response = self.client.post(
             url,
@@ -513,7 +513,7 @@ class PostUpdateViewTest(TestCase):
         self.assertFalse(self.post.approved)
         self.assertEqual("HTML tags detected", self.post.update_reason)
 
-    def test_update_post_with_bounced_domain_name(self, *args):
+    def test_update_post_with_blocked_domain_name(self, *args):
         # add post.anonymous_key to session var to bypass the permissions check
         post = AnonymousPostFactory(topic=self.topic)
         session = self.client.session
@@ -531,7 +531,7 @@ class PostUpdateViewTest(TestCase):
         )
 
         post_data = {"content": post.content.raw, "username": "spam@blocked.com"}
-        BouncedDomainNameFactory(domain="blocked.com")
+        BlockedDomainNameFactory(domain="blocked.com")
 
         response = self.client.post(
             url,
@@ -542,7 +542,7 @@ class PostUpdateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         post.refresh_from_db()
         self.assertFalse(post.approved)
-        self.assertEqual("Bounced Domain detected", post.update_reason)
+        self.assertEqual("Blocked Domain detected", post.update_reason)
 
 
 class PostDeleteViewTest(TestCase):

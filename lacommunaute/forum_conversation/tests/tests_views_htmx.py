@@ -11,8 +11,8 @@ from lacommunaute.forum_conversation.factories import CertifiedPostFactory, Post
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
+from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
-from lacommunaute.notification.factories import BouncedDomainNameFactory, BouncedEmailFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -349,7 +349,7 @@ class PostFeedCreateViewTest(TestCase):
             {"content": self.content, "username": None, "approved": True, "update_reason": None},
         )
 
-    def test_create_post_as_bounced_not_bounced_anonymous(self, *args):
+    def test_create_post_as_blocked_not_blocked_anonymous(self, *args):
         user = AnonymousUser()
         assign_perm("can_reply_to_topics", user, self.topic.forum)
         assign_perm("can_post_without_approval", user, self.topic.forum)
@@ -365,7 +365,7 @@ class PostFeedCreateViewTest(TestCase):
             {"content": self.content, "username": username, "approved": True, "update_reason": None},
         )
 
-        BouncedEmailFactory(email=username).save()
+        BlockedEmailFactory(email=username).save()
 
         response = self.client.post(self.url, {"content": self.content, "username": username})
 
@@ -417,8 +417,8 @@ class PostFeedCreateViewTest(TestCase):
             },
         )
 
-    def test_create_post_with_bounced_domain_name(self):
-        BouncedDomainNameFactory(domain="blocked.com")
+    def test_create_post_with_blocked_domain_name(self):
+        BlockedDomainNameFactory(domain="blocked.com")
 
         user = AnonymousUser()
         assign_perm("can_reply_to_topics", user, self.topic.forum)
@@ -429,7 +429,7 @@ class PostFeedCreateViewTest(TestCase):
         self.topic.refresh_from_db()
         self.assertEqual(
             self.topic.posts.values("content", "update_reason", "approved")[1],
-            {"content": "la communauté", "update_reason": "Bounced Domain detected", "approved": False},
+            {"content": "la communauté", "update_reason": "Blocked Domain detected", "approved": False},
         )
 
 
