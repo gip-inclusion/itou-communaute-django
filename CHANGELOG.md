@@ -1,5 +1,35 @@
 # Journal des modifications
 
+
+## v2.6 - 2024-02-14
+
+- [MODERATION] remaniement de la gestion des emails et domaines bloqués (#553)
+- [MODERATION] desapprobation d'un post avec email dejà bounced (#551)
+- [MODERATION] automatiser la detection des scams (#548)
+- [MODERATION] ajouter les emails modérés dans les BouncedEmail (+bug fix) (#541)
+- [MODERATION] activation de la moderation queue (#540)
+- [DOCUMENTATION] ajout de l'appel à contributeurs (#542)
+- [HOMEPAGE] fin AB Test, ajout bouton outlined vers la documentation (#539)
+- [HOMEPAGE] reactivation du lien vers le calendrier (#537)
+- [HOMEPAGE] reactivation de la bannière les 2 font la paires (#536)
+- [HOMEPAGE] mettre en avant l'evenement inclusion-demain (#506)
+- [HOMEPAGE] AB test fréquentation de la page documentation (#505)
+- [HOMEPAGE] AB test fréquentation de la page documentation (#499 & #500)
+- [HOMEPAGE] bannière inclusion-demain (#496)
+- [HOMEPAGE] isoler la bannière de promotion dans un gabarit spécifique (#495)
+- [HOMEPAGE] delai d'affichage popup (#494)
+- [HOMEPAGE] afficher les dates/heures de creation sur la page d'accueil (#481 & #484)
+- [STATS] afficher l'indicateur d'impact sans limite de durée (#538)
+- [STATS] afficher les visiteurs mensuels (#517)
+- [STATS] ajout du nombre d'utilisateurs retours dans l'extraction matomo (#483)
+- [TOPIC] Correction bug à la màj d’un topic par son auteur anonyme (#552)
+- [TOPIC] ajout d'un lien vers le forum (#544)
+- [DPS] Recommandations (#512)
+- [RECHERCHE] suggerer de poser la question si les résultats ne conviennent pas (#504)
+- [PAGES] Mise à jour de la page 404 (#515 & #516)
+- [PAGES] suppression de la page contact (#545)
+- [TECH] fixes and improvements (#547, #535 à #528, #525 à #518, #514, #510 à #507, #498, #497, #493 à #485, #482, #480, #478, #477)
+
 ## v2.5 - 2023-12-19
 
 - [HOME] Ajout de raccourcis (#465)
