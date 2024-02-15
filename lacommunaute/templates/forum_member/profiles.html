@@ -9,7 +9,7 @@
                     <h1 class="s-title-01__title h1">
                         <strong>Membres</strong>
                     </h1>
-                    <h2 class="h2">Liste des membres de la communauté.</h2>
+                    <h2 class="h2">{{ subtitle|default:"Liste des membres" }}</h2>
                 </div>
             </div>
         </div>
@@ -22,12 +22,9 @@
                         {% for forum_profile in forum_profiles %}
                             <div class="col">
                                 <div class="card">
-                                    {% if forum_profile.avatar %}
-                                        <img class="avatar card-img-top" src="{{ forum_profile.avatar }}" alt="{{ forum_profile.user.get_full_name }}">
-                                    {% endif %}
                                     <div class="card-body">
                                         <h3 class="h5 card-title">
-                                            <a href="{% url 'members:profile' username=forum_profile.user.username %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">{{ forum_profile.user.get_full_name }}</a>
+                                            <a href="{% url 'members:profile' username=forum_profile.user.username %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">{{ forum_profile }}</a>
                                         </h3>
                                         {% if forum_profile.signature %}<p class="card-text">{{ forum_profile.signature }}</p>{% endif %}
                                     </div>
@@ -39,6 +36,11 @@
                             </div>
                         {% endfor %}
                     </div>
+                    {% if page_obj.has_previous or page_obj.has_next %}
+                        {% with pagination_size="pagination-sm justify-content-center mt-5" %}
+                            {% include "partials/pagination.html" %}
+                        {% endwith %}
+                    {% endif %}
                 </div>
             </div>
         </div>
