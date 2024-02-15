@@ -6,6 +6,7 @@ from django.urls import reverse
 from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
 
+from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.forum_member.views import ForumProfileUpdateView
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
@@ -176,3 +177,23 @@ class JoinForumFormViewTest(TestCase):
         self.client.force_login(self.user)
         self.client.post(self.url)
         self.assertTrue(self.forum.members_group.user_set.filter(id=self.user.id).exists())
+
+
+class LeaderBourdListViewTest:
+    def test_context_data(client):
+        url = reverse(
+            "members:leaderboard",
+        )
+        response = client.get(url)
+        assert "subtitle" in response.context_data
+        assert response.context_data["paginator"].per_page == 78
+
+    def test_content(client, db):
+        undesired_forum_profile = ForumProfileFactory()
+        desired_forum_profile = ForumProfileFactory()
+        topic = TopicFactory(with_post=True, poster=desired_forum_profile.user)
+        PostFactory.create_batch(2, topic=topic, poster=desired_forum_profile.user)
+
+        response = client.get(reverse("members:leaderboard"))
+        assert desired_forum_profile.user.get_full_name() in response.content.decode()
+        assert undesired_forum_profile.user.get_full_name() not in response.content.decode()

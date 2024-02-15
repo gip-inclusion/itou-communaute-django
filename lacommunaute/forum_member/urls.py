@@ -5,6 +5,7 @@ from lacommunaute.forum_member.views import (
     ForumProfileUpdateView,
     JoinForumFormView,
     JoinForumLandingView,
+    LeaderBoardListView,
     ModeratorProfileListView,
 )
 
@@ -17,4 +18,5 @@ urlpatterns = [
     path("forum/<str:slug>-<int:pk>/", ModeratorProfileListView.as_view(), name="forum_profiles"),
     path("join-forum-landing/<uuid:token>/", JoinForumLandingView.as_view(), name="join_forum_landing"),
     path("join-forum/<uuid:token>/", JoinForumFormView.as_view(), name="join_forum_form"),
+    path("leaderboard/", LeaderBoardListView.as_view(), name="leaderboard"),
 ]
