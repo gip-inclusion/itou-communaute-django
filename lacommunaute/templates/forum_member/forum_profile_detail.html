@@ -2,12 +2,12 @@
 {% load i18n %}
 {% load forum_member_tags %}
 {% block sub_title %}
-    {% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}
+    Profil de {{ profile.user|forum_member_display_name }}
 {% endblock sub_title %}
 {% block content %}
     <div class="mb-3 row">
         <div class="col-12">
-            <h1>{% blocktrans with username=profile.user|forum_member_display_name %}{{ username }} profile{% endblocktrans %}</h1>
+            <h1>Profil de {{ profile.user|forum_member_display_name }}</h1>
         </div>
     </div>
     <div class="row profile">
@@ -15,12 +15,11 @@
             <div class="mb-3 profile-sidebar">
                 <div class="card">
                     <div class="profile-avatar">{% include "partials/avatar.html" with profile=profile show_placeholder=True %}</div>
-                    <div class="profile-username">
-                        <h3 class="my-3 text-center text-muted">{{ profile.user|forum_member_display_name }}</h3>
-                    </div>
-                    <div class="profile-signature">
-                        <p class="my-3 text-center text-muted">{{ profile.signature }}</p>
-                    </div>
+                    {% if profile.signature %}
+                        <div class="profile-signature">
+                            <p class="my-3 text-center text-muted">{{ profile.signature }}</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             {% if profile.user == request.user %}
