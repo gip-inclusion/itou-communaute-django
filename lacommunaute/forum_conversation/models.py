@@ -10,6 +10,7 @@ from taggit.managers import TaggableManager
 
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.notification.models import TagsNotification
 from lacommunaute.users.models import User
 
 
@@ -109,6 +110,7 @@ class Topic(AbstractTopic):
         # - authenticated users who upvoted one of the posts of the topic
         # - authenticated users who posted in the topic
         # - anonymous users who posted in the topic
+        # - authenticated users who subscribed to the tags of the topic
         #
         # Notes :
         # `post.username` is the email of the anonymous poster
@@ -128,7 +130,10 @@ class Topic(AbstractTopic):
         anonymous_qs = (
             Post.objects.filter(topic=self).exclude(username__isnull=True).values_list("username", flat=True)
         )
-        stakeholders_qs = sorted((authenticated_qs.union(anonymous_qs)))
+        tags_subscribers_qs = TagsNotification.objects.filter(
+            tags__in=self.tags.values("id"), newpost=True
+        ).values_list("user__email", flat=True)
+        stakeholders_qs = sorted((authenticated_qs.union(anonymous_qs).union(tags_subscribers_qs)))
 
         last_poster_email = self.last_post.username or self.last_post.poster.email
 
