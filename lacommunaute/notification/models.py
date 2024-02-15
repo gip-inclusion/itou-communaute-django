@@ -1,7 +1,9 @@
 from django.db import models
 from machina.models.abstract_models import DatedModel
+from taggit.managers import TaggableManager
 
 from lacommunaute.notification.enums import EmailSentTrackKind
+from lacommunaute.users.models import User
 
 
 class EmailSentTrack(DatedModel):
@@ -18,3 +20,17 @@ class EmailSentTrack(DatedModel):
 
     def __str__(self):
         return f"{self.status_code} - {self.created}"
+
+
+class TagsNotification(DatedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tags = TaggableManager()
+    digest = models.BooleanField(verbose_name="digest", default=False)
+    newpost = models.BooleanField(verbose_name="nouveau message", default=False)
+
+    class Meta:
+        verbose_name = "notification sur tag"
+        verbose_name_plural = "notifications sur tags"
+
+    def __str__(self):
+        return f"{self.user.email}"
