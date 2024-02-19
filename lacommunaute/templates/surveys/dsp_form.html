@@ -1,5 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
+{% load theme_inclusion %}
 {% block title %}Diagnostic Parcours IAE{{ block.super }}{% endblock %}
 {% block meta_description %}
     Diagnostic Parcours IAE
@@ -16,6 +17,20 @@
     </section>
     <section class="s-section">
         <div class="s-section__container container">
+            {% if not user.is_authenticated %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-lg-8 col-12 c-box mb-5">
+                        <div class="row">
+                            <div class="col-lg-7 col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostique pour le parcours IAE</div>
+                            <div class="col-lg-5 col-12">
+                                <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-inclusion-connect">
+                                    <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
                     {% if perms.surveys.add_dsp %}
