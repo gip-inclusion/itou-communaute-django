@@ -2,7 +2,7 @@
 {% load forum_permission_tags %}
 {% get_permission 'can_add_post' topic request.user as user_can_add_post %}
 {% if user_can_add_post %}
-    <div class="collapse" id="collapsePost{{ topic.pk }}">
+    <div class="collapse{% if show %} show{% endif %}" id="collapsePost{{ topic.pk }}">
         <div class="card mb-3{% if inline %} ms-3{% endif %}">
             <div class="card-body">
                 <div class="row">
