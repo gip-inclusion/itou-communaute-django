@@ -329,7 +329,7 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, data={})
 
-        self.assertEqual(response.status_code, 500)
+        self.assertContains(response, '<div id="div_id_content" class="form-group has-error">', status_code=200)
 
     def test_create_post_as_authenticated_user(self, *args):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)
@@ -369,53 +369,68 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, {"content": self.content, "username": username})
 
-        self.assertContains(response, self.content, status_code=200)
-        self.topic.refresh_from_db()
-        self.assertEqual(self.topic.posts.count(), 3)
-        self.assertEqual(
-            self.topic.posts.values("content", "username", "approved").last(),
-            {"content": self.content, "username": username, "approved": False},
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
         )
+        self.assertContains(
+            response,
+            (
+                f'<input type="email" name="username" value="{username}" maxlength="254" '
+                'class="form-control" required id="id_username">'
+            ),
+            status_code=200,
+        )
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 2)
 
     def test_create_post_with_nonfr_content(self):
-        user = AnonymousUser()
-        assign_perm("can_reply_to_topics", user, self.topic.forum)
-        response = self.client.post(
-            self.url, {"content": "популярные лучшие песни слушать онлайн", "username": faker.email()}
-        )
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        assign_perm("can_post_without_approval", self.user, self.topic.forum)
+        self.client.force_login(self.user)
+        response = self.client.post(self.url, {"content": "популярные лучшие песни слушать онлайн"})
 
-        self.assertEqual(response.status_code, 200)
-        self.topic.refresh_from_db()
-        self.assertEqual(
-            self.topic.posts.values("content", "update_reason", "approved")[1],
-            {
-                "content": "популярные лучшие песни слушать онлайн",
-                "update_reason": "Alternative Language detected",
-                "approved": False,
-            },
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
         )
+        self.assertContains(
+            response,
+            (
+                '<textarea name="content" cols="40" rows="10" placeholder="Entrez votre message" '
+                'class="form-control" required id="id_content">'
+            ),
+            status_code=200,
+        )
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 1)
 
     def test_create_post_with_html_content(self):
-        user = AnonymousUser()
-        assign_perm("can_reply_to_topics", user, self.topic.forum)
+        assign_perm("can_reply_to_topics", self.user, self.topic.forum)
+        assign_perm("can_post_without_approval", self.user, self.topic.forum)
+        self.client.force_login(self.user)
         response = self.client.post(
             self.url,
-            {
-                "content": "<p>Hello, <a href='https://www.example.com'>click here</a> to visit example.com</p>",
-                "username": faker.email(),
-            },
+            {"content": "<p>Hello, <a href='https://www.example.com'>click here</a> to visit example.com</p>"},
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.topic.refresh_from_db()
-        self.assertEqual(
-            self.topic.posts.values("content", "update_reason", "approved")[1],
-            {
-                "content": "<p>Hello, <a href='https://www.example.com'>click here</a> to visit example.com</p>",
-                "update_reason": "HTML tags detected",
-                "approved": False,
-            },
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
         )
+        self.assertContains(
+            response,
+            (
+                '<textarea name="content" cols="40" rows="10" placeholder="Entrez votre message" '
+                'class="form-control" required id="id_content">'
+            ),
+            status_code=200,
+        )
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 1)
 
     def test_create_post_with_blocked_domain_name(self):
         BlockedDomainNameFactory(domain="blocked.com")
@@ -425,12 +440,21 @@ class PostFeedCreateViewTest(TestCase):
 
         response = self.client.post(self.url, {"content": "la communauté", "username": "spam@blocked.com"})
 
-        self.assertEqual(response.status_code, 200)
-        self.topic.refresh_from_db()
-        self.assertEqual(
-            self.topic.posts.values("content", "update_reason", "approved")[1],
-            {"content": "la communauté", "update_reason": "Blocked Domain detected", "approved": False},
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
         )
+        self.assertContains(
+            response,
+            (
+                '<input type="email" name="username" value="spam@blocked.com" maxlength="254" '
+                'class="form-control" required id="id_username">'
+            ),
+            status_code=200,
+        )
+        self.topic.refresh_from_db()
+        self.assertEqual(self.topic.posts.count(), 1)
 
 
 class CertifiedPostViewTest(TestCase):

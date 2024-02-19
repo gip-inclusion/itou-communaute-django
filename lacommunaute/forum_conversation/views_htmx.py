@@ -155,7 +155,11 @@ class PostFeedCreateView(PermissionRequiredMixin, View):
                 },
             )
 
-        return render(request, "500.html", status=500)
+        return render(
+            request,
+            "forum_conversation/partials/post_feed_form_errors.html",
+            context={"topic": self.topic, "post_form": form},
+        )
 
     def get_controlled_object(self):
         return self.get_topic()
