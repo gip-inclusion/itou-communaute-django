@@ -8,7 +8,7 @@ from taggit.models import Tag
 from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
-class UpdatePostMixin:
+class CreateUpdatePostMixin:
     def update_post(self, post):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
@@ -19,7 +19,7 @@ class UpdatePostMixin:
         post = check_post_approbation(post)
 
 
-class PostForm(UpdatePostMixin, AbstractPostForm):
+class PostForm(CreateUpdatePostMixin, AbstractPostForm):
     subject = CharField(widget=HiddenInput(), required=False)
 
     def create_post(self):
@@ -33,7 +33,7 @@ class PostForm(UpdatePostMixin, AbstractPostForm):
         return post
 
 
-class TopicForm(UpdatePostMixin, AbstractTopicForm):
+class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     tags = ModelMultipleChoiceField(
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )
