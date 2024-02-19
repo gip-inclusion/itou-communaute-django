@@ -125,10 +125,12 @@ class TopicCreateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
-        topic = Topic.objects.get()
-        self.assertFalse(topic.approved)
-        self.assertFalse(topic.first_post.approved)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertEqual(Topic.objects.count(), 0)
 
     def test_topic_create_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
@@ -140,11 +142,12 @@ class TopicCreateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
-        topic = Topic.objects.get()
-        self.assertFalse(topic.approved)
-        self.assertFalse(topic.first_post.approved)
-        self.assertEqual("Alternative Language detected", topic.first_post.update_reason)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertEqual(Topic.objects.count(), 0)
 
     def test_topic_create_with_html_content(self, *args):
         self.client.force_login(self.poster)
@@ -156,11 +159,12 @@ class TopicCreateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
-        topic = Topic.objects.get()
-        self.assertFalse(topic.approved)
-        self.assertFalse(topic.first_post.approved)
-        self.assertEqual("HTML tags detected", topic.first_post.update_reason)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertEqual(Topic.objects.count(), 0)
 
     def test_topic_create_as_anonymous_user_with_blocked_domain_name(self, *args):
         self.post_data["username"] = "spam@blocked.com"
@@ -171,11 +175,12 @@ class TopicCreateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
-        topic = Topic.objects.get()
-        self.assertFalse(topic.approved)
-        self.assertFalse(topic.first_post.approved)
-        self.assertEqual("Blocked Domain detected", topic.first_post.update_reason)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertEqual(Topic.objects.count(), 0)
 
     def test_topic_create_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
@@ -235,6 +240,7 @@ class TopicUpdateViewTest(TestCase):
                 "pk": cls.topic.pk,
             },
         )
+        cls.initial_raw_content = cls.topic.first_post.content.raw
 
     def test_delete_post_button_is_shown(self):
         self.client.force_login(self.poster)
@@ -312,7 +318,7 @@ class TopicUpdateViewTest(TestCase):
                 kwargs={
                     "forum_slug": self.forum.slug,
                     "forum_pk": self.forum.pk,
-                    "slug": updated_subject,
+                    "slug": topic.slug,
                     "pk": topic.pk,
                 },
             ),
@@ -328,11 +334,13 @@ class TopicUpdateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         self.topic.refresh_from_db()
-        self.assertFalse(self.topic.approved)
-        self.assertFalse(self.topic.first_post.approved)
-        self.assertEqual("Alternative Language detected", self.topic.first_post.update_reason)
+        self.assertEqual(self.initial_raw_content, self.topic.first_post.content.raw)
 
     def test_topic_update_with_html_content(self, *args):
         self.client.force_login(self.poster)
@@ -344,14 +352,17 @@ class TopicUpdateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         self.topic.refresh_from_db()
-        self.assertFalse(self.topic.approved)
-        self.assertFalse(self.topic.first_post.approved)
-        self.assertEqual("HTML tags detected", self.topic.first_post.update_reason)
+        self.assertEqual(self.initial_raw_content, self.topic.first_post.content.raw)
 
     def test_topic_update_with_blocked_domain_name(self, *args):
         topic = AnonymousTopicFactory(with_post=True, forum=self.forum)
+        initial_raw_content = topic.first_post.content.raw
         session = self.client.session
         session["_anonymous_forum_key"] = topic.first_post.anonymous_key
         session.save()
@@ -370,10 +381,13 @@ class TopicUpdateViewTest(TestCase):
             {"subject": "subject", "content": "La communauté", "username": "foo@blackhat.com"},
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         topic.refresh_from_db()
-        self.assertFalse(topic.first_post.approved)
-        self.assertEqual("Blocked Domain detected", topic.first_post.update_reason)
+        self.assertEqual(topic.first_post.content.raw, initial_raw_content)
 
 
 class PostCreateViewTest(TestCase):
@@ -420,6 +434,7 @@ class PostUpdateViewTest(TestCase):
         }
         cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
         cls.post_data = {"content": faker.paragraph(nb_sentences=5)}
+        cls.initial_raw_content = cls.post.content.raw
 
     def test_delete_post_button_is_visible(self, *args):
         self.client.force_login(self.poster)
@@ -475,13 +490,17 @@ class PostUpdateViewTest(TestCase):
 
         response = self.client.post(
             url,
-            post_data,
+            {"content": faker.paragraph(nb_sentences=5), "username": post.username},
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         post.refresh_from_db()
-        self.assertFalse(post.approved)
+        self.assertEqual(post.content.raw, post_data["content"])
 
     def test_update_post_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
@@ -493,10 +512,13 @@ class PostUpdateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         self.post.refresh_from_db()
-        self.assertFalse(self.post.approved)
-        self.assertEqual("Alternative Language detected", self.post.update_reason)
+        self.assertEqual(self.initial_raw_content, self.post.content.raw)
 
     def test_update_post_with_html_content(self, *args):
         self.client.force_login(self.poster)
@@ -508,14 +530,17 @@ class PostUpdateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
         self.post.refresh_from_db()
-        self.assertFalse(self.post.approved)
-        self.assertEqual("HTML tags detected", self.post.update_reason)
+        self.assertEqual(self.post.content.raw, self.initial_raw_content)
 
     def test_update_post_with_blocked_domain_name(self, *args):
         # add post.anonymous_key to session var to bypass the permissions check
-        post = AnonymousPostFactory(topic=self.topic)
+        post = AnonymousPostFactory(topic=self.topic, username="john@doe.com")
         session = self.client.session
         session["_anonymous_forum_key"] = post.anonymous_key
         session.save()
@@ -539,10 +564,26 @@ class PostUpdateViewTest(TestCase):
             follow=True,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            '<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>',
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            (
+                '<input type="email" name="username" value="spam@blocked.com" maxlength="254" '
+                'class="form-control" required id="id_username">'
+            ),
+            status_code=200,
+        )
         post.refresh_from_db()
-        self.assertFalse(post.approved)
-        self.assertEqual("Blocked Domain detected", post.update_reason)
+        self.assertEqual(post.username, "john@doe.com")
 
 
 class PostDeleteViewTest(TestCase):

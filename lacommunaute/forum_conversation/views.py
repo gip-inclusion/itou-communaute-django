@@ -14,7 +14,6 @@ from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
-from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
 logger = logging.getLogger(__name__)
@@ -27,12 +26,6 @@ track_handler = TrackingHandler()
 class FormValidMixin:
     def form_valid(self, *args, **kwargs):
         valid = super().form_valid(*args, **kwargs)
-
-        self.forum_post = check_post_approbation(self.forum_post)
-        if self.forum_post.is_topic_head:
-            self.forum_post.topic.approved = self.forum_post.approved
-            self.forum_post.topic.save()
-        self.forum_post.save()
 
         track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
         return valid

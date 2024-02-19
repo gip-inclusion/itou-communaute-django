@@ -5,10 +5,21 @@ from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, 
 from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
+from lacommunaute.forum_conversation.models import Post
 from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
 class CreateUpdatePostMixin:
+    def clean(self):
+        cleaned_data = super().clean()
+        if "content" in cleaned_data:
+            post = check_post_approbation(
+                Post(username=cleaned_data.get("username", None), content=cleaned_data.get("content"))
+            )
+            if not post.approved:
+                self.add_error(None, "Votre message ne respecte pas les règles de la communauté.")
+        return cleaned_data
+
     def update_post(self, post):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
@@ -16,7 +27,6 @@ class CreateUpdatePostMixin:
             post.updated_by = self.user
 
         post.updates_count = F("updates_count") + 1
-        post = check_post_approbation(post)
 
 
 class PostForm(CreateUpdatePostMixin, AbstractPostForm):
@@ -29,7 +39,6 @@ class PostForm(CreateUpdatePostMixin, AbstractPostForm):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
 
-        post = check_post_approbation(post)
         return post
 
 
@@ -53,10 +62,6 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
 
-        post = check_post_approbation(post)
-        post.topic.approved = post.approved
-
         post.save()
-        post.topic.save()
 
         return post
