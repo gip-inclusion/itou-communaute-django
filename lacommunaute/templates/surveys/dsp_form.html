@@ -9,8 +9,11 @@
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
-                <div class="s-title-01__col col-12">
+                <div class="s-title-01__col col-lg-8 col-12">
                     <h1 class="s-title-01__title h1">Diagnostic Parcours IAE</h1>
+                    <p>
+                        L'aide au diagnostique pour le parcours IAE (aussi connu sous le nom de DSP) est en cours de déploiement. Nous l'ouvrons progressivement aux professionnels volontaires pour le tester et nous faire part des améliorations souhaitables.
+                    </p>
                 </div>
             </div>
         </div>
@@ -32,40 +35,37 @@
                 </div>
             {% endif %}
             <div class="s-section__row row">
-                <div class="s-section__col col-12">
+                <div class="s-section__col col-lg-8 col-12 c-box mb-5">
                     {% if perms.surveys.add_dsp %}
-                        <div class="c-form">
-                            <form method="post">
-                                {% csrf_token %}
-                                {% for field in form %}
-                                    <fieldset>
-                                        <div class="row">
-                                            <div class="col-12 col-lg-8">
-                                                <legend>{{ field.label_tag }}</legend>
-                                                <div class="form-group form-group-required">{{ field }}</div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <fieldset>
                                     <div class="row">
-                                        <div class="col-12 col-lg-7">
-                                            <hr />
+                                        <div class="col-12">
+                                            <legend>{{ field.label_tag }}</legend>
+                                            <div class="form-group form-group-required">{{ field }}</div>
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </fieldset>
                                 <div class="row">
-                                    <div class="col-12 col-lg-7">
-                                        <div class="form-row justify-content-end">
-                                            <div class="form-group col-12 col-lg-auto">
-                                                <button type="submit" class="btn btn-block btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="submit-dsp">
-                                                    Valider
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div class="col">
+                                        <hr />
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="form-row justify-content-end">
+                                    <div class="form-group col-12 col-lg-auto">
+                                        <button type="submit" class="btn btn-block btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="submit-dsp">
+                                            Valider
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     {% else %}
+                        <strong>Vous souhaitez faire partie du prochain groupe de testeurs ? Faites-vous connaître !</strong>
                         <iframe data-tally-src="https://tally.so/embed/w51b56?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                                 loading="lazy"
                                 width="100%"
