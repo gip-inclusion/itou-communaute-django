@@ -20,18 +20,22 @@ dsp_choices_list = [
 
 form_html = '<form method="post">'
 tally_html = '<iframe data-tally-src="https://tally.so/embed'
+login_with_next_url = reverse("inclusion_connect:authorize") + "?next=" + reverse("surveys:dsp_create")
 
 
 class TestDSPCreateView:
-    def test_login_required(self, db, client):
+    def test_user_is_not_authenticated(self, db, client):
         url = reverse("surveys:dsp_create")
         response = client.get(url)
-        assert response.status_code == 302
+        assertContains(response, login_with_next_url)
+        assertContains(response, tally_html)
+        assertNotContains(response, form_html)
 
     def test_user_has_no_permission(self, db, client):
         client.force_login(UserFactory())
         response = client.get(reverse("surveys:dsp_create"))
         assertContains(response, tally_html)
+        assertNotContains(response, login_with_next_url)
         assertNotContains(response, form_html)
 
     def test_user_has_permission(self, db, client):
@@ -39,6 +43,7 @@ class TestDSPCreateView:
         response = client.get(reverse("surveys:dsp_create"))
         assertContains(response, form_html)
         assertNotContains(response, tally_html)
+        assertNotContains(response, login_with_next_url)
 
     def test_form_fields(self, db, client):
         url = reverse("surveys:dsp_create")

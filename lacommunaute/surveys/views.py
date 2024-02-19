@@ -9,7 +9,7 @@ from lacommunaute.surveys.forms import DSPForm
 from lacommunaute.surveys.models import DSP
 
 
-class DSPCreateView(LoginRequiredMixin, CreateView):
+class DSPCreateView(CreateView):
     model = DSP
     template_name = "surveys/dsp_form.html"
     form_class = DSPForm
