@@ -16,11 +16,7 @@
                               data-matomo-option="post">
                             {% csrf_token %}
                             {% if post_form.non_field_errors %}
-                                {% for error in post_form.non_field_errors %}
-                                    <div class="alert alert-danger">
-                                        <i class="icon-exclamation-sign"></i> {{ error }}
-                                    </div>
-                                {% endfor %}
+                                {% for error in post_form.non_field_errors %}<div class="alert alert-danger">{{ error }}</div>{% endfor %}
                             {% endif %}
                             {% include "partials/form_field.html" with field=post_form.content id=topic.pk %}
                             {% if post_form.username %}
