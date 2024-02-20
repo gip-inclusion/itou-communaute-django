@@ -22,59 +22,63 @@
         <div class="s-section__container container">
             {% if not user.is_authenticated %}
                 <div class="s-section__row row">
-                    <div class="s-section__col col-lg-8 col-12 c-box mb-5">
-                        <div class="row">
-                            <div class="col-lg-7 col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostique pour le parcours IAE</div>
-                            <div class="col-lg-5 col-12">
-                                <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-inclusion-connect">
-                                    <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
-                                </a>
+                    <div class="s-section__col col-lg-8 col-12">
+                        <div class="c-box mb-5">
+                            <div class="row">
+                                <div class="col-lg col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostique pour le parcours IAE</div>
+                                <div class="col-lg-auto col-12">
+                                    <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-inclusion-connect">
+                                        <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             {% endif %}
             <div class="s-section__row row">
-                <div class="s-section__col col-lg-8 col-12 c-box mb-5">
-                    {% if perms.surveys.add_dsp %}
-                        <form method="post">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <fieldset>
+                <div class="s-section__col col-lg-8 col-12">
+                    <div class="c-box mb-5">
+                        {% if perms.surveys.add_dsp %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <legend>{{ field.label_tag }}</legend>
+                                                <div class="form-group form-group-required">{{ field }}</div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <legend>{{ field.label_tag }}</legend>
-                                            <div class="form-group form-group-required">{{ field }}</div>
+                                        <div class="col">
+                                            <hr />
                                         </div>
                                     </div>
-                                </fieldset>
+                                {% endfor %}
                                 <div class="row">
-                                    <div class="col">
-                                        <hr />
+                                    <div class="form-row justify-content-end">
+                                        <div class="form-group col-12 col-lg-auto">
+                                            <button type="submit" class="btn btn-block btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="submit-dsp">
+                                                Valider
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            {% endfor %}
-                            <div class="row">
-                                <div class="form-row justify-content-end">
-                                    <div class="form-group col-12 col-lg-auto">
-                                        <button type="submit" class="btn btn-block btn-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="submit-dsp">
-                                            Valider
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    {% else %}
-                        <strong>Vous souhaitez faire partie du prochain groupe de testeurs ? Faites-vous connaître !</strong>
-                        <iframe data-tally-src="https://tally.so/embed/w51b56?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                                loading="lazy"
-                                width="100%"
-                                height="262"
-                                frameborder="0"
-                                marginheight="0"
-                                marginwidth="0"
-                                title="DSP waiting list"></iframe>
-                    {% endif %}
+                            </form>
+                        {% else %}
+                            <strong>Vous souhaitez faire partie du prochain groupe de testeurs ? Faites-vous connaître !</strong>
+                            <iframe data-tally-src="https://tally.so/embed/w51b56?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                                    loading="lazy"
+                                    width="100%"
+                                    height="262"
+                                    frameborder="0"
+                                    marginheight="0"
+                                    marginwidth="0"
+                                    title="DSP waiting list"></iframe>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
