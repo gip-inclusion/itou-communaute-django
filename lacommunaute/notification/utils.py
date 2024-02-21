@@ -39,4 +39,6 @@ def collect_following_replies():
 
 
 def collect_new_users_for_onboarding():
-    return User.objects.filter(date_joined__gte=last_notification(kind=EmailSentTrackKind.ONBOARDING))
+    return User.objects.filter(date_joined__gte=last_notification(kind=EmailSentTrackKind.ONBOARDING)).order_by(
+        "date_joined"
+    )
