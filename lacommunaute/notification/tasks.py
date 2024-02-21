@@ -10,6 +10,7 @@ from lacommunaute.notification.utils import (
     collect_first_replies,
     collect_following_replies,
     collect_new_users_for_onboarding,
+    collect_topics_digest_for_tags,
 )
 
 
@@ -77,3 +78,21 @@ def send_notifs_on_unanswered_topics(list_id: int) -> None:
                 template_id=settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
                 kind=EmailSentTrackKind.PENDING_TOPIC,
             )
+
+
+def send_notifs_on_tag_digest():
+    tags_digest = collect_topics_digest_for_tags()
+
+    for url, subject, emails, count in tags_digest:
+        contacts = [{"email": email} for email in emails]
+        params = {
+            "url": f"{url}&mtm_campaign=tagdigest&mtm_medium=email",
+            "count": count,
+        }
+        send_email(
+            to=[{"email": DEFAULT_FROM_EMAIL}],
+            params=params,
+            template_id=settings.SIB_TAG_DIGEST_TEMPLATE,
+            kind=EmailSentTrackKind.TAG_DIGEST,
+            bcc=contacts,
+        )
