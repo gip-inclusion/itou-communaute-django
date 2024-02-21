@@ -291,7 +291,7 @@ class TopicUpdateViewTest(TestCase):
         session = self.client.session
         session["_anonymous_forum_key"] = topic.first_post.anonymous_key
         session.save()
-        updated_subject = faker.word()
+        updated_subject = faker.pystr().lower()
 
         response = self.client.post(
             reverse(
