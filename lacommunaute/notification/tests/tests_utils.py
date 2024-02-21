@@ -143,3 +143,7 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
 
         EmailSentTrackFactory(kind="onboarding")
         self.assertEqual(len(collect_new_users_for_onboarding()), 0)
+
+    def test_order_by_date_joined(self):
+        UserFactory.create_batch(3)
+        self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all().order_by("date_joined")))
