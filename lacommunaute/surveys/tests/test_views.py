@@ -1,7 +1,10 @@
 import pytest  # noqa
+from django.contrib.auth.models import Permission
+from django.test import override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains
-from django.contrib.auth.models import Permission
+
+from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.surveys.models import DSP
 from lacommunaute.users.factories import UserFactory
@@ -54,6 +57,14 @@ class TestDSPCreateView:
         for field in dsp_choices_list:
             assert field in response.context["form"].fields
 
+    def test_related_forums(self, db, client):
+        forum = CategoryForumFactory(with_child=True)
+        url = reverse("surveys:dsp_create")
+        with override_settings(DSP_FORUM_RELATED_ID=forum.id):
+            response = client.get(url)
+        for related_forum in forum.get_children():
+            assertContains(response, related_forum.name)
+
     def test_form_valid(self, db, client):
         url = reverse("surveys:dsp_create")
         client.force_login(UserFactory())
@@ -85,6 +96,16 @@ class TestDSPDetailView:
         url = reverse("surveys:dsp_detail", kwargs={"pk": dsp.pk})
         response = client.get(url)
         assert response.status_code == 200
+
+    def test_related_forums(self, db, client):
+        forum = CategoryForumFactory(with_child=True)
+        dsp = DSPFactory()
+        client.force_login(dsp.user)
+        url = reverse("surveys:dsp_detail", kwargs={"pk": dsp.pk})
+        with override_settings(DSP_FORUM_RELATED_ID=forum.id):
+            response = client.get(url)
+        for related_forum in forum.get_children():
+            assertContains(response, related_forum.name)
 
 
 class TestHomeView:

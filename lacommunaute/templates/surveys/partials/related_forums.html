@@ -1,0 +1,8 @@
+<strong>Articles associés</strong>
+<ul>
+    {% for forum in related_forums %}
+        <li>
+            <a href="{% url 'forum_extension:forum' forum.slug forum.id %}">{{ forum.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

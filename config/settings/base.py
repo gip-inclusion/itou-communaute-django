@@ -334,6 +334,8 @@ MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextare
 # Django sites framework
 SITE_ID = 1
 
+DSP_FORUM_RELATED_ID = 108
+
 # MATOMO
 # ---------------------------------------
 MATOMO_BASE_URL = os.getenv("MATOMO_BASE_URL", None)
