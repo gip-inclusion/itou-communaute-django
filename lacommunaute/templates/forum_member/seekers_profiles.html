@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load theme_inclusion %}
+{% block title %}CIP en recherche active{{ block.super }}{% endblock %}
+{% block meta_description %}
+    CIP en recherche active de stage ou d'alternance. La communauté expérimente la mise en relation de CIPs en formation avec des structures de l'insertion désireuses de les accueillir.
+{% endblock meta_description %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>{{ subtitle|default:"Liste des membres" }}</strong>
+                    </h1>
+                    <h2 class="h2">
+                        La communauté expérimente la mise en relation de CIPs en formation avec des structures de l'insertion désireuses de les accueillir.
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            {% if user.is_authenticated %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12">
+                        <div class="c-box mb-5">
+                            <div class="row">
+                                <div class="col-lg-9 col-12 mb-3">
+                                    <p>Je suis CIP en recherche d'un stage ou d'une alternance ? Je complète mon profil pour me faire connaitre.</p>
+                                </div>
+                                <div class="col-lg-auto col-12 mb-3 justify-content-end">
+                                    <a href="{% url 'members:profile_update' %}" class="btn btn-primary">Mettre à jour mon profil</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12">
+                        <div class="c-box mb-5">
+                            <div class="row">
+                                <div class="col-lg col-12 mb-3">Je me connecte pour mettre à jour mon profil</div>
+                                <div class="col-lg-auto col-12">
+                                    <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'members:profile_update' %}" rel="nofollow" class="btn btn-inclusion-connect">
+                                        <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                        {% for forum_profile in forum_profiles %}
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h3 class="h5 card-title">
+                                            <a href="{% url 'members:profile' username=forum_profile.user.username %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="member">{{ forum_profile }}</a>
+                                        </h3>
+                                        <p class="card-text">
+                                            Sur la région <strong>{{ forum_profile.get_region_display }}</strong> et pour une durée de <strong>{{ forum_profile.internship_duration }} mois</strong>.
+                                        </p>
+                                        <p class="card-text">
+                                            {% if forum_profile.signature %}<p class="card-text">{{ forum_profile.signature }}</p>{% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col">
+                                <p>No body yet…</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if page_obj.has_previous or page_obj.has_next %}
+                        {% with pagination_size="pagination-sm justify-content-center mt-5" %}
+                            {% include "partials/pagination.html" %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
