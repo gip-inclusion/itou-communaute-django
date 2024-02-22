@@ -28,6 +28,17 @@ class ForumProfileUpdateViewTest(TestCase):
             view.get_success_url(), reverse("members:profile", kwargs={"username": forum_profiles.user.username})
         )
 
+    def test_form_fields(self):
+        forum_profiles = ForumProfileFactory()
+        self.client.force_login(forum_profiles.user)
+        response = self.client.get(reverse("members:profile_update"))
+
+        self.assertContains(response, "linkedin", status_code=200)
+        self.assertContains(response, "cv")
+        self.assertContains(response, "search")
+        self.assertContains(response, "region")
+        self.assertContains(response, "internship_duration")
+
 
 class ModeratorProfileListView(TestCase):
     @classmethod
