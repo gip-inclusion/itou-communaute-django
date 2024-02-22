@@ -12,7 +12,7 @@ from machina.apps.forum_member.views import (
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
-from lacommunaute.forum_member.forms import JoinForumForm
+from lacommunaute.forum_member.forms import ForumProfileForm, JoinForumForm
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.utils.urls import get_safe_url
 
@@ -29,6 +29,8 @@ class ForumProfileDetailView(BaseForumProfileDetailView):
 
 
 class ForumProfileUpdateView(BaseForumProfileUpdateView):
+    form_class = ForumProfileForm
+
     def get_success_url(self):
         return reverse("members:profile", kwargs={"username": self.request.user.username})
 

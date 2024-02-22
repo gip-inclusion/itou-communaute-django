@@ -13,7 +13,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="m-0 h4 card-title">{% trans "Edit forum profile" %}</h3>
+                    <h3 class="m-0 h4 card-title">Mon profil</h3>
                 </div>
                 <div class="card-body">
                     <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
@@ -39,6 +39,20 @@
                                 </div>
                             </div>
                         {% endif %}
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong>Mon stage CIP</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">{% include "partials/form_field.html" with field=form.search %}</div>
+                            <div class="col-md-3">{% include "partials/form_field.html" with field=form.region %}</div>
+                            <div class="col-md-4">{% include "partials/form_field.html" with field=form.internship_duration %}</div>
+                            <div class="col-md-5">{% include "partials/form_field.html" with field=form.linkedin %}</div>
+                            <div class="col-md-auto">{% include "partials/form_field.html" with field=form.cv %}</div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-12">{% include "partials/form_field.html" with field=form.signature %}</div>
                         </div>
