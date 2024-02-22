@@ -1,10 +1,13 @@
 import pytest  # noqa
+from dateutil.relativedelta import relativedelta
 from django.urls import reverse
+from django.utils import timezone
+from pytest_django.asserts import assertContains, assertNotContains
 
+from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from pytest_django.asserts import assertContains
 
 
 def test_context_data(client, db):
@@ -46,3 +49,17 @@ def test_new_topics_order(client, db):
 def test_page_title(db, client):
     response = client.get(reverse("pages:home"))
     assertContains(response, "<title>Accueil- La communauté de l'inclusion</title>", html=True, count=1)
+
+
+def test_events(db, client):
+    old_event = EventFactory(date=timezone.now() - relativedelta(days=1))
+    visible_future_event = EventFactory.create_batch(4, date=timezone.now() + relativedelta(days=1))
+    unvisible_future_event = EventFactory(date=timezone.now() + relativedelta(days=1))
+    response = client.get(reverse("pages:home"))
+    assertContains(response, "Les évènements à venir", count=1)
+    assertNotContains(response, old_event.name)
+    for future_event in visible_future_event:
+        assertContains(response, future_event.name)
+        assertContains(response, reverse("event:detail", kwargs={"pk": future_event.pk}))
+    assertNotContains(response, unvisible_future_event.name)
+    assertContains(response, reverse("event:current"))

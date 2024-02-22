@@ -15,6 +15,7 @@
     {% url 'forum_conversation_extension:topics' as publicforum_url %}
     {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
     {% url 'forum_extension:documentation' as documentation_url %}
+    {% url 'event:current' as event_url %}
     <section class="s-hero-title-01--communaute">
         <div class="s-hero-title-01__container container">
             <div class="s-hero-title-01__row row align-items-center">
@@ -90,7 +91,7 @@
                         <div class="p-3 p-lg-4 bg-light">
                             <h3 class="m-0">
                                 <i class="ri-article-line ri-lg font-weight-normal" aria-hidden="true"></i>
-                                Les dernières fiches thématiques
+                                Les fiches thématiques mises à jour
                             </h3>
                         </div>
                         <div class="px-3 px-lg-4 pt-3 pt-lg-4">
@@ -110,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="s-section__col col-12 mb-3 mb-md-5">
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
                     <div class="c-box p-0 h-100">
                         <div class="p-3 p-lg-4 bg-light">
                             <h3 class="m-0">
@@ -134,6 +135,31 @@
                         </div>
                         <div class="p-3 p-lg-4">
                             <a href="{{ newsfeed_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="news">{% trans "See all news" %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-light">
+                            <h3 class="m-0">
+                                <i class="ri-calendar-event-fill ri-lg font-weight-normal" aria-hidden="true"></i>
+                                Les évènements à venir
+                            </h3>
+                        </div>
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                            <ul class="list-unstyled mb-lg-5">
+                                {% for event in upcoming_events %}
+                                    <li class="mb-3 position-relative">
+                                        <a href="{% url 'event:detail' event.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="event">
+                                            {{ event.name }}
+                                        </a>
+                                        <small class="text-muted">{% include 'event/partials/event_date.html' with event=event only %}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ event_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="events">Voir tous les évènements</a>
                         </div>
                     </div>
                 </div>
