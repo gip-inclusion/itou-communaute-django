@@ -145,3 +145,18 @@ class LeaderBoardListView(ListView):
         context = super().get_context_data(**kwargs)
         context["subtitle"] = "Contributeurs authentifiés les plus actifs sur les 30 derniers jours"
         return context
+
+
+class SeekersListView(ListView):
+    model = ForumProfile
+    template_name = "forum_member/seekers_profiles.html"
+    context_object_name = "forum_profiles"
+    paginate_by = 78
+
+    def get_queryset(self):
+        return ForumProfile.objects.exclude(search="NO")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["subtitle"] = "CIP en recherche active de stage ou d'alternance"
+        return context

@@ -194,3 +194,16 @@ class TestLeaderBoardListView:
         assert (
             response.context_data["subtitle"] == "Contributeurs authentifiés les plus actifs sur les 30 derniers jours"
         )
+
+
+class TestSeekersListView:
+    def test_content(self, client, db):
+        undesired_forum_profile = ForumProfileFactory()
+        internship_forum_profile = ForumProfileFactory(search="INTERNSHIP")
+        apprentice_forum_profile = ForumProfileFactory(search="APPRENTICESHIP")
+
+        response = client.get(reverse("members:seekers"))
+        assertContains(response, get_forum_member_display_name(internship_forum_profile.user))
+        assertContains(response, get_forum_member_display_name(apprentice_forum_profile.user))
+        assertNotContains(response, get_forum_member_display_name(undesired_forum_profile.user))
+        assert response.context_data["subtitle"] == "CIP en recherche active de stage ou d'alternance"
