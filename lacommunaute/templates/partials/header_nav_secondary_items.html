@@ -5,7 +5,7 @@
 {% url 'forum_conversation_extension:topics' as publicforum_url %}
 {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
 {% url 'forum_extension:documentation' as documentation_url %}
-{% url 'event:current' as calendar_url %}
+{% url 'members:seekers' as seeker_url %}
 {% url 'search:index' as search_url %}
 {% url 'surveys:dsp_create' as dsp_url %}
 <ul>
@@ -26,7 +26,7 @@
            data-matomo-option="documentation_header">{% trans "Documents" %}</a>
     </li>
     <li>
-        <a href="{{ calendar_url }}" class="{% if request.path == calendar_url %}is-active{% endif %}">{% trans "Events" %}</a>
+        <a href="{{ seeker_url }}" class="{% if request.path == seeker_url %}is-active{% endif %}">Mon stage CIP</a>
     </li>
     <li>
         <a href="{{ dsp_url }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="dsp">
