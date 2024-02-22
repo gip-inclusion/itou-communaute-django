@@ -14,7 +14,7 @@ class CreateUpdatePostMixin:
         cleaned_data = super().clean()
         if "content" in cleaned_data:
             post = check_post_approbation(
-                Post(username=cleaned_data.get("username", None), content=cleaned_data.get("content"))
+                Post(username=cleaned_data.get("username"), content=cleaned_data.get("content"))
             )
             if not post.approved:
                 self.add_error(None, "Votre message ne respecte pas les règles de la communauté.")
