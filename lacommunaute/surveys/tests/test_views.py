@@ -34,12 +34,12 @@ class TestDSPCreateView:
         assertContains(response, tally_html)
         assertNotContains(response, form_html)
 
-    def test_user_has_no_permission(self, db, client):
+    def test_user_is_authenticated(self, db, client):
         client.force_login(UserFactory())
         response = client.get(reverse("surveys:dsp_create"))
         assertContains(response, tally_html)
+        assertContains(response, form_html)
         assertNotContains(response, login_with_next_url)
-        assertNotContains(response, form_html)
 
     def test_user_has_permission(self, db, client):
         client.force_login(UserFactory(with_perm=[Permission.objects.get(codename="add_dsp")]))
