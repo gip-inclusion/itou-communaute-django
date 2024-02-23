@@ -12,7 +12,7 @@
                 <div class="s-title-01__col col-lg-8 col-12">
                     <h1 class="s-title-01__title h1">Diagnostic Parcours IAE</h1>
                     <p>
-                        L'aide au diagnostic pour le parcours IAE (aussi connu sous le nom de DSP) est en cours de déploiement. Nous l'ouvrons progressivement aux professionnels volontaires pour le tester et nous faire part des améliorations souhaitables.
+                        L'aide au diagnostic pour le parcours IAE (aussi connu sous le nom de <strong>Diagnostic Socio Professionnel</strong>) est en cours de déploiement. Nous l'ouvrons progressivement aux professionnels volontaires pour le tester et nous faire part des améliorations souhaitables.
                     </p>
                 </div>
             </div>
@@ -20,26 +20,10 @@
     </section>
     <section class="s-section">
         <div class="s-section__container container">
-            {% if not user.is_authenticated %}
+            {% if user.is_authenticated %}
                 <div class="s-section__row row">
                     <div class="s-section__col col-lg-8 col-12">
                         <div class="c-box mb-5">
-                            <div class="row">
-                                <div class="col-lg col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostic pour le parcours IAE</div>
-                                <div class="col-lg-auto col-12">
-                                    <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-inclusion-connect">
-                                        <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-            <div class="s-section__row row">
-                <div class="s-section__col col-lg-8 col-12">
-                    <div class="c-box mb-5">
-                        {% if perms.surveys.add_dsp %}
                             <form method="post">
                                 {% csrf_token %}
                                 {% for field in form %}
@@ -67,7 +51,36 @@
                                     </div>
                                 </div>
                             </form>
-                        {% else %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-lg-8 col-12">
+                        <div class="c-box mb-5">
+                            <div class="row">
+                                <div class="col-lg col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostic pour le parcours IAE</div>
+                                <div class="col-lg-auto col-12">
+                                    <a href="{% url 'inclusion_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-inclusion-connect">
+                                        <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="s-section__row row">
+                <div class="s-section__col col-lg-8 col-12">
+                    <div class="c-box mb-5">
+                        {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
+                    </div>
+                </div>
+            </div>
+            {% if not perms.surveys.add_dsp %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-lg-8 col-12">
+                        <div class="c-box mb-5">
                             <strong>Vous souhaitez faire partie du prochain groupe de testeurs ? Faites-vous connaître !</strong>
                             <iframe data-tally-src="https://tally.so/embed/w51b56?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                                     loading="lazy"
@@ -77,17 +90,10 @@
                                     marginheight="0"
                                     marginwidth="0"
                                     title="DSP waiting list"></iframe>
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-lg-8 col-12">
-                    <div class="c-box mb-5">
-                        {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
-                    </div>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </section>
 {% endblock content %}
