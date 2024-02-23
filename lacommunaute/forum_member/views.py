@@ -156,7 +156,7 @@ class SeekersListView(ListView):
     paginate_by = 78
 
     def get_queryset(self):
-        return ForumProfile.objects.exclude(search="NO")
+        return ForumProfile.objects.exclude(search="NO").order_by("-updated_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
