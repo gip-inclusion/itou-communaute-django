@@ -9,6 +9,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_member.factories import ForumProfileFactory
+from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_member.views import ForumProfileUpdateView
 from lacommunaute.users.factories import DEFAULT_PASSWORD, UserFactory
@@ -218,3 +219,11 @@ class TestSeekersListView:
         assertContains(response, get_forum_member_display_name(apprentice_forum_profile.user))
         assertNotContains(response, get_forum_member_display_name(undesired_forum_profile.user))
         assert response.context_data["subtitle"] == "CIP en recherche active de stage ou d'alternance"
+
+    def test_sorted_profils(self, client, db):
+        ForumProfileFactory(search="APPRENTICESHIP")
+        ForumProfileFactory(search="INTERNSHIP")
+        response = client.get(reverse("members:seekers"))
+        # test queryset is ordered by updated_at
+        assert response.context_data["forum_profiles"][0] == ForumProfile.objects.last()
+        assert response.context_data["forum_profiles"][1] == ForumProfile.objects.first()
