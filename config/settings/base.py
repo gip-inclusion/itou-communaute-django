@@ -336,6 +336,8 @@ SITE_ID = 1
 
 DSP_FORUM_RELATED_ID = 108
 
+API_BAN_BASE_URL = "https://api-adresse.data.gouv.fr"
+
 # MATOMO
 # ---------------------------------------
 MATOMO_BASE_URL = os.getenv("MATOMO_BASE_URL", None)
@@ -383,6 +385,9 @@ CSP_FRAME_SRC = ("'self'", "https://tally.so")
 CSP_IMG_SRC = ("'self'", "data:", "cellar-c2.services.clever-cloud.com")
 CSP_CONNECT_SRC = ("'self'", "*.sentry.io")
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
+
+if API_BAN_BASE_URL:
+    CSP_CONNECT_SRC += (API_BAN_BASE_URL,)
 
 if MATOMO_BASE_URL:
     CSP_IMG_SRC += (MATOMO_BASE_URL,)
