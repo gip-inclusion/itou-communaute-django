@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 {% load i18n %}
 {% load theme_inclusion %}
 {% block title %}Diagnostic Parcours IAE{{ block.super }}{% endblock %}
@@ -27,19 +28,24 @@
                             <form method="post">
                                 {% csrf_token %}
                                 {% for field in form %}
-                                    <fieldset>
+                                    {% for error in field.errors %}<span class="text-danger error">{{ error }}</span>{% endfor %}
+                                    {% if not field.is_hidden %}
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <legend>{{ field.label_tag }}</legend>
+                                                    <div class="form-group form-group-required">{{ field }}</div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
                                         <div class="row">
-                                            <div class="col-12">
-                                                <legend>{{ field.label_tag }}</legend>
-                                                <div class="form-group form-group-required">{{ field }}</div>
+                                            <div class="col">
+                                                <hr />
                                             </div>
                                         </div>
-                                    </fieldset>
-                                    <div class="row">
-                                        <div class="col">
-                                            <hr />
-                                        </div>
-                                    </div>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
                                 {% endfor %}
                                 <div class="row">
                                     <div class="form-row ">
@@ -99,5 +105,60 @@
 {% endblock content %}
 {% block extra_js %}
     {{ block.super }}
+    <script type="text/javascript" src="{% static 'javascripts/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascripts/select2.min.js' %}"></script>
+    <script nonce="{{ request.csp_nonce }}">
+        $(document).ready(function() {
+            let cityCodeHiddenInput = $("#id_city_code");
+            $('#id_location').on('select2:select', function(e) {
+                let data = e.params.data;
+                cityCodeHiddenInput.val(data.city_code);
+            });
+            $('#id_location').select2({
+                theme: "bootstrap-5",
+                ajax: {
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term, // search term
+                            type: 'municipality',
+                            limit: 10
+                        };
+                    },
+                    processResults: function(data) {
+                        var results = data.features.map(function(item, index) {
+                            var prop = item.properties;
+                            return {
+                                id: prop.label + ' (' + prop.postcode.substring(0, 2) + ')',
+                                text: prop.label + ' (' + prop.context + ')',
+                                city_code: prop.citycode,
+                            };
+                        });
+                        return {
+                            results,
+                        };
+                    },
+                    cache: true,
+                },
+                placeholder: 'Recherchez la ville ou le code postal',
+                minimumInputLength: 3,
+                language: {
+                    inputTooShort: function() {
+                        return 'Entrez au moins 3 caractères';
+                    },
+                    errorLoading: function() {
+                        return 'Les résultats ne peuvent pas être chargés';
+                    },
+                    searching: function() {
+                        return 'Recherche en cours';
+                    },
+                    noResults: function() {
+                        return 'Aucun résultat trouvé';
+                    },
+                },
+            });
+        });
+    </script>
     <script async src="https://tally.so/widgets/embed.js"></script>
 {% endblock extra_js %}

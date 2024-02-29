@@ -59,6 +59,9 @@ class DSP(DatedModel):
         choices=enums.DSPAvailability.choices,
         verbose_name="disponibilité",
     )
+    location = models.CharField(max_length=255, verbose_name="localisation")
+    city_code = models.CharField(max_length=5, verbose_name="city code", null=True, blank=True)
+
     recommendations = models.ManyToManyField(Recommendation)
 
     class Meta:

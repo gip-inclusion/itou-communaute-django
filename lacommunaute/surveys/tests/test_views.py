@@ -20,6 +20,7 @@ dsp_choices_list = [
     "judicial",
     "availability",
 ]
+location_field_list = ["location", "city_code"]
 
 form_html = '<form method="post">'
 tally_html = '<iframe data-tally-src="https://tally.so/embed'
@@ -54,7 +55,7 @@ class TestDSPCreateView:
         response = client.get(url)
         assert response.status_code == 200
         assert "form" in response.context
-        for field in dsp_choices_list:
+        for field in dsp_choices_list + location_field_list:
             assert field in response.context["form"].fields
 
     def test_related_forums(self, db, client):
@@ -69,12 +70,24 @@ class TestDSPCreateView:
         url = reverse("surveys:dsp_create")
         client.force_login(UserFactory())
         choices = {key: "0" for key in dsp_choices_list}
+        choices.update({"location": "Le Mans", "city_code": "72000"})
         response = client.post(url, choices)
         assert response.status_code == 302
 
         dsp = DSP.objects.get()
         assert response.url == reverse("surveys:dsp_detail", kwargs={"pk": dsp.pk})
         assert dsp.recommendations is not None
+
+    def test_form_invalid(self, db, client):
+        url = reverse("surveys:dsp_create")
+        client.force_login(UserFactory())
+        response = client.post(url, {})
+
+        assert response.status_code == 200
+        assert response.context["form"].is_valid() is False
+        errors = response.context["form"].errors
+        for field in dsp_choices_list + ["location"]:
+            assert errors[field] == ["Ce champ est obligatoire."]
 
 
 class TestDSPDetailView:
