@@ -24,6 +24,15 @@
                         <div>
                             <h2 class="h3">{{ recommendation.category }}</h2>
                             <p>{{ recommendation.text }}</p>
+                            <ul>
+                                {% if recommendation.dora_subs %}
+                                    {% for dora_subs in recommendation.dora_subs %}
+                                        {% include "surveys/partials/link_to_dora.html" with object=object dora_cats=recommendation.dora_cats dora_subs=dora_subs only %}
+                                    {% endfor %}
+                                {% elif recommendation.dora_cats %}
+                                    {% include "surveys/partials/link_to_dora.html" with object=object dora_cats=recommendation.dora_cats only %}
+                                {% endif %}
+                            </ul>
                             {% if not forloop.last %}<hr>{% endif %}
                         </div>
                     {% endfor %}
