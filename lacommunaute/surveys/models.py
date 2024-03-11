@@ -9,6 +9,8 @@ class Recommendation(models.Model):
     codename = models.CharField(editable=False, max_length=100, unique=True)
     category = models.CharField(editable=False, max_length=100)
     text = models.TextField()
+    dora_cats = models.JSONField(null=True, blank=True)
+    dora_subs = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return f"[{self.category}] {self.text}"
