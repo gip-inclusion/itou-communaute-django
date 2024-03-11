@@ -18,31 +18,17 @@
     {% endif %}
     <section class="s-section">
         <div class="s-section__container container">
-            {% if global_recommendations or grouped_recommendations %}
-                {% if global_recommendations %}
-                    <div class="s-section__row row">
-                        <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-                            <h2>Général</h2>
-                            <ul>
-                                {% for recommendation in global_recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
-                            </ul>
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-8 c-box mb-5">
+                    {% for recommendation in recommendations %}
+                        <div>
+                            <h2 class="h3">{{ recommendation.category }}</h2>
+                            <p>{{ recommendation.text }}</p>
+                            {% if not forloop.last %}<hr>{% endif %}
                         </div>
-                    </div>
-                {% endif %}
-                <div class="s-section__row row">
-                    <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-                        {% for category, recommendations in grouped_recommendations %}
-                            <div>
-                                <h2 class="h3">{{ category }}</h2>
-                                <ul>
-                                    {% for recommendation in recommendations %}<li>{{ recommendation.text }}</li>{% endfor %}
-                                </ul>
-                                {% if not forloop.last %}<hr>{% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                     <h2>Rappel de votre diagnostic</h2>
