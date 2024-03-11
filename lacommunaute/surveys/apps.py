@@ -13,10 +13,10 @@ class ForumStatsAppConfig(AppConfig):
 
     def ready(self):
         super().ready()
-        models.signals.post_migrate.connect(create_recommendations, sender=self)
+        models.signals.post_migrate.connect(create_update_recommendations, sender=self)
 
 
-def create_recommendations(*args, **kwargs):
+def create_update_recommendations(*args, **kwargs):
     from lacommunaute.surveys.models import Recommendation
 
     recommendations_specfile = Path(__file__).parent / "recommendations.toml"
@@ -34,5 +34,10 @@ def create_recommendations(*args, **kwargs):
                 text=spec["text"],
             )
         )
-    Recommendation.objects.bulk_create(recommendations, ignore_conflicts=True)
+    Recommendation.objects.bulk_create(
+        recommendations,
+        update_conflicts=True,
+        unique_fields=("codename",),
+        update_fields=("category", "text"),
+    )
     Recommendation.objects.exclude(codename__in=codenames).delete()
