@@ -32,12 +32,14 @@ def create_update_recommendations(*args, **kwargs):
                 codename=codename,
                 category=spec["category"],
                 text=spec["text"],
+                dora_cats=spec.get("dora_cats"),
+                dora_subs=spec.get("dora_subs"),
             )
         )
     Recommendation.objects.bulk_create(
         recommendations,
         update_conflicts=True,
         unique_fields=("codename",),
-        update_fields=("category", "text"),
+        update_fields=("category", "text", "dora_cats", "dora_subs"),
     )
     Recommendation.objects.exclude(codename__in=codenames).delete()
