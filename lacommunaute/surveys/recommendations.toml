@@ -167,13 +167,3 @@ text = "Recherche d'emplois compatibles avec les horaires de garde des enfants, 
 codename = "disponibilite-3"
 category = "Disponibilité"
 text = "Prêt à l’emploi, proposition d’atelier TRE"
-
-[[recommendations]]
-codename = "toutes-les-formations"
-category = "Général"
-text = "Se diriger vers le conseil départemental pour définir les priorités d’accompagnement"
-
-[[recommendations]]
-codename = "pret-a-emploi"
-category = "Général"
-text = "Démarrer un parcours dans l’IAE sur les emplois de l’inclusion"
