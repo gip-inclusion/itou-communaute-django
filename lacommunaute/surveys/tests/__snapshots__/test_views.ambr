@@ -2,266 +2,267 @@
 # name: TestDSPDetailView.test_suggested_services[level_1]
   '''
   <main class="s-main" id="main" role="main">
-
-
-
-
-
-
+              
+                  
+              
+              
+                  
+      
       <section class="s-section">
           <div class="s-section__container container">
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-
+                      
                           <div>
                               <h2 class="h3">Capacité à occuper un poste de travail</h2>
                               <p>Mise en place d'un parcours d'insertion professionnelle personnalisé, incluant formations et immersion</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Langage</h2>
                               <p>Inscription dans des programmes de Français Langue Étrangère (FLE) et de remise à niveau des savoirs de base</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-apprendre-francais--communiquer-vie-tous-les-jours" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=apprendre-francais&amp;subs=apprendre-francais--communiquer-vie-tous-les-jours&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               communiquer dans la vie de tous les jours
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Logement</h2>
                               <p>Accompagnement social pour stabilisation et recherche de logement durable</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-logement-hebergement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=logement-hebergement&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               le logement et l'hebergement
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Accès aux droits</h2>
                               <p>Assistance pour la reprise des droits et accompagnement dans les démarches de renouvellement</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-acces-aux-droits-et-citoyennete--connaitre-ses-droits" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=acces-aux-droits-et-citoyennete&amp;subs=acces-aux-droits-et-citoyennete--connaitre-ses-droits&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               connaître ses droits
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Mobilité</h2>
                               <p>Aide pour la mise en règle des documents du véhicule et sensibilisation à l'importance de l'assurance et du contrôle technique</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-mobilite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=mobilite&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               la mobilité
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation financière</h2>
                               <p>Suivi du dossier de surendettement et accompagnement vers une gestion budgétaire saine</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--prevention-et-gestion-du-surendettement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--prevention-et-gestion-du-surendettement&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
-              la gestion financière
-
+          
+              la prévention et la gestion du surendettement
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation judiciaire</h2>
                               <p>       Coordination avec les services judiciaires pour un accompagnement adapté et respectueux des obligations judiciaires</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Disponibilité</h2>
                               <p>Orientation vers des services de soutien familial pour aider à l'organisation du quotidien</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-famille--accompagnement-femme-enceinte-bebe-jeune-enfant" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=famille&amp;subs=famille--accompagnement-femme-enceinte-bebe-jeune-enfant&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
-              la famille
-
+          
+              l'accompagnement de la femme enceinte, du bébé, et du jeune enfant
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-famille--information-et-accompagnement-des-parents" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=famille&amp;subs=famille--information-et-accompagnement-des-parents&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               l'information et l'accompagnement des parents
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-famille--soutien-a-la-parentalite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=famille&amp;subs=famille--soutien-a-la-parentalite&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               le soutien à la parentalité
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-famille--soutien-aux-familles" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=54000&amp;cats=famille&amp;subs=famille--soutien-aux-familles&amp;cl=Nancy#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               le soutien aux familles
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
-
+                              
                           </div>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                       <h2>Rappel de votre diagnostic</h2>
-
+                      
                           <ul>
                               <li>
                                   <strong>Capacité à occuper un poste de travail :</strong>
                                   A besoin d’un accompagnement avant de pouvoir occuper un poste de travail
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Maîtrise de la langue française :</strong>
                                   Relève d’une formation FLE et/ou savoirs de base
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Logement :</strong>
                                   Hébergement collectif de type CHRS ou CADA…
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Accès aux droits :</strong>
                                   Renoncement ou en rupture ou difficulté de renouvellement de droits
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Mobilité :</strong>
                                   Sait organiser son covoiturage et/ou possède un véhicule mais problème de mise en règle (assurance, contrôle technique…)
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Ressources :</strong>
                                   Surendettement avec dossier déposé et suivi
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Situation judiciaire :</strong>
                                   Suivi SPIP/PJJ après exécution de peine
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Disponibilité :</strong>
                                   A organiser
                               </li>
                           </ul>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-lg-8 col-12 c-box mb-5">
                       <strong>Articles associés</strong>
   <ul>
-
+      
   </ul>
-
+  
                   </div>
               </div>
               <div class="s-section__row row">
@@ -276,275 +277,275 @@
               </div>
           </div>
       </section>
-
-
+  
+              
           </main>
   '''
 # ---
 # name: TestDSPDetailView.test_suggested_services[level_2]
   '''
   <main class="s-main" id="main" role="main">
-
-
-
-
-
-
+              
+                  
+              
+              
+                  
+      
       <section class="s-section">
           <div class="s-section__container container">
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-
+                      
                           <div>
                               <h2 class="h3">Capacité à occuper un poste de travail</h2>
                               <p>Identifier des aménagements spécifiques nécessaires (horaires flexibles, travail à distance, etc.).</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-handicap--adaptation-au-poste-de-travail" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=handicap&amp;subs=handicap--adaptation-au-poste-de-travail&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               l'adaptation au poste de travail
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Langage</h2>
                               <p>Proposer des formations en langue française adaptées à ses besoins</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-apprendre-francais--suivre-formation" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=apprendre-francais&amp;subs=apprendre-francais--suivre-formation&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               suivre une formation
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Logement</h2>
                               <p>Orienter vers des services d’aide au logement et des structures d’urgence si nécessaire</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-logement-hebergement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=logement-hebergement&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               le logement et l'hebergement
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Accès aux droits</h2>
                               <p>       Soutien dans les démarches administratives, notamment pour stabiliser la situation de logement et de garde des enfants</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-acces-aux-droits-et-citoyennete--accompagnement-dans-les-demarches-administratives" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=acces-aux-droits-et-citoyennete&amp;subs=acces-aux-droits-et-citoyennete--accompagnement-dans-les-demarches-administratives&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               l'accompagnement dans les démarches administratives
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Mobilité</h2>
                               <p>       Évaluer les besoins de mobilité spécifiques liés à la garde des enfants et  au travail possibilité de mise en place de mobilité solidaire</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-mobilite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=mobilite&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               la mobilité
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation financière</h2>
                               <p>       Accompagnement en gestion budgétaire, orientation vers des aides financières et des conseils en économie sociale et familiale</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--accompagnement-aux-personnes-en-difficultes-financieres" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--accompagnement-aux-personnes-en-difficultes-financieres&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
-              la gestion financière
-
+          
+              l'accompagnement aux personnes en difficultés financières
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--beneficier-daides-financieres" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--beneficier-daides-financieres&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               bénéficier d'aides financières
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--apprendre-a-gerer-son-budget" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--apprendre-a-gerer-son-budget&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               apprendre à gérer son budget
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation judiciaire</h2>
                               <p>Sensibilisation aux conséquences de comportements à risque</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Disponibilité</h2>
                               <p>Recherche d'emplois compatibles avec les horaires de garde des enfants, exploration d'opportunités de travail à temps partiel ou flexible</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-trouver-un-emploi" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=44000&amp;cats=trouver-un-emploi&amp;cl=Nantes#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               trouver un emploi
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
-
+                              
                           </div>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                       <h2>Rappel de votre diagnostic</h2>
-
+                      
                           <ul>
                               <li>
                                   <strong>Capacité à occuper un poste de travail :</strong>
                                   Peut occuper un poste de travail dans des conditions aménagées
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Maîtrise de la langue française :</strong>
                                   Laborieuse à limitée
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Logement :</strong>
                                   Hébergement hors structure sociale, logement insalubre, risque de perte de logement
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Accès aux droits :</strong>
                                   Connait ses droits et démarches en cours
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Mobilité :</strong>
                                   Sait utiliser les transports en commun et/ou possède un véhicule 2 roues
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Ressources :</strong>
                                   Besoins primaires assurés au jour le jour et/ou mesure de protection type curatelle
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Situation judiciaire :</strong>
                                   Aucun suivi en cours
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Disponibilité :</strong>
                                   Immédiate avec des contraintes horaires
                               </li>
                           </ul>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-lg-8 col-12 c-box mb-5">
                       <strong>Articles associés</strong>
   <ul>
-
+      
   </ul>
-
+  
                   </div>
               </div>
               <div class="s-section__row row">
@@ -559,459 +560,227 @@
               </div>
           </div>
       </section>
-
-
-          </main>
-  '''
-# ---
-# name: TestDSPDetailView.test_suggested_services[level_3]
-  '''
-  <main class="s-main" id="main" role="main">
-
-
-
-
-
-
-      <section class="s-section">
-          <div class="s-section__container container">
-              <div class="s-section__row row">
-                  <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-
-                          <div>
-                              <h2 class="h3">Capacité à occuper un poste de travail</h2>
-                              <p>Détection des compétences transverses et transférables à développer</p>
-                              <ul>
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Langage</h2>
-                              <p>Formations complémentaires mode de communication (savoir-être…)</p>
-                              <ul>
-
-
-                                          <li>
-      <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-apprendre-francais--accompagnement-insertion-pro" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=apprendre-francais&amp;subs=apprendre-francais--accompagnement-insertion-pro&amp;cl=Rouen&amp;lat=49.443231&amp;lon=1.099971#utm=communaute" target="_blank">
-          Accèdez aux services associés à <b>
-
-              accompagnement une insertion professionnelle
-
-      </b>
-  </a>
-  </li>
-
-
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Logement</h2>
-                              <p>Surveillance de la stabilité du logement</p>
-                              <ul>
-
-                                      <li>
-      <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-logement-hebergement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=logement-hebergement&amp;cl=Rouen&amp;lat=49.443231&amp;lon=1.099971#utm=communaute" target="_blank">
-          Accèdez aux services associés à <b>
-
-              le logement et l'hebergement
-
-      </b>
-  </a>
-  </li>
-
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Accès aux droits</h2>
-                              <p>Vérifier la continuité des droits et assurer un suivi administratif</p>
-                              <ul>
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Mobilité</h2>
-                              <p>Encourager l’usage du covoiturage, valoriser la mobilité dans la recherche d’emploi</p>
-                              <ul>
-
-                                      <li>
-      <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-mobilite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=mobilite&amp;cl=Rouen&amp;lat=49.443231&amp;lon=1.099971#utm=communaute" target="_blank">
-          Accèdez aux services associés à <b>
-
-              la mobilité
-
-      </b>
-  </a>
-  </li>
-
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Situation financière</h2>
-                              <p>Ateliers de gestion budgétaire avancée si nécessaire</p>
-                              <ul>
-
-                                      <li>
-      <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=gestion-financiere&amp;cl=Rouen&amp;lat=49.443231&amp;lon=1.099971#utm=communaute" target="_blank">
-          Accèdez aux services associés à <b>
-
-              la gestion financière
-
-      </b>
-  </a>
-  </li>
-
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Situation judiciaire</h2>
-                              <p>Sensibilisation aux conséquences de comportements à risque</p>
-                              <ul>
-
-                              </ul>
-                              <hr/>
-                          </div>
-
-                          <div>
-                              <h2 class="h3">Disponibilité</h2>
-                              <p>Prêt à l’emploi, proposition d’atelier TRE</p>
-                              <ul>
-
-                                      <li>
-      <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-trouver-un-emploi" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=trouver-un-emploi&amp;cl=Rouen&amp;lat=49.443231&amp;lon=1.099971#utm=communaute" target="_blank">
-          Accèdez aux services associés à <b>
-
-              trouver un emploi
-
-      </b>
-  </a>
-  </li>
-
-
-                              </ul>
-
-                          </div>
-
-                  </div>
-              </div>
-              <div class="s-section__row row">
-                  <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-                      <h2>Rappel de votre diagnostic</h2>
-
-                          <ul>
-                              <li>
-                                  <strong>Capacité à occuper un poste de travail :</strong>
-                                  Peut occuper un poste de travail dans des conditions ordinaires
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Maîtrise de la langue française :</strong>
-                                  Bonne à parfaite
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Logement :</strong>
-                                  Logement stable
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Accès aux droits :</strong>
-                                  Bénéficie des droits afférents à sa situation
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Mobilité :</strong>
-                                  Possède un véhicule et permis de conduire conformes et covoiturage possible
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Ressources :</strong>
-                                  Sait gérer son budget ; avec capacité de financer par exemple un permis de conduire
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Situation judiciaire :</strong>
-                                  Aucun suivi en cours
-                              </li>
-                          </ul>
-
-                          <ul>
-                              <li>
-                                  <strong>Disponibilité :</strong>
-                                  Immédiate et sans contraintes horaires
-                              </li>
-                          </ul>
-
-                  </div>
-              </div>
-              <div class="s-section__row row">
-                  <div class="s-section__col col-lg-8 col-12 c-box mb-5">
-                      <strong>Articles associés</strong>
-  <ul>
-
-  </ul>
-
-                  </div>
-              </div>
-              <div class="s-section__row row">
-                  <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-                      <iframe data-tally-src="https://tally.so/embed/w8QqMz?alignLeft=1&amp;hideTitle=1&amp;transparentBackground=1&amp;dynamicHeight=1" frameborder="0" height="262" loading="lazy" marginheight="0" marginwidth="0" title="DSP Feedback" width="100%"></iframe>
-                  </div>
-              </div>
-              <div class="s-section__row row">
-                  <div class="s-section__col col-12 col-lg-8 mb-5">
-                      <a class="btn btn-primary matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="submit-an-other-dsp" href="/surveys/dsp/create/">Faire un nouveau diagnostic</a>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-
+  
+              
           </main>
   '''
 # ---
 # name: TestDSPDetailView.test_suggested_services[level_max]
   '''
   <main class="s-main" id="main" role="main">
-
-
-
-
-
-
+              
+                  
+              
+              
+                  
+      
       <section class="s-section">
           <div class="s-section__container container">
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-
+                      
                           <div>
                               <h2 class="h3">Capacité à occuper un poste de travail</h2>
                               <p>Détection des compétences transverses et transférables à développer</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Langage</h2>
                               <p>Formations complémentaires mode de communication (savoir-être…)</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-apprendre-francais--accompagnement-insertion-pro" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=apprendre-francais&amp;subs=apprendre-francais--accompagnement-insertion-pro&amp;cl=Rouen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               accompagnement une insertion professionnelle
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Logement</h2>
                               <p>Surveillance de la stabilité du logement</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-logement-hebergement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=logement-hebergement&amp;cl=Rouen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               le logement et l'hebergement
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Accès aux droits</h2>
                               <p>Vérifier la continuité des droits et assurer un suivi administratif</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Mobilité</h2>
                               <p>Encourager l’usage du covoiturage, valoriser la mobilité dans la recherche d’emploi</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-mobilite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=mobilite&amp;cl=Rouen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               la mobilité
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation financière</h2>
                               <p>Ateliers de gestion budgétaire avancée si nécessaire</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--acces-au-micro-credit" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--acces-au-micro-credit&amp;cl=Rouen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
-              la gestion financière
-
+          
+              l'accès au micro-crédit
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation judiciaire</h2>
                               <p>Sensibilisation aux conséquences de comportements à risque</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Disponibilité</h2>
                               <p>Prêt à l’emploi, proposition d’atelier TRE</p>
                               <ul>
-
+                                  
                                       <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-trouver-un-emploi" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=76000&amp;cats=trouver-un-emploi&amp;cl=Rouen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               trouver un emploi
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                  
                               </ul>
-
+                              
                           </div>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                       <h2>Rappel de votre diagnostic</h2>
-
+                      
                           <ul>
                               <li>
                                   <strong>Capacité à occuper un poste de travail :</strong>
                                   Peut occuper un poste de travail dans des conditions ordinaires
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Maîtrise de la langue française :</strong>
                                   Bonne à parfaite
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Logement :</strong>
                                   Logement stable
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Accès aux droits :</strong>
                                   Bénéficie des droits afférents à sa situation
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Mobilité :</strong>
                                   Possède un véhicule et permis de conduire conformes et covoiturage possible
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Ressources :</strong>
                                   Sait gérer son budget ; avec capacité de financer par exemple un permis de conduire
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Situation judiciaire :</strong>
                                   Aucun suivi en cours
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Disponibilité :</strong>
                                   Immédiate et sans contraintes horaires
                               </li>
                           </ul>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-lg-8 col-12 c-box mb-5">
                       <strong>Articles associés</strong>
   <ul>
-
+      
   </ul>
-
+  
                   </div>
               </div>
               <div class="s-section__row row">
@@ -1026,269 +795,270 @@
               </div>
           </div>
       </section>
-
-
+  
+              
           </main>
   '''
 # ---
 # name: TestDSPDetailView.test_suggested_services[level_min]
   '''
   <main class="s-main" id="main" role="main">
-
-
-
-
-
-
+              
+                  
+              
+              
+                  
+      
       <section class="s-section">
           <div class="s-section__container container">
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
-
+                      
                           <div>
                               <h2 class="h3">Capacité à occuper un poste de travail</h2>
                               <p>Orientation vers des services médicaux pour évaluation et accompagnement</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-handicap--faire-reconnaitre-un-handicap" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=handicap&amp;subs=handicap--faire-reconnaitre-un-handicap&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               faire reconnaitre un handicap
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Langage</h2>
                               <p>Identification du niveau d’illettrisme et orientation vers des formations d'alphabétisation</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-illettrisme--reperer-situation-illettrisme" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=illettrisme&amp;subs=illettrisme--reperer-situation-illettrisme&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               repérer une situation d'illettrisme
-
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-illettrisme--ameliorer-vocabulaire" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=illettrisme&amp;subs=illettrisme--ameliorer-vocabulaire&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               améliorer le vocabulaire
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Logement</h2>
                               <p>Orientation vers des dispositifs d'urgence et des centres d'hébergement d'urgence</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-logement-hebergement--mal-loges-sans-logis" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=logement-hebergement&amp;subs=logement-hebergement--mal-loges-sans-logis&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               mal logés et sans logis
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Accès aux droits</h2>
                               <p>Information et sensibilisation sur les droits et accompagnement dans les démarches de demande</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-acces-aux-droits-et-citoyennete--connaitre-ses-droits" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=acces-aux-droits-et-citoyennete&amp;subs=acces-aux-droits-et-citoyennete--connaitre-ses-droits&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               connaître ses droits
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Mobilité</h2>
                               <p>Mise en place d'un accompagnement pour apprendre à utiliser les transports en commun ou d’une formation à la conduite</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-mobilite--etre-accompagne-dans-son-parcours-mobilite" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=mobilite&amp;subs=mobilite--etre-accompagne-dans-son-parcours-mobilite&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               être accompagné dans son parcours mobilité
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation financière</h2>
                               <p>Evaluer et lister le niveau d’endettement</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-gestion-financiere--prevention-et-gestion-du-surendettement" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=gestion-financiere&amp;subs=gestion-financiere--prevention-et-gestion-du-surendettement&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
-              la gestion financière
-
+          
+              la prévention et la gestion du surendettement
+          
       </b>
   </a>
   </li>
-
-
+  
+                                      
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Situation judiciaire</h2>
                               <p>       Initiatives permettant aux personnes sortant de prison de disposer d’un projet de réinsertion, avec un accompagnement global adapté (Fondation de France)</p>
                               <ul>
-
+                                  
                               </ul>
                               <hr/>
                           </div>
-
+                      
                           <div>
                               <h2 class="h3">Disponibilité</h2>
                               <p>Proposition de solutions de garde d'enfants ou d'aide à la personne pour permettre une meilleure disponibilité</p>
                               <ul>
-
-
+                                  
+                                      
                                           <li>
       <a class="matomo-event" data-matomo-action="dsp" data-matomo-category="engagement" data-matomo-option="visit-famille--garde-denfants" href="https://dora.inclusion.beta.gouv.fr/recherche/?city=14000&amp;cats=famille&amp;subs=famille--garde-denfants&amp;cl=Caen#utm=communaute" target="_blank">
           Accèdez aux services associés à <b>
-
+          
               la garde d'enfants
-
+          
       </b>
   </a>
   </li>
-
-
-
+  
+                                      
+                                  
                               </ul>
-
+                              
                           </div>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                       <h2>Rappel de votre diagnostic</h2>
-
+                      
                           <ul>
                               <li>
                                   <strong>Capacité à occuper un poste de travail :</strong>
                                   Est dans l’incapacité immédiate d’occuper un poste de travail
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Maîtrise de la langue française :</strong>
-                                  Analphabète à illettré
+                                  Analphabète à illettré 
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Logement :</strong>
                                   Sans domicile fixe
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Accès aux droits :</strong>
                                   Ne connait pas ses droits, en situation de non recours
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Mobilité :</strong>
                                   Ne sait pas se rendre seul à son lieu de travail
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Ressources :</strong>
                                   Situation de surendettement sans dépôt de dossier et/ou sans ressources
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Situation judiciaire :</strong>
-                                  Exécution de peine en cours
+                                  Exécution de peine en cours 
                               </li>
                           </ul>
-
+                      
                           <ul>
                               <li>
                                   <strong>Disponibilité :</strong>
                                   Faible voire difficile (garde d’enfant ; ascendant ; famille)
                               </li>
                           </ul>
-
+                      
                   </div>
               </div>
               <div class="s-section__row row">
                   <div class="s-section__col col-lg-8 col-12 c-box mb-5">
                       <strong>Articles associés</strong>
   <ul>
-
+      
   </ul>
-
+  
                   </div>
               </div>
               <div class="s-section__row row">
@@ -1303,8 +1073,8 @@
               </div>
           </div>
       </section>
-
-
+  
+              
           </main>
   '''
 # ---

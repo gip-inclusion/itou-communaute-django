@@ -8,6 +8,7 @@ from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.surveys.models import DSP
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.tests import parse_response_to_soup
 
 
 dsp_choices_list = [
@@ -119,6 +120,34 @@ class TestDSPDetailView:
             response = client.get(url)
         for related_forum in forum.get_children():
             assertContains(response, related_forum.name)
+
+    def test_suggested_services(self, db, client, snapshot):
+        user = UserFactory()
+
+        dsp_min = DSPFactory(for_snapshot_level_min=True, recommendations=True, user=user)
+        client.force_login(user)
+        url = reverse("surveys:dsp_detail", kwargs={"pk": dsp_min.pk})
+        response = client.get(url)
+        content = parse_response_to_soup(response, selector="main")
+        assert str(content) == snapshot(name="level_min")
+
+        dsp_level_1 = DSPFactory(for_snapshot_level_1=True, recommendations=True, user=user)
+        url = reverse("surveys:dsp_detail", kwargs={"pk": dsp_level_1.pk})
+        response = client.get(url)
+        content = parse_response_to_soup(response, selector="main")
+        assert str(content) == snapshot(name="level_1")
+
+        dsp_level_2 = DSPFactory(for_snapshot_level_2=True, recommendations=True, user=user)
+        url = reverse("surveys:dsp_detail", kwargs={"pk": dsp_level_2.pk})
+        response = client.get(url)
+        content = parse_response_to_soup(response, selector="main")
+        assert str(content) == snapshot(name="level_2")
+
+        dsp_level_max = DSPFactory(for_snapshot_level_max=True, recommendations=True, user=user)
+        url = reverse("surveys:dsp_detail", kwargs={"pk": dsp_level_max.pk})
+        response = client.get(url)
+        content = parse_response_to_soup(response, selector="main")
+        assert str(content) == snapshot(name="level_max")
 
 
 class TestHomeView:

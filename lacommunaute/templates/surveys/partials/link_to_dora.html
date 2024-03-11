@@ -1,0 +1,16 @@
+<li>
+    <a href="https://dora.inclusion.beta.gouv.fr/recherche/?city={{ object.city_code }}&cats={{ dora_cats.slug }}{% if dora_subs %}&subs={{ dora_subs.slug }}{% endif %}&cl={{ object.location }}#utm=communaute"
+       class="matomo-event"
+       target="_blank"
+       data-matomo-category="engagement"
+       data-matomo-action="dsp"
+       data-matomo-option="visit-{% if dora_subs %}{{ dora_subs.slug }}{% else %}{{ dora_cats.slug }}{% endif %}">
+        Accèdez aux services associés à <b>
+        {% if dora_subs %}
+            {{ dora_subs.name }}
+        {% else %}
+            {{ dora_cats.name }}
+        {% endif %}
+    </b>
+</a>
+</li>
