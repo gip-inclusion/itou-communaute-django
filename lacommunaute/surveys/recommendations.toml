@@ -2,6 +2,12 @@
 codename = "capacite-travail-0"
 category = "Capacité à occuper un poste de travail"
 text = "Orientation vers des services médicaux pour évaluation et accompagnement"
+[recommendations.dora_cats]
+name = "le handicap"
+slug = "handicap"
+[[recommendations.dora_subs]]
+name = "faire reconnaitre un handicap"
+slug = "handicap--faire-reconnaitre-un-handicap"
 
 [[recommendations]]
 codename = "capacite-travail-1"
@@ -12,6 +18,12 @@ text = "Mise en place d'un parcours d'insertion professionnelle personnalisé, i
 codename = "capacite-travail-2"
 category = "Capacité à occuper un poste de travail"
 text = "Identifier des aménagements spécifiques nécessaires (horaires flexibles, travail à distance, etc.)."
+[recommendations.dora_cats]
+name = "le handicap"
+slug = "handicap"
+[[recommendations.dora_subs]]
+name = "l'adaptation au poste de travail"
+slug = "handicap--adaptation-au-poste-de-travail"
 
 [[recommendations]]
 codename = "capacite-travail-3"
@@ -22,51 +34,106 @@ text = "Détection des compétences transverses et transférables à développer
 codename = "cours-langue-0"
 category = "Langage"
 text = "Identification du niveau d’illettrisme et orientation vers des formations d'alphabétisation"
+[recommendations.dora_cats]
+name = "l'illettrisme"
+slug = "illettrisme"
+[[recommendations.dora_subs]]
+name = "repérer une situation d'illettrisme"
+slug = "illettrisme--reperer-situation-illettrisme"
+[[recommendations.dora_subs]]
+name = "améliorer le vocabulaire"
+slug = "illettrisme--ameliorer-vocabulaire"
+
 
 [[recommendations]]
 codename = "cours-langue-1"
 category = "Langage"
 text = "Inscription dans des programmes de Français Langue Étrangère (FLE) et de remise à niveau des savoirs de base"
+[recommendations.dora_cats]
+name = "apprendre le français"
+slug = "apprendre-francais"
+[[recommendations.dora_subs]]
+name = "communiquer dans la vie de tous les jours"
+slug = "apprendre-francais--communiquer-vie-tous-les-jours"
 
 [[recommendations]]
 codename = "cours-langue-2"
 category = "Langage"
 text = "Proposer des formations en langue française adaptées à ses besoins"
+[recommendations.dora_cats]
+name = "apprendre le français"
+slug = "apprendre-francais"
+[[recommendations.dora_subs]]
+name = "suivre une formation"
+slug = 'apprendre-francais--suivre-formation'
 
 [[recommendations]]
 codename = "cours-langue-3"
 category = "Langage"
 text = "Formations complémentaires mode de communication (savoir-être…)"
+[recommendations.dora_cats]
+name = "apprendre le français"
+slug = "apprendre-francais"
+[[recommendations.dora_subs]]
+name = "accompagnement une insertion professionnelle"
+slug = 'apprendre-francais--accompagnement-insertion-pro'
 
 [[recommendations]]
 codename = "logement-0"
 category = "Logement"
 text = "Orientation vers des dispositifs d'urgence et des centres d'hébergement d'urgence"
+[recommendations.dora_cats]
+name = "le logement et l'hebergement"
+slug = "logement-hebergement"
+[[recommendations.dora_subs]]
+name = "mal logés et sans logis"
+slug = 'logement-hebergement--mal-loges-sans-logis'
 
 [[recommendations]]
 codename = "logement-1"
 category = "Logement"
 text = "Accompagnement social pour stabilisation et recherche de logement durable"
+[recommendations.dora_cats]
+name = "le logement et l'hebergement"
+slug = "logement-hebergement"
 
 [[recommendations]]
 codename = "logement-2"
 category = "Logement"
 text = "Orienter vers des services d’aide au logement et des structures d’urgence si nécessaire"
+[recommendations.dora_cats]
+name = "le logement et l'hebergement"
+slug = "logement-hebergement"
 
 [[recommendations]]
 codename = "logement-3"
 category = "Logement"
 text = "Surveillance de la stabilité du logement"
+[recommendations.dora_cats]
+name = "le logement et l'hebergement"
+slug = "logement-hebergement"
 
 [[recommendations]]
 codename = "access-droits-0"
 category = "Accès aux droits"
 text = "Information et sensibilisation sur les droits et accompagnement dans les démarches de demande"
+[recommendations.dora_cats]
+name = "l'accès aux droits et à la citoyenneté"
+slug = "acces-aux-droits-et-citoyennete"
+[[recommendations.dora_subs]]
+name = "connaître ses droits"
+slug = "acces-aux-droits-et-citoyennete--connaitre-ses-droits"
 
 [[recommendations]]
 codename = "access-droits-1"
 category = "Accès aux droits"
 text = "Assistance pour la reprise des droits et accompagnement dans les démarches de renouvellement"
+[recommendations.dora_cats]
+name = "l'accès aux droits et à la citoyenneté"
+slug = "acces-aux-droits-et-citoyennete"
+[[recommendations.dora_subs]]
+name = "connaître ses droits"
+slug = "acces-aux-droits-et-citoyennete--connaitre-ses-droits"
 
 [[recommendations]]
 codename = "access-droits-2"
@@ -75,6 +142,12 @@ text = """
        Soutien dans les démarches administratives, \
        notamment pour stabiliser la situation de logement et de garde des enfants\
        """
+[recommendations.dora_cats]
+name = "l'accès aux droits et à la citoyenneté"
+slug = "acces-aux-droits-et-citoyennete"
+[[recommendations.dora_subs]]
+name = "l'accompagnement dans les démarches administratives"
+slug = "acces-aux-droits-et-citoyennete--accompagnement-dans-les-demarches-administratives"
 
 [[recommendations]]
 codename = "access-droits-3"
@@ -85,11 +158,21 @@ text = "Vérifier la continuité des droits et assurer un suivi administratif"
 codename = "mobilite-0"
 category = "Mobilité"
 text = "Mise en place d'un accompagnement pour apprendre à utiliser les transports en commun ou d’une formation à la conduite"
+[recommendations.dora_cats]
+name = "la mobilité"
+slug = "mobilite"
+[[recommendations.dora_subs]]
+name = "être accompagné dans son parcours mobilité"
+slug = "mobilite--etre-accompagne-dans-son-parcours-mobilite"
+
 
 [[recommendations]]
 codename = "mobilite-1"
 category = "Mobilité"
 text = "Aide pour la mise en règle des documents du véhicule et sensibilisation à l'importance de l'assurance et du contrôle technique"
+[recommendations.dora_cats]
+name = "la mobilité"
+slug = "mobilite"
 
 [[recommendations]]
 codename = "mobilite-2"
@@ -98,21 +181,39 @@ text = """
        Évaluer les besoins de mobilité spécifiques liés à la garde des enfants et  \
        au travail possibilité de mise en place de mobilité solidaire\
        """
+[recommendations.dora_cats]
+name = "la mobilité"
+slug = "mobilite"
 
 [[recommendations]]
 codename = "mobilite-3"
 category = "Mobilité"
 text = "Encourager l’usage du covoiturage, valoriser la mobilité dans la recherche d’emploi"
+[recommendations.dora_cats]
+name = "la mobilité"
+slug = "mobilite"
 
 [[recommendations]]
 codename = "ressources-0"
 category = "Situation financière"
 text = "Evaluer et lister le niveau d’endettement"
+[recommendations.dora_cats]
+name = "la gestion financière"
+slug = "gestion-financiere"
+[[recommendations.dora_subs]]
+name = "la prévention et la gestion du surendettement"
+slug = "gestion-financiere--prevention-et-gestion-du-surendettement"
 
 [[recommendations]]
 codename = "ressources-1"
 category = "Situation financière"
 text = "Suivi du dossier de surendettement et accompagnement vers une gestion budgétaire saine"
+[recommendations.dora_cats]
+name = "la gestion financière"
+slug = "gestion-financiere"
+[[recommendations.dora_subs]]
+name = "la prévention et la gestion du surendettement"
+slug = "gestion-financiere--prevention-et-gestion-du-surendettement"
 
 [[recommendations]]
 codename = "ressources-2"
@@ -121,11 +222,30 @@ text = """
        Accompagnement en gestion budgétaire, orientation vers des aides financières et \
        des conseils en économie sociale et familiale\
        """
+[recommendations.dora_cats]
+name = "la gestion financière"
+slug = "gestion-financiere"
+[[recommendations.dora_subs]]
+name = "l'accompagnement aux personnes en difficultés financières"
+slug = "gestion-financiere--accompagnement-aux-personnes-en-difficultes-financieres"
+[[recommendations.dora_subs]]
+name = "bénéficier d'aides financières"
+slug = "gestion-financiere--beneficier-daides-financieres"
+[[recommendations.dora_subs]]
+name = "apprendre à gérer son budget"
+slug = "gestion-financiere--apprendre-a-gerer-son-budget"
+
 
 [[recommendations]]
 codename = "ressources-3"
 category = "Situation financière"
 text = "Ateliers de gestion budgétaire avancée si nécessaire"
+[recommendations.dora_cats]
+name = "la gestion financière"
+slug = "gestion-financiere"
+[[recommendations.dora_subs]]
+name = "l'accès au micro-crédit"
+slug = "gestion-financiere--acces-au-micro-credit"
 
 [[recommendations]]
 codename = "judiciaire-0"
@@ -152,18 +272,45 @@ text = "Sensibilisation aux conséquences de comportements à risque"
 codename = "disponibilite-0"
 category = "Disponibilité"
 text = "Proposition de solutions de garde d'enfants ou d'aide à la personne pour permettre une meilleure disponibilité"
+[recommendations.dora_cats]
+name = "la famille"
+slug = "famille"
+[[recommendations.dora_subs]]
+name = "la garde d'enfants"
+slug = "famille--garde-denfants"
 
 [[recommendations]]
 codename = "disponibilite-1"
 category = "Disponibilité"
 text = "Orientation vers des services de soutien familial pour aider à l'organisation du quotidien"
+[recommendations.dora_cats]
+name = "la famille"
+slug = "famille"
+[[recommendations.dora_subs]]
+name = "l'accompagnement de la femme enceinte, du bébé, et du jeune enfant"
+slug = "famille--accompagnement-femme-enceinte-bebe-jeune-enfant"
+[[recommendations.dora_subs]]
+name = "l'information et l'accompagnement des parents"
+slug = "famille--information-et-accompagnement-des-parents"
+[[recommendations.dora_subs]]
+name = "le soutien à la parentalité"
+slug = "famille--soutien-a-la-parentalite"
+[[recommendations.dora_subs]]
+name = "le soutien aux familles"
+slug = "famille--soutien-aux-familles"
 
 [[recommendations]]
 codename = "disponibilite-2"
 category = "Disponibilité"
 text = "Recherche d'emplois compatibles avec les horaires de garde des enfants, exploration d'opportunités de travail à temps partiel ou flexible"
+[recommendations.dora_cats]
+name = "trouver un emploi"
+slug = "trouver-un-emploi"
 
 [[recommendations]]
 codename = "disponibilite-3"
 category = "Disponibilité"
 text = "Prêt à l’emploi, proposition d’atelier TRE"
+[recommendations.dora_cats]
+name = "trouver un emploi"
+slug = "trouver-un-emploi"
