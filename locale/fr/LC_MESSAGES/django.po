@@ -852,15 +852,6 @@ msgstr "S'inscrire"
 msgid "Login"
 msgstr "Se connecter"
 
-#: lacommunaute/templates/forum_member/join_forum_form.html: 32
-#, python-format
-msgid "Join forum %(name)s"
-msgstr "Vous êtes invité à rejoindre la thématique %(name)s"
-
-#: lacommunaute/templates/forum_member/join_forum_form.html: 60
-msgid "Join forum"
-msgstr "Rejoindre la thématique"
-
 #: lacommunaute/templates/pages/home.html:84
 msgid "Go to this forum"
 msgstr "Accéder à cette thématique"
