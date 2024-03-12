@@ -12,7 +12,6 @@ from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 
 def test_context_data(client, db):
     topic = TopicFactory(with_post=True, forum=ForumFactory())
-    news = TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS))
     article = ForumFactory(parent=ForumFactory(type=1))
 
     disapproved_topic = TopicFactory(with_post=True, forum=ForumFactory())
@@ -26,7 +25,6 @@ def test_context_data(client, db):
     assert response.status_code == 200
 
     assert response.context_data["topics_public"].get() == topic
-    assert response.context_data["topics_newsfeed"].get() == news
     assert response.context_data["forums_category"].get() == article
 
 

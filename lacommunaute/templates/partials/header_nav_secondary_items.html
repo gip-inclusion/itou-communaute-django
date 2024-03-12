@@ -3,7 +3,6 @@
 {% load theme_inclusion %}
 {% url 'pages:home' as home_url %}
 {% url 'forum_conversation_extension:topics' as publicforum_url %}
-{% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
 {% url 'forum_extension:documentation' as documentation_url %}
 {% url 'members:seekers' as seeker_url %}
 {% url 'search:index' as search_url %}
@@ -14,9 +13,6 @@
     </li>
     <li class="col-12 col-lg-auto">
         <a href="{{ publicforum_url }}" class="{% if request.path == publicforum_url %}is-active {% endif %}matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics">{% trans "Discussion area" %}</a>
-    </li>
-    <li>
-        <a href="{{ newsfeed_url }}" class="{% if request.path == newsfeed_url %}is-active {% endif %}matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="news_header">Actualités</a>
     </li>
     <li>
         <a href="{{ documentation_url }}"
