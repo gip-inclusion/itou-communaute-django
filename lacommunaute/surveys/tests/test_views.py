@@ -24,7 +24,6 @@ dsp_choices_list = [
 location_field_list = ["location", "city_code"]
 
 form_html = '<form method="post">'
-tally_html = '<iframe data-tally-src="https://tally.so/embed'
 login_with_next_url = reverse("inclusion_connect:authorize") + "?next=" + reverse("surveys:dsp_create")
 
 
@@ -33,13 +32,11 @@ class TestDSPCreateView:
         url = reverse("surveys:dsp_create")
         response = client.get(url)
         assertContains(response, login_with_next_url)
-        assertContains(response, tally_html)
         assertNotContains(response, form_html)
 
     def test_user_is_authenticated(self, db, client):
         client.force_login(UserFactory())
         response = client.get(reverse("surveys:dsp_create"))
-        assertContains(response, tally_html)
         assertContains(response, form_html)
         assertNotContains(response, login_with_next_url)
 
@@ -47,7 +44,6 @@ class TestDSPCreateView:
         client.force_login(UserFactory(with_perm=[Permission.objects.get(codename="add_dsp")]))
         response = client.get(reverse("surveys:dsp_create"))
         assertContains(response, form_html)
-        assertNotContains(response, tally_html)
         assertNotContains(response, login_with_next_url)
 
     def test_form_fields(self, db, client):
