@@ -43,34 +43,6 @@
                             {% endwith %}
                         </div>
                     </div>
-                    <div class="row mt-5 mb-5">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="validationLink01">Lier pour inviter de nouveaux membres</label>
-                                <div class="input-group">
-                                    <input type="text"
-                                           class="form-control"
-                                           name="validationLink01"
-                                           value="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'members:join_forum_form' forum.invitation_token %}"
-                                           aria-describedby="basic-addon">
-                                    <div class="input-group-text p-0">
-                                        <button class="btn btn-link btn-ico"
-                                                type="button"
-                                                id="basic-addon"
-                                                data-bs-clipboard="copy"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                data-bs-trigger="manual"
-                                                title=""
-                                                data-bs-original-title="Lien copié!">
-                                            <i class="ri-file-copy-line ri-lg" aria-hidden="true"></i>
-                                            <span>Copier</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

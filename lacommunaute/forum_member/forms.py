@@ -5,14 +5,6 @@ from lacommunaute.forum_member.enums import ActiveSearch, Regions
 from lacommunaute.forum_member.models import ForumProfile
 
 
-class JoinForumForm(forms.Form):
-    invitation_token = forms.HiddenInput()
-
-    def join_forum(self):
-        if not self.forum.members_group.user_set.filter(id=self.user.id).exists():
-            self.forum.members_group.user_set.add(self.user)
-
-
 class ForumProfileForm(BaseForumProfileForm):
     cv = forms.FileField(label="Curriculum Vitae", required=False)
     linkedin = forms.URLField(label="Lien vers votre profil LinkedIn", required=False)

@@ -1,10 +1,8 @@
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.http import urlencode
-from django.views.generic import FormView, ListView, TemplateView
+from django.views.generic import ListView
 from machina.apps.forum_member.views import (
     ForumProfileDetailView as BaseForumProfileDetailView,
     ForumProfileUpdateView as BaseForumProfileUpdateView,
@@ -12,9 +10,8 @@ from machina.apps.forum_member.views import (
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
-from lacommunaute.forum_member.forms import ForumProfileForm, JoinForumForm
+from lacommunaute.forum_member.forms import ForumProfileForm
 from lacommunaute.forum_member.models import ForumProfile
-from lacommunaute.utils.urls import get_safe_url
 
 
 logger = logging.getLogger(__name__)
@@ -63,75 +60,6 @@ class ModeratorProfileListView(PermissionRequiredMixin, ListView):
         forum = self.get_forum()
         context["forum"] = forum
         return context
-
-
-class JoinForumLandingView(TemplateView):
-    template_name = "forum_member/join_forum_landing.html"
-
-    def get_forum(self):
-        if not hasattr(self, "forum"):
-            self.forum = get_object_or_404(
-                Forum,
-                invitation_token=self.kwargs["token"],
-            )
-        return self.forum
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        forum = self.get_forum()
-        context["forum"] = forum
-        params = {
-            "previous_url": reverse(
-                "members:join_forum_landing",
-                kwargs={
-                    "token": forum.invitation_token,
-                },
-            ),
-            "next_url": get_safe_url(self.request, "next"),
-        }
-        context["inclusion_connect_url"] = f"{reverse('inclusion_connect:authorize')}?{urlencode(params)}"
-        return context
-
-
-class JoinForumFormView(LoginRequiredMixin, FormView):
-    template_name = "forum_member/join_forum_form.html"
-    form_class = JoinForumForm
-
-    def get_forum(self):
-        if not hasattr(self, "forum"):
-            self.forum = get_object_or_404(
-                Forum,
-                invitation_token=self.kwargs["token"],
-            )
-        return self.forum
-
-    def form_valid(self, form):
-        form.forum = self.get_forum()
-        form.user = self.request.user
-        form.join_forum()
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["forum"] = self.get_forum()
-        return context
-
-    def get_login_url(self):
-        return reverse(
-            "members:join_forum_landing",
-            kwargs={
-                "token": self.kwargs["token"],
-            },
-        )
-
-    def get_success_url(self):
-        return reverse(
-            "forum_extension:forum",
-            kwargs={
-                "slug": self.forum.slug,
-                "pk": self.forum.pk,
-            },
-        )
 
 
 class LeaderBoardListView(ListView):
