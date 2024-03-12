@@ -1,5 +1,4 @@
 import pytest  # noqa
-from django.contrib.auth.models import Permission
 from django.test import override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains
@@ -36,12 +35,6 @@ class TestDSPCreateView:
 
     def test_user_is_authenticated(self, db, client):
         client.force_login(UserFactory())
-        response = client.get(reverse("surveys:dsp_create"))
-        assertContains(response, form_html)
-        assertNotContains(response, login_with_next_url)
-
-    def test_user_has_permission(self, db, client):
-        client.force_login(UserFactory(with_perm=[Permission.objects.get(codename="add_dsp")]))
         response = client.get(reverse("surveys:dsp_create"))
         assertContains(response, form_html)
         assertNotContains(response, login_with_next_url)
