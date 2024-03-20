@@ -104,6 +104,8 @@
                             borderWidth: 2,
                             borderRadius: 20,
                             borderSkipped: false,
+                            borderColor: 'rgba(54, 162, 235)',
+                            backgroundColor: 'rgba(154, 208, 245)',
                         },
                     ]
                 },
@@ -128,16 +130,16 @@
                 labels: {{ stats.date | js }},
                 datasets: [
                     {
-                        label: 'Utilisateurs',
+                        label: 'Utilisateurs uniques',
                         data: {{ stats.nb_uniq_visitors | js }},
-                    },
-                    {
-                        label: 'Utilisateurs actifs',
-                        data: {{ stats.nb_uniq_active_visitors | js }},
+                        borderColor: 'rgba(54, 162, 235)',
+                        backgroundColor: 'rgba(154, 208, 245)',
                     },
                     {
                         label: 'Utilisateurs engagés',
                         data: {{ stats.nb_uniq_engaged_visitors | js }},
+                        borderColor: 'rgba(255, 159, 64)',
+                        backgroundColor: 'rgba(255, 207, 159)',
                     },
                 ]
             },
