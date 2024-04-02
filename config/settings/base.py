@@ -79,7 +79,6 @@ LOCAL_APPS = [
     "lacommunaute.inclusion_connect",
     "lacommunaute.pages",
     "lacommunaute.forum_file",
-    "lacommunaute.metabase",
     "lacommunaute.search",
     "lacommunaute.surveys",
 ]
