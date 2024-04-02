@@ -329,6 +329,10 @@ if _sentry_dsn:
 # WIDGETS
 # ---------------------------------------
 MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextareaWidget"
+MACHINA_MARKUP_LANGUAGE = (
+    "machina.core.markdown.markdown",
+    {"safe_mode": True, "extras": {"break-on-newline": True, "code-friendly": True, "nofollow": True}},
+)
 
 # Django sites framework
 SITE_ID = 1
