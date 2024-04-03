@@ -15,20 +15,20 @@
             <div class="mb-3 profile-sidebar">
                 <div class="card">
                     <div class="profile-avatar">{% include "partials/avatar.html" with profile=profile show_placeholder=True %}</div>
-                    {% if profile.search != 'NO' %}
+                    {% if profile.linkedin %}
+                        <div class="profile-linkedin">
+                            <p class="my-3 text-center">
+                                <i class="ri-linkedin-fill"></i>
+                                <a href="{{ profile.linkedin }}" target="_blank">profil LinkedIn</a>
+                            </p>
+                        </div>
+                    {% endif %}
+                    {% if profile.search != 'NO' and profile.cv %}
                         <div class="profile-search-for-internship">
-                            {% if profile.linkedin %}
-                                <p class="my-3 text-center">
-                                    <i class="ri-linkedin-fill"></i>
-                                    <a href="{{ profile.linkedin }}" target="_blank">profil LinkedIn</a>
-                                </p>
-                            {% endif %}
-                            {% if profile.cv %}
-                                <p class="my-3 text-center">
-                                    <i class="ri-file-text-fill"></i>
-                                    <a href="{{ profile.cv.url }}" target="_blank">CV</a>
-                                </p>
-                            {% endif %}
+                            <p class="my-3 text-center">
+                                <i class="ri-file-text-fill"></i>
+                                <a href="{{ profile.cv.url }}" target="_blank">CV</a>
+                            </p>
                         </div>
                     {% endif %}
                     {% if profile.signature %}
