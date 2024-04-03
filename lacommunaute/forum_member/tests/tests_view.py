@@ -146,3 +146,10 @@ class TestSeekersListView:
         # test queryset is ordered by updated_at
         assert response.context_data["forum_profiles"][0] == ForumProfile.objects.last()
         assert response.context_data["forum_profiles"][1] == ForumProfile.objects.first()
+
+
+class TestForumProfileDetailView:
+    def test_show_linkedin_link(self, client, db):
+        forum_profile = ForumProfileFactory(linkedin="https://www.linkedin.com/in/johndoe/")
+        response = client.get(reverse("members:profile", kwargs={"username": forum_profile.user.username}))
+        assertContains(response, forum_profile.linkedin)
