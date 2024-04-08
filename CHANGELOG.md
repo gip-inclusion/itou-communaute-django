@@ -1,5 +1,29 @@
 # Journal des modifications
 
+## v2.7 - 2024-04-08
+
+- [PROFILE] afficher le lien vers le profil linkedin (#582)
+- [PROFILE] experimentation mon stage CIP - complements (#568)
+- [PROFILE] experimentation mon stage CIP (#567)
+- [PROFILE] afficher les contributeurs authentifiés les plus actifs sur les 30 derniers jours (#558)
+- [FORUM] suppression des liens d'invitations dans des forums privés (#574)
+- [FORUM] remove call for contributors banner (#571)
+- [POST] proteger les underscores dans les urls (#581)
+- [MODERATION] bloquer les messages de spams (#561)
+- [DSP] suggestions de services geolocalisés (#570)
+- [DSP] permettre à tous les utilisateurs connectés d'utiliser l'outil (#569)
+- [DSP] ajout des articles associés (#564)
+- [DSP] typo (#562)
+- [DSP] Améliorer l'onboarding (#560)
+- [HOMEPAGE] retrait du fil des actualités (#573)
+- [HOMEPAGE] afficher les évènements à venir (#566)
+- [HOMEPAGE] retire la banniere "les 2 font la paire" (#563)
+- [STATS] suppression des utilisateurs actifs quotidiens (#578)
+- [METABASE] suppression de l'app  (#580)
+- [TECH] Mise à jour des dépendances - avril 2024 (#572 #579)
+- [TECH] Corrections mineures : design et test fragile (#565)
+- [TECH] Maj du theme itou vers la v1.4.4 (#575)
+- [TECH] Remove text/css from stylesheet links and style (#557)
 
 ## v2.6 - 2024-02-14
 
