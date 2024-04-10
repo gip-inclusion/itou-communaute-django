@@ -267,6 +267,24 @@ class ForumViewTest(TestCase):
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
 
+    def test_show_add_forum_button_for_superuser_if_forum_is_category_type(self):
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+
+        user = UserFactory()
+        self.client.force_login(user)
+        response = self.client.get(url)
+        self.assertNotContains(
+            response, reverse("forum_extension:create_subcategory", kwargs={"pk": forum.pk}), status_code=200
+        )
+
+        user.is_superuser = True
+        user.save()
+        response = self.client.get(url)
+        self.assertContains(
+            response, reverse("forum_extension:create_subcategory", kwargs={"pk": forum.pk}), status_code=200
+        )
+
     def test_siblings_in_context(self):
         forum = CategoryForumFactory(with_public_perms=True, with_child=True)
         child_forum = forum.get_children().first()
