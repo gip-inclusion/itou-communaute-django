@@ -77,7 +77,7 @@ class CategoryForumListView(ListView):
 
 
 class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
-    template_name = "forum/category_forum_create.html"
+    template_name = "forum/forum_create.html"
     form_class = ForumForm
 
     def test_func(self):
@@ -98,12 +98,25 @@ class CategoryForumCreateView(BaseCategoryForumCreateView):
         form.instance.type = Forum.FORUM_CAT
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Créer une nouvelle catégorie documentaire"
+        return context
+
 
 class SubCategoryForumCreateView(BaseCategoryForumCreateView):
     def get_success_url(self):
         return reverse("forum_extension:forum", kwargs={"pk": self.object.pk, "slug": self.object.slug})
 
+    def get_parent_forum(self):
+        return Forum.objects.get(pk=self.kwargs["pk"])
+
     def form_valid(self, form):
         form.instance.type = Forum.FORUM_POST
-        form.instance.parent = Forum.objects.get(pk=self.kwargs["pk"])
+        form.instance.parent = self.get_parent_forum()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Créer une fiche pratique dans la catégorie {self.get_parent_forum().name}"
+        return context
