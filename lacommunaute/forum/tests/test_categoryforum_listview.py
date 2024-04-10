@@ -1,10 +1,11 @@
 import pytest  # noqa
 from django.urls import reverse
-from pytest_django.asserts import assertContains
+from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import Forum
+from lacommunaute.users.factories import UserFactory
 
 
 def test_context(client, db):
@@ -28,3 +29,19 @@ def test_queryset(client, db):
     assert forum in response.context_data["forums"]
     for unvisible_forum in unvisible_forums:
         assert unvisible_forum not in response.context_data["forums"]
+
+
+def test_display_create_category_button(client, db):
+    url = reverse("forum_extension:documentation")
+    response = client.get(url)
+    assertNotContains(response, reverse("forum_extension:create_category"), status_code=200)
+
+    user = UserFactory()
+    client.force_login(user)
+    response = client.get(url)
+    assertNotContains(response, reverse("forum_extension:create_category"), status_code=200)
+
+    user.is_superuser = True
+    user.save()
+    response = client.get(url)
+    assertContains(response, reverse("forum_extension:create_category"), status_code=200)
