@@ -13,15 +13,21 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
 from faker import Faker
+from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
+from lacommunaute.utils.perms import add_public_perms_on_forum
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
+
+ForumPermission = get_model("forum_permission", "ForumPermission")
+UserForumPermission = get_model("forum_permission", "UserForumPermission")
 
 ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 
@@ -458,4 +464,41 @@ class UtilsParseResponseToSoupTest(TestCase):
             '<div><a href="http://server.com/bream/">bream</a></div>'
             '<div><a href="http://server.com/slug2/">red mullet</a></div>'
             "</body></html>"
+        )
+
+
+class TestAddPublicPermsOnForum:
+    def test_public_perms(self, db):
+        forum = ForumFactory()
+        add_public_perms_on_forum(forum)
+
+        perms = [
+            "can_see_forum",
+            "can_read_forum",
+            "can_start_new_topics",
+            "can_reply_to_topics",
+            "can_edit_own_posts",
+            "can_delete_own_posts",
+            "can_post_without_approval",
+        ]
+
+        assert (
+            UserForumPermission.objects.filter(
+                forum=forum,
+                anonymous_user=True,
+                authenticated_user=False,
+                has_perm=True,
+                permission__in=ForumPermission.objects.filter(codename__in=perms),
+            ).count()
+            == 7
+        )
+        assert (
+            UserForumPermission.objects.filter(
+                forum=forum,
+                anonymous_user=False,
+                authenticated_user=True,
+                has_perm=True,
+                permission__in=ForumPermission.objects.filter(codename__in=perms),
+            ).count()
+            == 7
         )
