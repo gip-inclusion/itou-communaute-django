@@ -2,7 +2,7 @@ import pytest  # noqa
 from django.urls import reverse
 
 from machina.core.db.models import get_model
-
+from pytest_django.asserts import assertContains
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import UserFactory
@@ -30,6 +30,13 @@ def test_user_access(client, db):
     user.save()
     response = client.get(url)
     assert response.status_code == 200
+
+
+def test_form_title(client, db):
+    client.force_login(UserFactory(is_superuser=True))
+    url = reverse("forum_extension:create_category")
+    response = client.get(url)
+    assertContains(response, "Créer une nouvelle catégorie documentaire")
 
 
 def test_success_url(client, db):
