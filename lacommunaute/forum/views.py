@@ -76,18 +76,24 @@ class CategoryForumListView(ListView):
         return Forum.objects.filter(type=Forum.FORUM_CAT, kind=ForumKind.PUBLIC_FORUM, level=0)
 
 
-class CategoryForumCreateView(UserPassesTestMixin, CreateView):
+class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
     template_name = "forum/category_forum_create.html"
     form_class = ForumForm
-    success_url = reverse_lazy("forum_extension:documentation")
 
     def test_func(self):
         return self.request.user.is_superuser
 
     def form_valid(self, form):
-        form.instance.type = Forum.FORUM_CAT
         form.instance.kind = ForumKind.PUBLIC_FORUM
-        form.instance.parent = None
         response = super().form_valid(form)
         add_public_perms_on_forum(form.instance)
         return response
+
+
+class CategoryForumCreateView(BaseCategoryForumCreateView):
+    success_url = reverse_lazy("forum_extension:documentation")
+
+    def form_valid(self, form):
+        form.instance.parent = None
+        form.instance.type = Forum.FORUM_CAT
+        return super().form_valid(form)
