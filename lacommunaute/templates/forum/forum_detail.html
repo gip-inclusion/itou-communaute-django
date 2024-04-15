@@ -10,7 +10,6 @@
 {% block meta_description %}
     {{ forum.short_description }}
 {% endblock meta_description %}
-"
 {% block content %}
     {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
     <section class="s-title-01 mt-lg-5">
