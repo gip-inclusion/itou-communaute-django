@@ -383,8 +383,10 @@ CSP_SCRIPT_SRC = (
     "https://browser.sentry-cdn.com",
     "https://js.sentry-cdn.com",
     "https://tally.so",
+    "https://www.youtube.com/iframe_api",
+    "https://www.youtube.com/s/player/",
 )
-CSP_FRAME_SRC = ("'self'", "https://tally.so")
+CSP_FRAME_SRC = ("'self'", "https://tally.so", "https://www.youtube.com/embed/")
 CSP_IMG_SRC = ("'self'", "data:", "cellar-c2.services.clever-cloud.com")
 CSP_CONNECT_SRC = ("'self'", "*.sentry.io")
 CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
