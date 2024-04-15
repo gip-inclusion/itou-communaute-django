@@ -1,18 +1,21 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query import QuerySet
-from django.urls import reverse
-from django.views.generic import ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, ListView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 
 from lacommunaute.forum.enums import Kind as ForumKind
+from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.utils.perms import add_public_perms_on_forum
 
 
 logger = logging.getLogger(__name__)
@@ -71,3 +74,20 @@ class CategoryForumListView(ListView):
 
     def get_queryset(self) -> QuerySet[Forum]:
         return Forum.objects.filter(type=Forum.FORUM_CAT, kind=ForumKind.PUBLIC_FORUM, level=0)
+
+
+class CategoryForumCreateView(UserPassesTestMixin, CreateView):
+    template_name = "forum/category_forum_create.html"
+    form_class = ForumForm
+    success_url = reverse_lazy("forum_extension:documentation")
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def form_valid(self, form):
+        form.instance.type = Forum.FORUM_CAT
+        form.instance.kind = ForumKind.PUBLIC_FORUM
+        form.instance.parent = None
+        response = super().form_valid(form)
+        add_public_perms_on_forum(form.instance)
+        return response
