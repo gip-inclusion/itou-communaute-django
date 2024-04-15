@@ -76,7 +76,7 @@
         {% if user.is_superuser %}
             <div class="row mt-4">
                 <div class="col-12">
-                    <a href="{% url 'forum_extension:create_subcategory' forum_contents.top_nodes.0.obj.parent.pk %}" aria-label="Ajouter une fiche pratiques" role="button" class="btn btn-outline-primary">Ajouter une fiche pratique</a>
+                    <a href="{% url 'forum_extension:create_subcategory' forum_contents.top_nodes.0.obj.parent.pk %}" aria-label="Ajouter une fiche pratique" role="button" class="btn btn-outline-primary">Ajouter une fiche pratique</a>
                 </div>
             </div>
         {% endif %}
