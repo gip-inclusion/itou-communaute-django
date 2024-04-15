@@ -97,3 +97,13 @@ class CategoryForumCreateView(BaseCategoryForumCreateView):
         form.instance.parent = None
         form.instance.type = Forum.FORUM_CAT
         return super().form_valid(form)
+
+
+class SubCategoryForumCreateView(BaseCategoryForumCreateView):
+    def get_success_url(self):
+        return reverse("forum_extension:forum", kwargs={"pk": self.object.pk, "slug": self.object.slug})
+
+    def form_valid(self, form):
+        form.instance.type = Forum.FORUM_POST
+        form.instance.parent = Forum.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
