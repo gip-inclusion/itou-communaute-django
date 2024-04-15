@@ -73,13 +73,6 @@
                 </div>
             {% endfor %}
         </div>
-        {% if user.is_superuser %}
-            <div class="row mt-4">
-                <div class="col-12">
-                    <a href="{% url 'forum_extension:create_subcategory' forum_contents.top_nodes.0.obj.parent.pk %}" aria-label="Ajouter une fiche pratique" role="button" class="btn btn-outline-primary">Ajouter une fiche pratique</a>
-                </div>
-            </div>
-        {% endif %}
     {% else %}
         <ul class="list-group mb-3 mb-md-5">
             {% for node in forum_contents.top_nodes %}
