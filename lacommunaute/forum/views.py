@@ -101,6 +101,7 @@ class CategoryForumCreateView(BaseCategoryForumCreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Créer une nouvelle catégorie documentaire"
+        context["back_url"] = reverse("forum_extension:documentation")
         return context
 
 
@@ -119,4 +120,7 @@ class SubCategoryForumCreateView(BaseCategoryForumCreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Créer une fiche pratique dans la catégorie {self.get_parent_forum().name}"
+        context["back_url"] = reverse(
+            "forum_extension:forum", kwargs={"pk": self.get_parent_forum().pk, "slug": self.get_parent_forum().slug}
+        )
         return context
