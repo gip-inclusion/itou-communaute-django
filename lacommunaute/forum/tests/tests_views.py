@@ -392,3 +392,22 @@ class ForumViewTest(TestCase):
         self.assertContains(
             response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>2</span>', status_code=200
         )
+
+    def test_can_view_update_forum_link(self):
+        url = reverse("forum_extension:edit_forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+        response = self.client.get(self.url)
+        self.assertNotContains(response, url)
+
+        self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertNotContains(response, url)
+
+        self.user.is_staff = True
+        self.user.save()
+        response = self.client.get(self.url)
+        self.assertNotContains(response, url)
+
+        self.user.is_superuser = True
+        self.user.save()
+        response = self.client.get(self.url)
+        self.assertContains(response, url)
