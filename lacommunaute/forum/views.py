@@ -77,7 +77,7 @@ class CategoryForumListView(ListView):
 
 
 class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
-    template_name = "forum/forum_create.html"
+    template_name = "forum/forum_create_or_update.html"
     form_class = ForumForm
 
     def test_func(self):
