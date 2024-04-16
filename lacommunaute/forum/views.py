@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query import QuerySet
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 
@@ -65,6 +65,21 @@ class ForumView(BaseForumView):
         if forum.parent and forum.parent.type == Forum.FORUM_CAT:
             context["forums"] = Forum.objects.filter(parent=forum.parent).order_by("lft")
             context["parent_forum"] = forum.parent
+        return context
+
+
+class ForumUpdateView(UserPassesTestMixin, UpdateView):
+    template_name = "forum/forum_create_or_update.html"
+    form_class = ForumForm
+    model = Forum
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Mettre à jour le forum {self.object.name}"
+        context["back_url"] = reverse("forum_extension:forum", kwargs={"pk": self.object.pk, "slug": self.object.slug})
         return context
 
 
