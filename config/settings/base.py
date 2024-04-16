@@ -331,7 +331,7 @@ if _sentry_dsn:
 MACHINA_MARKUP_WIDGET = "lacommunaute.forum_conversation.widgets.MarkdownTextareaWidget"
 MACHINA_MARKUP_LANGUAGE = (
     "machina.core.markdown.markdown",
-    {"safe_mode": True, "extras": {"break-on-newline": True, "code-friendly": True, "nofollow": True}},
+    {"safe_mode": False, "extras": {"break-on-newline": True, "code-friendly": True, "nofollow": True}},
 )
 
 # Django sites framework
