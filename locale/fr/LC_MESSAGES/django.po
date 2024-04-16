@@ -957,3 +957,5 @@ msgstr "Voir toutes les actualités"
 msgid "New topic on doc"
 msgstr "Poser une question sur cette documentation"
 
+msgid "Cancel"
+msgstr "Annuler"

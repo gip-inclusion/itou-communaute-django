@@ -32,11 +32,12 @@ def test_user_access(client, db):
     assert response.status_code == 200
 
 
-def test_form_title(client, db):
+def test_form_title_and_context_data(client, db):
     client.force_login(UserFactory(is_superuser=True))
     url = reverse("forum_extension:create_category")
     response = client.get(url)
     assertContains(response, "Créer une nouvelle catégorie documentaire")
+    assertContains(response, reverse("forum_extension:documentation"))
 
 
 def test_success_url(client, db):
