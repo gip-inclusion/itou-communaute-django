@@ -12,7 +12,7 @@ def check_post_approbation(post):
     Force markdown rendering to check for HTML tags
     because the post is not save yet
     """
-    rendered = render_func(post.content.raw)
+    rendered = render_func(post.content.raw, safe_mode=True)
 
     conditions = [
         (
