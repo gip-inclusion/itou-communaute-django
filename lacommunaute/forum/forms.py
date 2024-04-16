@@ -12,7 +12,7 @@ class ForumForm(forms.ModelForm):
         label="Sous-titre (400 caractères pour le SEO)",
     )
     description = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 20}), required=True, label="Contenu (markdown autorisé)"
+        widget=forms.Textarea(attrs={"rows": 20}), required=False, label="Contenu (markdown autorisé)"
     )
 
     class Meta:
