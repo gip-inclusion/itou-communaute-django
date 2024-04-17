@@ -14,6 +14,11 @@ fi
 echo "Activate virtualenv"
 source $HOME/venv/bin/activate
 
+echo "install requirements"
+pip install factory-boy
+
 echo "Loading data"
-python manage.py loaddata fixtures/validation_fixtures.json
+python manage.py loaddata fixtures/forum_permissions_fixtures.json
+python manage.py populate
+
 
