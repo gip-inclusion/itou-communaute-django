@@ -1,5 +1,18 @@
 # Journal des modifications
 
+## v2.8 - 2024-05-02
+
+- [DOCUMENTATION] mettre à jour les fiches en ligne (#604)
+- [DOCUMENTATION] ajouter des vidéos YT dans les fiches pratiques (#597)
+- [DOCUMENTATION] création de la premiere fiche de la catégorie (fix) (#595)
+- [DOCUMENTATION] rendre le formulaire de creation des fiches pratiques plus explicite (#594)
+- [DOCUMENTATION] creer les catégories et les fiches pratiques sans passer par l'admin (#593)
+- [HOMEPAGE] Suppression des élements inutiles (#592)
+- [TECH] chore: mise à jour des dépendances (#608)
+- [TECH] ci: auto assignation des PR (#607)
+- [TECH] ci: PR semantique (#606)
+- [TECH] test: chargement des données automatique en environnement de validation (#605)
+
 ## v2.7 - 2024-04-08
 
 - [PROFILE] afficher le lien vers le profil linkedin (#582)
