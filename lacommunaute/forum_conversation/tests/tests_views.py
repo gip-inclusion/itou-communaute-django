@@ -724,6 +724,7 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_tag"], "")
 
         for filter, label in Filters.choices:
             with self.subTest(filter=filter, label=label):
@@ -736,6 +737,11 @@ class TopicListViewTest(TestCase):
 
         response = self.client.get(self.url + "?filter=FAKE")
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+
+    def test_context_with_tag(self):
+        tag = faker.word()
+        response = self.client.get(self.url + f"?tags={tag}")
+        self.assertEqual(response.context_data["active_tag"], tag)
 
     def test_queryset(self):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
@@ -826,6 +832,13 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url + "?page=1")
         self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
         self.assertEqual(response.context_data["display_filter_dropdown"], False)
+
+    def test_filter_dropdown_with_tags(self):
+        tag = faker.word()
+        response = self.client.get(self.url + f"?tags={tag}")
+        self.assertContains(response, f'hx-get="/topics/?filter=ALL&tags={tag}"')
+        self.assertContains(response, f'hx-get="/topics/?filter=NEW&tags={tag}"')
+        self.assertContains(response, f'hx-get="/topics/?filter=CERTIFIED&tags={tag}"')
 
     def test_template_name(self):
         response = self.client.get(self.url)
