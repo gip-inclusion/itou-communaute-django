@@ -3,8 +3,10 @@
     <div class="row align-items-center mb-3">
         <div class="col-12 col-sm">
             <div class="d-flex align-items-center">
-                <div class="flex-grow-1">
-                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }}</span>
+                <div class="flex-grow-1" id="topic-list-filter-header">
+                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }}
+                        {% if active_tag %}avec l'étiquette {{ active_tag }}{% endif %}
+                    </span>
                 </div>
                 <div>
                     <span class="btn-link fs-sm">Filtrer par :</span>

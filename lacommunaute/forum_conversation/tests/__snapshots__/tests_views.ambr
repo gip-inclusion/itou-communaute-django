@@ -44,3 +44,21 @@
   </small>
   '''
 # ---
+# name: test_queryset_for_tagged_topic[tagged_topic]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">1 question
+                          avec l'étiquette buckley
+                      </span>
+                  </div>
+  '''
+# ---
+# name: test_queryset_for_tagged_topic[tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">2 questions
+                          avec l'étiquette buckley
+                      </span>
+                  </div>
+  '''
+# ---
