@@ -704,8 +704,25 @@ def test_queryset_filtered_on_tag(client, db, tag):
 
     response = client.get(reverse("forum_conversation_extension:topics"), data={"tags": tag})
     assert response.context_data["total"] == 1
-    assertContains(response, tagged_topic.subject, status_code=200)
+    assertContains(response, tagged_topic.subject)
     assertNotContains(response, other_topic.subject)
+
+
+def test_queryset_for_tagged_topic(client, db, snapshot):
+    tags = ["buckley", "jeff"]
+    tagged_topic = TopicFactory(with_post=True, with_tags=tags)
+    untagged_topic = TopicFactory(with_post=True)
+
+    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
+    content = parse_response_to_soup(response, selector="#topic-list-filter-header")
+    assert str(content) == snapshot(name="tagged_topic")
+    assertContains(response, tagged_topic.subject)
+    assertNotContains(response, untagged_topic.subject)
+
+    TopicFactory(with_post=True, with_tags=tags)
+    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
+    content = parse_response_to_soup(response, selector="#topic-list-filter-header")
+    assert str(content) == snapshot(name="tagged_topics")
 
 
 class TopicListViewTest(TestCase):
