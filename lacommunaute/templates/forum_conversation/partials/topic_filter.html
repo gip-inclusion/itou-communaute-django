@@ -18,7 +18,7 @@
                                     <button id="filtertopics-button"
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
-                                            hx-get="{% url 'forum_conversation_extension:topics' %}?filter={{ filter.0 }}"
+                                            hx-get="{% url 'forum_conversation_extension:topics' %}?filter={{ filter.0 }}{% if active_tag %}&tags={{ active_tag }}{% endif %}"
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"
