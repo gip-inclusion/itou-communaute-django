@@ -28,6 +28,7 @@ from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateVie
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker(settings.LANGUAGE_CODE)
@@ -832,6 +833,56 @@ class TopicListViewTest(TestCase):
 
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+
+
+class TestPosterTemplate:
+    def test_topic_in_topics_view(self, client, db, snapshot):
+        topic = TopicFactory(with_post=True, poster=UserFactory(first_name="Jeff", last_name="Buckley"))
+        response = client.get(reverse("forum_conversation_extension:topics"))
+        soup = parse_response_to_soup(
+            response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
+        )
+        assert str(soup) == snapshot(name="topic_in_topics_view")
+
+    def test_topic_from_other_public_forum_in_topics_view(self, client, db, snapshot):
+        # first_public_forum
+        ForumFactory(with_public_perms=True)
+
+        topic = TopicFactory(
+            with_post=True,
+            forum=ForumFactory(with_public_perms=True, name="Abby's Forum"),
+            poster=UserFactory(first_name="Alan", last_name="Turing"),
+        )
+        response = client.get(reverse("forum_conversation_extension:topics"))
+        soup = parse_response_to_soup(
+            response,
+            replace_in_href=[
+                (topic.poster.username, "poster_username"),
+                (
+                    reverse("forum_extension:forum", kwargs={"slug": topic.forum.slug, "pk": topic.forum.pk}),
+                    "forum_url",
+                ),
+            ],
+            selector=".poster-infos",
+        )
+        assert str(soup) == snapshot(name="topic_from_other_public_forum_in_topics_view")
+
+    def test_topic_in_its_own_public_forum(self, client, db, snapshot):
+        # first_public_forum
+        ForumFactory(with_public_perms=True)
+
+        topic = TopicFactory(
+            with_post=True,
+            forum=ForumFactory(with_public_perms=True, name="Joe's Forum"),
+            poster=UserFactory(first_name="Dermot", last_name="Turing"),
+        )
+        response = client.get(
+            reverse("forum_extension:forum", kwargs={"slug": topic.forum.slug, "pk": topic.forum.pk})
+        )
+        soup = parse_response_to_soup(
+            response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
+        )
+        assert str(soup) == snapshot(name="topic_in_its_own_public_forum")
 
 
 class NewsFeedTopicListViewTest(TestCase):

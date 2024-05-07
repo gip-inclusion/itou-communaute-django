@@ -1,0 +1,46 @@
+# serializer version: 1
+# name: TestPosterTemplate.test_topic_from_other_public_forum_in_topics_view[topic_from_other_public_forum_in_topics_view]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Alan T.
+                  </a>,
+              
+              
+                  dans <a href="forum_url">Abby's Forum</a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
+# name: TestPosterTemplate.test_topic_in_its_own_public_forum[topic_in_its_own_public_forum]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Dermot T.
+                  </a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
+# name: TestPosterTemplate.test_topic_in_topics_view[topic_in_topics_view]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Jeff B.
+                  </a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
