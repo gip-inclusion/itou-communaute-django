@@ -724,7 +724,7 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-        self.assertEqual(response.context_data["active_tag"], "")
+        self.assertEqual(response.context_data["active_tags"], "")
 
         for filter, label in Filters.choices:
             with self.subTest(filter=filter, label=label):
@@ -741,7 +741,7 @@ class TopicListViewTest(TestCase):
     def test_context_with_tag(self):
         tag = faker.word()
         response = self.client.get(self.url + f"?tags={tag}")
-        self.assertEqual(response.context_data["active_tag"], tag)
+        self.assertEqual(response.context_data["active_tags"], tag)
 
     def test_queryset(self):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
