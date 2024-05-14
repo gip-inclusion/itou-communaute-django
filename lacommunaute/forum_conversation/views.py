@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
+from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
@@ -110,9 +111,14 @@ class TopicListView(ListView):
             self.filter = self.request.GET.get("filter", None)
         return self.filter
 
-    def get_tags(self):
+    def get_tags(self, flat=None):
         if not hasattr(self, "tags"):
-            self.tags = self.request.GET.get("tags", "").lower()
+            self.tags = Tag.objects.filter(slug__in=self.request.GET.get("tags", "").lower().split(","))
+
+        if flat == "name":
+            return " ou ".join(self.tags.values_list("name", flat=True))
+        if flat == "slug":
+            return ",".join(self.tags.values_list("slug", flat=True))
         return self.tags
 
     def get_queryset(self):
@@ -124,7 +130,7 @@ class TopicListView(ListView):
             qs = qs.filter(certified_post__isnull=False)
 
         if self.get_tags():
-            qs = qs.filter(tags__slug__in=self.get_tags().split(","))
+            qs = qs.filter(tags__in=self.get_tags())
 
         return qs
 
@@ -133,7 +139,7 @@ class TopicListView(ListView):
         context["form"] = PostForm(user=self.request.user)
 
         encoded_params = urlencode(
-            {k: v for k, v in {"filter": self.get_filter(), "tags": self.get_tags()}.items() if v}
+            {k: v for k, v in {"filter": self.get_filter(), "tags": self.get_tags(flat="slug")}.items() if v}
         )
         context["loadmoretopic_url"] = reverse("forum_conversation_extension:topics")
         if encoded_params:
@@ -142,7 +148,8 @@ class TopicListView(ListView):
         context["active_filter_name"] = (
             getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
         )
-        context["active_tags"] = self.get_tags()
+        context["active_tags"] = self.get_tags(flat="slug")
+        context["active_tags_label"] = self.get_tags(flat="name")
         context["display_filter_dropdown"] = False if self.request.GET.get("page") else True
 
         context["loadmoretopic_suffix"] = "topics"
