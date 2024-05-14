@@ -411,3 +411,13 @@ class ForumViewTest(TestCase):
         self.user.save()
         response = self.client.get(self.url)
         self.assertContains(response, url)
+
+    def test_filtered_queryset_on_tag(self):
+        tag = faker.word()
+        topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
+
+        response = self.client.get(
+            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
+        )
+        self.assertContains(response, topic.subject)
+        self.assertNotContains(response, self.topic.subject)
