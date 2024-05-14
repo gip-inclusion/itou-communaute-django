@@ -142,7 +142,7 @@ class TopicListView(ListView):
         context["active_filter_name"] = (
             getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
         )
-        context["active_tag"] = self.get_tags()
+        context["active_tags"] = self.get_tags()
         context["display_filter_dropdown"] = False if self.request.GET.get("page") else True
 
         context["loadmoretopic_suffix"] = "topics"

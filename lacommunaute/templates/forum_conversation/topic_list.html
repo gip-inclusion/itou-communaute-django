@@ -9,7 +9,7 @@
     {% get_permission 'can_download_files' forum request.user as user_can_download_files %}
 {% endif %}
 <div id="topicsarea">
-    {% include "forum_conversation/partials/topic_filter.html" with active_tag=active_tag %}
+    {% include "forum_conversation/partials/topic_filter.html" with active_tags=active_tags %}
     {% if topics or not hide_if_empty %}
         {% for topic in topics %}
             <div class="row">
