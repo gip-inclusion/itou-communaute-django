@@ -756,9 +756,10 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
 
     def test_context_with_tag(self):
-        tag = faker.word()
-        response = self.client.get(self.url + f"?tags={tag}")
-        self.assertEqual(response.context_data["active_tags"], tag)
+        tags = [Tag.objects.create(name=faker.sentence()) for i in range(2)]
+        response = self.client.get(self.url, {"tags": ",".join([tag.slug for tag in tags])})
+        self.assertEqual(response.context_data["active_tags"], ",".join([tag.slug for tag in tags]))
+        self.assertEqual(response.context_data["active_tags_label"], " ou ".join([tag.name for tag in tags]))
 
     def test_queryset(self):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
@@ -851,11 +852,11 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["display_filter_dropdown"], False)
 
     def test_filter_dropdown_with_tags(self):
-        tag = faker.word()
-        response = self.client.get(self.url + f"?tags={tag}")
-        self.assertContains(response, f'hx-get="/topics/?filter=ALL&tags={tag}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=NEW&tags={tag}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=CERTIFIED&tags={tag}"')
+        tag = Tag.objects.create(name=faker.words(nb=3))
+        response = self.client.get(self.url + f"?tags={tag.slug}")
+        self.assertContains(response, f'hx-get="/topics/?filter=ALL&tags={tag.slug}"')
+        self.assertContains(response, f'hx-get="/topics/?filter=NEW&tags={tag.slug}"')
+        self.assertContains(response, f'hx-get="/topics/?filter=CERTIFIED&tags={tag.slug}"')
 
     def test_template_name(self):
         response = self.client.get(self.url)
