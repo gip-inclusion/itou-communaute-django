@@ -833,6 +833,20 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
+    def test_clickable_tags(self):
+        tag = Tag.objects.create(name="tag")
+        TopicFactory(with_post=True, forum=self.forum, with_tags=[tag.name])
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            (
+                f'<a href="{self.url}?tags={tag.slug}"><span class="badge badge-xs rounded-pill bg-info-lighter '
+                f'text-info">{ tag.name }</span></a>'
+            ),
+        )
+
 
 class NewsFeedTopicListViewTest(TestCase):
     @classmethod
