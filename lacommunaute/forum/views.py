@@ -26,9 +26,17 @@ PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRe
 class ForumView(BaseForumView):
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
 
+    def get_tags(self):
+        if not hasattr(self, "tags"):
+            self.tags = self.request.GET.get("tags", "").lower()
+        return self.tags
+
     def get_queryset(self):
         forum = self.get_forum()
         qs = forum.topics.optimized_for_topics_list(self.request.user.id)
+
+        if self.get_tags():
+            qs = qs.filter(tags__slug__in=self.get_tags().split(","))
 
         return qs
 
