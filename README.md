@@ -37,7 +37,7 @@ $ python manage.py runserver
 ## Peupler la base de données
 
 ```bash
-$ python manage.py loaddata fixtures/validation_fixtures.json
+$ python manage.py loaddata populate
 ```
 ## Mises à jour
 
