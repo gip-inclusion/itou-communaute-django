@@ -421,3 +421,9 @@ class ForumViewTest(TestCase):
         )
         self.assertContains(response, topic.subject)
         self.assertNotContains(response, self.topic.subject)
+
+    def test_banner_display_on_subcategory_forum(self):
+        category_forum = CategoryForumFactory(with_child=True, with_public_perms=True)
+        forum = category_forum.get_children().first()
+        response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        self.assertContains(response, forum.image.url.split("=")[0])
