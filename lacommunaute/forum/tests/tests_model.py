@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import IntegrityError
 from django.test import TestCase
 
@@ -57,3 +58,14 @@ class ForumModelTest(TestCase):
         self.assertEqual(forum.upvotes_count(), 0)
         forum.upvotes.create(voter=UserFactory())
         self.assertEqual(forum.upvotes_count(), 1)
+
+    def test_image_is_imagefield(self):
+        forum = ForumFactory()
+        self.assertEqual(forum.image.field.__class__.__name__, "ImageField")
+
+    def test_image_url(self):
+        forum = ForumFactory(image="test.jpg")
+        self.assertEqual(
+            forum.image.url.split("?")[0], f"{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/{forum.image.name}"
+        )
+        self.assertIn("AWSAccessKeyId=", forum.image.url)

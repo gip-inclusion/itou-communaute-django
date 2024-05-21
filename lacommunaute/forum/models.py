@@ -1,15 +1,18 @@
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
+from storages.backends.s3boto3 import S3Boto3Storage
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.utils.validators import validate_image_size
 
 
 class ForumQuerySet(models.QuerySet):
@@ -27,6 +30,10 @@ class Forum(AbstractForum):
     )
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
+    )
+    image = models.ImageField(
+        storage=S3Boto3Storage(bucket_name=settings.AWS_STORAGE_BUCKET_NAME, file_overwrite=False),
+        validators=[validate_image_size],
     )
 
     upvotes = GenericRelation(UpVote, related_query_name="forum")
