@@ -17,6 +17,9 @@ class ForumFactory(BaseForumFactory):
     class Meta:
         skip_postgeneration_save = True
 
+    class Params:
+        with_image = factory.Trait(image=factory.django.ImageField(filename="banner.jpg"))
+
     @factory.post_generation
     def with_public_perms(self, create, extracted, **kwargs):
         if not create or not extracted:
@@ -41,4 +44,4 @@ class CategoryForumFactory(ForumFactory):
         if not create or not extracted:
             return
 
-        ForumFactory(parent=self, with_public_perms=True)
+        ForumFactory(parent=self, with_public_perms=True, with_image=True)
