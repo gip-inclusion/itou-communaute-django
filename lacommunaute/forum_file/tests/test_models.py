@@ -32,11 +32,5 @@ def test_get_file_url(db, public_file):
     assert public_file.get_file_url() == expected_file_url
 
 
-def test_size_validator(db, public_file):
-    with pytest.raises(Exception):
-        public_file.file.size = 1024 * 1024 * 8 + 1
-        public_file.save()
-
-
 def test_file_field_is_imagefield(db):
     assert isinstance(PublicFile._meta.get_field("file"), ImageField)

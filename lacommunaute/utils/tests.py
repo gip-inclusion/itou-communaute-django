@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+import pytest
 from bs4 import BeautifulSoup
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -19,6 +20,8 @@ from machina.core.loading import get_class
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
+from lacommunaute.forum_file.models import PublicFile
+from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
 from lacommunaute.utils.perms import add_public_perms_on_forum
@@ -502,3 +505,15 @@ class TestAddPublicPermsOnForum:
             ).count()
             == 7
         )
+
+
+class TestImageSizeValidator:
+    def test_size_validator(self, db):
+        file = PublicFile.objects.create(
+            file="test.jpg",
+            user=UserFactory(),
+            keywords="test",
+        )
+        with pytest.raises(Exception):
+            file.file.size = 1024 * 1024 * 5 + 1
+            file.save()
