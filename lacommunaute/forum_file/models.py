@@ -1,17 +1,10 @@
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from machina.models.abstract_models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 
 from lacommunaute.users.models import User
-
-
-def validate_image_size(value):
-    max_size = 1024 * 1024 * 8
-
-    if value.size > max_size:
-        raise ValidationError("L'image ne doit pas dépasser 1 Mo")
+from lacommunaute.utils.validators import validate_image_size
 
 
 class PublicFile(DatedModel):
