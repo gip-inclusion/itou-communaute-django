@@ -3,7 +3,7 @@ from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum.enums import Kind as ForumKind
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import UserFactory
 
@@ -45,3 +45,12 @@ def test_display_create_category_button(client, db):
     user.save()
     response = client.get(url)
     assertContains(response, reverse("forum_extension:create_category"), status_code=200)
+
+
+def test_display_banners(client, db):
+    forum = CategoryForumFactory(with_child=True, with_public_perms=True)
+    ForumFactory(parent=forum, with_public_perms=True, with_image=True)
+    url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+    response = client.get(url)
+    for child in forum.get_children():
+        assertContains(response, child.image.url.split("=")[0])
