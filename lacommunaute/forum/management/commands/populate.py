@@ -1,6 +1,5 @@
 import sys
 
-from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from django.db import connection
 
@@ -14,7 +13,7 @@ class Command(BaseCommand):
     help = "hydratation d'un site de validation"
 
     def handle(self, *args, **options):
-        UserFactory(username="communaute", password=make_password("password"))
+        UserFactory(username="communaute", password="password", is_superuser=True, is_staff=True)
         sys.stdout.write("superuser created\n")
 
         forum = ForumFactory(name="Espace d'échanges", with_public_perms=True)
