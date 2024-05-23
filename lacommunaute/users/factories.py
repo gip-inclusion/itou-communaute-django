@@ -1,20 +1,13 @@
-import functools
 import random
 
 import factory
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
-from machina.core.db.models import get_model
 
+from lacommunaute.users.models import User
 
-User = get_model("users", "User")
 
 DEFAULT_PASSWORD = "supercalifragilisticexpialidocious"
-
-
-@functools.cache
-def default_password():
-    return make_password(DEFAULT_PASSWORD)
 
 
 class GroupFactory(factory.django.DjangoModelFactory):
@@ -32,7 +25,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
     email = factory.Faker("email")
-    password = factory.LazyFunction(default_password)
+    password = factory.Transformer(DEFAULT_PASSWORD, transform=make_password)
 
     @factory.post_generation
     def with_perm(obj, create, extracted, **kwargs):
