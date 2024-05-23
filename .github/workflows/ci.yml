@@ -17,7 +17,19 @@ jobs:
       POSTGRESQL_ADDON_DB: communaute
       POSTGRESQL_ADDON_USER: postgres
       POSTGRESQL_ADDON_PASSWORD: password
+      CELLAR_ADDON_KEY_ID: minioadmin
+      CELLAR_ADDON_KEY_SECRET: minioadmin
+      CELLAR_ADDON_PROTOCOL: http
+      CELLAR_ADDON_HOST: localhost:9000
     services:
+      minio:
+        image: bitnami/minio
+        env:
+          MINIO_ROOT_USER: minioadmin
+          MINIO_ROOT_PASSWORD: minioadmin
+        ports:
+          - 9000:9000
+
       postgres:
         # Docker Hub image
         image: postgres:15-alpine
@@ -57,6 +69,8 @@ jobs:
           python manage.py compress
       - name: 🚧 Check pending migrations
         run: python manage.py makemigrations --check --dry-run --noinput
+      - name: 🚧 Configure bucket
+        run: python manage.py configure_bucket
       - name: 🤹‍ Django tests
         run: pytest --numprocesses=logical --create-db
         env:
