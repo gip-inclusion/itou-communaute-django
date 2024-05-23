@@ -18,6 +18,7 @@ services:
       - "127.0.0.1:${POSTGRESQL_ADDON_PORT:-5432}:5432"
 
   django:
+    profiles: [ "django" ]
     container_name: commu_django
     env_file:
       - .env
@@ -40,6 +41,7 @@ services:
       - "127.0.0.1:${DJANGO_DEBUGPY_PORT:-5678}:5678"
 
   mailhog:
+    profiles: [ "mailhog" ]
     image: mailhog/mailhog:latest
     restart: always
     ports:
