@@ -264,9 +264,9 @@ AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET", "secret")
 AWS_S3_ENDPOINT_URL = (
     f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.getenv('CELLAR_ADDON_HOST', 'set-var-env.com')}"
 )
-AWS_STORAGE_BUCKET_NAME = "c3-storage-prod"
-AWS_STORAGE_BUCKET_NAME_PUBLIC = "c3-storage-prod-public"
-AWS_S3_STORAGE_BUCKET_REGION = "eu-west-3"
+AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME", "private-bucket")
+AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC", "public-bucket")
+AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION", "eu-west-3")
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------

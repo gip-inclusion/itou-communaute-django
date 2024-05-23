@@ -60,10 +60,4 @@ EMAIL_USE_TLS = False
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"  # noqa: F405
 
-# STORAGE (django >= 4.2)
-STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-}
-
 CSP_DEFAULT_SRC = ("*",)
