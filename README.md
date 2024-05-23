@@ -22,22 +22,24 @@ $ poetry shell
 
 ## Démarrer les instances
 
-Démarer la base de données
+Démarer la base de données et le bucket S3
 
 ```bash
-$ docker-compose up postgres -d
+$ docker-compose up -d
 ```
 
 Démarrer le service web
 
 ```bash
-$ python manage.py runserver
+$ python manage.py runserver_plus
 ```
 
-## Peupler la base de données
+## Préparer l'environnement de données
 
 ```bash
-$ python manage.py loaddata populate
+$ python manage.py migrate
+$ python manage.py populate
+$ python manage.py configure_bucket
 ```
 ## Mises à jour
 
