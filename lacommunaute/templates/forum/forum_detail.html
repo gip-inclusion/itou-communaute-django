@@ -111,7 +111,9 @@
                                    data-matomo-option="new_topic">
                                     <i class="ri-chat-new-line ri-lg"></i>
                                     <span>
-                                        {% if forum.kind == 'NEWS' %}
+                                        {% if forums %}
+                                            {% trans "New topic on doc" %}
+                                        {% elif forum.kind == 'NEWS' %}
                                             {% trans "New news" %}
                                         {% else %}
                                             {% trans "New topic" %}
