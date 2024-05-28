@@ -1,5 +1,20 @@
 # Journal des modifications
 
+## v2.9 - 2024-05-28
+
+- feat(documentation): mise à jour de la bannière d'un forum (#637)
+- feat(documentation): formulaire d'évaluation des fiches pratiques (#636)
+- feat(documentation): Afficher l'image du forum comme bannière (#632)
+- feat(UI): Mise à jour de l'entête (#634)
+- feat(UI): Mise a jour du theme et adaptation du DOM du menu #burgerNav (#638)
+- feat(tags): rendre les tags clickables (#623)
+- feat(tags): inclure la gestion des tags dans le filtrage des sujets (recent, sans reponse, certifié) (#615)
+- feat(poster): désambiguer la mention du forum, de celle des tags (#620)
+- chore: correction de la configuration docker-compose (#639)
+- chore: mise à jour des dépendances (#622 #629 #641)
+- chore: ajout de minio comme bucket S3 (dev & test) (#633)
+- chore: mise à jour du Readme (#630)
+
 ## v2.8 - 2024-05-02
 
 - [DOCUMENTATION] mettre à jour les fiches en ligne (#604)
