@@ -43,3 +43,7 @@ def test_form_field():
     form = ForumForm()
     assert form.Meta.model == Forum
     assert form.Meta.fields == ["name", "short_description", "description", "image"]
+    assert form.fields["name"].required
+    assert form.fields["short_description"].required
+    assert not form.fields["description"].required
+    assert not form.fields["image"].required

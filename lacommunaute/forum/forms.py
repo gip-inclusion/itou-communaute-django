@@ -29,7 +29,7 @@ class ForumForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 20}), required=False, label="Contenu (markdown autorisé)"
     )
-    image = forms.ImageField(label="Banniere de couverture")
+    image = forms.ImageField(required=False, label="Banniere de couverture")
 
     def save(self, commit=True):
         forum = super().save(commit=False)
