@@ -37,3 +37,9 @@ def test_saved_forum_description(db):
         "<p>Text</p>\n\n<div><iframe src='xxx'></iframe></div>\n\n"
         "<p>text</p>\n\n<div><iframe src='yyy'></iframe></div>\n\n<p>bye</p>"
     )
+
+
+def test_form_field():
+    form = ForumForm()
+    assert form.Meta.model == Forum
+    assert form.Meta.fields == ["name", "short_description", "description", "image"]

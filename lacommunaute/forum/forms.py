@@ -29,6 +29,7 @@ class ForumForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 20}), required=False, label="Contenu (markdown autorisé)"
     )
+    image = forms.ImageField(label="Banniere de couverture")
 
     def save(self, commit=True):
         forum = super().save(commit=False)
@@ -39,4 +40,4 @@ class ForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum
-        fields = ["name", "short_description", "description"]
+        fields = ["name", "short_description", "description", "image"]
