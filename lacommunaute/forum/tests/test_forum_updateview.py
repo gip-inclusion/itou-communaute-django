@@ -7,7 +7,7 @@ from faker import Faker
 from PIL import Image
 from pytest_django.asserts import assertContains
 
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -54,3 +54,26 @@ def test_context_data(client, db):
     response = client.get(url)
     assertContains(response, f"Mettre à jour le forum {forum.name}", html=True)
     assertContains(response, reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+
+
+def test_update_forum_image(client, db, fake_image):
+    client.force_login(UserFactory(is_superuser=True))
+    forum = CategoryForumFactory(with_child=True).get_children().first()
+    url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+
+    response = client.post(
+        url,
+        data={
+            "name": "new name",
+            "short_description": "new short description",
+            "description": "new description",
+            "image": fake_image,
+        },
+    )
+    assert response.status_code == 302
+
+    forum.refresh_from_db()
+    assert forum.name == "new name"
+    assert forum.short_description == "new short description"
+    assert forum.description.raw == "new description"
+    assert forum.image.name == fake_image.name
