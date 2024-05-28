@@ -14,9 +14,14 @@ repos:
         entry: black
         types: [python]
         language: system
-      - id: ruff
-        name: Ruff
-        entry: ruff
+      - id: ruff-format
+        name: Ruff format
+        entry: ruff format
+        types: [python]
+        language: system
+      - id: ruff-check
+        name: Ruff check
+        entry: ruff check --fix
         types: [python]
         language: system
       - id: djlint
