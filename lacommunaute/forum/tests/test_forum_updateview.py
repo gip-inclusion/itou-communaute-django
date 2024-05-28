@@ -1,9 +1,28 @@
+from io import BytesIO
+
 import pytest  # noqa
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from faker import Faker
+from PIL import Image
 from pytest_django.asserts import assertContains
 
-from lacommunaute.users.factories import UserFactory
 from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.users.factories import UserFactory
+
+
+@pytest.fixture
+def fake_image():
+    fake = Faker()
+    image_name = fake.pystr(min_chars=30, max_chars=40, prefix="pytest_", suffix=".png")
+
+    image = Image.new("RGB", (100, 100))
+    image_file = BytesIO()
+    image.save(image_file, format="JPEG")
+    image_file.seek(0)
+    uploaded_image = SimpleUploadedFile(image_name, image_file.read(), content_type="image/jpeg")
+
+    yield uploaded_image
 
 
 def test_user_access(client, db):
