@@ -30,9 +30,11 @@ def collect_following_replies():
             topic.get_absolute_url(with_fqdn=True),
             topic.subject,
             topic.mails_to_notify(),
-            f"{topic.new_replies} nouvelle réponse"
-            if topic.new_replies == 1
-            else f"{topic.new_replies} nouvelles réponses",
+            (
+                f"{topic.new_replies} nouvelle réponse"
+                if topic.new_replies == 1
+                else f"{topic.new_replies} nouvelles réponses"
+            ),
         )
         for topic in Topic.objects.with_following_replies(last_notification(kind=EmailSentTrackKind.FOLLOWING_REPLIES))
     ]
