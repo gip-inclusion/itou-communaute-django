@@ -1,5 +1,14 @@
 # Journal des modifications
 
+## 2.9.1 (2024-05-29)
+
+
+### Features
+
+*  chore: Bump @babel/traverse from 7.20.5 to 7.24.5 in /lacommunaute/static/machina ([3c2b35c](https://github.com/gip-inclusion/itou-communaute-django/commit/3c2b35c3327ef84a6844f9d028229c1b54cf5afa))
+* chore: initialisation de l'action github release-please (#642) ([b497c13](https://github.com/gip-inclusion/itou-communaute-django/commit/b497c13a25ab3ac0f15d07cc6e45c513788fb940))
+
+
 ## v2.9 - 2024-05-28
 
 - feat(documentation): mise à jour de la bannière d'un forum (#637)
