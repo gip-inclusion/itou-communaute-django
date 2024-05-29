@@ -58,3 +58,17 @@ class Forum(AbstractForum):
 
     def upvotes_count(self):
         return self.upvotes.count()
+
+    @cached_property
+    def is_in_documentation_area(self):
+        return self.type == Forum.FORUM_CAT or (
+            self.get_ancestors() and self.get_ancestors().first().type == Forum.FORUM_CAT
+        )
+
+    @cached_property
+    def is_toplevel_discussion_area(self):
+        return self == Forum.objects.filter(kind=Forum_Kind.PUBLIC_FORUM, lft=1, level=0).first()
+
+    @cached_property
+    def is_newsfeed(self):
+        return self.kind == Forum_Kind.NEWS
