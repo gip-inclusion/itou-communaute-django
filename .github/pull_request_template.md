@@ -7,8 +7,8 @@
 
 🪲 Correction de bug (changement non cassant qui corrige un problème).
 🎢 Nouvelle fonctionnalité (changement non cassant qui ajoute une fonctionnalité).
-🥁 Changement de rupture (modification ou caractéristique qui empêcherait une fonctionnalité existante de fonctionner comme prévu)
-🎨 changement nécessitant une mise à jour de la documentation.
+🥁 Changement de rupture (modification ou caractéristique qui empêcherait une fonctionnalité existante de fonctionner comme prévu) nécéssitant une mise à jour de la documentation
+🎨 changement d'UI
 🚧 technique
 
 ### Points d'attention
