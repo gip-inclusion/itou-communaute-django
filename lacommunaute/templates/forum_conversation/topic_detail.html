@@ -10,6 +10,9 @@
 {% block sub_title %}
     {{ topic.subject }}
 {% endblock sub_title %}
+{% block breadcrumb %}
+    {% include "partials/breadcrumb.html" with forum=topic.forum topic=topic only %}
+{% endblock %}
 {% block content %}
     {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
     <div class="row">
