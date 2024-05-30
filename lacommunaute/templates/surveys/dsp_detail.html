@@ -51,11 +51,13 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="s-section__row row">
-                <div class="s-section__col col-lg-8 col-12 c-box mb-5">
-                    {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
+            {% if related_forums %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-lg-8 col-12 c-box mb-5">
+                        {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-8 c-box mb-5">
                     <iframe data-tally-src="https://tally.so/embed/w8QqMz?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"

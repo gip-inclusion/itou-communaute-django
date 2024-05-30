@@ -76,13 +76,15 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="s-section__row row">
-                <div class="s-section__col col-lg-8 col-12">
-                    <div class="c-box mb-5">
-                        {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
+            {% if related_forums %}
+                <div class="s-section__row row">
+                    <div class="s-section__col col-lg-8 col-12">
+                        <div class="c-box mb-5">
+                            {% include "surveys/partials/related_forums.html" with related_forums=related_forums only %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </section>
 {% endblock content %}
