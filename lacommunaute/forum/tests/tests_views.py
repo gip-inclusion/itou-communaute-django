@@ -1,3 +1,4 @@
+import pytest  # noqa
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
@@ -11,6 +12,7 @@ from lacommunaute.forum_conversation.factories import CertifiedPostFactory, Post
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
@@ -429,3 +431,66 @@ class ForumViewTest(TestCase):
         forum = category_forum.get_children().first()
         response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         self.assertContains(response, forum.image.url.split("=")[0])
+
+
+@pytest.fixture(name="discussion_area_forum")
+def discussion_area_forum_fixture():
+    return ForumFactory(with_public_perms=True, name="A Forum")
+
+
+class TestBreadcrumb:
+    def test_sub_discussion_area_forum(self, client, db, snapshot, discussion_area_forum):
+        forum = ForumFactory(parent=discussion_area_forum, with_public_perms=True, name="b")
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+        assert str(content) == snapshot(name="sub_discussion_area_forum")
+
+    def test_forum(self, client, db, snapshot, discussion_area_forum):
+        forum = ForumFactory(with_public_perms=True)
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+        assert str(content) == snapshot(name="forum")
+
+    def test_sub_forum(self, client, db, snapshot, discussion_area_forum):
+        parent_forum = ForumFactory(with_public_perms=True, name="B Forum")
+        forum = ForumFactory(parent=parent_forum, with_public_perms=True)
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb", replace_in_href=[parent_forum])
+        assert str(content) == snapshot(name="sub_forum")
+
+    def test_category_forum(self, client, db, snapshot, discussion_area_forum):
+        forum = CategoryForumFactory(with_public_perms=True)
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+        assert str(content) == snapshot(name="category_forum")
+
+    def test_child_category_forum(self, client, db, snapshot, discussion_area_forum):
+        parent_forum = CategoryForumFactory(with_child=True, with_public_perms=True, name="A Category")
+        forum = parent_forum.get_children().first()
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb", replace_in_href=[parent_forum])
+        assert str(content) == snapshot(name="child_category_forum")
+
+    def test_grandchild_category_forum(self, client, db, snapshot, discussion_area_forum):
+        parent_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
+        forum = ForumFactory(parent=parent_forum.get_children().first(), with_public_perms=True)
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(
+            response,
+            selector="nav.c-breadcrumb",
+            replace_in_href=[parent_forum, parent_forum.get_children().first()],
+        )
+        assert str(content) == snapshot(name="grandchild_category_forum")
+
+    def test_newsfeed_forum(self, client, db, snapshot, discussion_area_forum):
+        forum = ForumFactory(kind="NEWS", with_public_perms=True)
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+        assert str(content) == snapshot(name="newsfeed_forum")
