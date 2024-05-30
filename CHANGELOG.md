@@ -1,5 +1,14 @@
 # Journal des modifications
 
+## [2.9.2](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.9.1...v2.9.2) (2024-05-30)
+
+
+### Bug Fixes
+
+* Diag parcours IAE - masquer la carte des fiches pratiques liées lorsqu'elle est vide ([#650](https://github.com/gip-inclusion/itou-communaute-django/issues/650)) ([d309e47](https://github.com/gip-inclusion/itou-communaute-django/commit/d309e4772e8403110bd815cf0ee52404dfc8b687))
+* Mise à jour de l'action `release-please` ([#645](https://github.com/gip-inclusion/itou-communaute-django/issues/645)) ([725fcd6](https://github.com/gip-inclusion/itou-communaute-django/commit/725fcd696016f286d4574d4ba38d22e1b2d2a2cd))
+* mise à jour du gabarit de PR ([#647](https://github.com/gip-inclusion/itou-communaute-django/issues/647)) ([fc10c9e](https://github.com/gip-inclusion/itou-communaute-django/commit/fc10c9e9eafb07de6c9d550f99570d046519b0db))
+
 ## 2.9.1 (2024-05-29)
 
 
