@@ -40,7 +40,7 @@
     border-radius: 50%;
     overflow: hidden;
 
-    >img {
+    > img {
       width: 100%;
       height: auto;
       object-fit: cover;
@@ -110,7 +110,7 @@ span.highlighted {
 .input-group-rounded-pill {
   border-radius: 50rem !important;
 
-  >input {
+  > input {
     border-top-left-radius: 50rem !important;
     border-bottom-left-radius: 50rem !important;
   }
@@ -162,13 +162,13 @@ span.highlighted {
     }
   }
 
-  >div {
+  > div {
     padding: 16px 8px;
     margin: 0;
     margin-bottom: 8px;
     min-height: 140px;
 
-    >span {
+    > span {
       display: block;
     }
 
@@ -188,7 +188,7 @@ span.highlighted {
 }
 
 .definition {
-  >div {
+  > div {
     padding: 16px 8px 0 16px;
     margin-bottom: 8px;
 
@@ -204,12 +204,12 @@ span.highlighted {
     width: 100%;
 
     &::before {
-      content: "";
+      content: '';
       display: block;
       padding-top: 40%;
     }
 
-    >iframe {
+    > iframe {
       position: absolute;
       top: 0;
       left: 0;
