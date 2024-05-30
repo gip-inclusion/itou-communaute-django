@@ -286,15 +286,17 @@ class ForumViewTest(TestCase):
         )
 
     def test_siblings_in_context(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        forum = CategoryForumFactory(with_public_perms=True)
+        ForumFactory.create_batch(3, parent=forum, with_public_perms=True)
         child_forum = forum.get_children().first()
         url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context_data["forums"].get(), child_forum)
-        self.assertEqual(response.context_data["parent_forum"], forum)
+        self.assertEqual(response.context_data["forums"].count(), 3)
+        for f in forum.get_children():
+            self.assertContains(response, f.name)
 
     def test_next_url_in_context(self):
         response = self.client.get(self.url)
