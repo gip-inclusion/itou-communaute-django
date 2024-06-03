@@ -62,8 +62,10 @@ export_dev = { shell = "poetry export --with dev --output requirements/dev.txt" 
 line_length = 119
 
 [tool.ruff]
-ignore = []
 line-length = 119
+
+[tool.ruff.lint]
+ignore = []
 # see prefixes in https://beta.ruff.rs/docs/rules/
 select = [
     "F",  # pyflakes
@@ -72,7 +74,7 @@ select = [
     "I",  # isort
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 known-first-party = ["lacommunaute"]
 lines-after-imports = 2
@@ -82,4 +84,4 @@ profile="django"
 ignore="T002,T003,T027,H006,H023,D018"
 max_attribute_length=200
 format_css = true
-format_js = true
+format_js = false
