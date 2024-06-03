@@ -25,6 +25,4 @@
 <div id="postinfeedarea{{ topic.pk }}">
     {% include "forum_conversation/partials/post_feed_form_collapsable.html" with post_form=form inline=1 %}
 </div>
-<script>
-    document.getElementById(`collapseButtonPost{{topic.pk}}`).setAttribute('aria-expanded', 'false');
-</script>
+<script>document.getElementById(`collapseButtonPost{{topic.pk}}`).setAttribute('aria-expanded', 'false');</script>

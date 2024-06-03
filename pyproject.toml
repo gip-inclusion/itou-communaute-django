@@ -84,4 +84,4 @@ profile="django"
 ignore="T002,T003,T027,H006,H023,D018"
 max_attribute_length=200
 format_css = true
-format_js = true
+format_js = false
