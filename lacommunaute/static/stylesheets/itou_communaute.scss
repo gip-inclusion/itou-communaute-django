@@ -56,6 +56,15 @@
   }
 }
 
+.card-header-thumbnail {
+  height: 200px;
+
+  >img {
+    height: 100%;
+  }
+}
+
+
 .card.forumlist .card-body .forum-icon {
   display: inline-block;
   width: 42px;

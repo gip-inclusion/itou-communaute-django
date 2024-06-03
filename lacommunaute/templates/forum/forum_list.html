@@ -52,12 +52,14 @@
         <div class="row mt-4">
             {% for node in forum_contents.top_nodes %}
                 <div class="col-12 col-md-4 mb-3 mb-md-5">
-                    <div class="card c-card has-links-inside h-100">
+                    <div class="card c-card has-one-link-inside h-100">
+                        {% if node.obj.image %}
+                            <div class="card-header card-header-thumbnail rounded">
+                                <img src="{{ node.obj.image.url }}" alt="{{ node.obj.name }}" class="img-fitcover img-fluid" loading="lazy" />
+                            </div>
+                        {% endif %}
                         <div class="card-body pb-0">
-                            <p class="h3 lh-base">
-                                <i class="ri-newspaper-line font-weight-normal"></i> {{ node.obj.name }}
-                            </p>
-                            <div>{% include "forum/partials/forum_banner.html" with forum=node.obj only %}</div>
+                            <p class="h3 lh-base">{{ node.obj.name }}</p>
                             {% if node.obj.short_description %}<div class="mt-3">{{ node.obj.short_description }}</div>{% endif %}
                         </div>
                         <div class="card-footer text-end">
