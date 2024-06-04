@@ -70,9 +70,8 @@ class ForumView(BaseForumView):
             )
             .filter(type=Topic.TOPIC_ANNOUNCE)
         )
-        if forum.parent and forum.parent.type == Forum.FORUM_CAT:
-            context["forums"] = Forum.objects.filter(parent=forum.parent).order_by("lft")
-            context["parent_forum"] = forum.parent
+        if forum.parent and forum.is_in_documentation_area:
+            context["forums"] = forum.get_siblings(include_self=True)
         return context
 
 

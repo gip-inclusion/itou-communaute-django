@@ -10,6 +10,9 @@
 {% block meta_description %}
     {{ forum.short_description }}
 {% endblock meta_description %}
+{% block breadcrumb %}
+    {% include "partials/breadcrumb.html" with forum=forum topic=None only %}
+{% endblock %}
 {% block content %}
     {% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}
     <section class="s-title-01 mt-lg-5">
@@ -66,11 +69,11 @@
                             </a>
                             <hr>
                         {% endif %}
-                        <a href="{% url 'forum_extension:forum' parent_forum.slug parent_forum.id %}"
+                        <a href="{% url 'forum_extension:forum' forum.parent.slug forum.parent.id %}"
                            class="matomo-event h3 text-decoration-none d-inline-block"
                            data-matomo-category="engagement"
                            data-matomo-action="view"
-                           data-matomo-option="forum">Les autres fiches du thème</a>
+                           data-matomo-option="forum">Les autres fiches du thème {{ forum.parent.name }}</a>
                         <ul class="nav nav-tabs flex-column">
                             {% for sibling_forum in forums %}
                                 <li class="nav-item">
@@ -165,11 +168,6 @@
                                     <a class="nav-link" id="announces-tab" data-bs-toggle="tab" href="#announces" role="tab" aria-controls="announces" aria-selected="false">Annonces</a>
                                 </li>
                             {% endif %}
-                            <li class="nav-item-dropdown dropdown">
-                                <!-- for responsive needs -->
-                                <a class="nav-link dropdown-toggle" href="#" role="button" id="sTabs01DropdownMoreLink" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-line" aria-hidden="true"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sTabs01DropdownMoreLink"></div>
-                            </li>
                         </ul>
                         <div class="tab-content topiclist">
                             <div class="tab-pane fade show active" id="topics" role="tabpanel" aria-labelledby="topics-tab">

@@ -48,7 +48,7 @@
                 </div>
             </div>
         {% endfor %}
-    {% elif forum_contents.top_nodes.0.obj.parent.is_category %}
+    {% elif forum_contents.top_nodes.0.obj.is_in_documentation_area %}
         <div class="row mt-4">
             {% for node in forum_contents.top_nodes %}
                 <div class="col-12 col-md-4 mb-3 mb-md-5">

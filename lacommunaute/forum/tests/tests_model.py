@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 
 from lacommunaute.forum.enums import Kind as ForumKind
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
@@ -69,3 +69,41 @@ class ForumModelTest(TestCase):
             forum.image.url.split("?")[0], f"{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/{forum.image.name}"
         )
         self.assertIn("AWSAccessKeyId=", forum.image.url)
+
+    def test_is_in_documentation_area(self):
+        top_level_category_forum = CategoryForumFactory(with_child=True)
+        documentation_forum = top_level_category_forum.children.first()
+        sub_documentation_forum = ForumFactory(parent=documentation_forum)
+
+        top_level_forum = ForumFactory()
+        forum = ForumFactory(parent=top_level_forum)
+
+        self.assertTrue(top_level_category_forum.is_in_documentation_area)
+        self.assertTrue(documentation_forum.is_in_documentation_area)
+        self.assertTrue(sub_documentation_forum.is_in_documentation_area)
+        self.assertFalse(top_level_forum.is_in_documentation_area)
+        self.assertFalse(forum.is_in_documentation_area)
+
+    def test_is_toplevel_discussion_area(self):
+        discussion_area_forum = ForumFactory()
+        sub_discussion_area_forum = ForumFactory(parent=discussion_area_forum)
+        forum = ForumFactory()
+        sub_forum = ForumFactory(parent=forum)
+        private_forum = ForumFactory(kind=ForumKind.PRIVATE_FORUM)
+        news_forum = ForumFactory(kind=ForumKind.NEWS)
+
+        self.assertTrue(discussion_area_forum.is_toplevel_discussion_area)
+        self.assertFalse(sub_discussion_area_forum.is_toplevel_discussion_area)
+        self.assertFalse(forum.is_toplevel_discussion_area)
+        self.assertFalse(sub_forum.is_toplevel_discussion_area)
+        self.assertFalse(private_forum.is_toplevel_discussion_area)
+        self.assertFalse(news_forum.is_toplevel_discussion_area)
+
+    def test_is_newsfeed(self):
+        news_forum = ForumFactory(kind=ForumKind.NEWS)
+        discussion_area_forum = ForumFactory()
+        private_forum = ForumFactory(kind=ForumKind.PRIVATE_FORUM)
+
+        self.assertTrue(news_forum.is_newsfeed)
+        self.assertFalse(discussion_area_forum.is_newsfeed)
+        self.assertFalse(private_forum.is_newsfeed)

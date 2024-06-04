@@ -13,7 +13,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import (
     AnonymousPostFactory,
@@ -691,7 +691,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(38):
+        with self.assertNumQueries(39):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -723,6 +723,82 @@ def test_queryset_for_tagged_topic(client, db, snapshot):
     response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
     content = parse_response_to_soup(response, selector="#topic-list-filter-header")
     assert str(content) == snapshot(name="tagged_topics")
+
+
+def test_breadcrumbs_on_topic_view(client, db, snapshot):
+    discussion_area_forum = ForumFactory(with_public_perms=True)
+    category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="D Category")
+
+    documentation_topic = TopicFactory(with_post=True, forum=category_forum.get_children().first())
+    discussion_area_toplevel_topic = TopicFactory(with_post=True, forum=discussion_area_forum)
+    discussion_area_topic = TopicFactory(
+        with_post=True, forum=ForumFactory(with_public_perms=True, parent=discussion_area_forum, name="Forum B")
+    )
+    newsfeed_topic = TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
+
+    response = client.get(
+        reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": documentation_topic.forum.pk,
+                "forum_slug": documentation_topic.forum.slug,
+                "pk": documentation_topic.pk,
+                "slug": documentation_topic.slug,
+            },
+        )
+    )
+    assert response.status_code == 200
+    content = parse_response_to_soup(
+        response, selector="nav.c-breadcrumb", replace_in_href=[category_forum, documentation_topic.forum]
+    )
+    assert str(content) == snapshot(name="documentation_topic")
+
+    response = client.get(
+        reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": discussion_area_toplevel_topic.forum.pk,
+                "forum_slug": discussion_area_toplevel_topic.forum.slug,
+                "pk": discussion_area_toplevel_topic.pk,
+                "slug": discussion_area_toplevel_topic.slug,
+            },
+        )
+    )
+    assert response.status_code == 200
+    content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+    assert str(content) == snapshot(name="discussion_area_toplevel_topic")
+
+    response = client.get(
+        reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": discussion_area_topic.forum.pk,
+                "forum_slug": discussion_area_topic.forum.slug,
+                "pk": discussion_area_topic.pk,
+                "slug": discussion_area_topic.slug,
+            },
+        )
+    )
+    assert response.status_code == 200
+    content = parse_response_to_soup(
+        response, selector="nav.c-breadcrumb", replace_in_href=[discussion_area_topic.forum]
+    )
+    assert str(content) == snapshot(name="discussion_area_topic")
+
+    response = client.get(
+        reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_pk": newsfeed_topic.forum.pk,
+                "forum_slug": newsfeed_topic.forum.slug,
+                "pk": newsfeed_topic.pk,
+                "slug": newsfeed_topic.slug,
+            },
+        )
+    )
+    assert response.status_code == 200
+    content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
+    assert str(content) == snapshot(name="newsfeed_topic")
 
 
 class TopicListViewTest(TestCase):

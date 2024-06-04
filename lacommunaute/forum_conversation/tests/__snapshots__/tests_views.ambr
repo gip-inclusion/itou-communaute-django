@@ -44,6 +44,86 @@
   </small>
   '''
 # ---
+# name: test_breadcrumbs_on_topic_view[discussion_area_topic]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item">Retourner vers</li>
+              <li class="breadcrumb-item">
+                  
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
+                  
+              </li>
+              
+                  
+              
+              
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-b-[PK of Forum]/">Forum B</a>
+                  </li>
+              
+          </ol>
+      </nav>
+  '''
+# ---
+# name: test_breadcrumbs_on_topic_view[discussion_area_toplevel_topic]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item">Retourner vers</li>
+              <li class="breadcrumb-item">
+                  
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
+                  
+              </li>
+              
+              
+          </ol>
+      </nav>
+  '''
+# ---
+# name: test_breadcrumbs_on_topic_view[documentation_topic]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item">Retourner vers</li>
+              <li class="breadcrumb-item">
+                  
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  
+              </li>
+              
+                  
+                      <li class="breadcrumb-item">
+                          <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-[PK of Forum]/">D Category</a>
+                      </li>
+                  
+              
+              
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-forum-[PK of Forum]/">D Category - Forum</a>
+                  </li>
+              
+          </ol>
+      </nav>
+  '''
+# ---
+# name: test_breadcrumbs_on_topic_view[newsfeed_topic]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item">Retourner vers</li>
+              <li class="breadcrumb-item">
+                  
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="newsfeed_breadcrumb" href="/news/">Actualités</a>
+                  
+              </li>
+              
+              
+          </ol>
+      </nav>
+  '''
+# ---
 # name: test_queryset_for_tagged_topic[tagged_topic]
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">

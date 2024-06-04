@@ -38,10 +38,11 @@ class ForumFactory(BaseForumFactory):
 
 class CategoryForumFactory(ForumFactory):
     type = Forum.FORUM_CAT
+    name = factory.Sequence(lambda n: f"Theme {n}")
 
     @factory.post_generation
     def with_child(self, create, extracted, **kwargs):
         if not create or not extracted:
             return
 
-        ForumFactory(parent=self, with_public_perms=True, with_image=True)
+        ForumFactory(parent=self, with_public_perms=True, with_image=True, name=f"{self.name} - Forum")

@@ -936,6 +936,9 @@ msgstr "Effacer cet évènement"
 msgid "Back to events list"
 msgstr "Retourner à la liste des évènements"
 
+msgid "Back to"
+msgstr "Retourner vers"
+
 msgid "No event yet"
 msgstr "Aucun évènement"
 
