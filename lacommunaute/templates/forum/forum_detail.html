@@ -41,7 +41,13 @@
                                 {% include "partials/upvotes.html" with obj=forum kind="forum" %}
                                 {% include "partials/social_share_buttons.html" with text=forum.name instance=forum id=forum.pk %}
                             </div>
-                            <div class="col-12 col-sm-auto">{% include "forum/partials/forum_banner.html" with forum=forum only %}</div>
+                            {% if forum.image %}
+                                <div class="col-12 col-sm-auto">
+                                    <div class="d-none d-md-block forum-image mt-3" loading="lazy">
+                                        <img src="{{ forum.image.url }}" alt="{{ forum.name }}" class="rounded img-fluid" />
+                                    </div>
+                                </div>
+                            {% endif %}
                             <div class="col-12 col-sm-auto mt-3">
                                 <div class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</div>
                             </div>
