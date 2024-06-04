@@ -47,7 +47,9 @@
                                         <span class="h2 mb-3 text-white">{{ nb_uniq_engaged_visitors }}</span>
                                         <span class="fs-sm">{{ engagement_percent }}% des util. actifs</span>
                                     </div>
-                                    <figcaption class="fs-sm text-muted mt-3">Période : {{ period }}</figcaption>
+                                    <figcaption class="fs-sm text-muted mt-3">
+                                        Période : <a href={% url 'forum_stats:monthly_visitors' %}>{{ period }}</a>
+                                    </figcaption>
                                 </figure>
                             </div>
                             <div class="col-12 col-lg-6">

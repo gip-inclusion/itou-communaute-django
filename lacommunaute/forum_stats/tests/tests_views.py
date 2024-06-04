@@ -113,6 +113,11 @@ class StatistiquesPageTest(TestCase):
         self.assertEqual(response.context["impact"]["date"][0], today.strftime("%Y-%m-%d"))
         self.assertEqual(response.context["impact"]["nb_uniq_visitors_returning"][0], 1)
 
+    def test_navigation(self):
+        url = reverse("forum_stats:statistiques")
+        response = self.client.get(url)
+        self.assertContains(response, "<a href=/statistiques/monthly_visitors/>")
+
 
 class TestMonthlyVisitorsView:
     def test_context_data(self, client, db):
@@ -152,3 +157,9 @@ class TestMonthlyVisitorsView:
             "nb_uniq_engaged_visitors": [],
             "nb_uniq_visitors_returning": [2],
         }
+
+    def test_navigation(self, client, db):
+        url = reverse("forum_stats:monthly_visitors")
+        response = client.get(url)
+        assert response.status_code == 200
+        assertContains(response, '<a href="/statistiques/">retour vers la page statistiques</a>')
