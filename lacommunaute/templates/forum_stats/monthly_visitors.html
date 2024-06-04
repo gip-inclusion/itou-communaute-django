@@ -1,0 +1,75 @@
+{% extends "layouts/base.html" %}
+{% load str_filters %}
+{% load js_filters %}
+{% load static %}
+{% block title %}Statistiques{{ block.super }}{% endblock %}
+{% block body_class %}p-statistiques{{ block.super }}{% endblock %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>Statistiques</strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>Utilisateurs uniques mensuels</h2>
+                        <canvas id="statChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+    <script nonce="{{ request.csp_nonce }}">
+        const ctx_stats = document.getElementById('statChart');
+        new Chart(ctx_stats, {
+            type: 'line',
+            data: {
+                labels: {{ monthly_visitors.date | js }},
+                datasets: [
+                    {
+                        label: 'Utilisateurs',
+                        data: {{ monthly_visitors.nb_uniq_visitors | js }},
+                        borderColor: 'rgba(54, 162, 235)',
+                        backgroundColor: 'rgba(154, 208, 245)',
+                    },
+                    {
+                        label: 'Utilisateurs actifs',
+                        data: {{ monthly_visitors.nb_uniq_active_visitors | js }},
+                        borderColor: 'rgba(76, 120, 83)',
+                        backgroundColor: 'rgba(112, 178, 123)',
+                    },
+                    {
+                        label: 'Utilisateurs engagés',
+                        data: {{ monthly_visitors.nb_uniq_engaged_visitors | js }},
+                        borderColor: 'rgba(255, 159, 64)',
+                        backgroundColor: 'rgba(255, 207, 159)',
+                    },
+                    {
+                        label: 'Utilisateurs retour',
+                        data: {{ monthly_visitors.nb_uniq_visitors_returning | js }},
+                        borderColor: 'rgba(98, 42, 86)',
+                        backgroundColor: 'rgba(155, 67, 136)',
+                    },
+                ]
+            },
+            options: {
+                responsive:true,
+                cubicInterpolationMode: 'monotone',
+                tension: 0.4,
+            }
+        });
+    </script>
+{% endblock %}
