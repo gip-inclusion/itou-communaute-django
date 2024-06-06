@@ -75,7 +75,7 @@ class StatistiquesPageView(TemplateView):
         return context
 
 
-class MonthlyVisitorsViews(TemplateView):
+class MonthlyVisitorsView(TemplateView):
     template_name = "forum_stats/monthly_visitors.html"
 
     def get_monthly_visitors(self):

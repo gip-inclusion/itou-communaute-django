@@ -116,7 +116,7 @@ class StatistiquesPageTest(TestCase):
     def test_navigation(self):
         url = reverse("forum_stats:statistiques")
         response = self.client.get(url)
-        self.assertContains(response, "<a href=/statistiques/monthly-visitors/>")
+        self.assertContains(response, f"<a href={reverse('forum_stats:monthly_visitors')}>")
 
 
 class TestMonthlyVisitorsView:
@@ -162,4 +162,6 @@ class TestMonthlyVisitorsView:
         url = reverse("forum_stats:monthly_visitors")
         response = client.get(url)
         assert response.status_code == 200
-        assertContains(response, '<a href="/statistiques/">retour vers la page statistiques</a>')
+        assertContains(
+            response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
+        )
