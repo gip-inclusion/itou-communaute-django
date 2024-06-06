@@ -1,3 +1,5 @@
+import datetime
+
 import factory
 import factory.django
 
@@ -13,3 +15,11 @@ class StatFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Stat
+
+    class Params:
+        for_dsp_snapshot = factory.Trait(
+            date=datetime.date(2024, 5, 17),
+            name="dsp",
+            value=46,
+            period="day",
+        )
