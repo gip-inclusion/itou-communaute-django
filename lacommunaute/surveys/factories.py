@@ -1,4 +1,5 @@
 import factory
+from dateutil.relativedelta import relativedelta
 
 from lacommunaute.surveys.models import DSP
 from lacommunaute.surveys.recommendations import get_recommendations
@@ -75,3 +76,9 @@ class DSPFactory(factory.django.DjangoModelFactory):
     def recommendations(obj, create, extracted, **kwargs):
         if create and isinstance(extracted, int):
             obj.recommendations.set(get_recommendations(obj))
+
+    @factory.post_generation
+    def months_ago(obj, create, extracted, **kwargs):
+        if create and isinstance(extracted, int):
+            obj.created = obj.created - relativedelta(months=extracted)
+            obj.save()
