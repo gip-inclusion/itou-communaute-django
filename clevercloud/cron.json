@@ -2,6 +2,7 @@
     "0 3 * * 0 $ROOT/clevercloud/extract_tables.sh",
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
     "0 5 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
+    "3 5 * * * $ROOT/clevercloud/collect_daily_django_stats.sh",
     "5 5 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
     "5 7-21 * * * $ROOT/clevercloud/send_notifs_when_first_reply.sh",
     "5 6 * * * $ROOT/clevercloud/send_notifs_when_following_replies.sh",
