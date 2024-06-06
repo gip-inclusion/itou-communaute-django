@@ -42,6 +42,10 @@ msgstr "Contenu"
 msgid "Block Reason"
 msgstr "Motif du blocage"
 
+#: lacommunaute/search/forms.py:24
+msgid "Keywords or phrase"
+msgstr "Mots clés ou phrase"
+
 msgid "This topic type has been changed successfully."
 msgstr "Le type du sujet a été modifié avec succès."
 
