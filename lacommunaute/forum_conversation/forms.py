@@ -5,8 +5,8 @@ from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, 
 from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
-from lacommunaute.forum_conversation.models import Post
-from lacommunaute.forum_moderation.utils import check_post_approbation
+from lacommunaute.forum_conversation.models import BlockedPost, Post
+from lacommunaute.forum_moderation.utils import BlockedPostReason, check_post_approbation
 
 
 class CreateUpdatePostMixin:
@@ -18,6 +18,10 @@ class CreateUpdatePostMixin:
             )
             if not post.approved:
                 self.add_error(None, "Votre message ne respecte pas les règles de la communauté.")
+
+                # track the blocked post if it was blocked for a reason we're tracking
+                if post.update_reason in BlockedPostReason.reasons_tracked_for_stats():
+                    BlockedPost.create_from_post(post)
         return cleaned_data
 
     def update_post(self, post):
