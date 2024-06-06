@@ -13,7 +13,6 @@ from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.utils.perms import add_public_perms_on_forum
 
@@ -59,17 +58,6 @@ class ForumView(BaseForumView):
         )
         context["loadmoretopic_suffix"] = "topicsinforum"
         context["form"] = PostForm(forum=forum, user=self.request.user)
-        context["announces"] = list(
-            self.get_forum()
-            .topics.select_related(
-                "poster",
-                "poster__forum_profile",
-                "first_post",
-                "first_post__poster",
-                "forum",
-            )
-            .filter(type=Topic.TOPIC_ANNOUNCE)
-        )
         if forum.parent and forum.is_in_documentation_area:
             context["forums"] = forum.get_siblings(include_self=True)
         return context

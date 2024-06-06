@@ -10,7 +10,6 @@ from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
@@ -31,10 +30,6 @@ class ForumViewQuerysetTest(TestCase):
         cls.view.kwargs = {"pk": cls.forum.pk}
         cls.view.request = RequestFactory().get("/")
         cls.view.request.user = cls.user
-
-    def test_excluded_announces_topics(self):
-        TopicFactory(forum=self.forum, poster=self.user, type=Topic.TOPIC_ANNOUNCE)
-        self.assertFalse(self.view.get_queryset())
 
     def test_exclude_not_approved_posts(self):
         TopicFactory(forum=self.forum, poster=self.user, approved=False)
@@ -180,7 +175,7 @@ class ForumViewTest(TestCase):
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(23):
+        with self.assertNumQueries(22):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
