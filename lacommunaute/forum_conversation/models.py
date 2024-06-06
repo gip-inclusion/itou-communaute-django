@@ -217,6 +217,10 @@ class BlockedPost(DatedModel):
         verbose_name=_("Block Reason"),
     )
 
+    class Meta:
+        verbose_name = _("Blocked Post")
+        verbose_name_plural = _("Blocked Posts")
+
     def __str__(self):
         return f"Blocked Message [{ str(self.created) }]"
 

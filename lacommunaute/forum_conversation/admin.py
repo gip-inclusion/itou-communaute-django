@@ -1,7 +1,7 @@
 from django.contrib import admin
 from machina.apps.forum_conversation.admin import TopicAdmin as BaseTopicAdmin
 
-from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
+from lacommunaute.forum_conversation.models import BlockedPost, CertifiedPost, Post, Topic
 
 
 class PostInline(admin.StackedInline):
@@ -34,6 +34,12 @@ class CertifiedPostAdmin(admin.ModelAdmin):
     )
 
 
+class BlockedPostAdmin(admin.ModelAdmin):
+    list_display = ("username", "created", "block_reason")
+    list_filter = ("block_reason",)
+
+
 admin.site.unregister(Topic)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(CertifiedPost, CertifiedPostAdmin)
+admin.site.register(BlockedPost, BlockedPostAdmin)
