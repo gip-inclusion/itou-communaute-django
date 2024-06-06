@@ -177,3 +177,38 @@ class TestMonthlyVisitorsView:
         assertContains(
             response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
         )
+
+
+class TestDailyDSPView:
+    def test_context_data(self, client, db):
+        today = localdate()
+
+        # undesired datas
+        StatFactory(name="dsp", period=Period.DAY, date=today - relativedelta(months=3), value=20)
+        StatFactory(name=faker.word(), period=Period.DAY, date=today, value=21)
+
+        # expected datas
+        StatFactory(
+            name="dsp", period=Period.DAY, date=today - relativedelta(months=3) + relativedelta(days=1), value=3
+        )
+        StatFactory(name="dsp", period=Period.DAY, date=today, value=2)
+
+        url = reverse("forum_stats:dsp")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.context["box_title"] == "Diagnostics Parcours IAE quotidiens"
+        assert response.context["stats"] == {
+            "date": [
+                (today - relativedelta(months=3) + relativedelta(days=1)).strftime("%Y-%m-%d"),
+                today.strftime("%Y-%m-%d"),
+            ],
+            "dsp": [3, 2],
+        }
+
+    def test_navigation(self, client, db):
+        url = reverse("forum_stats:dsp")
+        response = client.get(url)
+        assert response.status_code == 200
+        assertContains(
+            response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
+        )

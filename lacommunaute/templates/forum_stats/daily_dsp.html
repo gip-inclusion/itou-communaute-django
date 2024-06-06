@@ -1,0 +1,29 @@
+{% extends "./base_detail_stats.html" %}
+{% load js_filters %}
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+    <script nonce="{{ request.csp_nonce }}">
+        const ctx_stats = document.getElementById('statChart');
+        new Chart(ctx_stats, {
+            type: 'line',
+            data: {
+                labels: {{ stats.date | js }},
+                datasets: [
+                    {
+                        label: 'Diagnostics Parcours IAE',
+                        data: {{ stats.dsp | js }},
+                        borderColor: 'rgba(54, 162, 235)',
+                        backgroundColor: 'rgba(154, 208, 245)',
+                    },
+
+                ]
+            },
+            options: {
+                responsive:true,
+                cubicInterpolationMode: 'monotone',
+                tension: 0.4,
+            }
+        });
+    </script>
+{% endblock %}

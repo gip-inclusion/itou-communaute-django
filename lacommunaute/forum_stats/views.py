@@ -113,3 +113,9 @@ class MonthlyVisitorsView(BaseDetailStatsView):
     months = 9
 
 
+class DailyDSPView(BaseDetailStatsView):
+    template_name = "forum_stats/daily_dsp.html"
+    box_title = "Diagnostics Parcours IAE quotidiens"
+    indicator_names = ["dsp"]
+    period = "day"
+    months = 3
