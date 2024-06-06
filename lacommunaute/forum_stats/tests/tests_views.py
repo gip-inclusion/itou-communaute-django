@@ -146,7 +146,8 @@ class TestMonthlyVisitorsView:
         response = client.get(url)
         assert response.status_code == 200
         assertContains(response, "Utilisateurs uniques mensuels")
-        assert response.context["monthly_visitors"] == empty_res
+        assert response.context["box_title"] == "Utilisateurs uniques mensuels"
+        assert response.context["stats"] == empty_res
 
         # undesired data
         StatFactory(name="nb_uniq_visitors_returning", period=Period.DAY, date=today)
@@ -154,14 +155,14 @@ class TestMonthlyVisitorsView:
         StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=9), value=1)
         response = client.get(url)
         assert response.status_code == 200
-        assert response.context["monthly_visitors"] == empty_res
+        assert response.context["stats"] == empty_res
 
         # expected data
         StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today, value=2)
         StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=8), value=10)
         response = client.get(url)
         assert response.status_code == 200
-        assert response.context["monthly_visitors"] == {
+        assert response.context["stats"] == {
             "date": [(today - relativedelta(months=8)).strftime("%Y-%m-%d"), today.strftime("%Y-%m-%d")],
             "nb_uniq_visitors": [10],
             "nb_uniq_active_visitors": [],

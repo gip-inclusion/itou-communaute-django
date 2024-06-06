@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+{% load str_filters %}
+{% load static %}
+{% block title %}Statistiques{{ block.super }}{% endblock %}
+{% block body_class %}p-statistiques{{ block.super }}{% endblock %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>Statistiques</strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>{{ box_title }}</h2>
+                        <canvas id="statChart"></canvas>
+                        <p class="mt-1">
+                            <small>
+                                <a href="{% url 'forum_stats:statistiques' %}">retour vers la page statistiques</a>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_js %}{{ block.super }}{% endblock %}
