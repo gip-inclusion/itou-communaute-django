@@ -1,8 +1,11 @@
 from django.urls import path
 
-from lacommunaute.forum_stats.views import StatistiquesPageView
+from lacommunaute.forum_stats.views import MonthlyVisitorsViews, StatistiquesPageView
 
 
 app_name = "forum_stats"
 
-urlpatterns = [path("", StatistiquesPageView.as_view(), name="statistiques")]
+urlpatterns = [
+    path("", StatistiquesPageView.as_view(), name="statistiques"),
+    path("monthly-visitors/", MonthlyVisitorsViews.as_view(), name="monthly_visitors"),
+]

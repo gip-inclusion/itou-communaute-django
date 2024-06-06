@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -5,6 +6,7 @@ from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from faker import Faker
 from machina.core.loading import get_class
+from pytest_django.asserts import assertContains
 
 from lacommunaute.forum_stats.enums import Period
 from lacommunaute.forum_stats.factories import StatFactory
@@ -110,3 +112,54 @@ class StatistiquesPageTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["impact"]["date"][0], today.strftime("%Y-%m-%d"))
         self.assertEqual(response.context["impact"]["nb_uniq_visitors_returning"][0], 1)
+
+    def test_navigation(self):
+        url = reverse("forum_stats:statistiques")
+        response = self.client.get(url)
+        self.assertContains(response, "<a href=/statistiques/monthly-visitors/>")
+
+
+class TestMonthlyVisitorsView:
+    def test_context_data(self, client, db):
+        url = reverse("forum_stats:monthly_visitors")
+        today = localdate()
+        empty_res = {
+            "date": [],
+            "nb_uniq_visitors": [],
+            "nb_uniq_active_visitors": [],
+            "nb_uniq_engaged_visitors": [],
+            "nb_uniq_visitors_returning": [],
+        }
+
+        # no data
+        response = client.get(url)
+        assert response.status_code == 200
+        assertContains(response, "Utilisateurs uniques mensuels")
+        assert response.context["monthly_visitors"] == empty_res
+
+        # undesired data
+        StatFactory(name="nb_uniq_visitors_returning", period=Period.DAY, date=today)
+        StatFactory(name=faker.word(), period=Period.MONTH, date=today)
+        StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=9), value=1)
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.context["monthly_visitors"] == empty_res
+
+        # expected data
+        StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today, value=2)
+        StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=8), value=10)
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.context["monthly_visitors"] == {
+            "date": [(today - relativedelta(months=8)).strftime("%Y-%m-%d"), today.strftime("%Y-%m-%d")],
+            "nb_uniq_visitors": [10],
+            "nb_uniq_active_visitors": [],
+            "nb_uniq_engaged_visitors": [],
+            "nb_uniq_visitors_returning": [2],
+        }
+
+    def test_navigation(self, client, db):
+        url = reverse("forum_stats:monthly_visitors")
+        response = client.get(url)
+        assert response.status_code == 200
+        assertContains(response, '<a href="/statistiques/">retour vers la page statistiques</a>')
