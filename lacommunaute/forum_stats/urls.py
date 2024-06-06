@@ -7,5 +7,5 @@ app_name = "forum_stats"
 
 urlpatterns = [
     path("", StatistiquesPageView.as_view(), name="statistiques"),
-    path("monthly_visitors/", MonthlyVisitorsViews.as_view(), name="monthly_visitors"),
+    path("monthly-visitors/", MonthlyVisitorsViews.as_view(), name="monthly_visitors"),
 ]
