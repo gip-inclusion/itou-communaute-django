@@ -5,7 +5,9 @@ from machina.apps.forum_moderation.views import (
     TopicDeleteView as BaseTopicDeleteView,
 )
 
+from lacommunaute.forum_conversation.models import BlockedPost
 from lacommunaute.forum_moderation.models import BlockedEmail
+from lacommunaute.forum_moderation.utils import BlockedPostReason
 
 
 class TopicDeleteView(BaseTopicDeleteView):
@@ -31,3 +33,12 @@ class PostDisapproveView(BasePostDisapproveView):
                     "l'adresse email de l'utilisateur est déjà dans la liste des emails bloqués.",
                 )
         return self.disapprove(request, *args, **kwargs)
+
+    def disapprove(self, request, *args, **kwargs):
+        """
+        Extends Machina's post disapproval behaviour to save the rejected post before deleting
+        """
+        self.object = self.get_object()
+        self.object.update_reason = BlockedPostReason.MODERATOR_DISAPPROVAL.value
+        BlockedPost.create_from_post(self.object)
+        return super().disapprove(request, *args, **kwargs)
