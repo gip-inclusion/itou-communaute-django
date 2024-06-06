@@ -10,7 +10,9 @@ from pytest_django.asserts import assertContains
 
 from lacommunaute.forum_stats.enums import Period
 from lacommunaute.forum_stats.factories import StatFactory
+from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.utils.math import percent
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
@@ -117,6 +119,15 @@ class StatistiquesPageTest(TestCase):
         url = reverse("forum_stats:statistiques")
         response = self.client.get(url)
         self.assertContains(response, f"<a href={reverse('forum_stats:monthly_visitors')}>")
+
+
+class TestStatistiquesPageView:
+    def test_dsp_count(self, client, db, snapshot):
+        DSPFactory.create_batch(10)
+        url = reverse("forum_stats:statistiques")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector="#daily_dsp")) == snapshot(name="dsp")
 
 
 class TestMonthlyVisitorsView:

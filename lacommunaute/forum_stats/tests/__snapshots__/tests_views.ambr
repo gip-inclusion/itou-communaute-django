@@ -1,0 +1,16 @@
+# serializer version: 1
+# name: TestStatistiquesPageView.test_dsp_count[dsp]
+  '''
+  <div class="s-section__row row" id="daily_dsp">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <h2>10 Diagnostiques Parcours IAE</h2>
+                          <p>réalisés sur la communauté de l'inclusion depuis le 24 février 2024</p>
+                          <small>
+                              <a href="/statistiques/dsp/">Voir les détails</a>
+                          </small>
+                      </div>
+                  </div>
+              </div>
+  '''
+# ---

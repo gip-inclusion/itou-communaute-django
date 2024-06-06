@@ -9,6 +9,7 @@ from django.utils.timezone import localdate
 from django.views.generic.base import TemplateView
 
 from lacommunaute.forum_stats.models import Stat
+from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
 from lacommunaute.utils.math import percent
 
@@ -66,10 +67,14 @@ class StatistiquesPageView(TemplateView):
         )
         return extract_values_in_list(datas, indicator_names)
 
+    def get_dsp_count(self):
+        return DSP.objects.count()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["stats"] = self.get_daily_stats()
         context["impact"] = self.get_monthly_visitors()
+        context["dsp_count"] = self.get_dsp_count()
         context = {**context, **self.get_funnel_data()}
 
         return context
