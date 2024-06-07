@@ -21,9 +21,7 @@ def test_post_disapprove_view(client, db):
 
     # the original Post should be deleted, but a BlockedPost saved
     assert Post.objects.count() == 0
-    blocked_posts = BlockedPost.objects.all()
-    assert blocked_posts.count() == 1
-    blocked_post = blocked_posts.first()
+    blocked_post = BlockedPost.objects.get()
     assert blocked_post.content == str(disapproved_post.content)
     assert blocked_post.username == disapproved_post.username
     assert blocked_post.block_reason == BlockedPostReason.MODERATOR_DISAPPROVAL.value

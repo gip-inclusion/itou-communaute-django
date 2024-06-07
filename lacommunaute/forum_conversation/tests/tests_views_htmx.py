@@ -388,9 +388,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertEqual(self.topic.posts.count(), 2)
 
         # the blocked post should be recorded in the database
-        blocked_posts = BlockedPost.objects.all()
-        assert blocked_posts.count() == 1
-        blocked_post = blocked_posts.first()
+        blocked_post = BlockedPost.objects.get()
         assert blocked_post.content == self.content
         assert blocked_post.username == username
         assert blocked_post.block_reason == BlockedPostReason.BLOCKED_USER.value
@@ -418,9 +416,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertEqual(self.topic.posts.count(), 1)
 
         # the blocked post should be recorded in the database
-        blocked_posts = BlockedPost.objects.all()
-        assert blocked_posts.count() == 1
-        blocked_post = blocked_posts.first()
+        blocked_post = BlockedPost.objects.get()
         assert blocked_post.content == "популярные лучшие песни слушать онлайн"
         assert blocked_post.block_reason == BlockedPostReason.ALTERNATIVE_LANGUAGE.value
 
@@ -450,8 +446,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertEqual(self.topic.posts.count(), 1)
 
         # we don't create a BlockedPost record for HTML content to avoid storing malicious code
-        blocked_posts = BlockedPost.objects.all()
-        assert blocked_posts.count() == 0
+        assert BlockedPost.objects.count() == 0
 
     def test_create_post_with_blocked_domain_name(self):
         BlockedDomainNameFactory(domain="blocked.com")
@@ -478,9 +473,7 @@ class PostFeedCreateViewTest(TestCase):
         self.assertEqual(self.topic.posts.count(), 1)
 
         # the blocked post should be recorded in the database
-        blocked_posts = BlockedPost.objects.all()
-        assert blocked_posts.count() == 1
-        blocked_post = blocked_posts.first()
+        blocked_post = BlockedPost.objects.get()
         assert blocked_post.content == "la communauté"
         assert blocked_post.username == "spam@blocked.com"
         assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN.value
