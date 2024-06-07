@@ -21,7 +21,6 @@ class CreateUpdatePostMixin:
             if not post.approved:
                 self.add_error(None, "Votre message ne respecte pas les règles de la communauté.")
 
-                # track the blocked post if it was blocked for a reason we're tracking
                 if post.update_reason in BlockedPostReason.reasons_tracked_for_stats():
                     BlockedPost.create_from_post(post)
         return cleaned_data
