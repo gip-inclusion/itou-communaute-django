@@ -6,8 +6,9 @@ from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedPost
-from lacommunaute.forum_moderation.utils import BlockedPostReason, check_post_approbation
+from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
 class CreateUpdatePostMixin:
