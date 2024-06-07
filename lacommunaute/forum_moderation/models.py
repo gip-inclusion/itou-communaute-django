@@ -67,6 +67,6 @@ class BlockedPost(DatedModel):
         return cls.objects.create(
             poster=post.poster,
             username=getattr(post, "username", ""),
-            content=post.content,
+            content=str(post.content),
             block_reason=post.update_reason,
         )
