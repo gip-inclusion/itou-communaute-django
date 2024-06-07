@@ -31,13 +31,8 @@ class PostDisapproveView(BasePostDisapproveView):
                     self.request,
                     "l'adresse email de l'utilisateur est déjà dans la liste des emails bloqués.",
                 )
-        return self.disapprove(request, *args, **kwargs)
 
-    def disapprove(self, request, *args, **kwargs):
-        """
-        Extends Machina's post disapproval behaviour to save the rejected post before deleting
-        """
-        self.object = self.get_object()
-        self.object.update_reason = BlockedPostReason.MODERATOR_DISAPPROVAL.value
-        BlockedPost.create_from_post(self.object)
-        return super().disapprove(request, *args, **kwargs)
+        post.update_reason = BlockedPostReason.MODERATOR_DISAPPROVAL.value
+        BlockedPost.create_from_post(post)
+
+        return self.disapprove(request, *args, **kwargs)
