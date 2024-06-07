@@ -1,7 +1,7 @@
 import pytest  # noqa
 from lacommunaute.forum_conversation.factories import TopicFactory, AnonymousPostFactory
-from lacommunaute.forum_conversation.models import Post, BlockedPost
-from lacommunaute.forum_moderation.models import BlockedEmail
+from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_moderation.models import BlockedEmail, BlockedPost
 from lacommunaute.users.factories import UserFactory
 from django.urls import reverse
 from lacommunaute.forum_moderation.factories import BlockedEmailFactory

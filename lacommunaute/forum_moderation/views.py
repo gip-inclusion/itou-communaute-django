@@ -5,8 +5,7 @@ from machina.apps.forum_moderation.views import (
     TopicDeleteView as BaseTopicDeleteView,
 )
 
-from lacommunaute.forum_conversation.models import BlockedPost
-from lacommunaute.forum_moderation.models import BlockedEmail
+from lacommunaute.forum_moderation.models import BlockedEmail, BlockedPost
 from lacommunaute.forum_moderation.utils import BlockedPostReason
 
 

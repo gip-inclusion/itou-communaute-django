@@ -9,9 +9,10 @@ from taggit.models import Tag
 
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
-from lacommunaute.forum_conversation.models import BlockedPost, CertifiedPost, Topic
+from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
+from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_moderation.utils import BlockedPostReason
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory

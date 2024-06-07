@@ -199,38 +199,3 @@ class CertifiedPost(DatedModel):
         if self.topic != self.post.topic:
             raise ValueError("The post is not link to the topic")
         super().save(*args, **kwargs)
-
-
-class BlockedPost(DatedModel):
-    """
-    When a user submits a Post and it is blocked by our quality control app (forum_moderation),
-    we save a record of the blocked Post in this table for reference purposes
-
-    It is built of a subset of fields from django-machina's model AbstractPost
-    """
-
-    username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
-    content = models.CharField(verbose_name=_("Content"))
-    block_reason = models.CharField(
-        blank=True,
-        null=True,
-        verbose_name=_("Block Reason"),
-    )
-
-    class Meta:
-        verbose_name = _("Blocked Post")
-        verbose_name_plural = _("Blocked Posts")
-
-    def __str__(self):
-        return f"Blocked Message [{ str(self.created) }]"
-
-    @classmethod
-    def create_from_post(cls, post):
-        """
-        Creates a BlockedPost object from parameterised Post (machina)
-        """
-        return cls.objects.create(
-            username=getattr(post, "username", ""),
-            content=post.content,
-            block_reason=post.update_reason,
-        )
