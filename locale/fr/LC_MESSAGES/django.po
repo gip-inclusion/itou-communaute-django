@@ -28,11 +28,11 @@ msgstr "Messages certifiés"
 
 #: lacommunaute/forum_conversation/models.py
 msgid "Blocked Post"
-msgstr "Poste Bloquée"
+msgstr "Message bloqué"
 
 #: lacommunaute/forum_conversation/models.py
 msgid "Blocked Posts"
-msgstr "Postes Bloquées"
+msgstr "Messages bloqués"
 
 #: lacommunaute/forum_conversation/models.py
 msgid "Content"
