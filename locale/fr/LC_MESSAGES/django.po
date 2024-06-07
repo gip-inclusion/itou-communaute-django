@@ -26,21 +26,25 @@ msgstr "Message certifié"
 msgid "Certified Posts"
 msgstr "Messages certifiés"
 
-#: lacommunaute/forum_conversation/models.py
-msgid "Blocked Post"
-msgstr "Message bloqué"
-
-#: lacommunaute/forum_conversation/models.py
-msgid "Blocked Posts"
-msgstr "Messages bloqués"
-
-#: lacommunaute/forum_conversation/models.py
+#: lacommunaute/forum_moderation/models.py
 msgid "Content"
 msgstr "Contenu"
 
-#: lacommunaute/forum_conversation/models.py
+#: lacommunaute/forum_moderation/models.py
+msgid "Blocked Post"
+msgstr "Message bloqué"
+
+#: lacommunaute/forum_moderation/models.py
+msgid "Blocked Posts"
+msgstr "Messages bloqués"
+
+#: lacommunaute/forum_moderation/models.py
 msgid "Block Reason"
 msgstr "Motif du blocage"
+
+#: lacommunaute/forum_moderation/models.py
+msgid "Poster"
+msgstr "Auteur"
 
 #: lacommunaute/search/forms.py:24
 msgid "Keywords or phrase"

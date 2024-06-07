@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
@@ -35,6 +36,14 @@ class BlockedPost(DatedModel):
     It is built of a subset of fields from django-machina's model AbstractPost
     """
 
+    poster = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="blocked_posts",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name=_("Poster"),
+    )
     username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
     content = models.CharField(verbose_name=_("Content"))
     block_reason = models.CharField(
@@ -56,6 +65,7 @@ class BlockedPost(DatedModel):
         Creates a BlockedPost object from parameterised Post (machina)
         """
         return cls.objects.create(
+            poster=post.poster,
             username=getattr(post, "username", ""),
             content=post.content,
             block_reason=post.update_reason,

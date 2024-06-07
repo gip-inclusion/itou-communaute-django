@@ -417,6 +417,7 @@ class PostFeedCreateViewTest(TestCase):
 
         # the blocked post should be recorded in the database
         blocked_post = BlockedPost.objects.get()
+        assert blocked_post.poster == self.user
         assert blocked_post.content == "популярные лучшие песни слушать онлайн"
         assert blocked_post.block_reason == BlockedPostReason.ALTERNATIVE_LANGUAGE.value
 
