@@ -13,6 +13,7 @@ from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.utils.perms import add_public_perms_on_forum
 
@@ -22,22 +23,16 @@ logger = logging.getLogger(__name__)
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 
 
-class ForumView(BaseForumView):
+class ForumView(BaseForumView, FilteredTopicsListViewMixin):
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
 
-    def get_tags(self):
-        if not hasattr(self, "tags"):
-            self.tags = self.request.GET.get("tags", "").lower()
-        return self.tags
+    def get_template_names(self):
+        if self.request.META.get("HTTP_HX_REQUEST"):
+            return ["forum_conversation/topic_list.html"]
+        return ["forum/forum_detail.html"]
 
     def get_queryset(self):
-        forum = self.get_forum()
-        qs = forum.topics.optimized_for_topics_list(self.request.user.id)
-
-        if self.get_tags():
-            qs = qs.filter(tags__slug__in=self.get_tags().split(","))
-
-        return qs
+        return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
 
     def get_context_data(self, **kwargs):
         forum = self.get_forum()
@@ -53,11 +48,19 @@ class ForumView(BaseForumView):
         context["forum"] = forum
         context["FORUM_NUMBER_POSTS_PER_TOPIC"] = settings.FORUM_NUMBER_POSTS_PER_TOPIC
         context["next_url"] = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
-        context["loadmoretopic_url"] = reverse(
-            "forum_conversation_extension:topic_list", kwargs={"forum_pk": forum.pk, "forum_slug": self.forum.slug}
+        context["loadmoretopic_url"] = self.get_load_more_url(
+            reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         )
         context["loadmoretopic_suffix"] = "topicsinforum"
         context["form"] = PostForm(forum=forum, user=self.request.user)
+
+        context["filter_dropdown_endpoint"] = (
+            None
+            if self.request.GET.get("page")
+            else reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
+        )
+        context = context | self.get_topic_filter_context(self.get_queryset().count())
+
         if forum.parent and forum.is_in_documentation_area:
             context["forums"] = forum.get_siblings(include_self=True)
         return context

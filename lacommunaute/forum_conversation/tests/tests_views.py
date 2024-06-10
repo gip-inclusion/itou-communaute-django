@@ -921,11 +921,11 @@ class TopicListViewTest(TestCase):
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
         self.assertContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["display_filter_dropdown"], True)
+        self.assertEqual(response.context_data["filter_dropdown_endpoint"], self.url)
 
         response = self.client.get(self.url + "?page=1")
         self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["display_filter_dropdown"], False)
+        self.assertEqual(response.context_data["filter_dropdown_endpoint"], None)
 
     def test_filter_dropdown_with_tags(self):
         tag = Tag.objects.create(name=faker.words(nb=3))

@@ -1,5 +1,4 @@
 import logging
-from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib import messages
@@ -7,14 +6,13 @@ from django.urls import reverse
 from django.views.generic import ListView
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
-from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
-from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 
 
 logger = logging.getLogger(__name__)
@@ -97,7 +95,7 @@ class TopicView(views.TopicView):
         return get_posts_of_a_topic_except_first_one(self.topic, self.request.user)
 
 
-class TopicListView(ListView):
+class TopicListView(ListView, FilteredTopicsListViewMixin):
     context_object_name = "topics"
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
 
@@ -106,56 +104,23 @@ class TopicListView(ListView):
             return ["forum_conversation/topic_list.html"]
         return ["forum_conversation/topics_public.html"]
 
-    def get_filter(self):
-        if not hasattr(self, "filter"):
-            self.filter = self.request.GET.get("filter", None)
-        return self.filter
-
-    def get_tags(self, flat=None):
-        if not hasattr(self, "tags"):
-            self.tags = Tag.objects.filter(slug__in=self.request.GET.get("tags", "").lower().split(","))
-
-        if flat == "name":
-            return " ou ".join(self.tags.values_list("name", flat=True))
-        if flat == "slug":
-            return ",".join(self.tags.values_list("slug", flat=True))
-        return self.tags
-
     def get_queryset(self):
-        qs = Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM).optimized_for_topics_list(self.request.user.id)
-
-        if self.get_filter() == Filters.NEW:
-            qs = qs.unanswered()
-        elif self.get_filter() == Filters.CERTIFIED:
-            qs = qs.filter(certified_post__isnull=False)
-
-        if self.get_tags():
-            qs = qs.filter(tags__in=self.get_tags())
-
-        return qs
+        return self.filter_queryset(
+            Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM).optimized_for_topics_list(self.request.user.id)
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = PostForm(user=self.request.user)
 
-        encoded_params = urlencode(
-            {k: v for k, v in {"filter": self.get_filter(), "tags": self.get_tags(flat="slug")}.items() if v}
+        context["loadmoretopic_url"] = self.get_load_more_url(reverse("forum_conversation_extension:topics"))
+        context["filter_dropdown_endpoint"] = (
+            None if self.request.GET.get("page") else reverse("forum_conversation_extension:topics")
         )
-        context["loadmoretopic_url"] = reverse("forum_conversation_extension:topics")
-        if encoded_params:
-            context["loadmoretopic_url"] += f"?{encoded_params}"
-
-        context["active_filter_name"] = (
-            getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
-        )
-        context["active_tags"] = self.get_tags(flat="slug")
-        context["active_tags_label"] = self.get_tags(flat="name")
-        context["display_filter_dropdown"] = False if self.request.GET.get("page") else True
 
         context["loadmoretopic_suffix"] = "topics"
-        context["total"] = self.get_queryset().count()
-        context["filters"] = Filters.choices
         context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
+        context = context | self.get_topic_filter_context(self.get_queryset().count())
 
         return context
 
