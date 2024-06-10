@@ -89,11 +89,11 @@
             <div class="s-section__row row" id="daily_dsp">
                 <div class="s-section__col col-12">
                     <div class="c-box mb-3 mb-md-5">
-                        <h2>{{ dsp_count }} Diagnostiques Parcours IAE</h2>
-                        <p>réalisé{{ dsp_count|pluralizefr }} sur la communauté de l'inclusion depuis le 24 février 2024</p>
-                        <small>
-                            <a href={% url 'forum_stats:dsp' %}>Voir les détails</a>
-                        </small>
+                        <h2>{{ dsp_count }} Diagnostique{{ dsp_count|pluralizefr }} Parcours IAE</h2>
+                        <p>
+                            Réalisé{{ dsp_count|pluralizefr }} sur la communauté de l'inclusion depuis le 24 février 2024
+                            <span class="fs-sm">(<a href={% url 'forum_stats:dsp' %}>Voir les détails</a>)</span>
+                        </p>
                     </div>
                 </div>
             </div>
