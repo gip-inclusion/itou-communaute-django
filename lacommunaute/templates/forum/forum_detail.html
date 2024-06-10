@@ -163,11 +163,6 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active" id="topics-tab" data-bs-toggle="tab" href="#topics" role="tab" aria-controls="topics" aria-selected="true">Sujets</a>
                             </li>
-                            {% if announces %}
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="announces-tab" data-bs-toggle="tab" href="#announces" role="tab" aria-controls="announces" aria-selected="false">Annonces</a>
-                                </li>
-                            {% endif %}
                         </ul>
                         <div class="tab-content topiclist">
                             <div class="tab-pane fade show active" id="topics" role="tabpanel" aria-labelledby="topics-tab">
@@ -176,14 +171,6 @@
                                     <!-- note vincentporte : to be optimized -->
                                 {% endwith %}
                             </div>
-                            {% if announces %}
-                                <div class="tab-pane fade" id="announces" role="tabpanel" aria-labelledby="announces-tab">
-                                    {% with topics=announces hide_if_empty=True unread_topics=unread_topics loadmoretopic_url=None %}
-                                        {% include "forum_conversation/topic_list.html" %}
-                                        <!-- note vincentporte : to be optimized -->
-                                    {% endwith %}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>

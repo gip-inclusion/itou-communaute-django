@@ -22,6 +22,7 @@ class TopicAdmin(BaseTopicAdmin):
     inlines = [
         PostInline,
     ]
+    list_filter = BaseTopicAdmin.list_filter + ("type",)
 
 
 class CertifiedPostAdmin(admin.ModelAdmin):

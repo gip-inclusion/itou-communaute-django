@@ -25,7 +25,7 @@ class TopicQuerySet(models.QuerySet):
     def optimized_for_topics_list(self, user_id):
         return (
             self.exclude(approved=False)
-            .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY])
+            .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY, Topic.TOPIC_ANNOUNCE])
             .select_related(
                 "forum",
                 "poster",

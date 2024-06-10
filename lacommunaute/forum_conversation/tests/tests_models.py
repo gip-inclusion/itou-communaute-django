@@ -57,12 +57,14 @@ class TopicManagerTest(TestCase):
         annonce = TopicFactory(type=Topic.TOPIC_ANNOUNCE)
         sticky = TopicFactory(type=Topic.TOPIC_STICKY)
         topic = TopicFactory(type=Topic.TOPIC_POST)
+        unapproved_topic = TopicFactory(type=Topic.TOPIC_POST, approved=False)
 
         qs = Topic.objects.optimized_for_topics_list(1)
 
-        self.assertNotIn(annonce, qs)
+        self.assertIn(annonce, qs)
         self.assertIn(sticky, qs)
         self.assertIn(topic, qs)
+        self.assertNotIn(unapproved_topic, qs)
 
     def test_optimized_for_topics_list_order(self):
         topic1 = TopicFactory(with_post=True)
