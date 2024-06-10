@@ -170,13 +170,11 @@ class TestMonthlyVisitorsView:
             "nb_uniq_visitors_returning": [2],
         }
 
-    def test_navigation(self, client, db):
-        url = reverse("forum_stats:monthly_visitors")
+    def test_navigation(self, client, db, snapshot):
+        url = reverse("forum_stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
-        assertContains(
-            response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
-        )
+        assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
 
 
 class TestDailyDSPView:
@@ -205,10 +203,8 @@ class TestDailyDSPView:
             "dsp": [3, 2],
         }
 
-    def test_navigation(self, client, db):
+    def test_navigation(self, client, db, snapshot):
         url = reverse("forum_stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
-        assertContains(
-            response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
-        )
+        assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
