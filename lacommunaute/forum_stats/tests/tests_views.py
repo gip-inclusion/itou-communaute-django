@@ -10,7 +10,9 @@ from pytest_django.asserts import assertContains
 
 from lacommunaute.forum_stats.enums import Period
 from lacommunaute.forum_stats.factories import StatFactory
+from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.utils.math import percent
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
@@ -119,6 +121,15 @@ class StatistiquesPageTest(TestCase):
         self.assertContains(response, f"<a href={reverse('forum_stats:monthly_visitors')}>")
 
 
+class TestStatistiquesPageView:
+    def test_dsp_count(self, client, db, snapshot):
+        DSPFactory.create_batch(10)
+        url = reverse("forum_stats:statistiques")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector="#daily_dsp")) == snapshot(name="dsp")
+
+
 class TestMonthlyVisitorsView:
     def test_context_data(self, client, db):
         url = reverse("forum_stats:monthly_visitors")
@@ -135,7 +146,8 @@ class TestMonthlyVisitorsView:
         response = client.get(url)
         assert response.status_code == 200
         assertContains(response, "Utilisateurs uniques mensuels")
-        assert response.context["monthly_visitors"] == empty_res
+        assert response.context["box_title"] == "Utilisateurs uniques mensuels"
+        assert response.context["stats"] == empty_res
 
         # undesired data
         StatFactory(name="nb_uniq_visitors_returning", period=Period.DAY, date=today)
@@ -143,14 +155,14 @@ class TestMonthlyVisitorsView:
         StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=9), value=1)
         response = client.get(url)
         assert response.status_code == 200
-        assert response.context["monthly_visitors"] == empty_res
+        assert response.context["stats"] == empty_res
 
         # expected data
         StatFactory(name="nb_uniq_visitors_returning", period=Period.MONTH, date=today, value=2)
         StatFactory(name="nb_uniq_visitors", period=Period.MONTH, date=today - relativedelta(months=8), value=10)
         response = client.get(url)
         assert response.status_code == 200
-        assert response.context["monthly_visitors"] == {
+        assert response.context["stats"] == {
             "date": [(today - relativedelta(months=8)).strftime("%Y-%m-%d"), today.strftime("%Y-%m-%d")],
             "nb_uniq_visitors": [10],
             "nb_uniq_active_visitors": [],
@@ -158,10 +170,41 @@ class TestMonthlyVisitorsView:
             "nb_uniq_visitors_returning": [2],
         }
 
-    def test_navigation(self, client, db):
-        url = reverse("forum_stats:monthly_visitors")
+    def test_navigation(self, client, db, snapshot):
+        url = reverse("forum_stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
-        assertContains(
-            response, f"<a href=\"{reverse('forum_stats:statistiques')}\">retour vers la page statistiques</a>"
+        assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
+
+
+class TestDailyDSPView:
+    def test_context_data(self, client, db):
+        today = localdate()
+
+        # undesired datas
+        StatFactory(name="dsp", period=Period.DAY, date=today - relativedelta(months=3), value=20)
+        StatFactory(name=faker.word(), period=Period.DAY, date=today, value=21)
+
+        # expected datas
+        StatFactory(
+            name="dsp", period=Period.DAY, date=today - relativedelta(months=3) + relativedelta(days=1), value=3
         )
+        StatFactory(name="dsp", period=Period.DAY, date=today, value=2)
+
+        url = reverse("forum_stats:dsp")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.context["box_title"] == "Diagnostics Parcours IAE quotidiens"
+        assert response.context["stats"] == {
+            "date": [
+                (today - relativedelta(months=3) + relativedelta(days=1)).strftime("%Y-%m-%d"),
+                today.strftime("%Y-%m-%d"),
+            ],
+            "dsp": [3, 2],
+        }
+
+    def test_navigation(self, client, db, snapshot):
+        url = reverse("forum_stats:dsp")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")

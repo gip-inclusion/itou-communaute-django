@@ -1,0 +1,40 @@
+# serializer version: 1
+# name: TestDailyDSPView.test_navigation[breadcrumb]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+  '''
+# ---
+# name: TestMonthlyVisitorsView.test_navigation[breadcrumb]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+  '''
+# ---
+# name: TestStatistiquesPageView.test_dsp_count[dsp]
+  '''
+  <div class="s-section__row row" id="daily_dsp">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <h2>10 Diagnostiques Parcours IAE</h2>
+                          <p>
+                              Réalisés sur la communauté de l'inclusion depuis le 24 février 2024
+                              <span class="fs-sm">(<a href="/statistiques/dsp/">Voir les détails</a>)</span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+  '''
+# ---

@@ -1,0 +1,44 @@
+{% extends "layouts/base.html" %}
+{% load str_filters %}
+{% load static %}
+{% load i18n %}
+{% block title %}Statistiques{{ block.super }}{% endblock %}
+{% block body_class %}p-statistiques{{ block.super }}{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <nav class="c-breadcrumb" aria-label="Fil d'ariane">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">{% trans "Back to" %}</li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'forum_stats:statistiques' %}">Statistiques</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>Statistiques</strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>{{ box_title }}</h2>
+                        <canvas id="statChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_js %}{{ block.super }}{% endblock %}

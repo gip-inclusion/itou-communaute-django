@@ -9,6 +9,7 @@ from django.utils.timezone import localdate
 from django.views.generic.base import TemplateView
 
 from lacommunaute.forum_stats.models import Stat
+from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
 from lacommunaute.utils.math import percent
 
@@ -66,35 +67,55 @@ class StatistiquesPageView(TemplateView):
         )
         return extract_values_in_list(datas, indicator_names)
 
+    def get_dsp_count(self):
+        return DSP.objects.count()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["stats"] = self.get_daily_stats()
         context["impact"] = self.get_monthly_visitors()
+        context["dsp_count"] = self.get_dsp_count()
         context = {**context, **self.get_funnel_data()}
 
         return context
 
 
-class MonthlyVisitorsView(TemplateView):
-    template_name = "forum_stats/monthly_visitors.html"
-
-    def get_monthly_visitors(self):
-        indicator_names = [
-            "nb_uniq_visitors",
-            "nb_uniq_active_visitors",
-            "nb_uniq_engaged_visitors",
-            "nb_uniq_visitors_returning",
-        ]
+class BaseDetailStatsView(TemplateView):
+    def get_detailled_stats(self):
         datas = (
             Stat.objects.filter(
-                period="month", name__in=indicator_names, date__gt=localdate() - relativedelta(months=9)
+                period=self.period,
+                name__in=self.indicator_names,
+                date__gt=localdate() - relativedelta(months=self.months),
             )
             .values("name", "value")
             .annotate(date=Cast("date", CharField()))
         )
-        return extract_values_in_list(datas, indicator_names)
+        return extract_values_in_list(datas, self.indicator_names)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["monthly_visitors"] = self.get_monthly_visitors()
+        context["stats"] = self.get_detailled_stats()
+        context["box_title"] = self.box_title
         return context
+
+
+class MonthlyVisitorsView(BaseDetailStatsView):
+    template_name = "forum_stats/monthly_visitors.html"
+    box_title = "Utilisateurs uniques mensuels"
+    indicator_names = [
+        "nb_uniq_visitors",
+        "nb_uniq_active_visitors",
+        "nb_uniq_engaged_visitors",
+        "nb_uniq_visitors_returning",
+    ]
+    period = "month"
+    months = 9
+
+
+class DailyDSPView(BaseDetailStatsView):
+    template_name = "forum_stats/daily_dsp.html"
+    box_title = "Diagnostics Parcours IAE quotidiens"
+    indicator_names = ["dsp"]
+    period = "day"
+    months = 3
