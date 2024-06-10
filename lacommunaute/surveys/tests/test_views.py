@@ -7,7 +7,7 @@ from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.surveys.models import DSP
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.utils.tests import parse_response_to_soup
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 dsp_choices_list = [
