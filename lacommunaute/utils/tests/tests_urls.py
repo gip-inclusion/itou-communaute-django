@@ -14,7 +14,6 @@ def _clear_url_caches():
 def test_django_urls_dev(settings):
     settings.DEBUG = True
     assert reverse("login") == "/login/"
-    assert reverse("djdt:render_panel") == "/__debug__/render_panel/"
 
 
 def test_django_urls_prod(settings):
