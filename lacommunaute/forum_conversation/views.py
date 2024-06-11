@@ -95,7 +95,7 @@ class TopicView(views.TopicView):
         return get_posts_of_a_topic_except_first_one(self.topic, self.request.user)
 
 
-class TopicListView(ListView, FilteredTopicsListViewMixin):
+class TopicListView(FilteredTopicsListViewMixin, ListView):
     context_object_name = "topics"
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
 
