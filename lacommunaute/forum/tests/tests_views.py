@@ -91,6 +91,13 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url + "?filter=FAKE")
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
 
+    def test_template_name(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "forum/forum_detail.html")
+
+        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
+        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+
     def test_show_comments(self):
         topic_url = reverse(
             "forum_conversation_extension:showmore_posts",
