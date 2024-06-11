@@ -950,7 +950,8 @@ class TopicListViewTest(TestCase):
         self.assertContains(
             response,
             (
-                f'<a href="{self.url}?tags={tag.slug}"><span class="badge badge-xs rounded-pill bg-info-lighter '
+                f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
+                '<span class="badge badge-xs rounded-pill bg-info-lighter '
                 f'text-info">{ tag.name }</span></a>'
             ),
         )
