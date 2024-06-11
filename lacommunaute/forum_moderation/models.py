@@ -46,11 +46,7 @@ class BlockedPost(DatedModel):
     )
     username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
     content = models.CharField(verbose_name=_("Content"))
-    block_reason = models.CharField(
-        blank=True,
-        null=True,
-        verbose_name=_("Block Reason"),
-    )
+    block_reason = models.CharField(verbose_name=_("Block Reason"))
 
     class Meta:
         verbose_name = _("Blocked Post")

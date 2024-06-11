@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ),
                 ("username", models.EmailField(blank=True, max_length=254, null=True, verbose_name="Adresse email")),
                 ("content", models.CharField(verbose_name="Content")),
-                ("block_reason", models.CharField(blank=True, null=True, verbose_name="Block Reason")),
+                ("block_reason", models.CharField(verbose_name="Block Reason")),
             ],
             options={
                 "verbose_name": "Blocked Post",
