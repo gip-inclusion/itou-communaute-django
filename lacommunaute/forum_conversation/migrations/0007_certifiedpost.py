@@ -51,6 +51,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 "ordering": ["-created"],
+                "verbose_name": "Certified Post",
+                "verbose_name_plural": "Certified Posts",
             },
         ),
         migrations.RunSQL(

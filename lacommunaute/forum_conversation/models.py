@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Count, F, Q
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from machina.models.abstract_models import DatedModel
 from taggit.managers import TaggableManager
@@ -188,6 +189,8 @@ class CertifiedPost(DatedModel):
         ordering = [
             "-created",
         ]
+        verbose_name = _("Certified Post")
+        verbose_name_plural = _("Certified Posts")
 
     def __str__(self):
         return f"{self.post} - {self.topic} - {self.user}"
