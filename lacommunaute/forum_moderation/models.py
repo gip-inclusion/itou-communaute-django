@@ -44,7 +44,7 @@ class BlockedPost(DatedModel):
         on_delete=models.CASCADE,
         verbose_name=_("Poster"),
     )
-    username = models.EmailField(blank=True, null=True, verbose_name=("Adresse email"))
+    username = models.EmailField(verbose_name=("Adresse email"))
     content = models.CharField(verbose_name=_("Content"))
     block_reason = models.CharField(verbose_name=_("Block Reason"))
 
