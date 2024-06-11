@@ -956,6 +956,18 @@ class TopicListViewTest(TestCase):
             ),
         )
 
+        TopicFactory.create_batch(10, with_post=True, forum=self.forum)
+        response = self.client.get(self.url + "?page=2")
+        self.assertContains(
+            response,
+            (
+                f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
+                '<span class="badge badge-xs rounded-pill bg-info-lighter '
+                f'text-info">{ tag.name }</span></a>'
+            ),
+            status_code=200,
+        )
+
 
 class TestPosterTemplate:
     def test_topic_in_topics_view(self, client, db, snapshot):
