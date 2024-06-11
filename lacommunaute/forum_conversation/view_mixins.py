@@ -28,12 +28,17 @@ class FilteredTopicsListViewMixin:
 
     def get_tags(self, flat=None):
         if not hasattr(self, "tags"):
-            self.tags = Tag.objects.filter(slug__in=self.request.GET.get("tags", "").lower().split(","))
+            try:
+                request_tags = self.request.GET["tags"]
+            except KeyError:
+                self.tags = Tag.objects.none()
+            else:
+                self.tags = Tag.objects.filter(slug__in=request_tags.lower().split(","))
 
         if flat == "name":
-            return " ou ".join(self.tags.values_list("name", flat=True))
+            return " ou ".join(tag.name for tag in self.tags)
         if flat == "slug":
-            return ",".join(self.tags.values_list("slug", flat=True))
+            return ",".join(tag.slug for tag in self.tags)
         return self.tags
 
     def get_url_encoded_params(self):
