@@ -18,6 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2\n"
 
+#: lacommunaute/forum_conversation/models.py
+msgid "Certified Post"
+msgstr "Message certifié"
+
+#: lacommunaute/forum_conversation/models.py
+msgid "Certified Posts"
+msgstr "Messages certifiés"
+
 msgid "This topic type has been changed successfully."
 msgstr "Le type du sujet a été modifié avec succès."
 
