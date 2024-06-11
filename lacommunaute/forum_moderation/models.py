@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
 
+from lacommunaute.forum_moderation.enums import BlockedPostReason
+
 
 class BlockedEmail(DatedModel):
     email = models.EmailField(verbose_name="email", null=False, blank=False, unique=True)
@@ -46,7 +48,7 @@ class BlockedPost(DatedModel):
     )
     username = models.EmailField(null=True, blank=True, verbose_name=("Adresse email"))
     content = models.CharField(verbose_name=_("Content"))
-    block_reason = models.CharField(verbose_name=_("Block Reason"))
+    block_reason = models.CharField(verbose_name=_("Block Reason"), choices=BlockedPostReason)
 
     class Meta:
         verbose_name = _("Blocked Post")

@@ -29,7 +29,19 @@ class Migration(migrations.Migration):
                 ),
                 ("username", models.EmailField(max_length=254, null=True, blank=True, verbose_name="Adresse email")),
                 ("content", models.CharField(verbose_name="Content")),
-                ("block_reason", models.CharField(verbose_name="Block Reason")),
+                (
+                    "block_reason",
+                    models.CharField(
+                        choices=[
+                            ("HTML_TAGS", "HTML tags detected"),
+                            ("ALTERNATIVE_LANGUAGE", "Alternative Language detected"),
+                            ("BLOCKED_DOMAIN", "Blocked Domain detected"),
+                            ("BLOCKED_USER", "Blocked Email detected"),
+                            ("MODERATOR_DISAPPROVAL", "Moderator disapproval"),
+                        ],
+                        verbose_name="Block Reason",
+                    ),
+                ),
             ],
             options={
                 "verbose_name": "Blocked Post",

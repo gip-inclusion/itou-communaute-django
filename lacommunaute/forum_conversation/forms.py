@@ -24,7 +24,7 @@ class CreateUpdatePostMixin:
                 if self.user.is_authenticated:
                     post.poster = self.user
 
-                if post.update_reason in BlockedPostReason.reasons_tracked_for_stats():
+                if post.update_reason in [x.label for x in BlockedPostReason.reasons_tracked_for_stats()]:
                     BlockedPost.create_from_post(post)
         return cleaned_data
 

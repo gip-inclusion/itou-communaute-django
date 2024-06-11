@@ -18,13 +18,13 @@ def check_post_approbation(post):
     conditions = [
         (
             post.username and BlockedDomainName.objects.filter(domain=post.username.split("@")[-1]).exists(),
-            BlockedPostReason.BLOCKED_DOMAIN.value,
+            BlockedPostReason.BLOCKED_DOMAIN.label,
         ),
-        (Markdown.html_removed_text_compat in rendered, BlockedPostReason.HTML_TAGS.value),
-        (detect(post.content.raw) not in settings.LANGUAGE_CODE, BlockedPostReason.ALTERNATIVE_LANGUAGE.value),
+        (Markdown.html_removed_text_compat in rendered, BlockedPostReason.HTML_TAGS.label),
+        (detect(post.content.raw) not in settings.LANGUAGE_CODE, BlockedPostReason.ALTERNATIVE_LANGUAGE.label),
         (
             post.username and BlockedEmail.objects.filter(email=post.username).exists(),
-            BlockedPostReason.BLOCKED_USER.value,
+            BlockedPostReason.BLOCKED_USER.label,
         ),
     ]
     post.approved, post.update_reason = next(

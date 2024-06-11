@@ -24,7 +24,7 @@ def test_post_disapprove_view(client, db):
     blocked_post = BlockedPost.objects.get()
     assert blocked_post.content == str(disapproved_post.content)
     assert blocked_post.username == disapproved_post.username
-    assert blocked_post.block_reason == BlockedPostReason.MODERATOR_DISAPPROVAL.value
+    assert blocked_post.block_reason == BlockedPostReason.MODERATOR_DISAPPROVAL.label
 
 
 def test_post_disapprove_view_with_existing_blocked_email(client, db):
