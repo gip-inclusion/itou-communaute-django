@@ -20,11 +20,11 @@ msgstr ""
 
 #: lacommunaute/forum_conversation/models.py
 msgid "Certified Post"
-msgstr "Messages certifié"
+msgstr "Message certifié"
 
 #: lacommunaute/forum_conversation/models.py
 msgid "Certified Posts"
-msgstr "Message certifiés"
+msgstr "Messages certifiés"
 
 msgid "This topic type has been changed successfully."
 msgstr "Le type du sujet a été modifié avec succès."
