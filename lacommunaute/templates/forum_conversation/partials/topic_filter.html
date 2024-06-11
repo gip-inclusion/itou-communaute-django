@@ -4,7 +4,7 @@
         <div class="col-12 col-sm">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
-                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }}
+                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}
                         {% if active_tags %}avec l'étiquette {{ active_tags_label }}{% endif %}
                     </span>
                 </div>

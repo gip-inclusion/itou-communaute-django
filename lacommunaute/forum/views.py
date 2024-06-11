@@ -59,7 +59,7 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
             if self.request.GET.get("page")
             else reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         )
-        context = context | self.get_topic_filter_context(self.get_queryset().count())
+        context = context | self.get_topic_filter_context()
 
         if forum.parent and forum.is_in_documentation_area:
             context["forums"] = forum.get_siblings(include_self=True)

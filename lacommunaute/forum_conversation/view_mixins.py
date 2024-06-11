@@ -55,7 +55,7 @@ class FilteredTopicsListViewMixin:
             url += f"?{encoded_params}"
         return url
 
-    def get_topic_filter_context(self, topic_count):
+    def get_topic_filter_context(self):
         return {
             "active_tags": self.get_tags(flat="slug"),
             "active_tags_label": self.get_tags(flat="name"),
@@ -63,5 +63,4 @@ class FilteredTopicsListViewMixin:
                 getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
             ),
             "filters": Filters.choices,
-            "total": topic_count,
         }

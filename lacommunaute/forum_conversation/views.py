@@ -120,7 +120,7 @@ class TopicListView(FilteredTopicsListViewMixin, ListView):
 
         context["loadmoretopic_suffix"] = "topics"
         context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
-        context = context | self.get_topic_filter_context(self.get_queryset().count())
+        context = context | self.get_topic_filter_context()
 
         return context
 

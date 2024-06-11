@@ -209,7 +209,7 @@ class ForumViewTest(TestCase):
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(23):
+        with self.assertNumQueries(22):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
@@ -449,7 +449,7 @@ class ForumViewTest(TestCase):
         tag = faker.word()
         topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
 
-        with self.assertNumQueries(20):
+        with self.assertNumQueries(19):
             response = self.client.get(
                 reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
             )
@@ -460,13 +460,13 @@ class ForumViewTest(TestCase):
         PostFactory(topic=self.topic)
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["total"], 0)
+        self.assertEqual(response.context_data["paginator"].count, 0)
         self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
 
         new_topic = TopicFactory(with_post=True, forum=self.forum)
 
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
-        self.assertEqual(response.context_data["total"], 1)
+        self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, new_topic.subject, status_code=200)
         self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
 
@@ -477,7 +477,7 @@ class ForumViewTest(TestCase):
     def test_queryset_for_certified_topics(self):
         response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["total"], 0)
+        self.assertEqual(response.context_data["paginator"].count, 0)
         self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
 
         certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
@@ -488,7 +488,7 @@ class ForumViewTest(TestCase):
         )
 
         response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
-        self.assertEqual(response.context_data["total"], 1)
+        self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, certified_topic.subject, status_code=200)
         self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
         self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
