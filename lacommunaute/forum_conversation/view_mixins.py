@@ -10,15 +10,12 @@ class FilteredTopicsListViewMixin:
     Provides behaviour for filtering topics with forum filtering options
     """
 
-    def get_filter(self):
-        if not hasattr(self, "filter"):
-            self.filter = self.request.GET.get("filter", None)
-        return self.filter
-
     def filter_queryset(self, qs):
-        if self.get_filter() == Filters.NEW:
+        filter = self.request.GET.get("filter")
+
+        if filter == Filters.NEW:
             qs = qs.unanswered()
-        elif self.get_filter() == Filters.CERTIFIED:
+        elif filter == Filters.CERTIFIED:
             qs = qs.filter(certified_post__isnull=False)
 
         if self.get_tags():
@@ -43,7 +40,11 @@ class FilteredTopicsListViewMixin:
 
     def get_url_encoded_params(self):
         return urlencode(
-            {k: v for k, v in {"filter": self.get_filter(), "tags": self.get_tags(flat="slug")}.items() if v}
+            {
+                k: v
+                for k, v in {"filter": self.request.GET.get("filter"), "tags": self.get_tags(flat="slug")}.items()
+                if v
+            }
         )
 
     def get_load_more_url(self, url):
@@ -56,11 +57,11 @@ class FilteredTopicsListViewMixin:
         return url
 
     def get_topic_filter_context(self):
+        active_filter = self.request.GET.get("filter", Filters.ALL)
+
         return {
             "active_tags": self.get_tags(flat="slug"),
             "active_tags_label": self.get_tags(flat="name"),
-            "active_filter_name": (
-                getattr(Filters, self.get_filter(), Filters.ALL).label if self.get_filter() else Filters.ALL.label
-            ),
+            "active_filter_name": getattr(Filters, active_filter, Filters.ALL).label,
             "filters": Filters.choices,
         }
