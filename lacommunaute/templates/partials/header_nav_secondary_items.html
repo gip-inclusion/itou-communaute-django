@@ -21,6 +21,11 @@
            data-matomo-action="view"
            data-matomo-option="documentation_header">{% trans "Documents" %}</a>
     </li>
+    {% if TOOLBOX_FORUM_URL %}
+        <li>
+            <a href="{{ TOOLBOX_FORUM_URL }}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="toolbox_header">{% trans "Toolbox" %}</a>
+        </li>
+    {% endif %}
     <li>
         <a href="{{ dsp_url }}" class="{% if request.path == dsp_url %}is-active {% endif %}matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="dsp">
             Diagnostic Parcours IAE

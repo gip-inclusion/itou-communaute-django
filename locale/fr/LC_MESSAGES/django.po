@@ -995,3 +995,6 @@ msgstr "Poser une question sur cette documentation"
 
 msgid "Cancel"
 msgstr "Annuler"
+
+msgid "Toolbox"
+msgstr "Boîte à outils des CIP"

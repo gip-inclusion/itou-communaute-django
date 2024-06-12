@@ -338,6 +338,7 @@ MACHINA_MARKUP_LANGUAGE = (
 SITE_ID = 1
 
 DSP_FORUM_RELATED_ID = 108
+TOOLBOX_FORUM_ID = os.getenv("TOOLBOX_FORUM_ID", None)
 
 API_BAN_BASE_URL = "https://api-adresse.data.gouv.fr"
 

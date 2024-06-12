@@ -1,5 +1,7 @@
 from django.conf import settings
 
+from lacommunaute.forum.models import Forum
+
 
 def expose_settings(request):
     """
@@ -12,4 +14,7 @@ def expose_settings(request):
         "BASE_TEMPLATE": base_template,
         "MATOMO_SITE_ID": settings.MATOMO_SITE_ID,
         "MATOMO_BASE_URL": settings.MATOMO_BASE_URL,
+        "TOOLBOX_FORUM_URL": (
+            Forum.objects.get(pk=settings.TOOLBOX_FORUM_ID).get_absolute_url() if settings.TOOLBOX_FORUM_ID else None
+        ),
     }

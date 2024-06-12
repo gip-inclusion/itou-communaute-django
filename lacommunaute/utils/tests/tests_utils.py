@@ -128,6 +128,18 @@ class SettingsContextProcessorsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(hasattr(response.wsgi_request, "htmx"))
 
+    def test_toolbox_url(self):
+        ForumFactory()  # dummy first public forum as exchange space
+        forum = ForumFactory()
+        with self.settings(TOOLBOX_FORUM_ID=forum.pk):
+            response = self.client.get("/")
+            self.assertEqual(response.context["TOOLBOX_FORUM_URL"], forum.get_absolute_url())
+            self.assertContains(response, forum.get_absolute_url())
+        with self.settings(TOOLBOX_FORUM_ID=None):
+            response = self.client.get("/")
+            self.assertIsNone(response.context["TOOLBOX_FORUM_URL"])
+            self.assertNotContains(response, forum.get_absolute_url())
+
 
 class UtilsUrlsTestCase(TestCase):
     def test_urlize(self):
