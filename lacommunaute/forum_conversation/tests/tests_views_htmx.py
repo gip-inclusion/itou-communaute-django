@@ -391,7 +391,7 @@ class PostFeedCreateViewTest(TestCase):
         blocked_post = BlockedPost.objects.get()
         assert blocked_post.content == self.content
         assert blocked_post.username == username
-        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_USER.label
+        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_USER
 
     def test_create_post_with_nonfr_content(self):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)
@@ -419,7 +419,7 @@ class PostFeedCreateViewTest(TestCase):
         blocked_post = BlockedPost.objects.get()
         assert blocked_post.poster == self.user
         assert blocked_post.content == "популярные лучшие песни слушать онлайн"
-        assert blocked_post.block_reason == BlockedPostReason.ALTERNATIVE_LANGUAGE.label
+        assert blocked_post.block_reason == BlockedPostReason.ALTERNATIVE_LANGUAGE
 
     def test_create_post_with_html_content(self):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)
@@ -477,7 +477,7 @@ class PostFeedCreateViewTest(TestCase):
         blocked_post = BlockedPost.objects.get()
         assert blocked_post.content == "la communauté"
         assert blocked_post.username == "spam@blocked.com"
-        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN.label
+        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN
 
 
 class CertifiedPostViewTest(TestCase):

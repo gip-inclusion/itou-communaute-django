@@ -58,13 +58,22 @@ class BlockedPost(DatedModel):
         return f"Blocked Message [{ str(self.created) }]"
 
     @classmethod
-    def create_from_post(cls, post):
+    def create_from_post(cls, post, reason: BlockedPostReason = None):
         """
         Creates a BlockedPost object from parameterised Post (machina)
         """
+        if reason is None:
+            if post.update_reason not in BlockedPostReason.labels:
+                raise ValueError("A reason must be given for blocking the post")
+
+            reason = BlockedPostReason(BlockedPostReason.values[BlockedPostReason.labels.index(post.update_reason)])
+
+        if type(reason) != BlockedPostReason:
+            raise TypeError("Reason must be a BlockedPostReason")
+
         return cls.objects.create(
             poster=post.poster,
             username=getattr(post, "username", ""),
             content=str(post.content),
-            block_reason=post.update_reason,
+            block_reason=reason,
         )
