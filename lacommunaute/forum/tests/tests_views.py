@@ -1,10 +1,13 @@
 import pytest  # noqa
+
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+
 from faker import Faker
 from machina.core.loading import get_class
+from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
@@ -90,6 +93,13 @@ class ForumViewTest(TestCase):
 
         response = self.client.get(self.url + "?filter=FAKE")
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+
+        tag = Tag.objects.create(name="tag_1", slug="tag_1")
+        response = self.client.get(self.url + f"?tags=nonexistant,{tag.name}")
+        self.assertIn(tag.slug, response.context_data["active_tags"])
+        self.assertNotIn("nonexistant", response.context_data["active_tags"])
+        self.assertIn(tag.name, response.context_data["active_tags_label"])
+        self.assertNotIn("nonexistant", response.context_data["active_tags_label"])
 
     def test_template_name(self):
         response = self.client.get(self.url)
