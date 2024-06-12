@@ -1,5 +1,3 @@
-from urllib.parse import urlencode
-
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.enums import Filters
@@ -38,22 +36,14 @@ class FilteredTopicsListViewMixin:
             return ",".join(tag.slug for tag in self.tags)
         return self.tags
 
-    def get_url_encoded_params(self):
-        return urlencode(
-            {
-                k: v
-                for k, v in {"filter": self.request.GET.get("filter"), "tags": self.get_tags(flat="slug")}.items()
-                if v
-            }
-        )
-
     def get_load_more_url(self, url):
         """
         :return: a URL for pagination
         """
-        encoded_params = self.get_url_encoded_params()
-        if encoded_params:
-            url += f"?{encoded_params}"
+        if self.request.GET:
+            params = self.request.GET.copy()
+            params.pop("page", None)
+            url += f"?{params.urlencode()}"
         return url
 
     def get_topic_filter_context(self):
