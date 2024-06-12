@@ -139,6 +139,10 @@ class SettingsContextProcessorsTest(TestCase):
             response = self.client.get("/")
             self.assertIsNone(response.context["TOOLBOX_FORUM_URL"])
             self.assertNotContains(response, forum.get_absolute_url())
+        with self.settings(TOOLBOX_FORUM_ID=forum.id + 1):
+            response = self.client.get("/")
+            self.assertIsNone(response.context["TOOLBOX_FORUM_URL"])
+            self.assertNotContains(response, forum.get_absolute_url())
 
 
 class UtilsUrlsTestCase(TestCase):
