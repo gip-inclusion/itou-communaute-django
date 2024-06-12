@@ -6,6 +6,8 @@ from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_moderation.enums import BlockedPostReason
+from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_moderation.utils import check_post_approbation
 
 
@@ -18,6 +20,12 @@ class CreateUpdatePostMixin:
             )
             if not post.approved:
                 self.add_error(None, "Votre message ne respecte pas les règles de la communauté.")
+
+                if self.user.is_authenticated:
+                    post.poster = self.user
+
+                if post.update_reason in [x.label for x in BlockedPostReason.reasons_tracked_for_stats()]:
+                    BlockedPost.create_from_post(post)
         return cleaned_data
 
     def update_post(self, post):

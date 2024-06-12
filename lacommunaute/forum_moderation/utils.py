@@ -3,6 +3,7 @@ from langdetect import detect
 from machina.models.fields import render_func
 from markdown2 import Markdown
 
+from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedDomainName, BlockedEmail
 
 
@@ -17,11 +18,14 @@ def check_post_approbation(post):
     conditions = [
         (
             post.username and BlockedDomainName.objects.filter(domain=post.username.split("@")[-1]).exists(),
-            "Blocked Domain detected",
+            BlockedPostReason.BLOCKED_DOMAIN.label,
         ),
-        (Markdown.html_removed_text_compat in rendered, "HTML tags detected"),
-        (detect(post.content.raw) not in settings.LANGUAGE_CODE, "Alternative Language detected"),
-        (post.username and BlockedEmail.objects.filter(email=post.username).exists(), "Blocked Email detected"),
+        (Markdown.html_removed_text_compat in rendered, BlockedPostReason.HTML_TAGS.label),
+        (detect(post.content.raw) not in settings.LANGUAGE_CODE, BlockedPostReason.ALTERNATIVE_LANGUAGE.label),
+        (
+            post.username and BlockedEmail.objects.filter(email=post.username).exists(),
+            BlockedPostReason.BLOCKED_USER.label,
+        ),
     ]
     post.approved, post.update_reason = next(
         ((not condition, reason) for condition, reason in conditions if condition), (post.approved, post.update_reason)

@@ -11,7 +11,9 @@ from lacommunaute.forum_conversation.factories import CertifiedPostFactory, Post
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
 from lacommunaute.forum_conversation.views_htmx import PostListView
+from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
+from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.users.factories import UserFactory
 
@@ -385,6 +387,12 @@ class PostFeedCreateViewTest(TestCase):
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 2)
 
+        # the blocked post should be recorded in the database
+        blocked_post = BlockedPost.objects.get()
+        assert blocked_post.content == self.content
+        assert blocked_post.username == username
+        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_USER.label
+
     def test_create_post_with_nonfr_content(self):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)
         assign_perm("can_post_without_approval", self.user, self.topic.forum)
@@ -406,6 +414,12 @@ class PostFeedCreateViewTest(TestCase):
         )
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 1)
+
+        # the blocked post should be recorded in the database
+        blocked_post = BlockedPost.objects.get()
+        assert blocked_post.poster == self.user
+        assert blocked_post.content == "популярные лучшие песни слушать онлайн"
+        assert blocked_post.block_reason == BlockedPostReason.ALTERNATIVE_LANGUAGE.label
 
     def test_create_post_with_html_content(self):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)
@@ -432,6 +446,9 @@ class PostFeedCreateViewTest(TestCase):
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 1)
 
+        # we don't create a BlockedPost record for HTML content to avoid storing malicious code
+        assert BlockedPost.objects.count() == 0
+
     def test_create_post_with_blocked_domain_name(self):
         BlockedDomainNameFactory(domain="blocked.com")
 
@@ -455,6 +472,12 @@ class PostFeedCreateViewTest(TestCase):
         )
         self.topic.refresh_from_db()
         self.assertEqual(self.topic.posts.count(), 1)
+
+        # the blocked post should be recorded in the database
+        blocked_post = BlockedPost.objects.get()
+        assert blocked_post.content == "la communauté"
+        assert blocked_post.username == "spam@blocked.com"
+        assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN.label
 
 
 class CertifiedPostViewTest(TestCase):
