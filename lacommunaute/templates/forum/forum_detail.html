@@ -155,22 +155,15 @@
                 </div>
             </div>
         </section>
-        <section class="s-tabs-01">
-            <div class="s-tabs-01__container container">
-                <div class="s-tabs-01__row row">
-                    <div class="s-tabs-01__col col-12">
-                        <ul class="s-tabs-01__nav nav nav-tabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="topics-tab" data-bs-toggle="tab" href="#topics" role="tab" aria-controls="topics" aria-selected="true">Sujets</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content topiclist">
-                            <div class="tab-pane fade show active" id="topics" role="tabpanel" aria-labelledby="topics-tab">
-                                {% with unread_topics=unread_topics %}
-                                    {% include "forum_conversation/topic_list.html" %}
-                                    <!-- note vincentporte : to be optimized -->
-                                {% endwith %}
-                            </div>
+        <section class="s-section mt-0">
+            <div class="s-section__container container">
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12">
+                        <div class="c-box">
+                            {% with unread_topics=unread_topics %}
+                                {% include "forum_conversation/topic_list.html" %}
+                                <!-- note vincentporte : to be optimized -->
+                            {% endwith %}
                         </div>
                     </div>
                 </div>
