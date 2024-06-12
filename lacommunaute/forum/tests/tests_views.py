@@ -1,15 +1,21 @@
 import pytest  # noqa
+
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+
 from faker import Faker
 from machina.core.loading import get_class
+from taggit.models import Tag
 
+from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.views import ForumView
+from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
@@ -63,6 +69,44 @@ class ForumViewTest(TestCase):
         cls.forum = cls.topic.forum
 
         cls.url = reverse("forum_extension:forum", kwargs={"pk": cls.forum.pk, "slug": cls.forum.slug})
+
+    def test_context(self):
+        response = self.client.get(self.url)
+
+        loadmoretopic_url = reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+
+        self.assertIsInstance(response.context_data["form"], PostForm)
+        self.assertEqual(response.context_data["filters"], Filters.choices)
+        self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
+        self.assertEqual(response.context_data["forum"], self.forum)
+        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_tags"], "")
+
+        for filter, label in Filters.choices:
+            with self.subTest(filter=filter, label=label):
+                response = self.client.get(self.url + f"?filter={filter}")
+                self.assertEqual(
+                    response.context_data["loadmoretopic_url"],
+                    loadmoretopic_url + f"?filter={filter}",
+                )
+                self.assertEqual(response.context_data["active_filter_name"], label)
+
+        response = self.client.get(self.url + "?filter=FAKE")
+        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+
+        tag = Tag.objects.create(name="tag_1", slug="tag_1")
+        response = self.client.get(self.url + f"?tags=nonexistant,{tag.name}")
+        self.assertIn(tag.slug, response.context_data["active_tags"])
+        self.assertNotIn("nonexistant", response.context_data["active_tags"])
+        self.assertIn(tag.name, response.context_data["active_tags_label"])
+        self.assertNotIn("nonexistant", response.context_data["active_tags_label"])
+
+    def test_template_name(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "forum/forum_detail.html")
+
+        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
+        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
     def test_show_comments(self):
         topic_url = reverse(
@@ -211,8 +255,8 @@ class ForumViewTest(TestCase):
 
     def test_loadmoretopic_url(self):
         loadmoretopic_url = reverse(
-            "forum_conversation_extension:topic_list",
-            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
+            "forum_extension:forum",
+            kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
         )
 
         TopicFactory.create_batch(9, with_post=True, forum=self.forum)
@@ -415,11 +459,53 @@ class ForumViewTest(TestCase):
         tag = faker.word()
         topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
 
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
-        )
+        with self.assertNumQueries(19):
+            response = self.client.get(
+                reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
+            )
         self.assertContains(response, topic.subject)
         self.assertNotContains(response, self.topic.subject)
+
+    def test_queryset_for_unanswered_topics(self):
+        PostFactory(topic=self.topic)
+        response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["paginator"].count, 0)
+        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+
+        new_topic = TopicFactory(with_post=True, forum=self.forum)
+
+        response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
+        self.assertEqual(response.context_data["paginator"].count, 1)
+        self.assertContains(response, new_topic.subject, status_code=200)
+        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+
+        for topic in Topic.objects.exclude(id=new_topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
+
+    def test_queryset_for_certified_topics(self):
+        response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["paginator"].count, 0)
+        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+
+        certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
+        TopicFactory(
+            with_post=True,
+            with_certified_post=True,
+            forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True),
+        )
+
+        response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
+        self.assertEqual(response.context_data["paginator"].count, 1)
+        self.assertContains(response, certified_topic.subject, status_code=200)
+        self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
+        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+
+        for topic in Topic.objects.exclude(id=certified_topic.id):
+            with self.subTest(topic):
+                self.assertNotContains(response, topic.subject)
 
     def test_banner_display_on_subcategory_forum(self):
         category_forum = CategoryForumFactory(with_child=True, with_public_perms=True)

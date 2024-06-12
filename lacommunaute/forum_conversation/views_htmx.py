@@ -1,13 +1,9 @@
 import logging
 
-from django.conf import settings
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
 from django.views import View
-from django.views.generic import ListView
 from machina.core.loading import get_class
 
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
@@ -19,37 +15,6 @@ PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRe
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 
 track_handler = TrackingHandler()
-
-
-class ForumTopicListView(PermissionRequiredMixin, ListView):
-    permission_required = [
-        "can_read_forum",
-    ]
-    template_name = "forum_conversation/topic_list.html"
-
-    paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
-    context_object_name = "topics"
-
-    def get_queryset(self):
-        return Topic.objects.filter(forum=self.get_forum()).optimized_for_topics_list(self.request.user.id)
-
-    def get_forum(self):
-        if not hasattr(self, "forum"):
-            self.forum = get_object_or_404(Forum, pk=self.kwargs["forum_pk"])
-        return self.forum
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["forum"] = self.get_forum()
-        context["loadmoretopic_url"] = reverse(
-            "forum_conversation_extension:topic_list",
-            kwargs={"forum_pk": self.forum.pk, "forum_slug": self.forum.slug},
-        )
-        context["loadmoretopic_suffix"] = "topicsinforum"
-        return context
-
-    def get_controlled_object(self):
-        return self.get_forum()
 
 
 class TopicContentView(PermissionRequiredMixin, View):

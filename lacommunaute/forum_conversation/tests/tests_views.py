@@ -703,7 +703,7 @@ def test_queryset_filtered_on_tag(client, db, tag):
     tagged_topic = TopicFactory(with_post=True, forum=forum, with_tags=[tag])
 
     response = client.get(reverse("forum_conversation_extension:topics"), data={"tags": tag})
-    assert response.context_data["total"] == 1
+    assert response.context_data["paginator"].count == 1
     assertContains(response, tagged_topic.subject)
     assertNotContains(response, other_topic.subject)
 
@@ -844,7 +844,7 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["total"], 1)
+        self.assertEqual(response.context_data["paginator"].count, 1)
 
         for topic in Topic.objects.exclude(id=self.topic.id):
             with self.subTest(topic):
@@ -859,7 +859,7 @@ class TopicListViewTest(TestCase):
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url + "?filter=NEW")
-        self.assertEqual(response.context_data["total"], 1)
+        self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, self.topic.subject, status_code=200)
 
         for topic in Topic.objects.exclude(id=self.topic.id):
@@ -877,7 +877,7 @@ class TopicListViewTest(TestCase):
         )
 
         response = self.client.get(self.url + "?filter=CERTIFIED")
-        self.assertEqual(response.context_data["total"], 1)
+        self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, certified_topic.subject, status_code=200)
         self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
 
@@ -921,11 +921,11 @@ class TopicListViewTest(TestCase):
     def test_filter_dropdown_visibility(self):
         response = self.client.get(self.url)
         self.assertContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["display_filter_dropdown"], True)
+        self.assertEqual(response.context_data["filter_dropdown_endpoint"], self.url)
 
         response = self.client.get(self.url + "?page=1")
         self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["display_filter_dropdown"], False)
+        self.assertEqual(response.context_data["filter_dropdown_endpoint"], None)
 
     def test_filter_dropdown_with_tags(self):
         tag = Tag.objects.create(name=faker.words(nb=3))

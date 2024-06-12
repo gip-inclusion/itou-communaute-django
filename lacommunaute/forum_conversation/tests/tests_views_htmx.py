@@ -5,7 +5,6 @@ from django.urls import reverse
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from taggit.models import Tag
 
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -24,74 +23,6 @@ TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-
-
-class ForumTopicListViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
-        cls.user = cls.topic.poster
-        cls.url = reverse(
-            "forum_conversation_extension:topic_list",
-            kwargs={
-                "forum_pk": cls.topic.forum.pk,
-                "forum_slug": cls.topic.forum.slug,
-            },
-        )
-
-    def test_get_forum_not_found(self):
-        response = self.client.get(
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={
-                    "forum_pk": 999,
-                    "forum_slug": self.topic.forum.slug,
-                },
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-
-    def test_get(self):
-        other_topic = TopicFactory(with_post=True)
-        assign_perm("can_read_forum", self.user, self.topic.forum)
-        self.client.force_login(self.user)
-
-        response = self.client.get(self.url)
-
-        self.assertContains(response, self.topic.subject, status_code=200)
-        self.assertNotContains(response, other_topic.subject)
-        self.assertEqual(response.context["forum"], self.topic.forum)
-
-    def test_get_without_permission(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 302)
-
-    def test_loadmoretopic_url(self):
-        TopicFactory.create_batch(20, forum=self.topic.forum, with_post=True)
-        assign_perm("can_read_forum", self.user, self.topic.forum)
-        self.client.force_login(self.user)
-
-        response = self.client.get(self.url)
-
-        self.assertContains(
-            response,
-            reverse(
-                "forum_conversation_extension:topic_list",
-                kwargs={"forum_pk": self.topic.forum.pk, "forum_slug": self.topic.forum.slug},
-            ),
-            status_code=200,
-        )
-        self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
-
-    def test_numqueries_vs_tags(self):
-        tags = Tag.objects.bulk_create([Tag(name=f"tag{i}", slug=f"tag{i}") for i in range(5)])
-        for topic in TopicFactory.create_batch(20, forum=self.topic.forum, with_post=True):
-            topic.tags.add(", ".join(tag.name for tag in tags))
-        assign_perm("can_read_forum", self.user, self.topic.forum)
-        self.client.force_login(self.user)
-
-        with self.assertNumQueries(13):
-            self.client.get(self.url)
 
 
 class TopicContentViewTest(TestCase):

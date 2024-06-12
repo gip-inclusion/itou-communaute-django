@@ -1,10 +1,10 @@
 {% load str_filters %}
-{% if display_filter_dropdown %}
+{% if filter_dropdown_endpoint %}
     <div class="row align-items-center mb-3">
         <div class="col-12 col-sm">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
-                    <span class="h5 m-0">{{ total }} question{{ total|pluralizefr }}
+                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}
                         {% if active_tags %}avec l'étiquette {{ active_tags_label }}{% endif %}
                     </span>
                 </div>
@@ -21,7 +21,7 @@
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
                                             hx-push-url="true"
-                                            hx-get="{% url 'forum_conversation_extension:topics' %}?filter={{ filter.0 }}{% if active_tags %}&tags={{ active_tags }}{% endif %}"
+                                            hx-get="{{ filter_dropdown_endpoint }}?filter={{ filter.0 }}{% if active_tags %}&tags={{ active_tags }}{% endif %}"
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"
