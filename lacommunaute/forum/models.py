@@ -74,6 +74,9 @@ class Forum(AbstractForum):
     def is_newsfeed(self):
         return self.kind == Forum_Kind.NEWS
 
+    def get_session_rating(self, session_key):
+        return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)
+
 
 class ForumRating(DatedModel):
     session_id = models.CharField(max_length=40)

@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.test import TestCase
 
 from lacommunaute.forum.enums import Kind as ForumKind
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
@@ -107,3 +107,13 @@ class ForumModelTest(TestCase):
         self.assertTrue(news_forum.is_newsfeed)
         self.assertFalse(discussion_area_forum.is_newsfeed)
         self.assertFalse(private_forum.is_newsfeed)
+
+    def test_get_session_rating(self):
+        forum = ForumFactory()
+        forum_rating = ForumRatingFactory(forum=forum)
+
+        self.assertIsNone(forum.get_session_rating("test"))
+        self.assertEqual(forum.get_session_rating(forum_rating.session_id), forum_rating.rating)
+
+        ForumRatingFactory(forum=forum, session_id=forum_rating.session_id, rating=forum_rating.rating + 1)
+        self.assertEqual(forum.get_session_rating(forum_rating.session_id), forum_rating.rating + 1)
