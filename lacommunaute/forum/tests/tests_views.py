@@ -334,7 +334,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context_data["forums"].count(), 3)
+        self.assertEqual(response.context_data["sibling_forums"].count(), 3)
         for f in forum.get_children():
             self.assertContains(response, f.name)
 
