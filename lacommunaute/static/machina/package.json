@@ -20,7 +20,7 @@
     "@babel/register": "^7.0.0",
     "clean-css": ">=4.1.11",
     "fstream": ">=1.0.12",
-    "gulp": "^4.0.0",
+    "gulp": "^5.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
