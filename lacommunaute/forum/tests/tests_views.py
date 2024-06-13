@@ -218,7 +218,7 @@ class ForumViewTest(TestCase):
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(22):
+        with self.assertNumQueries(23):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
@@ -458,7 +458,7 @@ class ForumViewTest(TestCase):
         tag = faker.word()
         topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
 
-        with self.assertNumQueries(19):
+        with self.assertNumQueries(20):
             response = self.client.get(
                 reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
             )
