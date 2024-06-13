@@ -1,5 +1,30 @@
 # Journal des modifications
 
+## [2.10.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.9.2...v2.10.0) (2024-06-13)
+
+
+### Features
+
+* **admin:** ajoute PostInline à TopicAdmin ([#657](https://github.com/gip-inclusion/itou-communaute-django/issues/657)) ([6f3049a](https://github.com/gip-inclusion/itou-communaute-django/commit/6f3049a3154e0076fc6f563e03639b3c25a3352a))
+* ajout du chemin de fer dans l'espace d'échanges et la documentation ([#649](https://github.com/gip-inclusion/itou-communaute-django/issues/649)) ([7cc5d14](https://github.com/gip-inclusion/itou-communaute-django/commit/7cc5d14dc853e85f00d583fad697cab8acd2b063))
+* **forum_conversation/admin:** CertifiedPost verbose_name et traduction ([#666](https://github.com/gip-inclusion/itou-communaute-django/issues/666)) ([e9b0da6](https://github.com/gip-inclusion/itou-communaute-django/commit/e9b0da622ed671f23966b525672c0d4920637ce5))
+* **forum_conversation/tests.py:** test explicite pour la seconde page ([#669](https://github.com/gip-inclusion/itou-communaute-django/issues/669)) ([5bea4f1](https://github.com/gip-inclusion/itou-communaute-django/commit/5bea4f1087e87ec3628b75cefd45974dffa8a6d5))
+* **forum_conversation:** remettre les annonces dans la liste des messages par défaut ([#662](https://github.com/gip-inclusion/itou-communaute-django/issues/662)) ([bb341cb](https://github.com/gip-inclusion/itou-communaute-django/commit/bb341cbb45bcc43009667cbce24a7d1c80ef2b24))
+* **forum_moderation:** enregistrement des messages bloquées ([#659](https://github.com/gip-inclusion/itou-communaute-django/issues/659)) ([7318b5d](https://github.com/gip-inclusion/itou-communaute-django/commit/7318b5d5947fc2920374c58d2c04931324ffe5bf))
+* **forum:** harmoniser la liste des topics ([#665](https://github.com/gip-inclusion/itou-communaute-django/issues/665)) ([6f8bf3c](https://github.com/gip-inclusion/itou-communaute-django/commit/6f8bf3c248feecc29c8f8734931afbad207e66e2))
+* **stats:** afficher les stats quotidiennes des Diagnostics Parcours IAE ([#660](https://github.com/gip-inclusion/itou-communaute-django/issues/660)) ([5c74c56](https://github.com/gip-inclusion/itou-communaute-django/commit/5c74c5601c134f0f8adaa07c1f758dde3fa1b887))
+* **stats:** ajout de la vue historique des visiteurs mensuels ([#656](https://github.com/gip-inclusion/itou-communaute-django/issues/656)) ([804be3c](https://github.com/gip-inclusion/itou-communaute-django/commit/804be3c38b961147f4904b4cbb229a901eaf3379))
+* **stats:** collecter le nombre de diag parcours iae réalisés quotidiennement ([#658](https://github.com/gip-inclusion/itou-communaute-django/issues/658)) ([7205a2b](https://github.com/gip-inclusion/itou-communaute-django/commit/7205a2b89b1896280627724e0f9eece5f94c08e1))
+
+
+### Bug Fixes
+
+* **documentation:** améliorer l'affichage des bannières des fiches pratiques ([#653](https://github.com/gip-inclusion/itou-communaute-django/issues/653)) ([3b539d2](https://github.com/gip-inclusion/itou-communaute-django/commit/3b539d2b660fa58b49235162419ede461d43843f))
+* **forum_conversation:** page 1 forcée dans les liens tags ([#668](https://github.com/gip-inclusion/itou-communaute-django/issues/668)) ([a150ab2](https://github.com/gip-inclusion/itou-communaute-django/commit/a150ab2b153bac1830908d03ec0c712db3244c4f))
+* **forum_moderation:** motif de blocage illisible dans l'admin ([#672](https://github.com/gip-inclusion/itou-communaute-django/issues/672)) ([5480394](https://github.com/gip-inclusion/itou-communaute-django/commit/5480394f466b458344ea2911273c9a0b595cda6f))
+* **quality:** formatage des balises `script` dans le gabarit `base.html` ([#651](https://github.com/gip-inclusion/itou-communaute-django/issues/651)) ([0be3c8b](https://github.com/gip-inclusion/itou-communaute-django/commit/0be3c8b4f5b9126af245a36a53b7bd8cb8479711))
+* **stats:** corrections mineures ([#661](https://github.com/gip-inclusion/itou-communaute-django/issues/661)) ([d3ae4fd](https://github.com/gip-inclusion/itou-communaute-django/commit/d3ae4fd027310d96077809a43957c8a2d7a79eed))
+
 ## [2.9.2](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.9.1...v2.9.2) (2024-05-30)
 
 
