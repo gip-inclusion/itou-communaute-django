@@ -10,7 +10,7 @@
             {% endif %}
         {% endfor %}
     {% else %}
-        <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id = "rating-button-{{ forum.pk }}" hx-target="#rating-area" hx-swap="outerHTML">
+        <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id = "rating-button" hx-target="#rating-area" hx-swap="outerHTML">
             <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
                 {% for star in "12345" %}
                     <button type="submit" name="rating" value="{{ star }}" class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
