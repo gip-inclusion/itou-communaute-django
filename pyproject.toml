@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lacommunaute"
-version = "2.9.2"
+version = "2.10.0"
 description = "La communauté de l'inclusion"
 authors = []
 license = "ETALAB 2.0"
