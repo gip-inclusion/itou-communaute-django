@@ -32,7 +32,6 @@ class PostDisapproveView(BasePostDisapproveView):
                     "l'adresse email de l'utilisateur est déjà dans la liste des emails bloqués.",
                 )
 
-        post.update_reason = BlockedPostReason.MODERATOR_DISAPPROVAL.label
-        BlockedPost.create_from_post(post)
+        BlockedPost.create_from_post(post, BlockedPostReason.MODERATOR_DISAPPROVAL)
 
         return self.disapprove(request, *args, **kwargs)

@@ -20,3 +20,7 @@ class BlockedPostReason(models.TextChoices):
             cls.BLOCKED_USER,
             cls.MODERATOR_DISAPPROVAL,
         ]
+
+    @classmethod
+    def from_label(cls, label):
+        return cls(cls.values[cls.labels.index(label)]) if label in cls.labels else None
