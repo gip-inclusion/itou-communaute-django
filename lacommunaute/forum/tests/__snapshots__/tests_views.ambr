@@ -139,30 +139,30 @@
 # ---
 # name: TestForumView.test_not_rated_forum[not_rated_forum]
   '''
-  <div id="rating-area">
+  <div class="c-box mb-5" id="rating-area">
       <h2 class="mt-3">Cette fiche vous a-t-elle été utile ?</h2>
       
           <form hx-post="/forum/b-category-forum-[PK of Forum]/rate/" hx-swap="outerHTML" hx-target="#rating-area" id="rating-button">
               <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
                   
                       <button class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
-                          ★
+                          <i class="ri-star-line"></i>
                       </button>
                   
                       <button class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
-                          ★
+                          <i class="ri-star-line"></i>
                       </button>
                   
                       <button class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
-                          ★
+                          <i class="ri-star-line"></i>
                       </button>
                   
                       <button class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
-                          ★
+                          <i class="ri-star-line"></i>
                       </button>
                   
                       <button class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
-                          ★
+                          <i class="ri-star-line"></i>
                       </button>
                   
               </div>
@@ -173,29 +173,42 @@
 # ---
 # name: TestForumView.test_rated_forum[rated_forum]
   '''
-  <div id="rating-area">
+  <div class="c-box mb-5" id="rating-area">
       <h2 class="mt-3">Cette fiche vous a-t-elle été utile ?</h2>
       
-          
+          <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
               
-                  ★
+                  <div class="btn btn-sm btn-ico">
+                      
+                          <i class="ri-star-fill"></i>
+                      
+                  </div>
               
-          
+                  <div class="btn btn-sm btn-ico">
+                      
+                          <i class="ri-star-fill"></i>
+                      
+                  </div>
               
-                  ★
+                  <div class="btn btn-sm btn-ico">
+                      
+                          <i class="ri-star-fill"></i>
+                      
+                  </div>
               
-          
+                  <div class="btn btn-sm btn-ico">
+                      
+                          <i class="ri-star-fill"></i>
+                      
+                  </div>
               
-                  ★
+                  <div class="btn btn-sm btn-ico">
+                      
+                          <i class="ri-star-fill"></i>
+                      
+                  </div>
               
-          
-              
-                  ★
-              
-          
-              
-                  ★
-              
+          </div>
           
       
   </div>
