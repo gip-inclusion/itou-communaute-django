@@ -25,8 +25,6 @@ class CreateUpdatePostMixin:
                     post.poster = self.user
 
                 blocked_reason = BlockedPostReason.from_label(post.update_reason)
-                print(str(blocked_reason))
-                print(str(type(blocked_reason)))
                 if blocked_reason in BlockedPostReason.reasons_tracked_for_stats():
                     BlockedPost.create_from_post(post, blocked_reason)
         return cleaned_data
