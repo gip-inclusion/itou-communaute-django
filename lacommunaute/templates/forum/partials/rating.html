@@ -1,0 +1,23 @@
+{% load i18n %}
+<div id="rating-area">
+    <h2 class="mt-3">Cette fiche vous a-t-elle été utile ?</h2>
+    {% if rating %}
+        {% for star in "12345" %}
+            {% if forloop.counter > rating %}
+                -
+            {% else %}
+                ★
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <form hx-post="{% url 'forum_extension:rate_forum' forum.slug forum.pk %}" id = "rating-button-{{ forum.pk }}" hx-target="#rating-area" hx-swap="outerHTML">
+            <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
+                {% for star in "12345" %}
+                    <button type="submit" name="rating" value="{{ star }}" class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
+                        ★
+                    </button>
+                {% endfor %}
+            </div>
+        </form>
+    {% endif %}
+</div>
