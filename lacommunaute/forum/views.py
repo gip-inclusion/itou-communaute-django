@@ -56,6 +56,8 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         context["loadmoretopic_suffix"] = "topicsinforum"
         context["form"] = PostForm(forum=forum, user=self.request.user)
 
+        context["rating"] = forum.get_session_rating(self.request.session.session_key)
+
         context["filter_dropdown_endpoint"] = (
             None
             if self.request.GET.get("page")

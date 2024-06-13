@@ -1,16 +1,14 @@
 import pytest  # noqa
-
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
-
 from faker import Faker
 from machina.core.loading import get_class
 from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
@@ -79,6 +77,7 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["filters"], Filters.choices)
         self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
         self.assertEqual(response.context_data["forum"], self.forum)
+        self.assertIsNone(response.context_data["rating"])
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
         self.assertEqual(response.context_data["active_tags"], "")
 
@@ -512,6 +511,28 @@ class ForumViewTest(TestCase):
         forum = category_forum.get_children().first()
         response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         self.assertContains(response, forum.image.url.split("=")[0])
+
+
+class TestForumView:
+    def test_not_rated_forum(self, client, db, snapshot):
+        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
+        forum = category_forum.get_children().first()
+
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#rating-area", replace_in_href=[category_forum, forum])
+        assert str(content) == snapshot(name="not_rated_forum")
+
+    def test_rated_forum(self, client, db, snapshot):
+        client.session.save()
+        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        forum = category_forum.get_children().first()
+        ForumRatingFactory(forum=forum, rating=5, session_id=client.session.session_key)
+
+        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#rating-area")
+        assert str(content) == snapshot(name="rated_forum")
 
 
 @pytest.fixture(name="discussion_area_forum")
