@@ -1047,3 +1047,38 @@ class NewsFeedTopicListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["forum"], None)
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:newsfeed"))
+
+
+class TestTopicCreateCheckView:
+    def test_get_method(self, client, db, snapshot):
+        forum = ForumFactory(name="forum")
+        response = client.get(
+            reverse(
+                "forum_conversation_extension:topic_create_check",
+                kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk},
+            )
+        )
+        assert response.status_code == 200
+        assertContains(
+            response,
+            reverse("forum_conversation:topic_create", kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk})
+            + "?checked=1",
+        )
+        content = parse_response_to_soup(response, selector="main", replace_in_href=[forum])
+        assert str(content) == snapshot(name="topic_create_check")
+
+    def test_forum_does_not_exist(self, client, db):
+        response = client.get(
+            reverse("forum_conversation_extension:topic_create_check", kwargs={"forum_slug": "fake", "forum_pk": 999})
+        )
+        assert response.status_code == 404
+
+    def test_post_method_not_allowed(self, client, db):
+        forum = ForumFactory()
+        response = client.post(
+            reverse(
+                "forum_conversation_extension:topic_create_check",
+                kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk},
+            )
+        )
+        assert response.status_code == 405
