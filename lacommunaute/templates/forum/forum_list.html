@@ -6,6 +6,8 @@
 {% load str_filters %}
 {% load date_filters %}
 {% if forum_contents.nodes %}
+    <!--forum_list.html is principally used in a templatetag-->
+    <!--root_level is 0 when the top-level forum is an index-level page (e.g. /forums/)-->
     {% if root_level == 0 %}
         {% for node in forum_contents.top_nodes %}
             <div class="c-card card mb-3">
