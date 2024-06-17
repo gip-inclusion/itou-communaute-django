@@ -2,6 +2,7 @@
 {% if onSidebar %}
     <div id="rating-area{{ rating_area_id }}" class="rating{% if hidden %} d-none{% endif %}">
         {% if rating %}
+            <h3 class="h4">Merci d'avoir noté cette fiche !</h3>
             <div class="d-inline-block d-lg-block text-center">
                 <div class="btn-group" role="group" aria-label="Notation de la fiche pratique">
                     {% for star in "12345" %}
@@ -17,6 +18,7 @@
             </div>
             {% for star in "12345" %}{% endfor %}
         {% else %}
+            <h3 class="h4">Cette fiche vous a-t-elle été utile ?</h3>
             <form class="d-inline-block d-lg-block bg-button-lightest rounded-1 text-center"
                   hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}"
                   id="rating-button"
@@ -37,6 +39,7 @@
     <div id="rating-area{{ rating_area_id }}" class="mb-5 rating{% if hidden %} d-none{% endif %}">
         <hr>
         {% if rating %}
+            <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
             <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
                 {% for star in "12345" %}
                     <div class="btn btn-ico-only">
@@ -50,6 +53,7 @@
             </div>
             {% for star in "12345" %}{% endfor %}
         {% else %}
+            <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
             <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id="rating-button" hx-target="#rating-area{{ rating_area_id }}" hx-swap="outerHTML">
                 <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
                     {% for star in "12345" %}
