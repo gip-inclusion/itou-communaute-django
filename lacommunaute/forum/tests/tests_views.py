@@ -520,7 +520,7 @@ class TestForumView:
 
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area", replace_in_href=[category_forum, forum])
+        content = parse_response_to_soup(response, selector="#rating-area1", replace_in_href=[category_forum, forum])
         assert str(content) == snapshot(name="not_rated_forum")
 
     def test_rated_forum(self, client, db, snapshot):
@@ -531,7 +531,7 @@ class TestForumView:
 
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area")
+        content = parse_response_to_soup(response, selector="#rating-area1")
         assert str(content) == snapshot(name="rated_forum")
 
 
