@@ -55,6 +55,10 @@
                                 <div class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</div>
                             </div>
                         </div>
+
+                        {% comment %} Proposition A Testing {% endcomment %}
+                        {% include "forum/partials/rating.html" with forum=forum %}
+                        {% comment %} Proposition A Testing {% endcomment %}
                     </div>
                     <div class="col-12 col-lg-3">
                         {% if user_can_add_topic %}
@@ -69,6 +73,12 @@
                             </a>
                             <hr>
                         {% endif %}
+
+                        {% comment %} Proposition B Testing {% endcomment %}
+                        {% include "forum/partials/rating.html" with forum=forum onSidebar=True %}
+                        <hr>
+                        {% comment %} Proposition B Testing {% endcomment %}
+
                         <a href="{% url 'forum_extension:forum' forum.parent.slug forum.parent.id %}"
                            class="matomo-event h3 text-decoration-none d-inline-block"
                            data-matomo-category="engagement"
@@ -81,10 +91,12 @@
                                 </li>
                             {% endfor %}
                         </ul>
+
+                        {% comment %} Proposition C Testing {% endcomment %}
+                        <hr>
+                        {% include "forum/partials/rating.html" with forum=forum onSidebar=True %}
+                        {% comment %} Proposition C Testing {% endcomment %}
                     </div>
-                </div>
-                <div class="s-section__row row">
-                    <div class="col-12">{% include "forum/partials/rating.html" with forum=forum %}</div>
                 </div>
             {% else %}
                 {% if forum.description %}

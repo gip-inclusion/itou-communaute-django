@@ -1,28 +1,63 @@
 {% load i18n %}
-<div id="rating-area" class="c-box mb-5">
-    <h2 class="mt-3">Cette fiche vous a-t-elle été utile ?</h2>
-    {% if rating %}
-        <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
-            {% for star in "12345" %}
-                <div class="btn btn-sm btn-ico ">
-                    {% if forloop.counter > rating %}
-                        <i class="ri-star-line"></i>
-                    {% else %}
-                        <i class="ri-star-fill"></i>
-                    {% endif %}
+
+{% if onSidebar  %}
+    <div id="rating-area">
+        <h3 class="h4">Cette fiche vous a-t-elle été utile ?</h2>
+        {% if rating %}
+            <div class="d-inline-block d-lg-block text-center">
+                <div class="btn-group" role="group" aria-label="Notation de la fiche pratique">
+                    {% for star in "12345" %}
+                        <div class="btn btn-ico-only">
+                            {% if forloop.counter > rating %}
+                                <i class="ri-star-line" aria-hidden="true"></i>
+                            {% else %}
+                                <i class="ri-star-fill" aria-hidden="true"></i>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        </div>
-        {% for star in "12345" %}{% endfor %}
-    {% else %}
-        <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id="rating-button" hx-target="#rating-area" hx-swap="outerHTML">
+            </div>
+            {% for star in "12345" %}{% endfor %}
+        {% else %}
+            <form class="d-inline-block d-lg-block bg-button-lightest rounded-1 text-center" hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id="rating-button" hx-target="#rating-area" hx-swap="outerHTML">
+                <div class="btn-group justify-content-center" role="group" aria-label="Notation de la fiche pratique">
+                    {% for star in "12345" %}
+                        <button type="submit" name="rating" value="{{ star }}" class="btn btn-ico-only btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
+                            <i class="ri-star-line" aria-hidden="true"></i>
+                        </button>
+                    {% endfor %}
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% else %}
+    <div id="rating-area" class="mb-5">
+        <hr>
+        <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h2>
+        {% if rating %}
             <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
                 {% for star in "12345" %}
-                    <button type="submit" name="rating" value="{{ star }}" class="btn btn-sm btn-ico btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
-                        <i class="ri-star-line"></i>
-                    </button>
+                    <div class="btn btn-ico-only">
+                        {% if forloop.counter > rating %}
+                            <i class="ri-star-line font-weight-medium" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="ri-star-fill font-weight-medium" aria-hidden="true"></i>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
-        </form>
-    {% endif %}
-</div>
+            {% for star in "12345" %}{% endfor %}
+        {% else %}
+            <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id="rating-button" hx-target="#rating-area" hx-swap="outerHTML">
+                <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
+                    {% for star in "12345" %}
+                        <button type="submit" name="rating" value="{{ star }}" class="btn btn-ico-only btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
+                            <i class="ri-star-line font-weight-medium" aria-hidden="true"></i>
+                        </button>
+                    {% endfor %}
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endif %}
+
