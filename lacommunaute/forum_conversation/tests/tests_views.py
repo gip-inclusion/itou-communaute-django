@@ -44,12 +44,15 @@ class TopicCreateViewTest(TestCase):
     def setUpTestData(cls):
         cls.poster = UserFactory()
         cls.forum = ForumFactory(with_public_perms=True)
-        cls.url = reverse(
-            "forum_conversation:topic_create",
-            kwargs={
-                "forum_slug": cls.forum.slug,
-                "forum_pk": cls.forum.pk,
-            },
+        cls.url = (
+            reverse(
+                "forum_conversation:topic_create",
+                kwargs={
+                    "forum_slug": cls.forum.slug,
+                    "forum_pk": cls.forum.pk,
+                },
+            )
+            + "?checked=1"
         )
 
         cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.paragraph(nb_sentences=5)}
