@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
@@ -40,6 +40,17 @@ class TopicCreateCheckView(View):
 
 class TopicCreateView(FormValidMixin, views.TopicCreateView):
     post_form_class = TopicForm
+
+    def get(self, request, *args, **kwargs):
+        forum = self.get_forum()
+        if forum.is_in_documentation_area or self.request.GET.get("checked"):
+            return super().get(request, *args, **kwargs)
+        return redirect(
+            reverse(
+                "forum_conversation_extension:topic_create_check",
+                kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug},
+            )
+        )
 
     def get_success_url(self):
         if not self.forum_post.approved:

@@ -226,6 +226,32 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(list(topic.tags.all()), [Tag.objects.first(), Tag.objects.last()])
 
 
+class TestTopicCreateView:
+    def test_redirections_on_forum(self, db, client, snapshot):
+        forum = ForumFactory(with_public_perms=True)
+        url = reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
+
+        response = client.get(url)
+        assert response.status_code == 302
+        assert response.url == reverse(
+            "forum_conversation_extension:topic_create_check", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug}
+        )
+
+        response = client.get(url + "?checked=1")
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_content")
+        assert str(content) == snapshot(name="topic_create")
+
+    def test_redirections_on_documentation_forum(self, db, client, snapshot):
+        forum = CategoryForumFactory(with_child=True, with_public_perms=True).get_children().first()
+        response = client.get(
+            reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_content")
+        assert str(content) == snapshot(name="topic_create")
+
+
 class TopicUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):

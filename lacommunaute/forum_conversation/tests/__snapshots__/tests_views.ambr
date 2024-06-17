@@ -158,6 +158,72 @@
           </main>
   '''
 # ---
+# name: TestTopicCreateView.test_redirections_on_documentation_forum[topic_create]
+  '''
+  <div class="form-group" id="div_id_content">
+      
+          <label class="control-label" for="id_content">
+              Message
+              
+          </label>
+      
+      
+          <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+      
+      
+      
+      
+          
+              <small class="form-text text-muted">
+      <a aria-controls="collapseMentionsHelp" aria-expanded="false" data-bs-toggle="collapse" href="#collapseMentionsHelp" role="button">mention d'informations</a>
+      sur les champs libres
+  </small>
+  <div class="collapse" id="collapseMentionsHelp">
+      <div class="mb-3">
+          <p>
+              Nous vous demandons de ne pas nous transmettre d’informations sensibles. Notamment, ne communiquez pas vos opinions philosophiques, syndicales, politiques ou sur votre vie sexuelle. Ces données sont trop personnelles !
+          </p>
+      </div>
+  </div>
+  
+          
+      
+  </div>
+  '''
+# ---
+# name: TestTopicCreateView.test_redirections_on_forum[topic_create]
+  '''
+  <div class="form-group" id="div_id_content">
+      
+          <label class="control-label" for="id_content">
+              Message
+              
+          </label>
+      
+      
+          <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+      
+      
+      
+      
+          
+              <small class="form-text text-muted">
+      <a aria-controls="collapseMentionsHelp" aria-expanded="false" data-bs-toggle="collapse" href="#collapseMentionsHelp" role="button">mention d'informations</a>
+      sur les champs libres
+  </small>
+  <div class="collapse" id="collapseMentionsHelp">
+      <div class="mb-3">
+          <p>
+              Nous vous demandons de ne pas nous transmettre d’informations sensibles. Notamment, ne communiquez pas vos opinions philosophiques, syndicales, politiques ou sur votre vie sexuelle. Ces données sont trop personnelles !
+          </p>
+      </div>
+  </div>
+  
+          
+      
+  </div>
+  '''
+# ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
