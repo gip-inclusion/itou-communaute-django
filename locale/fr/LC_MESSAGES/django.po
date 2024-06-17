@@ -46,6 +46,46 @@ msgstr "Motif du blocage"
 msgid "Poster"
 msgstr "Auteur"
 
+#: lacommunaute/forum_stats/models.py
+msgid "Start date"
+msgstr "Date de début"
+
+#: lacommunaute/forum_stats/models.py
+msgid "The start of the period"
+msgstr "Le début de la période"
+
+#: lacommunaute/forum_stats/models.py
+msgid "End date"
+msgstr "Date de fin"
+
+#: lacommunaute/forum_stats/models.py
+msgid "The end of the period"
+msgstr "La fin de la période"
+
+#: lacommunaute/forum_stats/models.py
+msgid "Search Collection Period"
+msgstr "Recherche Période de collecte"
+
+#: lacommunaute/forum_stats/models.py
+msgid "Search Collection Periods"
+msgstr "Recherche de Périodes de collecte"
+
+#: lacommunaute/forum_stats/models.py
+msgid "The search query made by the user"
+msgstr "La requête de recherche effectuée par l'utilisateur"
+
+#: lacommunaute/forum_stats/models.py
+msgid "Number visits"
+msgstr "Nombre de visites"
+
+#: lacommunaute/forum_stats/models.py
+msgid "Search Query"
+msgstr "Recherche"
+
+#: lacommunaute/forum_stats/models.py
+msgid "Search Queries"
+msgstr "Recherches"
+
 #: lacommunaute/search/forms.py:24
 msgid "Keywords or phrase"
 msgstr "Mots clés ou phrase"
@@ -77,6 +117,7 @@ msgid "Global forum permissions"
 msgstr "Autorisations globales des communautés"
 
 #: lacommunaute/templates/admin/forum/forum/change_list_table.html:9
+#: lacommunaute/forum_stats/models.py
 msgid "Name"
 msgstr "Nom"
 
