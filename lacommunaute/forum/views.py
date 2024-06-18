@@ -4,14 +4,16 @@ from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.forms import ForumForm
-from lacommunaute.forum.models import Forum
+from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
@@ -53,6 +55,8 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         )
         context["loadmoretopic_suffix"] = "topicsinforum"
         context["form"] = PostForm(forum=forum, user=self.request.user)
+
+        context["rating"] = forum.get_session_rating(self.request.session.session_key)
 
         context["filter_dropdown_endpoint"] = (
             None
@@ -137,3 +141,19 @@ class SubCategoryForumCreateView(BaseCategoryForumCreateView):
             "forum_extension:forum", kwargs={"pk": self.get_parent_forum().pk, "slug": self.get_parent_forum().slug}
         )
         return context
+
+
+class ForumRatingView(View):
+    def post(self, request, *args, **kwargs):
+        forum_rating = ForumRating.objects.create(
+            forum=get_object_or_404(Forum, pk=self.kwargs["pk"]),
+            user=request.user if request.user.is_authenticated else None,
+            rating=int(request.POST["rating"]),
+            session_id=request.session.session_key,
+        )
+
+        return render(
+            request,
+            "forum/partials/rating.html",
+            context={"forum": forum_rating.forum, "rating": forum_rating.rating},
+        )

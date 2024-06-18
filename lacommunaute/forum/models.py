@@ -7,6 +7,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
+from machina.models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
@@ -72,3 +73,18 @@ class Forum(AbstractForum):
     @cached_property
     def is_newsfeed(self):
         return self.kind == Forum_Kind.NEWS
+
+    def get_session_rating(self, session_key):
+        return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)
+
+
+class ForumRating(DatedModel):
+    session_id = models.CharField(max_length=40)
+    forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Notation Forum"
+        verbose_name_plural = "Notations Forum"
+        ordering = ("-created",)

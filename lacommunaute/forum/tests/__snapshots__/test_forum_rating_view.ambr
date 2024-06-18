@@ -1,0 +1,93 @@
+# serializer version: 1
+# name: test_anonymous_post_forum_rating_view[anonymous_post_forum_rating_view]
+  '''
+  <html><head></head><body><div class="mb-5 rating" id="rating-area">
+          <hr/>
+          
+              <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+              </div>
+              
+          
+      </div>
+  
+  </body></html>
+  '''
+# ---
+# name: test_authenticated_post_forum_rating_view[authenticated_post_forum_rating_view]
+  '''
+  <html><head></head><body><div class="mb-5 rating" id="rating-area">
+          <hr/>
+          
+              <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+              </div>
+              
+          
+      </div>
+  
+  </body></html>
+  '''
+# ---

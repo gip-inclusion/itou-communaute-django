@@ -55,6 +55,9 @@
                                 <div class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</div>
                             </div>
                         </div>
+                        {% comment %} Proposition A Testing {% endcomment %}
+                        {% include "forum/partials/rating.html" with forum=forum rating_area_id="1" %}
+                        {% comment %} Proposition A Testing {% endcomment %}
                     </div>
                     <div class="col-12 col-lg-3">
                         {% if user_can_add_topic %}
@@ -67,8 +70,11 @@
                                 <i class="ri-chat-new-line ri-lg"></i>
                                 <span>{% trans "New topic on doc" %}</span>
                             </a>
-                            <hr>
                         {% endif %}
+                        {% comment %} Proposition B Testing {% endcomment %}
+                        {% include "forum/partials/rating.html" with forum=forum onSidebar=True rating_area_id="2" hidden=True %}
+                        {% comment %} Proposition B Testing {% endcomment %}
+                        <hr>
                         <a href="{% url 'forum_extension:forum' forum.parent.slug forum.parent.id %}"
                            class="matomo-event h3 text-decoration-none d-inline-block"
                            data-matomo-category="engagement"
@@ -81,18 +87,9 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                    </div>
-                </div>
-                <div class="s-section__row row">
-                    <div class="col-12 col-lg-9">
-                        <iframe data-tally-src="https://tally.so/embed/3yyXlx?hideTitle=1&dynamicHeight=1&alignLeft=1"
-                                loading="lazy"
-                                width="100%"
-                                height="100"
-                                frameborder="0"
-                                marginheight="0"
-                                marginwidth="0"
-                                title="Cette fiche vous a-t-elle été utile ?"></iframe>
+                        {% comment %} Proposition C Testing {% endcomment %}
+                        {% include "forum/partials/rating.html" with forum=forum onSidebar=True rating_area_id="3" hidden=True %}
+                        {% comment %} Proposition C Testing {% endcomment %}
                     </div>
                 </div>
             {% else %}
@@ -181,7 +178,3 @@
         </section>
     {% endif %}
 {% endblock content %}
-{% block extra_js %}
-    {{ block.super }}
-    <script async src="https://tally.so/widgets/embed.js"></script>
-{% endblock extra_js %}
