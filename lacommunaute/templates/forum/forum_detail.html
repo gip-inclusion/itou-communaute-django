@@ -78,71 +78,63 @@
             </div>
         </section>
     {% endif %}
-    {% if forum.is_forum %}
-        <section class="s-section">
-            <div class="s-section__container container">
-                <div class="s-section__row row justify-content-between">
-                    {% comment %}{% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}{% endcomment %}
-                    {% get_permission 'can_approve_posts' forum request.user as user_can_access_stats %}
-                    {% if user_can_add_topic or user_can_access_stats %}
-                        <div class="col-12 col-sm-auto forum-actions-block">
-                            {% if user_can_add_topic %}
-                                <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                                   rel="nofollow"
-                                   class="btn btn-primary btn-ico matomo-event"
-                                   data-matomo-category="engagement"
-                                   data-matomo-action="contribute"
-                                   data-matomo-option="new_topic">
-                                    <i class="ri-chat-new-line ri-lg"></i>
-                                    <span>
-                                        {% if forums %}
-                                            {% trans "New topic on doc" %}
-                                        {% elif forum.kind == 'NEWS' %}
-                                            {% trans "New news" %}
-                                        {% else %}
-                                            {% trans "New topic" %}
-                                        {% endif %}
-                                    </span>
-                                </a>
-                            {% endif %}
-                            {% if user_can_access_stats and forum.members_group %}
-                                <button id="id_dropdown_moderators_stats_button" class="btn btn-ico-only btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
-                                    <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}" class="dropdown-item matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="directory">{% trans "Members" %}</a>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+    {% block forum_foot_content %}
+        {% if forum.is_forum %}
+            <section class="s-section">
+                <div class="s-section__container container">
+                    <div class="s-section__row row justify-content-between">
+                        {% comment %}{% get_permission 'can_add_topic' forum request.user as user_can_add_topic %}{% endcomment %}
+                        {% get_permission 'can_approve_posts' forum request.user as user_can_access_stats %}
+                        {% if user_can_add_topic or user_can_access_stats %}
+                            <div class="col-12 col-sm-auto forum-actions-block">
+                                {% if user_can_add_topic %}
+                                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                       rel="nofollow"
+                                       class="btn btn-primary btn-ico matomo-event"
+                                       data-matomo-category="engagement"
+                                       data-matomo-action="contribute"
+                                       data-matomo-option="new_topic">
+                                        <i class="ri-chat-new-line ri-lg"></i>
+                                        <span>
+                                            {% if forums %}
+                                                {% trans "New topic on doc" %}
+                                            {% elif forum.kind == 'NEWS' %}
+                                                {% trans "New news" %}
+                                            {% else %}
+                                                {% trans "New topic" %}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                {% endif %}
+                                {% if user_can_access_stats and forum.members_group %}
+                                    <button id="id_dropdown_moderators_stats_button" class="btn btn-ico-only btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="ri-bar-chart-line ri-lg" aria-label="Statistiques animateurs"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="id_dropdown_moderators_stats_button">
+                                        <a href="{% url 'members:forum_profiles' forum.slug forum.pk %}" class="dropdown-item matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="directory">{% trans "Members" %}</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section class="s-section mt-0">
-            <div class="s-section__container container">
-                <div class="s-section__row row">
-                    <div class="s-section__col col-12">
-                        <div class="c-box">
-                            {% with unread_topics=unread_topics %}
-                                {% include "forum_conversation/topic_list.html" %}
-                                <!-- note vincentporte : to be optimized -->
-                            {% endwith %}
+            </section>
+            <section class="s-section mt-0">
+                <div class="s-section__container container">
+                    <div class="s-section__row row">
+                        <div class="s-section__col col-12">
+                            <div class="c-box">
+                                {% with unread_topics=unread_topics %}
+                                    {% include "forum_conversation/topic_list.html" %}
+                                    <!-- note vincentporte : to be optimized -->
+                                {% endwith %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    {% elif forum.is_category and user.is_superuser %}
-        <section class="s-section">
-            <div class="s-section__container container">
-                <div class="s-section__row row">
-                    <div class="s-section__col col-12">
-                        <a href="{% url 'forum_extension:create_subcategory' forum.pk %}" aria-label="Ajouter une fiche pratique" role="button" class="btn btn-outline-primary">Ajouter une fiche pratique</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endif %}
+            </section>
+        {% endif %}
+    {% endblock forum_foot_content %}
 {% endblock content %}
 {% block extra_js %}
     {{ block.super }}
