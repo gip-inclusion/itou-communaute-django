@@ -32,7 +32,7 @@ echo "restoring db"
 docker exec -ti commu_postgres pg_restore -U $POSTGRESQL_ADDON_USER --dbname=$POSTGRESQL_ADDON_DB --format=c --clean --no-owner --verbose /backups/$DB_BACKUP_NAME
 
 echo "restarting db"
-docker-compose down; docker-compose up postgres -d
+docker-compose down postgres; docker-compose up postgres -d
 
 echo "faking password"
 python manage.py set_fake_passwords
