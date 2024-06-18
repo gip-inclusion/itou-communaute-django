@@ -33,10 +33,16 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
             return ["forum_conversation/topic_list.html"]
         if self.will_render_documentation_variant():
             return ["forum/forum_documentation.html"]
+        if self.will_render_documentation_category_variant():
+            return ["forum/forum_documentation_category.html"]
         return ["forum/forum_detail.html"]
 
     def will_render_documentation_variant(self):
         return self.get_forum().parent and self.forum.is_in_documentation_area
+
+    def will_render_documentation_category_variant(self):
+        first_child = self.get_forum().children.first()
+        return first_child and first_child.is_in_documentation_area
 
     def get_queryset(self):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
