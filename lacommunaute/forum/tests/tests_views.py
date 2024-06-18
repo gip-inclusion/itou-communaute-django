@@ -9,6 +9,7 @@ from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
@@ -101,11 +102,23 @@ class ForumViewTest(TestCase):
         self.assertNotIn("nonexistant", response.context_data["active_tags_label"])
 
     def test_template_name(self):
+        def get_url_for_forum(forum):
+            return reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+
         response = self.client.get(self.url)
         self.assertTemplateUsed(response, "forum/forum_detail.html")
 
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+
+        documentation_category_forum = ForumFactory(type=Forum.FORUM_CAT, with_public_perms=True)
+        documentation_forum = ForumFactory(parent=documentation_category_forum, with_public_perms=True)
+
+        response = self.client.get(get_url_for_forum(documentation_category_forum))
+        self.assertTemplateUsed(response, "forum/forum_documentation_category.html")
+
+        response = self.client.get(get_url_for_forum(documentation_forum))
+        self.assertTemplateUsed(response, "forum/forum_documentation.html")
 
     def test_show_comments(self):
         topic_url = reverse(
