@@ -7,6 +7,18 @@ from lacommunaute.forum_stats.models import Stat
 from lacommunaute.utils.matomo import collect_stats_from_matomo_api
 
 
+matomo_stats_names = [
+    "nb_uniq_visitors",
+    "nb_uniq_visitors_returning",
+    "nb_uniq_active_visitors",
+    "nb_uniq_engaged_visitors",
+]
+
+
+def get_initial_from_date(period):
+    return Stat.objects.filter(period=period, name__in=matomo_stats_names).order_by("-date").first()
+
+
 class Command(BaseCommand):
     help = "Collecter les stats matomo, jusqu'à la veille de l'execution"
 
@@ -16,7 +28,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         period = options["period"]
 
-        from_date = Stat.objects.filter(period=period).order_by("-date").first()
+        from_date = get_initial_from_date(period)
 
         if from_date:
             if period == "day":
