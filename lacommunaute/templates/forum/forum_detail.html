@@ -70,11 +70,11 @@
                                 <i class="ri-chat-new-line ri-lg"></i>
                                 <span>{% trans "New topic on doc" %}</span>
                             </a>
-                            <hr>
                         {% endif %}
                         {% comment %} Proposition B Testing {% endcomment %}
                         {% include "forum/partials/rating.html" with forum=forum onSidebar=True rating_area_id="2" hidden=True %}
                         {% comment %} Proposition B Testing {% endcomment %}
+                        <hr>
                         <a href="{% url 'forum_extension:forum' forum.parent.slug forum.parent.id %}"
                            class="matomo-event h3 text-decoration-none d-inline-block"
                            data-matomo-category="engagement"

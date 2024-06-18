@@ -1,5 +1,6 @@
 {% if onSidebar %}
     <div id="rating-area{{ rating_area_id }}" class="rating{% if hidden %} d-none{% endif %}">
+        <hr>
         {% if rating %}
             <h3 class="h4">Merci d'avoir noté cette fiche !</h3>
             <div class="d-inline-block d-lg-block text-center">
@@ -32,7 +33,6 @@
                 </div>
             </form>
         {% endif %}
-        <hr>
     </div>
 {% else %}
     <div id="rating-area{{ rating_area_id }}" class="mb-5 rating{% if hidden %} d-none{% endif %}">
