@@ -179,6 +179,7 @@
     {% endif %}
 {% endblock content %}
 {% block extra_js %}
+    {{ block.super }}
     <!-- Matomo A/B Test -->
     <script nonce="{{ request.csp_nonce }}">
     var _paq = _paq || [];

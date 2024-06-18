@@ -16,7 +16,6 @@
                     {% endfor %}
                 </div>
             </div>
-            {% for star in "12345" %}{% endfor %}
         {% else %}
             <h3 class="h4">Cette fiche vous a-t-elle été utile ?</h3>
             <form class="d-inline-block d-lg-block bg-button-lightest rounded-1 text-center"
@@ -50,7 +49,6 @@
                     </div>
                 {% endfor %}
             </div>
-            {% for star in "12345" %}{% endfor %}
         {% else %}
             <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
             <form hx-post="{% url 'forum_extension:rate' forum.slug forum.pk %}" id="rating-button" hx-target="#rating-area{{ rating_area_id }}" hx-swap="outerHTML">
