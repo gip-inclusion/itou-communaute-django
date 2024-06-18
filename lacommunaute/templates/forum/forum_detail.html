@@ -178,3 +178,41 @@
         </section>
     {% endif %}
 {% endblock content %}
+{% block extra_js %}
+    <!-- Matomo A/B Test -->
+    <script nonce="{{ request.csp_nonce }}">
+    var _paq = _paq || [];
+    _paq.push(['AbTesting::create', {
+        name: 'RatingForum_Position', // you can also use '8' (ID of the experiment) to hide the name
+        percentage: 100,
+        includedTargets: [{"attribute":"url","inverted":"0","type":"any","value":""}],
+        excludedTargets: [],
+        startDateTime: '2024/06/18 00:00:00 UTC',
+        variations: [
+            {
+                name: 'original',
+                activate: function (event) {
+                    // usually nothing needs to be done here
+                }
+            },
+            {
+                name: 'rating_area_2', // you can also use '13' (ID of the variation) to hide the name
+                activate: function(event) {
+                    $("#rating_area2").removeClass("d-none")
+                    $("#rating_area1").addClass("d-none")
+                }
+            },                        {
+                name: 'rating_area_3', // you can also use '14' (ID of the variation) to hide the name
+                activate: function(event) {
+                    $("#rating_area3").removeClass("d-none")
+                    $("#rating_area1").addClass("d-none")
+                }
+            }
+        ],
+        trigger: function () {
+            return true; // here you can further customize which of your visitors will participate in this experiment
+        }
+    }]);
+    </script>
+    <!-- Matomo A/B Test -->
+{% endblock %}
