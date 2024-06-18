@@ -111,8 +111,10 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
-        documentation_category_forum = ForumFactory(type=Forum.FORUM_CAT, with_public_perms=True)
-        documentation_forum = ForumFactory(parent=documentation_category_forum, with_public_perms=True)
+        documentation_category_forum = CategoryForumFactory(
+            type=Forum.FORUM_CAT, with_public_perms=True, with_child=True
+        )
+        documentation_forum = documentation_category_forum.children.first()
 
         response = self.client.get(get_url_for_forum(documentation_category_forum))
         self.assertTemplateUsed(response, "forum/forum_documentation_category.html")
