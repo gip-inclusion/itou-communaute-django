@@ -449,3 +449,8 @@ PERMISSIONS_POLICY = {
     "sync-xhr": [],
     "usb": [],
 }
+
+# forum_stats
+# ---------------------------------------
+
+SEARCH_COLLECTION_PERIOD_DAYS = 30
