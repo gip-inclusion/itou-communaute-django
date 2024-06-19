@@ -1,9 +1,9 @@
 from django.urls import path
 
-from lacommunaute.forum_stats.views import DailyDSPView, MonthlyVisitorsView, StatistiquesPageView
+from lacommunaute.stats.views import DailyDSPView, MonthlyVisitorsView, StatistiquesPageView
 
 
-app_name = "forum_stats"
+app_name = "stats"
 
 urlpatterns = [
     path("", StatistiquesPageView.as_view(), name="statistiques"),

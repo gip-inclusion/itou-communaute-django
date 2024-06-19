@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.models import Stat
 
 
 class StatAdmin(admin.ModelAdmin):

@@ -72,7 +72,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_conversation.forum_polls",
     "lacommunaute.forum_member",
     "lacommunaute.forum_upvote",
-    "lacommunaute.forum_stats",
+    "lacommunaute.stats",
     "lacommunaute.forum_moderation",
     "lacommunaute.notification",
     "lacommunaute.event",

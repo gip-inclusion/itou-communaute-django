@@ -12,7 +12,7 @@ def test_context(client, db):
     url = reverse("forum_extension:documentation")
     response = client.get(url)
     assert "forum/category_forum_list.html" == response.templates[0].name
-    assertContains(response, reverse("forum_stats:statistiques"), status_code=200)
+    assertContains(response, reverse("stats:statistiques"), status_code=200)
 
 
 def test_queryset(client, db):

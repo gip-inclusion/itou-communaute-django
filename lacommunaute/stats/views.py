@@ -8,7 +8,7 @@ from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from django.views.generic.base import TemplateView
 
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.models import Stat
 from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
 from lacommunaute.utils.math import percent
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class StatistiquesPageView(TemplateView):
-    template_name = "forum_stats/statistiques.html"
+    template_name = "stats/statistiques.html"
 
     def get_funnel_data(self):
         qs = Stat.objects.current_month_datas()
@@ -101,7 +101,7 @@ class BaseDetailStatsView(TemplateView):
 
 
 class MonthlyVisitorsView(BaseDetailStatsView):
-    template_name = "forum_stats/monthly_visitors.html"
+    template_name = "stats/monthly_visitors.html"
     box_title = "Utilisateurs uniques mensuels"
     indicator_names = [
         "nb_uniq_visitors",
@@ -114,7 +114,7 @@ class MonthlyVisitorsView(BaseDetailStatsView):
 
 
 class DailyDSPView(BaseDetailStatsView):
-    template_name = "forum_stats/daily_dsp.html"
+    template_name = "stats/daily_dsp.html"
     box_title = "Diagnostics Parcours IAE quotidiens"
     indicator_names = ["dsp"]
     period = "day"

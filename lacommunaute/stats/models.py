@@ -1,6 +1,6 @@
 from django.db import models
 
-from lacommunaute.forum_stats.enums import Period
+from lacommunaute.stats.enums import Period
 
 
 class StatQuerySet(models.QuerySet):
