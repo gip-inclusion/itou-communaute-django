@@ -25,7 +25,7 @@ from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
 from lacommunaute.utils.perms import add_public_perms_on_forum
-from lacommunaute.utils.testing import parse_response_to_soup
+from lacommunaute.utils.testing import ContextlessTemplate, parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
 
@@ -535,3 +535,12 @@ class TestImageSizeValidator:
         with pytest.raises(Exception):
             file.file.size = 1024 * 1024 * 5 + 1
             file.save()
+
+
+class ContextlessTemplateTestCase(TestCase):
+    @patch("django.template.Template.__init__", ContextlessTemplate.__init__)
+    def test_template_rendering(self):
+        template = Template("<p>{{ variable }}</p>")
+        context = Context({"variable": "test"})
+        rendered = template.render(context)
+        assert "{{ variable }}" in rendered
