@@ -9,7 +9,6 @@ from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
@@ -111,9 +110,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
-        documentation_category_forum = CategoryForumFactory(
-            type=Forum.FORUM_CAT, with_public_perms=True, with_child=True
-        )
+        documentation_category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
         documentation_forum = documentation_category_forum.children.first()
 
         response = self.client.get(get_url_for_forum(documentation_category_forum))
@@ -528,7 +525,7 @@ class ForumViewTest(TestCase):
         self.assertContains(response, forum.image.url.split("=")[0])
 
 
-class TestForumView:
+class TestForumViewContent:
     def test_not_rated_forum(self, client, db, snapshot):
         category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
         forum = category_forum.get_children().first()

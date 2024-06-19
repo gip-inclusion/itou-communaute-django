@@ -137,7 +137,7 @@
       </nav>
   '''
 # ---
-# name: TestForumView.test_not_rated_forum[not_rated_forum]
+# name: TestForumViewContent.test_not_rated_forum[not_rated_forum]
   '''
   <div class="mb-5 rating" id="rating-area1">
           <hr/>
@@ -172,7 +172,7 @@
       </div>
   '''
 # ---
-# name: TestForumView.test_rated_forum[rated_forum]
+# name: TestForumViewContent.test_rated_forum[rated_forum]
   '''
   <div class="mb-5 rating" id="rating-area1">
           <hr/>
