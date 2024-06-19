@@ -33,7 +33,7 @@ from lacommunaute.utils.matomo import (
     get_matomo_visits_data,
 )
 from lacommunaute.utils.perms import add_public_perms_on_forum
-from lacommunaute.utils.testing import parse_response_to_soup
+from lacommunaute.utils.testing import ContextlessTemplate, parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
 
@@ -691,3 +691,12 @@ class TestTheLastSunday:
     )
     def test_the_last_sunday(self, day, expected_sunday):
         assert get_last_sunday(datetime(2024, 5, day)) == expected_sunday
+
+
+class ContextlessTemplateTestCase(TestCase):
+    @patch("django.template.Template.__init__", ContextlessTemplate.__init__)
+    def test_template_rendering(self):
+        template = Template("<p>{{ variable }}</p>")
+        context = Context({"variable": "test"})
+        rendered = template.render(context)
+        assert "{{ variable }}" in rendered
