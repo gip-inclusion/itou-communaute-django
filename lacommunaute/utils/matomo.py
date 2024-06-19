@@ -5,7 +5,7 @@ import httpx
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.models import Stat
 
 
 def get_matomo_data(

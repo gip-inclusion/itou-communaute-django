@@ -3,8 +3,8 @@ import datetime
 import factory
 import factory.django
 
-from lacommunaute.forum_stats.enums import Period
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.enums import Period
+from lacommunaute.stats.models import Stat
 
 
 class StatFactory(factory.django.DjangoModelFactory):

@@ -8,8 +8,8 @@ from faker import Faker
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 
-from lacommunaute.forum_stats.enums import Period
-from lacommunaute.forum_stats.factories import StatFactory
+from lacommunaute.stats.enums import Period
+from lacommunaute.stats.factories import StatFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.testing import parse_response_to_soup
@@ -21,7 +21,7 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 class StatistiquesPageTest(TestCase):
     def test_context_data(self):
-        url = reverse("forum_stats:statistiques")
+        url = reverse("stats:statistiques")
         date = timezone.now()
         names = ["nb_uniq_engaged_visitors", "nb_uniq_visitors", "nb_uniq_active_visitors"]
         for name in names:
@@ -35,7 +35,7 @@ class StatistiquesPageTest(TestCase):
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "forum_stats/statistiques.html")
+        self.assertTemplateUsed(response, "stats/statistiques.html")
 
         # expected values
         self.assertIn("stats", response.context)
@@ -51,7 +51,7 @@ class StatistiquesPageTest(TestCase):
 
     def test_month_datas_in_context(self):
         today = localdate()
-        url = reverse("forum_stats:statistiques")
+        url = reverse("stats:statistiques")
 
         # no data
         response = self.client.get(url)
@@ -92,7 +92,7 @@ class StatistiquesPageTest(TestCase):
         )
 
     def test_impact_in_context_data(self):
-        url = reverse("forum_stats:statistiques")
+        url = reverse("stats:statistiques")
         today = localdate()
         empty_res = {"date": [], "nb_uniq_visitors_returning": []}
 
@@ -116,15 +116,15 @@ class StatistiquesPageTest(TestCase):
         self.assertEqual(response.context["impact"]["nb_uniq_visitors_returning"][0], 1)
 
     def test_navigation(self):
-        url = reverse("forum_stats:statistiques")
+        url = reverse("stats:statistiques")
         response = self.client.get(url)
-        self.assertContains(response, f"<a href={reverse('forum_stats:monthly_visitors')}>")
+        self.assertContains(response, f"<a href={reverse('stats:monthly_visitors')}>")
 
 
 class TestStatistiquesPageView:
     def test_dsp_count(self, client, db, snapshot):
         DSPFactory.create_batch(10)
-        url = reverse("forum_stats:statistiques")
+        url = reverse("stats:statistiques")
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector="#daily_dsp")) == snapshot(name="dsp")
@@ -132,7 +132,7 @@ class TestStatistiquesPageView:
 
 class TestMonthlyVisitorsView:
     def test_context_data(self, client, db):
-        url = reverse("forum_stats:monthly_visitors")
+        url = reverse("stats:monthly_visitors")
         today = localdate()
         empty_res = {
             "date": [],
@@ -171,7 +171,7 @@ class TestMonthlyVisitorsView:
         }
 
     def test_navigation(self, client, db, snapshot):
-        url = reverse("forum_stats:dsp")
+        url = reverse("stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
@@ -191,7 +191,7 @@ class TestDailyDSPView:
         )
         StatFactory(name="dsp", period=Period.DAY, date=today, value=2)
 
-        url = reverse("forum_stats:dsp")
+        url = reverse("stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
         assert response.context["box_title"] == "Diagnostics Parcours IAE quotidiens"
@@ -204,7 +204,7 @@ class TestDailyDSPView:
         }
 
     def test_navigation(self, client, db, snapshot):
-        url = reverse("forum_stats:dsp")
+        url = reverse("stats:dsp")
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")

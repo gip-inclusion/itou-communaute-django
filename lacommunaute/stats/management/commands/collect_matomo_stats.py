@@ -3,7 +3,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand
 
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.models import Stat
 from lacommunaute.utils.matomo import collect_stats_from_matomo_api
 
 

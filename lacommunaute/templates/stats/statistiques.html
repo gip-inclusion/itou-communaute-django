@@ -48,7 +48,7 @@
                                         <span class="fs-sm">{{ engagement_percent }}% des util. actifs</span>
                                     </div>
                                     <figcaption class="fs-sm text-muted mt-3">
-                                        Période : <a href={% url 'forum_stats:monthly_visitors' %}>{{ period }}</a>
+                                        Période : <a href={% url 'stats:monthly_visitors' %}>{{ period }}</a>
                                     </figcaption>
                                 </figure>
                             </div>
@@ -92,7 +92,7 @@
                         <h2>{{ dsp_count }} Diagnostique{{ dsp_count|pluralizefr }} Parcours IAE</h2>
                         <p>
                             Réalisé{{ dsp_count|pluralizefr }} sur la communauté de l'inclusion depuis le 24 février 2024
-                            <span class="fs-sm">(<a href={% url 'forum_stats:dsp' %}>Voir les détails</a>)</span>
+                            <span class="fs-sm">(<a href={% url 'stats:dsp' %}>Voir les détails</a>)</span>
                         </p>
                     </div>
                 </div>

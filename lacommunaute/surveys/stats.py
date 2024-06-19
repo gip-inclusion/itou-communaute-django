@@ -5,7 +5,7 @@ from django.db.models import Count, Value
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.models import Stat
 from lacommunaute.surveys.models import DSP
 
 

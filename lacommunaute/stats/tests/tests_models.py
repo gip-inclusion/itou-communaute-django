@@ -4,9 +4,9 @@ from django.test import TestCase
 from django.utils import timezone
 from django.utils.timezone import localdate
 
-from lacommunaute.forum_stats.enums import Period
-from lacommunaute.forum_stats.factories import StatFactory
-from lacommunaute.forum_stats.models import Stat
+from lacommunaute.stats.enums import Period
+from lacommunaute.stats.factories import StatFactory
+from lacommunaute.stats.models import Stat
 
 
 class StatModelTest(TestCase):
