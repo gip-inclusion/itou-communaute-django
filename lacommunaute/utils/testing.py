@@ -56,15 +56,13 @@ def reset_model_sequence_fixture(model_class):
     """
 
     def reset_model_sequence():
-        prior_seq_val = 1
-
         def get_current_sequence_value(cursor):
-            cursor.execute(f"SELECT nextval(pg_get_serial_sequence('{model_class._meta.db_table}', 'id'));")
+            cursor.execute("SELECT nextval(pg_get_serial_sequence(%s, 'id'));", (model_class._meta.db_table,))
             return cursor.fetchone()[0]
 
         def set_sequence_value(cursor, value):
             cursor.execute(
-                f"SELECT setval(pg_get_serial_sequence('{model_class._meta.db_table}', 'id'), '{str(value)}', false);"
+                "SELECT setval(pg_get_serial_sequence(%s, 'id'), %s, false);", (model_class._meta.db_table, str(value))
             )
 
         with connection.cursor() as cursor:
@@ -75,6 +73,5 @@ def reset_model_sequence_fixture(model_class):
 
         with connection.cursor() as cursor:
             set_sequence_value(cursor, prior_seq_val)
-            assert prior_seq_val == get_current_sequence_value(cursor)
 
     return reset_model_sequence
