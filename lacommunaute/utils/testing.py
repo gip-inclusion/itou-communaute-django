@@ -1,7 +1,6 @@
 import importlib
 
 from bs4 import BeautifulSoup
-from django.template import Origin, Template
 from django.test.utils import TestContextDecorator
 
 
@@ -47,23 +46,3 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
             for links in soup.find_all(attrs={attr: True}):
                 [links.attrs.update({attr: links.attrs[attr].replace(*replacement)}) for replacement in replacements]
     return soup
-
-
-class ContextlessTemplate(Template):
-    """
-    Overload of Django's Template for use in tests where we don't want values computed from the context to
-    pollute the snapshot of views
-    """
-
-    def __init__(self, template_string, origin=None, name=None, engine=None):
-        if engine is None:
-            from django.template.engine import Engine
-
-            engine = Engine.get_default()
-        if origin is None:
-            origin = Origin("<unknown source>")
-        self.name = name
-        self.origin = origin
-        self.engine = engine
-        self.source = str(template_string.replace("{{", "{% verbatim %}{{").replace("}}", "}}{% endverbatim %}"))
-        self.nodelist = self.compile_nodelist()
