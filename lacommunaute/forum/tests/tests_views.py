@@ -574,7 +574,7 @@ class TestDocumentationForumContent:
         response = client.get(self.url)
         content = parse_response_to_soup(response)
 
-        assert len(content.find_all("img", src=self.forum.image.url)) == 1
+        assert len(content.find_all("img", src=re.compile(self.forum.image.name))) == 1
         assert len(content.select("div.textarea_cms_md", string=re.compile(str(self.forum.description)[:10]))) == 1
 
         user_add_topic = content.find_all(
