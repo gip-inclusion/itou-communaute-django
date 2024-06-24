@@ -23,6 +23,7 @@ from lacommunaute.forum_conversation.forum_attachments.factories import Attachme
 from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.date import get_last_sunday
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import (
     collect_forum_stats_from_matomo_api,
@@ -644,3 +645,12 @@ class TestImageSizeValidator:
         with pytest.raises(Exception):
             file.file.size = 1024 * 1024 * 5 + 1
             file.save()
+
+
+class TestTheLastSunday:
+    @pytest.mark.parametrize(
+        "day, expected_sunday",
+        [(i, datetime(2024, 5, 12)) for i in range(12, 19)] + [(i, datetime(2024, 5, 19)) for i in range(19, 26)],
+    )
+    def test_the_last_sunday(self, day, expected_sunday):
+        assert get_last_sunday(datetime(2024, 5, day)) == expected_sunday
