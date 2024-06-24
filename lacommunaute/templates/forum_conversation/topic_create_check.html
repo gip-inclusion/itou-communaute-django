@@ -1,0 +1,130 @@
+{% extends "board_base.html" %}
+{% load i18n %}
+{% load forum_conversation_tags %}
+{% block sub_title %}
+    {% trans "Post a new topic" %}
+{% endblock sub_title %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ forum.name }}</h1>
+        </div>
+    </div>
+    <div class="row c-box">
+        <div class="col-12 mb-5">
+            <p class="h2">Quelle est ma situation ?</p>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card c-card h-100">
+                <div class="card-header">
+                    <h3 class="h4">Je suis à la recherche d'un emploi</h3>
+                </div>
+                <div class="card-body pb-0">
+                    <p>Je recherche des offres d'emploi ou des entreprises près de chez moi</p>
+                </div>
+                <div class="card-footer text-center mt-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rechercheEmploi">
+                        J'accède aux emplois de l'inclusion
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card c-card h-100">
+                <div class="card-header">
+                    <h3 class="h4">J'utilise le site des emplois de l'inclusion</h3>
+                </div>
+                <div class="card-body pb-0">
+                    <p>
+                        J'ai des questions sur les PASS IAE, leur suspension ou prolongation, le fonctionnement du site des emplois de l'inclusion ou les relations avec l'ASP
+                    </p>
+                </div>
+                <div class="card-footer text-center mt-3">
+                    <a href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr" class="btn btn-primary">
+                        J'accède à la documentation des emplois de l'inclusion
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card c-card h-100">
+                <div class="card-header">
+                    <h3 class="h4">J'accueille des personnes en PMSMP</h3>
+                </div>
+                <div class="card-body pb-0">
+                    <p>
+                        J'ai une question Période de Mise en Situation en Milieu Professionnel, le conventionnement, la déclaration des heures ou le fonctionnement du site Immersion Facilitée
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="https://aide.immersion-facile.beta.gouv.fr/fr/" class="btn btn-primary">
+                        J'accède au centre d'aide Immersion Facilitée
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card c-card h-100">
+                <div class="card-header">
+                    <h3 class="h4">Je suis un/une professionnel/le de l'insertion, en formation ou en activité</h3>
+                </div>
+                <div class="card-body pb-0">
+                    <p>
+                        J'ai une question sur l'accompagnement d'une personne éloignée de l'emploi, sur mon parcours de formation ou sur une des fiches pratiques de la communauté
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.id %}?checked=1" class="btn btn-primary">Je pose ma question à la communauté</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal--mini fade" id="rechercheEmploi" tabindex="-1" aria-labelledby="rechercheEmploiMiniLabel"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="rechercheEmploiLabel">
+                        Vous recherchez un emploi à temps plein, à temps partiel ou en interim ?
+                    </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body home-content-body">
+                    <p class="mb-4">
+                        Ce ne sera pas long !
+                        <br>
+                        Inscrivez-vous et accédez à toutes les fonctionnalités du site des emplois de l'inclusion.
+                    </p>
+                    <ul class="mb-5">
+                        <li class="d-flex mb-2">
+                            <span>
+                                <i class="text-success ri-checkbox-circle-fill "></i>
+                            </span>
+                            <span class="font-weight-bold ml-2">Créer votre espace candidat</span>
+                        </li>
+                        <li class="d-flex mb-2">
+                            <span>
+                                <i class="text-success ri-checkbox-circle-fill "></i>
+                            </span>
+                            <span class="font-weight-bold ml-2">Rechercher les offres d'emploi à proximité de votre ville</span>
+                        </li>
+                        <li class="d-flex mb-2">
+                            <span>
+                                <i class="text-success ri-checkbox-circle-fill "></i>
+                            </span>
+                            <span class="font-weight-bold ml-2">Candidatez aux offres !</span>
+                        </li>
+                        <li class="d-flex mb-2">
+                            <span>
+                                <i class="text-success ri-checkbox-circle-fill "></i>
+                            </span>
+                            <span class="font-weight-bold ml-2">N'oubliez pas de faire valider votre élégibilité par votre conseiller France Travail.</span>
+                        </li>
+                    </ul>
+                    <p class="text-center">
+                        <a href="https://emplois.inclusion.beta.gouv.fr/signup/job_seeker/situation"  class="btn btn-lg btn-primary">Je crée mon espace candidat sur le site des emplois</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

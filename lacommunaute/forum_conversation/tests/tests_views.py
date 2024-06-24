@@ -44,12 +44,15 @@ class TopicCreateViewTest(TestCase):
     def setUpTestData(cls):
         cls.poster = UserFactory()
         cls.forum = ForumFactory(with_public_perms=True)
-        cls.url = reverse(
-            "forum_conversation:topic_create",
-            kwargs={
-                "forum_slug": cls.forum.slug,
-                "forum_pk": cls.forum.pk,
-            },
+        cls.url = (
+            reverse(
+                "forum_conversation:topic_create",
+                kwargs={
+                    "forum_slug": cls.forum.slug,
+                    "forum_pk": cls.forum.pk,
+                },
+            )
+            + "?checked=1"
         )
 
         cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.paragraph(nb_sentences=5)}
@@ -224,6 +227,32 @@ class TopicCreateViewTest(TestCase):
         topic = Topic.objects.get()
         self.assertEqual(2, topic.tags.count())
         self.assertEqual(list(topic.tags.all()), [Tag.objects.first(), Tag.objects.last()])
+
+
+class TestTopicCreateView:
+    def test_redirections_on_forum(self, db, client, snapshot):
+        forum = ForumFactory(with_public_perms=True)
+        url = reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
+
+        response = client.get(url)
+        assert response.status_code == 302
+        assert response.url == reverse(
+            "forum_conversation_extension:topic_create_check", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug}
+        )
+
+        response = client.get(url + "?checked=1")
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_content")
+        assert str(content) == snapshot(name="topic_create")
+
+    def test_redirections_on_documentation_forum(self, db, client, snapshot):
+        forum = CategoryForumFactory(with_child=True, with_public_perms=True).get_children().first()
+        response = client.get(
+            reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_content")
+        assert str(content) == snapshot(name="topic_create")
 
 
 class TopicUpdateViewTest(TestCase):
@@ -1047,3 +1076,38 @@ class NewsFeedTopicListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["forum"], None)
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:newsfeed"))
+
+
+class TestTopicCreateCheckView:
+    def test_get_method(self, client, db, snapshot):
+        forum = ForumFactory(name="forum")
+        response = client.get(
+            reverse(
+                "forum_conversation_extension:topic_create_check",
+                kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk},
+            )
+        )
+        assert response.status_code == 200
+        assertContains(
+            response,
+            reverse("forum_conversation:topic_create", kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk})
+            + "?checked=1",
+        )
+        content = parse_response_to_soup(response, selector="main", replace_in_href=[forum])
+        assert str(content) == snapshot(name="topic_create_check")
+
+    def test_forum_does_not_exist(self, client, db):
+        response = client.get(
+            reverse("forum_conversation_extension:topic_create_check", kwargs={"forum_slug": "fake", "forum_pk": 999})
+        )
+        assert response.status_code == 404
+
+    def test_post_method_not_allowed(self, client, db):
+        forum = ForumFactory()
+        response = client.post(
+            reverse(
+                "forum_conversation_extension:topic_create_check",
+                kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk},
+            )
+        )
+        assert response.status_code == 405

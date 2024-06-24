@@ -62,8 +62,8 @@ class Forum(AbstractForum):
 
     @cached_property
     def is_in_documentation_area(self):
-        return self.type == Forum.FORUM_CAT or (
-            self.get_ancestors() and self.get_ancestors().first().type == Forum.FORUM_CAT
+        return (self.type == Forum.FORUM_CAT and self.get_level() == 0) or (
+            self.get_level() > 0 and self.get_ancestors().first().type == Forum.FORUM_CAT
         )
 
     @cached_property
