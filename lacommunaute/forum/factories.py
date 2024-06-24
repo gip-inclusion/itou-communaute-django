@@ -19,6 +19,7 @@ class ForumFactory(BaseForumFactory):
 
     class Params:
         with_image = factory.Trait(image=factory.django.ImageField(filename="banner.jpg"))
+        for_snapshot = factory.Trait(name="Test Forum", description="Test description")
 
     @factory.post_generation
     def with_public_perms(self, create, extracted, **kwargs):
