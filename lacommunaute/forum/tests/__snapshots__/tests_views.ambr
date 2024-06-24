@@ -137,6 +137,29 @@
       </nav>
   '''
 # ---
+# name: TestDocumentationForumContent.test_documentation_forum_header_content[template_documentation_link_to_parent]
+  '<a class="matomo-event h3 text-decoration-none d-inline-block" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/parent-forum-9999/">Les autres fiches du thème Parent-Forum</a>'
+# ---
+# name: TestDocumentationForumContent.test_documentation_forum_share_actions[template_documentation_social_share]
+  '''
+  <button aria-expanded="false" aria-haspopup="true" class="btn btn-sm btn-ico-only btn-secondary" data-bs-toggle="dropdown" id="dropdownMenuSocialShare10000" type="button">
+      <i aria-label="Partager ce sujet sur " class="ri-share-fill ri-lg"></i>
+  </button>
+  '''
+# ---
+# name: TestDocumentationForumContent.test_documentation_forum_share_actions[template_documentation_upvotes]
+  '''
+  <div class="d-inline-block" id="upvotesarea10000">
+      
+          
+              <a class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-10000%2F%2310000" rel="nofollow" title="Connectez-vous pour sauvegarder">
+                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
+              </a>
+          
+      
+  </div>
+  '''
+# ---
 # name: TestForumViewContent.test_not_rated_forum[not_rated_forum]
   '''
   <div class="mb-5 rating" id="rating-area1">

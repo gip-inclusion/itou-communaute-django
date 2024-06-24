@@ -1,4 +1,5 @@
 import pytest  # noqa
+import re
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
@@ -9,13 +10,14 @@ from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.utils.testing import parse_response_to_soup
+from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
 
 
 faker = Faker()
@@ -545,6 +547,55 @@ class TestForumViewContent:
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="#rating-area1")
         assert str(content) == snapshot(name="rated_forum")
+
+
+reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
+
+
+class TestDocumentationForumContent:
+    def setUpDocumentationForum(self):
+        self.forum_parent = CategoryForumFactory(with_public_perms=True, name="Parent-Forum")
+        self.forum = ForumFactory(parent=self.forum_parent, with_public_perms=True, with_image=True, for_snapshot=True)
+        self.sibling_forum = ForumFactory(parent=self.forum_parent, with_public_perms=True, name="Test-2")
+        self.url = reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+
+    def test_documentation_forum_share_actions(self, client, db, snapshot, reset_forum_sequence):
+        self.setUpDocumentationForum()
+        response = client.get(self.url)
+        content = parse_response_to_soup(response)
+
+        upvotes_area = content.select(f"#upvotesarea{str(self.forum.pk)}")[0]
+        assert str(upvotes_area) == snapshot(name="template_documentation_upvotes")
+        social_share_area = content.select(f"#dropdownMenuSocialShare{str(self.forum.pk)}")[0]
+        assert str(social_share_area) == snapshot(name="template_documentation_social_share")
+
+    def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence):
+        self.setUpDocumentationForum()
+        response = client.get(self.url)
+        content = parse_response_to_soup(response)
+
+        assert len(content.find_all("img", src=self.forum.image.url)) == 1
+        assert len(content.select("div.textarea_cms_md", string=re.compile(str(self.forum.description)[:10]))) == 1
+
+        user_add_topic = content.find_all(
+            "a", href=str(reverse("forum_conversation:topic_create", args=(self.forum.slug, self.forum.pk)))
+        )
+        assert len(user_add_topic) == 2
+
+        link_to_parent = content.find_all(
+            "a",
+            href=reverse("forum_extension:forum", kwargs={"pk": self.forum_parent.pk, "slug": self.forum_parent.slug}),
+        )
+        assert len(link_to_parent) == 1
+        assert (str(link_to_parent[0])) == snapshot(name="template_documentation_link_to_parent")
+
+        link_to_sibling_forum = content.find_all(
+            "a",
+            href=reverse(
+                "forum_extension:forum", kwargs={"pk": self.sibling_forum.pk, "slug": self.sibling_forum.slug}
+            ),
+        )
+        assert len(link_to_sibling_forum) == 1
 
 
 @pytest.fixture(name="discussion_area_forum")
