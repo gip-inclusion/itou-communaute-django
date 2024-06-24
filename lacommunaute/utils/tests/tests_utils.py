@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date as datetime_date, datetime, timedelta
 from unittest.mock import patch
 
 import pytest
@@ -17,13 +17,19 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_file.models import PublicFile
+from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.math import percent
-from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
+from lacommunaute.utils.matomo import (
+    collect_forum_stats_from_matomo_api,
+    get_matomo_data,
+    get_matomo_events_data,
+    get_matomo_visits_data,
+)
 from lacommunaute.utils.perms import add_public_perms_on_forum
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
@@ -426,6 +432,109 @@ class UtilsGetMatomoEventsDataTest(TestCase):
                 get_matomo_events_data(period="day", search_date=self.today, label=label),
                 expected_res,
             )
+
+
+@pytest.fixture(name="no_label_forum_response")
+def fixture_no_label_forum_response():
+    return [{"label": "forestgump", "nb_uniq_visitors": 10, "subtable": [{"label": "view", "nb_uniq_visitors": 5}]}]
+
+
+@pytest.fixture(name="duplicated_label_forum_response")
+def fixture_duplicated_label_forum_response():
+    return [
+        {"label": "forum", "nb_uniq_visitors": 10, "subtable": [{"label": "view", "nb_uniq_visitors": 5}]},
+        {"label": "forum", "nb_uniq_visitors": 10, "subtable": [{"label": "view", "nb_uniq_visitors": 5}]},
+    ]
+
+
+class TestCollectForumStatsFromMatomoApi:
+    def test_unexistent_label(self, db, no_label_forum_response):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = no_label_forum_response
+            with pytest.raises(Exception) as exc_info:
+                collect_forum_stats_from_matomo_api("week", datetime_date(2024, 5, 6), datetime_date(2024, 5, 13))
+
+            assert str(exc_info.value) == "Matomo API err: get_matomo_forum_data week 2024-05-06 forum: 0 items found"
+
+    def test_duplicated_label(self, db, duplicated_label_forum_response):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = duplicated_label_forum_response
+            with pytest.raises(Exception) as exc_info:
+                collect_forum_stats_from_matomo_api("week", datetime_date(2024, 5, 6), datetime_date(2024, 5, 13))
+
+            assert str(exc_info.value) == "Matomo API err: get_matomo_forum_data week 2024-05-06 forum: 2 items found"
+
+    def test_unsupported_period(self):
+        with pytest.raises(ValueError) as value_error:
+            collect_forum_stats_from_matomo_api("unsupported", datetime_date(2024, 5, 6), datetime_date(2024, 5, 13))
+
+        assert str(value_error.value) == "Only 'week' period is supported for forum stats collection."
+
+    def test_collect_forum_stats_from_matomo_api(self, db):
+        forum_1 = ForumFactory()
+        forum_2 = ForumFactory()
+        catergory_forum = CategoryForumFactory(with_child=True)
+        child_category_forum = catergory_forum.children.first()
+
+        matomo_response = [
+            {
+                "label": "home",
+                "subtable": [
+                    {"label": f"forum-{forum_1.pk}", "nb_visits": 1, "entry_nb_visits": 2, "sum_time_spent": 100}
+                ],
+            },
+            {
+                "label": "forum",
+                "subtable": [
+                    {"label": f"forum-{forum_2.pk}", "nb_visits": 3, "entry_nb_visits": 4, "sum_time_spent": 200},
+                    {
+                        "label": f"forum-{catergory_forum.pk}",
+                        "nb_visits": 5,
+                        "entry_nb_visits": 6,
+                        "sum_time_spent": 300,
+                    },
+                    {
+                        "label": f"forum-{child_category_forum.pk}",
+                        "nb_visits": 10,
+                        "entry_nb_visits": 12,
+                        "sum_time_spent": 400,
+                    },
+                    {
+                        "label": f"forum-{child_category_forum.pk}",
+                        "nb_visits": 10,
+                        "entry_nb_visits": 10,
+                        "sum_time_spent": 10,
+                    },
+                ],
+            },
+        ]
+
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = matomo_response
+            collect_forum_stats_from_matomo_api(
+                period="week", from_date=datetime_date(2024, 5, 6), to_date=datetime_date(2024, 5, 13)
+            )
+
+        assert ForumStat.objects.count() == 4
+        assert ForumStat.objects.filter(forum__in=[forum_1, forum_2]).count() == 0
+        category_forum_20240506 = ForumStat.objects.get(
+            forum=catergory_forum, date=datetime(2024, 5, 6), period="week"
+        )
+        assert category_forum_20240506.visits == 5
+        assert category_forum_20240506.entry_visits == 6
+        assert category_forum_20240506.time_spent == 300
+        child_category_forum_20240506 = ForumStat.objects.get(
+            forum=child_category_forum, date=datetime(2024, 5, 6), period="week"
+        )
+        assert child_category_forum_20240506.visits == 20
+        assert child_category_forum_20240506.entry_visits == 22
+        assert child_category_forum_20240506.time_spent == 410
+        assert (
+            ForumStat.objects.filter(
+                forum__in=[catergory_forum, child_category_forum], date=datetime(2024, 5, 13), period="week"
+            ).count()
+            == 2
+        )
 
 
 class UtilsMathPercent(TestCase):
