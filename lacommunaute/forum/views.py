@@ -41,8 +41,7 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         return self.get_forum().parent and self.forum.is_in_documentation_area
 
     def will_render_documentation_category_variant(self):
-        first_child = self.get_forum().children.first()
-        return first_child and first_child.is_in_documentation_area
+        return self.get_forum().is_in_documentation_area and self.forum.level == 0
 
     def get_queryset(self):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
