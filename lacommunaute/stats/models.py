@@ -15,6 +15,10 @@ class StatQuerySet(models.QuerySet):
 
 
 class Stat(models.Model):
+    """
+    Represents a statistical data point, relative to the whole platform, for a given date and period.
+    """
+
     name = models.CharField(max_length=30, verbose_name="Nom")
     date = models.DateField(verbose_name="Date")
     value = models.IntegerField(verbose_name="Valeur")
@@ -35,6 +39,10 @@ class Stat(models.Model):
 
 
 class ForumStat(models.Model):
+    """
+    Represents a statistical data point, relative to a forum, for a given date and period.
+    """
+
     date = models.DateField(verbose_name="Date")
     period = models.CharField(max_length=10, verbose_name="Période", choices=Period.choices)
     forum = models.ForeignKey(Forum, on_delete=models.SET_NULL, verbose_name="Forum", null=True)
