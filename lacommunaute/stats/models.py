@@ -1,5 +1,6 @@
 from django.db import models
 
+from lacommunaute.forum.models import Forum
 from lacommunaute.stats.enums import Period
 
 
@@ -14,6 +15,10 @@ class StatQuerySet(models.QuerySet):
 
 
 class Stat(models.Model):
+    """
+    Represents a statistical data point, relative to the whole platform, for a given date and period.
+    """
+
     name = models.CharField(max_length=30, verbose_name="Nom")
     date = models.DateField(verbose_name="Date")
     value = models.IntegerField(verbose_name="Valeur")
@@ -31,3 +36,27 @@ class Stat(models.Model):
         return f"{self.name} - {self.date} - {self.period}"
 
     objects = StatQuerySet().as_manager()
+
+
+class ForumStat(models.Model):
+    """
+    Represents a statistical data point, relative to a forum, for a given date and period.
+    """
+
+    date = models.DateField(verbose_name="Date")
+    period = models.CharField(max_length=10, verbose_name="Période", choices=Period.choices)
+    forum = models.ForeignKey(Forum, on_delete=models.SET_NULL, verbose_name="Forum", null=True)
+    visits = models.IntegerField(verbose_name="Visites", default=0)
+    entry_visits = models.IntegerField(verbose_name="Visites entrantes", default=0)
+    time_spent = models.IntegerField(verbose_name="Temps passé", default=0)
+
+    objects = models.Manager()
+
+    class Meta:
+        verbose_name = "Stat de forum"
+        verbose_name_plural = "Stats de forum"
+        ordering = ["date", "period", "forum"]
+        unique_together = ("date", "period", "forum")
+
+    def __str__(self):
+        return f"{self.date} - {self.period} - {self.forum}"

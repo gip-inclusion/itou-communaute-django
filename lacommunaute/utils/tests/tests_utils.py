@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date as datetime_date, datetime, timedelta
 from unittest.mock import patch
 
 import pytest
@@ -17,13 +17,21 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_file.models import PublicFile
+from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.date import get_last_sunday
 from lacommunaute.utils.math import percent
-from lacommunaute.utils.matomo import get_matomo_data, get_matomo_events_data, get_matomo_visits_data
+from lacommunaute.utils.matomo import (
+    collect_forum_stats_from_matomo_api,
+    get_matomo_data,
+    get_matomo_events_data,
+    get_matomo_forums_data,
+    get_matomo_visits_data,
+)
 from lacommunaute.utils.perms import add_public_perms_on_forum
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
@@ -428,6 +436,145 @@ class UtilsGetMatomoEventsDataTest(TestCase):
             )
 
 
+@pytest.fixture(name="get_matomo_forums_data_response")
+def fixture_get_matomo_forums_data_response():
+    return [
+        {
+            "label": "forum",
+            "subtable": [
+                {"label": "forum-1", "nb_visits": 10, "entry_nb_visits": 100, "sum_time_spent": 1000},
+                {"label": "forum-2", "nb_visits": 20, "entry_nb_visits": 200, "sum_time_spent": 2000},
+                {"label": "foruX-2", "nb_visits": 21, "entry_nb_visits": 201, "sum_time_spent": 2001},
+                {"label": "forum-4", "nb_visits": 14, "entry_nb_visits": 104, "sum_time_spent": 1004},
+            ],
+        },
+        {
+            "label": "home",
+            "subtable": [
+                {"label": "forum-3", "nb_visits": 30, "entry_nb_visits": 300, "sum_time_spent": 3000},
+            ],
+        },
+    ]
+
+
+class TestGetMatomoForumsData:
+    def test_label_is_none(self):
+        with pytest.raises(ValueError) as value_error:
+            get_matomo_forums_data("week", datetime_date(2024, 5, 6), None)
+
+        assert str(value_error.value) == "label must be provided"
+
+    def test_no_ids(self, get_matomo_forums_data_response):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = get_matomo_forums_data_response
+            assert get_matomo_forums_data("week", datetime_date(2024, 5, 6), "forum") == []
+
+    def test_with_ids(self, get_matomo_forums_data_response):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = get_matomo_forums_data_response
+            assert get_matomo_forums_data("week", datetime_date(2024, 5, 6), "forum", ids=[1, 4]) == [
+                {
+                    "forum_id": 1,
+                    "date": "2024-05-06",
+                    "period": "week",
+                    "visits": 10,
+                    "entry_visits": 100,
+                    "time_spent": 1000,
+                },
+                {
+                    "forum_id": 4,
+                    "date": "2024-05-06",
+                    "period": "week",
+                    "visits": 14,
+                    "entry_visits": 104,
+                    "time_spent": 1004,
+                },
+            ]
+
+    def test_deduplication(self, get_matomo_forums_data_response):
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = get_matomo_forums_data_response
+            assert get_matomo_forums_data("week", datetime_date(2024, 5, 6), "forum", ids=[2]) == [
+                {
+                    "forum_id": 2,
+                    "date": "2024-05-06",
+                    "period": "week",
+                    "visits": 41,
+                    "entry_visits": 401,
+                    "time_spent": 4001,
+                },
+            ]
+
+
+class TestCollectForumStatsFromMatomoApi:
+    def test_unsupported_period(self):
+        with pytest.raises(ValueError) as value_error:
+            collect_forum_stats_from_matomo_api("unsupported", datetime_date(2024, 5, 6), datetime_date(2024, 5, 13))
+
+        assert str(value_error.value) == "Only 'week' period is supported for forum stats collection."
+
+    def test_collect_forum_stats_from_matomo_api(self, db):
+        forum_1 = ForumFactory()
+        forum_2 = ForumFactory()
+        catergory_forum = CategoryForumFactory(with_child=True)
+        child_category_forum = catergory_forum.children.first()
+
+        nb_visits_faker_1 = faker.random_int()
+        entry_nb_visits_faker_1 = faker.random_int()
+        sum_time_spent_faker_1 = faker.random_int()
+        nb_visits_faker_2 = faker.random_int()
+        entry_nb_visits_faker_2 = faker.random_int()
+        sum_time_spent_faker_2 = faker.random_int()
+
+        matomo_response = [
+            {
+                "label": "forum",
+                "subtable": [
+                    {"label": f"forum-{forum_2.pk}", "nb_visits": 3, "entry_nb_visits": 4, "sum_time_spent": 200},
+                    {
+                        "label": f"forum-{catergory_forum.pk}",
+                        "nb_visits": nb_visits_faker_1,
+                        "entry_nb_visits": entry_nb_visits_faker_1,
+                        "sum_time_spent": sum_time_spent_faker_1,
+                    },
+                    {
+                        "label": f"forum-{child_category_forum.pk}",
+                        "nb_visits": nb_visits_faker_2,
+                        "entry_nb_visits": entry_nb_visits_faker_2,
+                        "sum_time_spent": sum_time_spent_faker_2,
+                    },
+                ],
+            },
+        ]
+
+        with patch("lacommunaute.utils.matomo.get_matomo_data") as mock_get_matomo_data:
+            mock_get_matomo_data.return_value = matomo_response
+            collect_forum_stats_from_matomo_api(
+                period="week", from_date=datetime_date(2024, 5, 6), to_date=datetime_date(2024, 5, 13)
+            )
+
+        assert ForumStat.objects.count() == 4
+        assert ForumStat.objects.filter(forum__in=[forum_1, forum_2]).count() == 0
+        category_forum_20240506 = ForumStat.objects.get(
+            forum=catergory_forum, date=datetime(2024, 5, 6), period="week"
+        )
+        assert category_forum_20240506.visits == nb_visits_faker_1
+        assert category_forum_20240506.entry_visits == entry_nb_visits_faker_1
+        assert category_forum_20240506.time_spent == sum_time_spent_faker_1
+        child_category_forum_20240506 = ForumStat.objects.get(
+            forum=child_category_forum, date=datetime(2024, 5, 6), period="week"
+        )
+        assert child_category_forum_20240506.visits == nb_visits_faker_2
+        assert child_category_forum_20240506.entry_visits == entry_nb_visits_faker_2
+        assert child_category_forum_20240506.time_spent == sum_time_spent_faker_2
+        assert (
+            ForumStat.objects.filter(
+                forum__in=[catergory_forum, child_category_forum], date=datetime(2024, 5, 13), period="week"
+            ).count()
+            == 2
+        )
+
+
 class UtilsMathPercent(TestCase):
     def test_percent(self):
         self.assertEqual(percent(2, 1), 200)
@@ -535,3 +682,12 @@ class TestImageSizeValidator:
         with pytest.raises(Exception):
             file.file.size = 1024 * 1024 * 5 + 1
             file.save()
+
+
+class TestTheLastSunday:
+    @pytest.mark.parametrize(
+        "day, expected_sunday",
+        [(i, datetime(2024, 5, 12)) for i in range(12, 19)] + [(i, datetime(2024, 5, 19)) for i in range(19, 26)],
+    )
+    def test_the_last_sunday(self, day, expected_sunday):
+        assert get_last_sunday(datetime(2024, 5, day)) == expected_sunday

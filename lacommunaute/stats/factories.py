@@ -3,8 +3,9 @@ import datetime
 import factory
 import factory.django
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.stats.enums import Period
-from lacommunaute.stats.models import Stat
+from lacommunaute.stats.models import ForumStat, Stat
 
 
 class StatFactory(factory.django.DjangoModelFactory):
@@ -23,3 +24,15 @@ class StatFactory(factory.django.DjangoModelFactory):
             value=46,
             period="day",
         )
+
+
+class ForumStatFactory(factory.django.DjangoModelFactory):
+    date = factory.Faker("date")
+    period = Period.DAY
+    forum = factory.SubFactory(ForumFactory)
+    visits = factory.Faker("pyint")
+    entry_visits = factory.Faker("pyint")
+    time_spent = factory.Faker("pyint")
+
+    class Meta:
+        model = ForumStat
