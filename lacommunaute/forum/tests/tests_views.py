@@ -552,50 +552,51 @@ class TestForumViewContent:
 reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
 
 
-class TestDocumentationForumContent:
-    def setUpDocumentationForum(self):
-        self.forum_parent = CategoryForumFactory(with_public_perms=True, name="Parent-Forum")
-        self.forum = ForumFactory(parent=self.forum_parent, with_public_perms=True, with_image=True, for_snapshot=True)
-        self.sibling_forum = ForumFactory(parent=self.forum_parent, with_public_perms=True, name="Test-2")
-        self.url = reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
+@pytest.fixture(name="documentation_forum")
+def documentation_forum_fixture():
+    return ForumFactory(
+        parent=CategoryForumFactory(with_public_perms=True, name="Parent-Forum"),
+        with_public_perms=True,
+        with_image=True,
+        for_snapshot=True,
+    )
 
-    def test_documentation_forum_share_actions(self, client, db, snapshot, reset_forum_sequence):
-        self.setUpDocumentationForum()
-        response = client.get(self.url)
+
+class TestDocumentationForumContent:
+    def test_documentation_forum_share_actions(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+        response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response)
 
-        upvotes_area = content.select(f"#upvotesarea{str(self.forum.pk)}")[0]
+        upvotes_area = content.select(f"#upvotesarea{str(documentation_forum.pk)}")[0]
         assert str(upvotes_area) == snapshot(name="template_documentation_upvotes")
-        social_share_area = content.select(f"#dropdownMenuSocialShare{str(self.forum.pk)}")[0]
+        social_share_area = content.select(f"#dropdownMenuSocialShare{str(documentation_forum.pk)}")[0]
         assert str(social_share_area) == snapshot(name="template_documentation_social_share")
 
-    def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence):
-        self.setUpDocumentationForum()
-        response = client.get(self.url)
+    def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+        sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")
+
+        response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response)
 
-        assert len(content.find_all("img", src=re.compile(self.forum.image.name))) == 1
-        assert len(content.select("div.textarea_cms_md", string=re.compile(str(self.forum.description)[:10]))) == 1
+        assert len(content.find_all("img", src=re.compile(documentation_forum.image.name))) == 1
+        assert (
+            len(content.select("div.textarea_cms_md", string=re.compile(str(documentation_forum.description)[:10])))
+            == 1
+        )
 
         user_add_topic = content.find_all(
-            "a", href=str(reverse("forum_conversation:topic_create", args=(self.forum.slug, self.forum.pk)))
+            "a",
+            href=str(
+                reverse("forum_conversation:topic_create", args=(documentation_forum.slug, documentation_forum.pk))
+            ),
         )
         assert len(user_add_topic) == 2
 
-        link_to_parent = content.find_all(
-            "a",
-            href=reverse("forum_extension:forum", kwargs={"pk": self.forum_parent.pk, "slug": self.forum_parent.slug}),
-        )
+        link_to_parent = content.find_all("a", href=documentation_forum.parent.get_absolute_url())
         assert len(link_to_parent) == 1
         assert (str(link_to_parent[0])) == snapshot(name="template_documentation_link_to_parent")
 
-        link_to_sibling_forum = content.find_all(
-            "a",
-            href=reverse(
-                "forum_extension:forum", kwargs={"pk": self.sibling_forum.pk, "slug": self.sibling_forum.slug}
-            ),
-        )
-        assert len(link_to_sibling_forum) == 1
+        assert len(content.find_all("a", href=sibling_forum.get_absolute_url())) == 1
 
 
 @pytest.fixture(name="discussion_area_forum")
