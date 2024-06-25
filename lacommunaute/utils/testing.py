@@ -49,7 +49,7 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
     return soup
 
 
-def reset_model_sequence_fixture(model_class):
+def reset_model_sequence_fixture(*model_classes):
     """
     :return: a function which can adjust and reset a primary key sequence for use as a pytest fixture
     it is used to temporarily change the primary key, so that it is predictable (e.g. for snapshots)
@@ -62,6 +62,7 @@ def reset_model_sequence_fixture(model_class):
             )
 
         with connection.cursor() as cursor:
-            set_sequence_value(cursor, 9999)
+            for model_class in model_classes:
+                set_sequence_value(cursor, 9999)
 
     return reset_model_sequence
