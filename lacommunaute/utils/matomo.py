@@ -139,17 +139,21 @@ def get_matomo_events_data(period, search_date, nb_uniq_visitors_key="nb_uniq_vi
     return stats
 
 
-def get_matomo_forums_data(period, search_date, label=None, ids=[]):
-    matomo_datas = get_matomo_data(period=period, search_date=search_date, method="Actions.getPageUrls")
-    filtered_datas = [d for d in matomo_datas if d.get("label") == label]
+def get_matomo_forums_data(period, search_date, label, ids=[]):
+    if label is None:
+        raise ValueError("label must be provided")
 
-    if len(filtered_datas) != 1:
-        raise Exception(
-            f"Matomo API err: get_matomo_forum_data {period} {search_date} {label}: {len(filtered_datas)} items found"
-        )
+    filtered_datas = next(
+        (
+            data.get("subtable", [])
+            for data in get_matomo_data(period=period, search_date=search_date, method="Actions.getPageUrls")
+            if data.get("label") == label
+        ),
+        [],
+    )
 
     stats = {}
-    for forum_data in filtered_datas[0].get("subtable", []):
+    for forum_data in filtered_datas:
         forum_id = int(forum_data["label"].split("-")[-1]) if forum_data["label"].split("-")[-1].isdigit() else None
 
         if forum_id and forum_id in ids:
