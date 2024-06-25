@@ -103,9 +103,6 @@ class ForumViewTest(TestCase):
         self.assertNotIn("nonexistant", response.context_data["active_tags_label"])
 
     def test_template_name(self):
-        def get_url_for_forum(forum):
-            return reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
-
         response = self.client.get(self.url)
         self.assertTemplateUsed(response, "forum/forum_detail.html")
 
@@ -115,10 +112,10 @@ class ForumViewTest(TestCase):
         documentation_category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
         documentation_forum = documentation_category_forum.children.first()
 
-        response = self.client.get(get_url_for_forum(documentation_category_forum))
+        response = self.client.get(documentation_category_forum.get_absolute_url())
         self.assertTemplateUsed(response, "forum/forum_documentation_category.html")
 
-        response = self.client.get(get_url_for_forum(documentation_forum))
+        response = self.client.get(documentation_forum.get_absolute_url())
         self.assertTemplateUsed(response, "forum/forum_documentation.html")
 
     def test_show_comments(self):
