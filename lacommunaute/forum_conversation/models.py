@@ -9,6 +9,7 @@ from machina.apps.forum_conversation.abstract_models import AbstractPost, Abstra
 from machina.models.abstract_models import DatedModel
 from taggit.managers import TaggableManager
 
+from lacommunaute.forum_conversation.signals import post_create
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
@@ -160,6 +161,12 @@ class Post(AbstractPost):
     @property
     def is_certified(self):
         return hasattr(self, "certified_post")
+
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args, **kwargs)
+        if created and self.topic.last_post:
+            post_create.send(sender=self.__class__, instance=self)
 
 
 class CertifiedPost(DatedModel):
