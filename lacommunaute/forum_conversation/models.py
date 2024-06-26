@@ -162,6 +162,11 @@ class Post(AbstractPost):
     def is_certified(self):
         return hasattr(self, "certified_post")
 
+    @property
+    def is_first_reply(self):
+        """First reply is the second post in a topic"""
+        return self.is_topic_tail and self.topic.posts_count == 2
+
     def save(self, *args, **kwargs):
         created = not self.pk
         super().save(*args, **kwargs)
