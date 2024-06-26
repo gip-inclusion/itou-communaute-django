@@ -85,6 +85,7 @@ msgid "Quick actions"
 msgstr "Actions rapides"
 
 #: lacommunaute/templates/admin/forum/forum/change_list_table.html:11
+#: lacommunaute/notification/models.py
 msgid "Type"
 msgstr "Type"
 
@@ -995,3 +996,39 @@ msgstr "Poser une question sur cette documentation"
 
 msgid "Cancel"
 msgstr "Annuler"
+
+#: lacommunaute/notification/admin.py
+msgid "sent"
+msgstr "envoyée"
+
+msgid "not sent"
+msgstr "en attente"
+
+#: lacommunaute/notification/models.py
+msgid "Notification"
+msgstr "Notification"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "recipient"
+msgstr "destinataire"
+
+msgid "post"
+msgstr "message"
+
+msgid "delay"
+msgstr "délai"
+
+msgid "sent at"
+msgstr "envoyée le"
+
+#: lacommunaute/notification/enums.py
+msgid "New messages"
+msgstr "Nouveaux messages"
+
+msgid "As soon as possible"
+msgstr "Dès que possible"
+
+msgid "The following day"
+msgstr "Le jour suivant"
