@@ -20,14 +20,14 @@ class PostCreatedTest(TestCase):
         notification = Notification.objects.get()
         assert notification.recipient == topic.poster.email
         assert notification.post == first_post
-        assert notification.kind == EmailSentTrackKind.NEW_MESSAGES
+        assert notification.kind == EmailSentTrackKind.FIRST_REPLY
         assert notification.delay == NotificationDelay.ASAP
 
         PostFactory(topic=topic)
         notifs = Notification.objects.exclude(id=notification.id)
         assert notifs.count() == 2
         assert notifs.exclude(post=first_post).count() == 2
-        assert notifs.exclude(kind=EmailSentTrackKind.NEW_MESSAGES).count() == 0
+        assert notifs.exclude(kind=EmailSentTrackKind.FOLLOWING_REPLIES).count() == 0
         assert notifs.exclude(delay=NotificationDelay.DAY).count() == 0
         anticipated_recipients = set({topic.poster.email, first_post.poster.email})
         assert set(notifs.values_list("recipient", flat=True)) == anticipated_recipients
@@ -41,7 +41,7 @@ class PostCreatedTest(TestCase):
         post = PostFactory(topic=topic)
         notification = Notification.objects.get(recipient=upvoter.email)
         assert notification.post == post
-        assert notification.kind == EmailSentTrackKind.NEW_MESSAGES
+        assert notification.kind == EmailSentTrackKind.FIRST_REPLY
         assert notification.delay == NotificationDelay.ASAP
 
     def test_notifications_on_post_creation_anonymous_poster(self):
@@ -51,5 +51,5 @@ class PostCreatedTest(TestCase):
         post = PostFactory(topic=topic)
         notification = Notification.objects.get(recipient=anonymous_post.username)
         assert notification.post == post
-        assert notification.kind == EmailSentTrackKind.NEW_MESSAGES
+        assert notification.kind == EmailSentTrackKind.FOLLOWING_REPLIES
         assert notification.delay == NotificationDelay.DAY

@@ -11,21 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name="emailsenttrack",
-            name="kind",
-            field=models.CharField(
-                choices=[
-                    ("first_reply", "Première réponse à un sujet"),
-                    ("following_replies", "Réponses suivantes"),
-                    ("onboarding", "Onboarding d'un nouvel utilisateur"),
-                    ("pending_topic", "Question sans réponse"),
-                    ("new_messages", "New messages"),
-                ],
-                max_length=20,
-                verbose_name="type",
-            ),
-        ),
         migrations.CreateModel(
             name="Notification",
             fields=[
@@ -41,7 +26,6 @@ class Migration(migrations.Migration):
                             ("following_replies", "Réponses suivantes"),
                             ("onboarding", "Onboarding d'un nouvel utilisateur"),
                             ("pending_topic", "Question sans réponse"),
-                            ("new_messages", "New messages"),
                         ],
                         max_length=20,
                         verbose_name="type",

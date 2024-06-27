@@ -21,7 +21,7 @@ class EmailSentTrackFactory(factory.django.DjangoModelFactory):
 
 class NotificationFactory(factory.django.DjangoModelFactory):
     recipient = faker.email()
-    kind = EmailSentTrackKind.NEW_MESSAGES
+    kind = EmailSentTrackKind.FIRST_REPLY
     post = None
 
     class Meta:
