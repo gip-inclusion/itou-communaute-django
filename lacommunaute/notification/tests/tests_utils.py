@@ -4,12 +4,13 @@ from faker import Faker
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Post
 from lacommunaute.notification.enums import EmailSentTrackKind
-from lacommunaute.notification.factories import EmailSentTrackFactory
+from lacommunaute.notification.factories import EmailSentTrackFactory, NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.utils import (
     collect_first_replies,
     collect_following_replies,
     collect_new_users_for_onboarding,
+    get_serialized_messages,
     last_notification,
 )
 from lacommunaute.users.factories import UserFactory
@@ -147,3 +148,26 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
     def test_order_by_date_joined(self):
         UserFactory.create_batch(3)
         self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all().order_by("date_joined")))
+
+
+class GetSeriaizedMessagesTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.topic = TopicFactory(with_post=True)
+
+    def test_get_serialized_messages(self):
+        post = self.topic.first_post
+        notifications = [NotificationFactory(post=post)]
+
+        serialized_content = get_serialized_messages(notifications)
+        self.assertEqual(
+            serialized_content,
+            [
+                {
+                    "poster": post.poster_display_name,
+                    "action": f"a répondu à '{post.subject}'",
+                    "forum": self.topic.forum.name,
+                    "url": self.topic.get_absolute_url(with_fqdn=True),
+                }
+            ],
+        )
