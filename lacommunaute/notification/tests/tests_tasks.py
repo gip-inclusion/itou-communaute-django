@@ -26,7 +26,7 @@ from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
-    send_notifications,
+    send_messages_notifications,
     send_notifs_on_unanswered_topics,
 )
 from lacommunaute.notification.utils import get_serialized_messages
@@ -70,11 +70,11 @@ class SendMessageNotificationsTestCase(TestCase):
         }
 
     @respx.mock
-    def test_send_notifications_asap(self):
+    def test_send_messages_notifications_asap(self):
         topic = TopicFactory(with_post=True)
         notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.ASAP)
 
-        send_notifications(NotificationDelay.ASAP)
+        send_messages_notifications(NotificationDelay.ASAP)
 
         email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
@@ -84,11 +84,11 @@ class SendMessageNotificationsTestCase(TestCase):
         )
 
     @respx.mock
-    def test_send_notifications_day(self):
+    def test_send_messages_notifications_day(self):
         topic = TopicFactory(with_post=True)
         notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.DAY)
 
-        send_notifications(NotificationDelay.DAY)
+        send_messages_notifications(NotificationDelay.DAY)
 
         email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
@@ -98,7 +98,7 @@ class SendMessageNotificationsTestCase(TestCase):
         )
 
     @respx.mock
-    def test_send_notifications_max_messages_preview(self):
+    def test_send_messages_notifications_max_messages_preview(self):
         topic = TopicFactory(with_post=True)
         notif_count_to_generate = NEW_MESSAGES_EMAIL_MAX_PREVIEW + 1
 
@@ -110,7 +110,7 @@ class SendMessageNotificationsTestCase(TestCase):
             post=topic.first_post,
         )
 
-        send_notifications(NotificationDelay.ASAP)
+        send_messages_notifications(NotificationDelay.ASAP)
 
         email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(len(email_sent_track.datas["params"]["messages"]), NEW_MESSAGES_EMAIL_MAX_PREVIEW)
@@ -120,18 +120,18 @@ class SendMessageNotificationsTestCase(TestCase):
         )
 
     @respx.mock
-    def test_send_notifications_num_queries(self):
+    def test_send_messages_notifications_num_queries(self):
         expected_queries = 1
 
         NotificationFactory(delay=NotificationDelay.ASAP)
 
         with self.assertNumQueries(expected_queries):
-            send_notifications(NotificationDelay.ASAP)
+            send_messages_notifications(NotificationDelay.ASAP)
 
         NotificationFactory.create_batch(10, delay=NotificationDelay.ASAP)
 
         with self.assertNumQueries(expected_queries):
-            send_notifications(NotificationDelay.ASAP)
+            send_messages_notifications(NotificationDelay.ASAP)
 
 
 class AddUserToListWhenRegister(TestCase):
