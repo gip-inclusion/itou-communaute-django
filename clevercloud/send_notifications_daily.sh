@@ -15,4 +15,4 @@ fi
 # $APP_HOME is set by default by clever cloud.
 cd $APP_HOME
 
-python manage.py send_notifications day
+python manage.py send_messages_notifications day

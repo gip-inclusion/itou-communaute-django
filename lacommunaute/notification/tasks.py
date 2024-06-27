@@ -11,7 +11,7 @@ from lacommunaute.notification.models import Notification
 from lacommunaute.notification.utils import collect_new_users_for_onboarding, get_serialized_messages
 
 
-def send_notifications(delay: NotificationDelay):
+def send_messages_notifications(delay: NotificationDelay):
     """Notifications are scheduled in the application and then processed later by this task"""
 
     def get_grouped_notifications():
@@ -36,7 +36,7 @@ def send_notifications(delay: NotificationDelay):
             to=[{"email": DEFAULT_FROM_EMAIL}],
             params=params,
             bcc=[{"email": recipient}],
-            kind=EmailSentTrackKind.FIRST_REPLY,
+            kind=EmailSentTrackKind.FOLLOWING_REPLIES,
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
         )
 
