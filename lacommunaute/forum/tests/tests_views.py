@@ -17,7 +17,7 @@ from lacommunaute.forum_conversation.factories import CertifiedPostFactory, Post
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
@@ -546,11 +546,9 @@ class TestForumViewContent:
         assert str(content) == snapshot(name="rated_forum")
 
 
-reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
-
-
 @pytest.fixture(name="documentation_forum")
-def documentation_forum_fixture():
+def documentation_forum_fixture(db, reset_model_sequence):
+    reset_model_sequence(Forum)
     return ForumFactory(
         parent=CategoryForumFactory(with_public_perms=True, name="Parent-Forum"),
         with_public_perms=True,
@@ -560,7 +558,7 @@ def documentation_forum_fixture():
 
 
 class TestDocumentationForumContent:
-    def test_documentation_forum_share_actions(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+    def test_documentation_forum_share_actions(self, client, snapshot, documentation_forum):
         response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response)
 
@@ -569,7 +567,7 @@ class TestDocumentationForumContent:
         social_share_area = content.select(f"#dropdownMenuSocialShare{str(documentation_forum.pk)}")[0]
         assert str(social_share_area) == snapshot(name="template_documentation_social_share")
 
-    def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+    def test_documentation_forum_header_content(self, client, snapshot, documentation_forum):
         sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")
 
         response = client.get(documentation_forum.get_absolute_url())

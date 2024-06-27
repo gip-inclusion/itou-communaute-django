@@ -1,7 +1,6 @@
 import importlib
 
 from bs4 import BeautifulSoup
-from django.db import connection
 from django.test.utils import TestContextDecorator
 
 
@@ -47,22 +46,3 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
             for links in soup.find_all(attrs={attr: True}):
                 [links.attrs.update({attr: links.attrs[attr].replace(*replacement)}) for replacement in replacements]
     return soup
-
-
-def reset_model_sequence_fixture(*model_classes):
-    """
-    :return: a function which can adjust and reset a primary key sequence for use as a pytest fixture
-    it is used to temporarily change the primary key, so that it is predictable (e.g. for snapshots)
-    """
-
-    def reset_model_sequence():
-        def set_sequence_value(cursor, value):
-            cursor.execute(
-                "SELECT setval(pg_get_serial_sequence(%s, 'id'), %s, false);", (model_class._meta.db_table, str(value))
-            )
-
-        with connection.cursor() as cursor:
-            for model_class in model_classes:
-                set_sequence_value(cursor, 9999)
-
-    return reset_model_sequence
