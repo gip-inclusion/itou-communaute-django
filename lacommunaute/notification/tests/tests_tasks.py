@@ -21,7 +21,7 @@ from config.settings.base import (
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.notification.enums import NotificationDelay
+from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.notification.tasks import (
@@ -87,7 +87,7 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         recipient = list(grouped_notifications.keys())[0]
         recipient_notifications = grouped_notifications[recipient]
         message_count = len(recipient_notifications)
-        message_count_text = f"{message_count} {pluralize(message_count, 'message')}"
+        message_count_text = f"{message_count} message{pluralize(message_count, 's')}"
 
         params = {
             "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
@@ -129,6 +129,28 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
         self.assertEqual(
             email_sent_track.datas, self.get_expected_email_payload(Notification.objects.filter(id=notification.id))
+        )
+
+    @respx.mock
+    def test_send_notifications_max_messages_preview(self):
+        topic = TopicFactory(with_post=True)
+        notif_count_to_generate = NEW_MESSAGES_EMAIL_MAX_PREVIEW + 1
+
+        NotificationFactory.create_batch(
+            notif_count_to_generate,
+            recipient="test@example.com",
+            delay=NotificationDelay.ASAP,
+            kind=EmailSentTrackKind.FIRST_REPLY,
+            post=topic.first_post,
+        )
+
+        send_notifications(NotificationDelay.ASAP)
+
+        email_sent_track = EmailSentTrack.objects.get()
+        self.assertEqual(len(email_sent_track.datas["params"]["messages"]), NEW_MESSAGES_EMAIL_MAX_PREVIEW)
+        self.assertEqual(
+            email_sent_track.datas["params"]["email_thumbnail"],
+            (f"Vous avez {notif_count_to_generate } messages à découvrir sur la communauté de l'inclusion"),
         )
 
 
