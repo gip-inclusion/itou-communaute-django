@@ -3,12 +3,14 @@ import json
 import httpx
 import respx
 from django.conf import settings
+from django.template.defaultfilters import pluralize
 from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
 
 from config.settings.base import (
     DEFAULT_FROM_EMAIL,
+    NEW_MESSAGES_EMAIL_MAX_PREVIEW,
     SIB_CONTACT_LIST_URL,
     SIB_CONTACTS_URL,
     SIB_NEW_MESSAGES_TEMPLATE,
@@ -21,7 +23,7 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.notification.enums import NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
-from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
     send_notifications,
@@ -29,6 +31,7 @@ from lacommunaute.notification.tasks import (
     send_notifs_on_unanswered_topics,
     send_notifs_when_first_reply,
 )
+from lacommunaute.notification.utils import get_serialized_messages
 from lacommunaute.users.factories import UserFactory
 
 
@@ -72,40 +75,61 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         self.assertEqual(email_sent_track.datas, payload)
         self.assertEqual(email_sent_track.kind, "first_reply")
 
+    def get_expected_email_payload(self, notifications):
+        grouped_notifications = notifications.select_related(
+            "post", "post__topic", "post__poster"
+        ).group_by_recipient()
+
+        assert (
+            len(grouped_notifications.keys()) == 1
+        ), "get_expected_email_payload requires notifications with only one recipient"
+
+        recipient = list(grouped_notifications.keys())[0]
+        recipient_notifications = grouped_notifications[recipient]
+        message_count = len(recipient_notifications)
+        message_count_text = f"{message_count} {pluralize(message_count, 'message')}"
+
+        params = {
+            "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
+            "email_thumbnail": (f"Vous avez {message_count_text} à découvrir sur la communauté de l'inclusion"),
+            "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
+        }
+
+        return {
+            "to": [{"email": DEFAULT_FROM_EMAIL}],
+            "bcc": [{"email": recipient}],
+            "params": params,
+            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+            "templateId": SIB_NEW_MESSAGES_TEMPLATE,
+        }
+
     @respx.mock
     def test_send_notifications_asap(self):
         topic = TopicFactory(with_post=True)
-        notif_asap = NotificationFactory(post=topic.first_post, delay=NotificationDelay.ASAP)
-        notif_day = NotificationFactory(post=topic.first_post, delay=NotificationDelay.DAY)
-
-        def get_expected_payload_for_notification(notification):
-            params = {
-                "poster": notification.post.poster_display_name,
-                "action": f"a répondu à '{notification.post.subject}'",
-                "forum": notification.post.topic.forum.name,
-                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
-            }
-
-            return {
-                "to": [{"email": DEFAULT_FROM_EMAIL}],
-                "bcc": [{"email": notification.recipient}],
-                "params": params,
-                "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-                "templateId": SIB_NEW_MESSAGES_TEMPLATE,
-            }
+        notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.ASAP)
 
         send_notifications(NotificationDelay.ASAP)
 
         email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, get_expected_payload_for_notification(notif_asap))
+        self.assertEqual(
+            email_sent_track.datas, self.get_expected_email_payload(Notification.objects.filter(id=notification.id))
+        )
+
+    @respx.mock
+    def test_send_notifications_day(self):
+        topic = TopicFactory(with_post=True)
+        notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.DAY)
 
         send_notifications(NotificationDelay.DAY)
 
+        email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, get_expected_payload_for_notification(notif_day))
+        self.assertEqual(
+            email_sent_track.datas, self.get_expected_email_payload(Notification.objects.filter(id=notification.id))
+        )
 
 
 class SendNotifsOnFollowingReplyTestCase(TestCase):
