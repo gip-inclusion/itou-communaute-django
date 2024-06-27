@@ -66,12 +66,13 @@ def test_events(db, client):
     assertContains(response, reverse("event:current"))
 
 
-def test_edito(db, client, snapshot):
-    EditoFactory()
-    EditoFactory(for_snapshot=True)
-
-    url = reverse("pages:home")
+@pytest.mark.parametrize(
+    "setup, snapshot_name", [(None, "no_edito"), (lambda: [EditoFactory(), EditoFactory(for_snapshot=True)], "edito")]
+)
+def test_edito(db, client, snapshot, setup, snapshot_name):
+    if setup:
+        setup()
 
     response = client.get(url)
     assert response.status_code == 200
-    assert str(parse_response_to_soup(response, selector=".s-section__container")) == snapshot(name="edito")
+    assert str(parse_response_to_soup(response, selector=".s-section__container")) == snapshot(name=snapshot_name)
