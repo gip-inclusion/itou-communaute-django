@@ -21,7 +21,7 @@ def send_notifications(delay: NotificationDelay):
 
     def get_grouped_notifications():
         return (
-            Notification.objects.filter(delay=delay, sent_at__isnull=True)
+            Notification.objects.filter(delay=delay, sent_at__isnull=True, post__isnull=False)
             .select_related("post", "post__topic", "post__poster")
             .group_by_recipient()
         )
