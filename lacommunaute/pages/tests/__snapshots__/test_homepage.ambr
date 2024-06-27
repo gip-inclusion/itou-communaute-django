@@ -13,7 +13,7 @@
                           </div>
                           <div class="px-3 px-lg-4 pt-3 pt-lg-4"><p>Snapshot <em>content</em></p></div>
                           <div class="p-3 p-lg-4">
-                              <a class="btn btn-communaute btn-block matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="highlight" href="https://example.com">Snapshot link title</a>
+                              <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="highlight" href="https://example.com">Snapshot link title</a>
                           </div>
                       </div>
                   </div>
