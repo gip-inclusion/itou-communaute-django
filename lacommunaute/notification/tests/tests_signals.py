@@ -53,3 +53,8 @@ class PostCreatedTest(TestCase):
         assert notification.post == post
         assert notification.kind == EmailSentTrackKind.FOLLOWING_REPLIES
         assert notification.delay == NotificationDelay.DAY
+
+    def test_notifications_no_approved_post(self):
+        topic = TopicFactory(with_post=True)
+        PostFactory(topic=topic, approved=False)
+        assert Notification.objects.count() == 0
