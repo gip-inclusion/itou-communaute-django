@@ -1,7 +1,8 @@
 from django.conf import settings
+from django.template.defaultfilters import pluralize
 from django.urls import reverse
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_NEW_MESSAGES_TEMPLATE
+from config.settings.base import DEFAULT_FROM_EMAIL, NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
@@ -11,23 +12,35 @@ from lacommunaute.notification.utils import (
     collect_first_replies,
     collect_following_replies,
     collect_new_users_for_onboarding,
+    get_serialized_messages,
 )
 
 
 def send_notifications(delay: NotificationDelay):
-    for notification in Notification.objects.filter(delay=delay, sent_at__isnull=True).select_related(
-        "post", "post__topic"
-    ):
+    """Notifications are scheduled in the application and then processed later by this task"""
+
+    def get_grouped_notifications():
+        return (
+            Notification.objects.filter(delay=delay, sent_at__isnull=True)
+            .select_related("post", "post__topic", "post__poster")
+            .group_by_recipient()
+        )
+
+    grouped_notifications = get_grouped_notifications()
+    for recipient in grouped_notifications.keys():
+        recipient_notifications = grouped_notifications[recipient]
+        message_count = len(recipient_notifications)
+        message_count_text = f"{message_count} {pluralize(message_count, 'message')}"
+
         params = {
-            "poster": notification.post.poster_display_name,
-            "action": f"a répondu à '{notification.post.subject}'",
-            "forum": notification.post.topic.forum.name,
-            "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+            "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
+            "email_thumbnail": (f"Vous avez {message_count_text} à découvrir sur la communauté de l'inclusion"),
+            "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
         }
         send_email(
             to=[{"email": DEFAULT_FROM_EMAIL}],
             params=params,
-            bcc=[{"email": notification.recipient}],
+            bcc=[{"email": recipient}],
             kind=EmailSentTrackKind.FIRST_REPLY,
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
         )
