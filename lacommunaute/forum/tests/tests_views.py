@@ -547,8 +547,7 @@ class TestForumViewContent:
 
 
 @pytest.fixture(name="documentation_forum")
-def documentation_forum_fixture(db, reset_model_sequence):
-    reset_model_sequence(Forum)
+def documentation_forum_fixture(db):
     return ForumFactory(
         parent=CategoryForumFactory(with_public_perms=True, name="Parent-Forum"),
         with_public_perms=True,
@@ -558,6 +557,8 @@ def documentation_forum_fixture(db, reset_model_sequence):
 
 
 class TestDocumentationForumContent:
+    @pytest.mark.parametrize("reset_model_sequence", [Forum], indirect=True)
+    @pytest.mark.usefixtures("reset_model_sequence")
     def test_documentation_forum_share_actions(self, client, snapshot, documentation_forum):
         response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response)
@@ -567,6 +568,8 @@ class TestDocumentationForumContent:
         social_share_area = content.select(f"#dropdownMenuSocialShare{str(documentation_forum.pk)}")[0]
         assert str(social_share_area) == snapshot(name="template_documentation_social_share")
 
+    @pytest.mark.parametrize("reset_model_sequence", [Forum], indirect=True)
+    @pytest.mark.usefixtures("reset_model_sequence")
     def test_documentation_forum_header_content(self, client, snapshot, documentation_forum):
         sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")
 
