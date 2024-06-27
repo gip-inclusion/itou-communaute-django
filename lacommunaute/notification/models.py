@@ -1,3 +1,6 @@
+from itertools import groupby
+from operator import attrgetter
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
@@ -19,6 +22,14 @@ class EmailSentTrack(DatedModel):
 
     def __str__(self):
         return f"{self.status_code} - {self.created}"
+
+
+class NotificationQuerySet(models.QuerySet):
+    def group_by_recipient(self):
+        return {
+            recipient: list(group)
+            for recipient, group in groupby(self.order_by("recipient", "kind"), key=attrgetter("recipient"))
+        }
 
 
 class Notification(DatedModel):
@@ -54,3 +65,5 @@ class Notification(DatedModel):
     @property
     def sent(self):
         return self.sent_at is not None
+
+    objects = NotificationQuerySet().as_manager()
