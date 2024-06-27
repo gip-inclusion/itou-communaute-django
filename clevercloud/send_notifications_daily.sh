@@ -1,10 +1,10 @@
 #!/bin/bash -l
 
-# Collect Daily Matomo Stats
+# Variation of a cronjob which sends notifications that have been marked to send the following day
 
 #
 # About clever cloud cronjobs:
-# https://www.clever-cloud.com/doc/tools/crons/
+# https://next-www.cleverapps.io/doc/administrate/cron/
 #
 
 if [[ "$INSTANCE_NUMBER" != "0" ]]; then
@@ -15,4 +15,4 @@ fi
 # $APP_HOME is set by default by clever cloud.
 cd $APP_HOME
 
-python manage.py send_notifs_when_following_replies
+python manage.py send_notifications day
