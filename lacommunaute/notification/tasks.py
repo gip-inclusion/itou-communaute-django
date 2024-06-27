@@ -30,7 +30,7 @@ def send_notifications(delay: NotificationDelay):
     for recipient in grouped_notifications.keys():
         recipient_notifications = grouped_notifications[recipient]
         message_count = len(recipient_notifications)
-        message_count_text = f"{message_count} {pluralize(message_count, 'message')}"
+        message_count_text = f"{message_count} message{pluralize(message_count, 's')}"
 
         params = {
             "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
