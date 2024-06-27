@@ -10,6 +10,8 @@ class EmailSentTrackModelTest(TestCase):
         track = EmailSentTrack(status_code=200)
         self.assertEqual(str(track), f"200 - {track.created}")
 
+
+class NotificationQuerySetTest(TestCase):
     def test_notification_group_by_recipient(self):
         self.assertEqual(Notification.objects.all().group_by_recipient(), {})
 
