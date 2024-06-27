@@ -8,12 +8,7 @@ from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.models import Notification
-from lacommunaute.notification.utils import (
-    collect_first_replies,
-    collect_following_replies,
-    collect_new_users_for_onboarding,
-    get_serialized_messages,
-)
+from lacommunaute.notification.utils import collect_new_users_for_onboarding, get_serialized_messages
 
 
 def send_notifications(delay: NotificationDelay):
@@ -43,44 +38,6 @@ def send_notifications(delay: NotificationDelay):
             bcc=[{"email": recipient}],
             kind=EmailSentTrackKind.FIRST_REPLY,
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
-        )
-
-
-def send_notifs_when_first_reply():
-    first_replies = collect_first_replies()
-
-    for url, subject, emails, display_name in first_replies:
-        contacts = [{"email": email} for email in emails]
-        params = {
-            "url": f"{url}?mtm_campaign=firstreply&mtm_medium=email",
-            "topic_subject": subject,
-            "display_name": display_name,
-        }
-        send_email(
-            to=[{"email": DEFAULT_FROM_EMAIL}],
-            params=params,
-            template_id=settings.SIB_FIRST_REPLY_TEMPLATE,
-            kind=EmailSentTrackKind.FIRST_REPLY,
-            bcc=contacts,
-        )
-
-
-def send_notifs_on_following_replies():
-    replies = collect_following_replies()
-
-    for url, subject, emails, count_txt in replies:
-        contacts = [{"email": email} for email in emails]
-        params = {
-            "url": f"{url}?mtm_campaign=followingreplies&mtm_medium=email",
-            "topic_subject": subject,
-            "count_txt": count_txt,
-        }
-        send_email(
-            to=[{"email": DEFAULT_FROM_EMAIL}],
-            params=params,
-            template_id=settings.SIB_FOLLOWING_REPLIES_TEMPLATE,
-            kind=EmailSentTrackKind.FOLLOWING_REPLIES,
-            bcc=contacts,
         )
 
 
