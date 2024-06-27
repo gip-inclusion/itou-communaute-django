@@ -44,3 +44,15 @@ def collect_new_users_for_onboarding():
     return User.objects.filter(date_joined__gte=last_notification(kind=EmailSentTrackKind.ONBOARDING)).order_by(
         "date_joined"
     )
+
+
+def get_serialized_messages(notifications):
+    return [
+        {
+            "poster": n.post.poster_display_name,
+            "action": f"a répondu à '{n.post.subject}'",
+            "forum": n.post.topic.forum.name,
+            "url": n.post.topic.get_absolute_url(with_fqdn=True),
+        }
+        for n in notifications
+    ]
