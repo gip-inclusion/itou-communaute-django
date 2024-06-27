@@ -7,7 +7,6 @@ class EmailSentTrackKind(models.TextChoices):
     FOLLOWING_REPLIES = "following_replies", "Réponses suivantes"
     ONBOARDING = "onboarding", "Onboarding d'un nouvel utilisateur"
     PENDING_TOPIC = "pending_topic", "Question sans réponse"
-    NEW_MESSAGES = "new_messages", _("New messages")
 
 
 class NotificationDelay(models.TextChoices):
