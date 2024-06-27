@@ -77,6 +77,9 @@ class Forum(AbstractForum):
     def get_session_rating(self, session_key):
         return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)
 
+    def get_average_rating(self):
+        return ForumRating.objects.filter(forum=self).aggregate(models.Avg("rating"))["rating__avg"]
+
 
 class ForumRating(DatedModel):
     session_id = models.CharField(max_length=40)
