@@ -1,0 +1,77 @@
+# serializer version: 1
+# name: test_edito[edito]
+  '''
+  <div class="s-section__container container">
+              <div class="s-section__row row mt-3 mt-md-5">
+                  <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                      <div class="c-box p-0 h-100">
+                          <div class="p-3 p-lg-4 bg-communaute-light">
+                              <h3 class="m-0">
+                                  <i aria-hidden="true" class="ri-dashboard-2-fill ri-lg font-weight-normal"></i>
+                                  Snapshot title
+                              </h3>
+                          </div>
+                          <div class="px-3 px-lg-4 pt-3 pt-lg-4"><p>Snapshot <em>content</em></p></div>
+                          <div class="p-3 p-lg-4">
+                              <a class="btn btn-communaute btn-block matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="highlight" href="https://example.com">Snapshot link title</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                      <div class="c-box p-0 h-100">
+                          <div class="p-3 p-lg-4 bg-light">
+                              <h3 class="m-0">
+                                  <i aria-hidden="true" class="ri-article-line ri-lg font-weight-normal"></i>
+                                  Les fiches pratique mises à jour
+                              </h3>
+                          </div>
+                          <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                              <ul class="list-unstyled mb-lg-5">
+                                  
+                              </ul>
+                          </div>
+                          <div class="p-3 p-lg-4">
+                              <a class="btn btn-outline-primary btn-block matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation" href="/documentation/">Voir toute la documentation</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                      <div class="c-box p-0 h-100">
+                          <div class="p-3 p-lg-4 bg-light">
+                              <h3 class="m-0">
+                                  <i aria-hidden="true" class="ri-user-line ri-lg font-weight-normal"></i>
+                                  Les dernières questions posées
+                              </h3>
+                          </div>
+                          <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                              <ul class="list-unstyled mb-lg-5">
+                                  
+                              </ul>
+                          </div>
+                          <div class="p-3 p-lg-4">
+                              <a class="btn btn-outline-primary btn-block matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics" href="/topics/">Voir toutes les questions</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                      <div class="c-box p-0 h-100">
+                          <div class="p-3 p-lg-4 bg-light">
+                              <h3 class="m-0">
+                                  <i aria-hidden="true" class="ri-calendar-event-fill ri-lg font-weight-normal"></i>
+                                  Les évènements à venir
+                              </h3>
+                          </div>
+                          <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                              <ul class="list-unstyled mb-lg-5">
+                                  
+                              </ul>
+                          </div>
+                          <div class="p-3 p-lg-4">
+                              <a class="btn btn-outline-primary btn-block matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="events" href="/calendar/events/">Voir tous les évènements</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  '''
+# ---

@@ -58,6 +58,46 @@
             <div class="s-section__row row mt-3 mt-md-5">
                 <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
                     <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-communaute-light">
+                            <h3 class="m-0">
+                                <i class="ri-dashboard-2-fill ri-lg font-weight-normal" aria-hidden="true"></i>
+                                {{ edito.title }}
+                            </h3>
+                        </div>
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">{{ edito.content.rendered }}</div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ edito.url }}" class="btn btn-communaute btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="highlight">{{ edito.link_title }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
+                        <div class="p-3 p-lg-4 bg-light">
+                            <h3 class="m-0">
+                                <i class="ri-article-line ri-lg font-weight-normal" aria-hidden="true"></i>
+                                Les fiches pratique mises à jour
+                            </h3>
+                        </div>
+                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
+                            <ul class="list-unstyled mb-lg-5">
+                                {% for forum in forums_category %}
+                                    <li class="mb-3 position-relative">
+                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
+                                            {{ forum.name }}
+                                        </a>
+                                        <small>dans {{ forum.parent.name }}</small>
+                                        {% include "forum_conversation/partials/poster_light.html" with poster=None dated=forum.updated only %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="p-3 p-lg-4">
+                            <a href="{{ documentation_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation">{% trans "See all docs" %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
+                    <div class="c-box p-0 h-100">
                         <div class="p-3 p-lg-4 bg-light">
                             <h3 class="m-0">
                                 <i class="ri-user-line ri-lg font-weight-normal" aria-hidden="true"></i>
@@ -84,31 +124,6 @@
                     </div>
                 </div>
                 <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
-                    <div class="c-box p-0 h-100">
-                        <div class="p-3 p-lg-4 bg-light">
-                            <h3 class="m-0">
-                                <i class="ri-article-line ri-lg font-weight-normal" aria-hidden="true"></i>
-                                Les fiches pratique mises à jour
-                            </h3>
-                        </div>
-                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                            <ul class="list-unstyled mb-lg-5">
-                                {% for forum in forums_category %}
-                                    <li class="mb-3 position-relative">
-                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
-                                            [{{ forum.parent.name }}] {{ forum.name }}
-                                        </a>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=None dated=forum.updated only %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="p-3 p-lg-4">
-                            <a href="{{ documentation_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation">{% trans "See all docs" %}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="s-section__col col-12 mb-3 mb-md-5">
                     <div class="c-box p-0 h-100">
                         <div class="p-3 p-lg-4 bg-light">
                             <h3 class="m-0">
