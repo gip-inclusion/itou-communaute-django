@@ -11,6 +11,7 @@ from config.settings.base import (
     DEFAULT_FROM_EMAIL,
     SIB_CONTACT_LIST_URL,
     SIB_CONTACTS_URL,
+    SIB_NEW_MESSAGES_TEMPLATE,
     SIB_ONBOARDING_LIST,
     SIB_SMTP_URL,
     SIB_UNANSWERED_QUESTION_TEMPLATE,
@@ -18,9 +19,12 @@ from config.settings.base import (
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.notification.enums import NotificationDelay
+from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
+    send_notifications,
     send_notifs_on_following_replies,
     send_notifs_on_unanswered_topics,
     send_notifs_when_first_reply,
@@ -67,6 +71,41 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
         self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
         self.assertEqual(email_sent_track.datas, payload)
         self.assertEqual(email_sent_track.kind, "first_reply")
+
+    @respx.mock
+    def test_send_notifications_asap(self):
+        topic = TopicFactory(with_post=True)
+        notif_asap = NotificationFactory(post=topic.first_post, delay=NotificationDelay.ASAP)
+        notif_day = NotificationFactory(post=topic.first_post, delay=NotificationDelay.DAY)
+
+        def get_expected_payload_for_notification(notification):
+            params = {
+                "poster": notification.post.poster_display_name,
+                "action": f"a répondu à '{notification.post.subject}'",
+                "forum": notification.post.topic.forum.name,
+                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+            }
+
+            return {
+                "to": [{"email": DEFAULT_FROM_EMAIL}],
+                "bcc": [{"email": notification.recipient}],
+                "params": params,
+                "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+                "templateId": SIB_NEW_MESSAGES_TEMPLATE,
+            }
+
+        send_notifications(NotificationDelay.ASAP)
+
+        email_sent_track = EmailSentTrack.objects.get()
+        self.assertEqual(email_sent_track.status_code, 200)
+        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
+        self.assertEqual(email_sent_track.datas, get_expected_payload_for_notification(notif_asap))
+
+        send_notifications(NotificationDelay.DAY)
+
+        self.assertEqual(email_sent_track.status_code, 200)
+        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
+        self.assertEqual(email_sent_track.datas, get_expected_payload_for_notification(notif_day))
 
 
 class SendNotifsOnFollowingReplyTestCase(TestCase):
