@@ -153,6 +153,20 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
             (f"Vous avez {notif_count_to_generate } messages à découvrir sur la communauté de l'inclusion"),
         )
 
+    @respx.mock
+    def test_send_notifications_num_queries(self):
+        expected_queries = 1
+
+        NotificationFactory(delay=NotificationDelay.ASAP)
+
+        with self.assertNumQueries(expected_queries):
+            send_notifications(NotificationDelay.ASAP)
+
+        NotificationFactory.create_batch(10, delay=NotificationDelay.ASAP)
+
+        with self.assertNumQueries(expected_queries):
+            send_notifications(NotificationDelay.ASAP)
+
 
 class SendNotifsOnFollowingReplyTestCase(TestCase):
     def setUp(self):
