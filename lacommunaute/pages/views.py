@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic.base import TemplateView
 
+from lacommunaute.edito.models import Edito
 from lacommunaute.event.models import Event
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
@@ -35,6 +36,7 @@ class HomeView(TemplateView):
         )[:4]
         context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
         context["upcoming_events"] = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:4]
+        context["edito"] = Edito.objects.first()
         return context
 
 
