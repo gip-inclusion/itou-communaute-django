@@ -33,18 +33,17 @@ def test_context_data(client, db):
 
 
 def test_new_topics_order(client, db):
-    topic1 = TopicFactory(with_post=True, forum=ForumFactory())
-    topic2 = TopicFactory(with_post=True, forum=ForumFactory())
+    topics = TopicFactory.create_batch(2, with_post=True, forum=ForumFactory())
 
     response = client.get(url)
     assert response.status_code == 200
-    assert list(response.context_data["topics_public"]) == [topic2, topic1]
+    assert list(response.context_data["topics_public"]) == topics[::-1]
 
-    PostFactory(topic=topic1)
+    PostFactory(topic=topics[0])
 
     response = client.get(url)
     assert response.status_code == 200
-    assert list(response.context_data["topics_public"]) == [topic2, topic1]
+    assert list(response.context_data["topics_public"]) == topics[::-1]
 
 
 def test_page_title(db, client):
@@ -56,14 +55,17 @@ def test_events(db, client):
     old_event = EventFactory(date=timezone.now() - relativedelta(days=1))
     visible_future_event = EventFactory.create_batch(4, date=timezone.now() + relativedelta(days=1))
     unvisible_future_event = EventFactory(date=timezone.now() + relativedelta(days=1))
+
     response = client.get(url)
+
     assertContains(response, "Les évènements à venir", count=1)
     assertNotContains(response, old_event.name)
+    assertNotContains(response, unvisible_future_event.name)
+    assertContains(response, reverse("event:current"))
+
     for future_event in visible_future_event:
         assertContains(response, future_event.name)
         assertContains(response, reverse("event:detail", kwargs={"pk": future_event.pk}))
-    assertNotContains(response, unvisible_future_event.name)
-    assertContains(response, reverse("event:current"))
 
 
 @pytest.mark.parametrize(
