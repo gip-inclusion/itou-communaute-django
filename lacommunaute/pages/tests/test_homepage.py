@@ -11,6 +11,8 @@ from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
+url = reverse("pages:home")
+
 
 def test_context_data(client, db):
     topic = TopicFactory(with_post=True, forum=ForumFactory())
@@ -21,8 +23,6 @@ def test_context_data(client, db):
     disapproved_topic.approved = False
     disapproved_topic.save()
     TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM))
-
-    url = reverse("pages:home")
 
     response = client.get(url)
     assert response.status_code == 200
@@ -35,7 +35,6 @@ def test_context_data(client, db):
 def test_new_topics_order(client, db):
     topic1 = TopicFactory(with_post=True, forum=ForumFactory())
     topic2 = TopicFactory(with_post=True, forum=ForumFactory())
-    url = reverse("pages:home")
 
     response = client.get(url)
     assert response.status_code == 200
@@ -49,7 +48,7 @@ def test_new_topics_order(client, db):
 
 
 def test_page_title(db, client):
-    response = client.get(reverse("pages:home"))
+    response = client.get(url)
     assertContains(response, "<title>Accueil- La communauté de l'inclusion</title>", html=True, count=1)
 
 
@@ -57,7 +56,7 @@ def test_events(db, client):
     old_event = EventFactory(date=timezone.now() - relativedelta(days=1))
     visible_future_event = EventFactory.create_batch(4, date=timezone.now() + relativedelta(days=1))
     unvisible_future_event = EventFactory(date=timezone.now() + relativedelta(days=1))
-    response = client.get(reverse("pages:home"))
+    response = client.get(url)
     assertContains(response, "Les évènements à venir", count=1)
     assertNotContains(response, old_event.name)
     for future_event in visible_future_event:
