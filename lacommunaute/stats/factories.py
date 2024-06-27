@@ -36,3 +36,6 @@ class ForumStatFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ForumStat
+
+    class Params:
+        for_snapshot = factory.Trait(period="week", date=datetime.date(2024, 5, 20))
