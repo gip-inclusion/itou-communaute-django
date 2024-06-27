@@ -54,3 +54,9 @@ class ForumRatingFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ForumRating
+
+    @factory.post_generation
+    def set_created(self, create, extracted, **kwargs):
+        if extracted:
+            self.created = extracted
+            self.save()
