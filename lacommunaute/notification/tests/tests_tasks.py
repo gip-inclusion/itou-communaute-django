@@ -20,16 +20,14 @@ from config.settings.base import (
 )
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
     send_notifications,
-    send_notifs_on_following_replies,
     send_notifs_on_unanswered_topics,
-    send_notifs_when_first_reply,
 )
 from lacommunaute.notification.utils import get_serialized_messages
 from lacommunaute.users.factories import UserFactory
@@ -38,42 +36,10 @@ from lacommunaute.users.factories import UserFactory
 faker = Faker()
 
 
-class SendNotifsWhenFirstReplyTestCase(TestCase):
+class SendMessageNotificationsTestCase(TestCase):
     def setUp(self):
         super().setUp()
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
-
-    @respx.mock
-    def test_send_notifs_when_first_reply(self):
-        topic = TopicFactory(with_post=True)
-        post = PostFactory(topic=topic)
-
-        url = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}"
-        url += "?mtm_campaign=firstreply&mtm_medium=email"
-
-        params = {
-            "url": url,
-            "topic_subject": topic.subject,
-            "display_name": post.poster_display_name,
-        }
-        payload = {
-            "to": [{"email": DEFAULT_FROM_EMAIL}],
-            "bcc": [
-                {"email": email}
-                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
-            ],
-            "params": params,
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "templateId": 2,
-        }
-
-        send_notifs_when_first_reply()
-
-        email_sent_track = EmailSentTrack.objects.get()
-        self.assertEqual(email_sent_track.status_code, 200)
-        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, payload)
-        self.assertEqual(email_sent_track.kind, "first_reply")
 
     def get_expected_email_payload(self, notifications):
         grouped_notifications = notifications.select_related(
@@ -166,40 +132,6 @@ class SendNotifsWhenFirstReplyTestCase(TestCase):
 
         with self.assertNumQueries(expected_queries):
             send_notifications(NotificationDelay.ASAP)
-
-
-class SendNotifsOnFollowingReplyTestCase(TestCase):
-    def setUp(self):
-        super().setUp()
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
-
-    @respx.mock
-    def test_send_notifs_on_following_reply(self):
-        topic = TopicFactory(with_post=True)
-        PostFactory.create_batch(2, topic=topic)
-
-        url = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{topic.get_absolute_url()}"
-        url += "?mtm_campaign=followingreplies&mtm_medium=email"
-
-        params = {"url": url, "topic_subject": topic.subject, "count_txt": "2 nouvelles réponses"}
-        payload = {
-            "to": [{"email": DEFAULT_FROM_EMAIL}],
-            "bcc": [
-                {"email": email}
-                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
-            ],
-            "params": params,
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "templateId": 13,
-        }
-
-        send_notifs_on_following_replies()
-
-        email_sent_track = EmailSentTrack.objects.get()
-        self.assertEqual(email_sent_track.status_code, 200)
-        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, payload)
-        self.assertEqual(email_sent_track.kind, "following_replies")
 
 
 class AddUserToListWhenRegister(TestCase):
