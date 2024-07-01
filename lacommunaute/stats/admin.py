@@ -10,8 +10,8 @@ class ForumWithStatsFilter(admin.SimpleListFilter):
     parameter_name = "forum"
 
     def lookups(self, request, model_admin):
-        forums_with_stats = model_admin.model.objects.values_list("forum", flat=True).distinct()
-        return [(forum.pk, forum.name) for forum in Forum.objects.filter(pk__in=forums_with_stats)]
+        forums_with_stats = model_admin.model.objects.values_list("forum", flat=True)
+        return Forum.objects.filter(pk__in=forums_with_stats).values_list("pk", "name")
 
     def queryset(self, request, queryset):
         if self.value():
@@ -23,6 +23,7 @@ class BaseStatAdmin(admin.ModelAdmin):
     list_display = ("explicit_period",)
     list_filter = ("date", "period")
 
+    @admin.display(ordering="date")
     def explicit_period(self, obj):
         if obj.period == "month":
             return f"{obj.date} au {obj.date + relativedelta(months=1) - relativedelta(days=1)}"
