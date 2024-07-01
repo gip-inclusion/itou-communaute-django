@@ -73,9 +73,7 @@
                       <p>Je recherche des offres d'emploi ou des entreprises près de chez moi</p>
                   </div>
                   <div class="card-footer text-center mt-3">
-                      <button class="btn btn-primary" data-bs-target="#rechercheEmploi" data-bs-toggle="modal" type="button">
-                          J'accède aux emplois de l'inclusion
-                      </button>
+                      <button class="btn btn-primary matomo-event" data-bs-target="#rechercheEmploi" data-bs-toggle="modal" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="itou-jobseeker" type="button">J'accède aux emplois de l'inclusion</button>
                   </div>
               </div>
           </div>
@@ -90,9 +88,7 @@
                       </p>
                   </div>
                   <div class="card-footer text-center mt-3">
-                      <a class="btn btn-primary" href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr">
-                          J'accède à la documentation des emplois de l'inclusion
-                      </a>
+                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="itou-helpdesk" href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr">J'accède à la documentation des emplois de l'inclusion</a>
                   </div>
               </div>
           </div>
@@ -107,7 +103,7 @@
                       </p>
                   </div>
                   <div class="card-footer text-center">
-                      <a class="btn btn-primary" href="https://aide.immersion-facile.beta.gouv.fr/fr/">
+                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="pmsmp" href="https://aide.immersion-facile.beta.gouv.fr/fr/">
                           J'accède au centre d'aide Immersion Facilitée
                       </a>
                   </div>
@@ -124,7 +120,7 @@
                       </p>
                   </div>
                   <div class="card-footer text-center">
-                      <a class="btn btn-primary" href="/forum/forum-[PK of Forum]/topic/create/?checked=1">Je pose ma question à la communauté</a>
+                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-[PK of Forum]/topic/create/?checked=1">Je pose ma question à la communauté</a>
                   </div>
               </div>
           </div>

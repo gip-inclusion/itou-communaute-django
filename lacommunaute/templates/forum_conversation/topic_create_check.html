@@ -23,9 +23,13 @@
                     <p>Je recherche des offres d'emploi ou des entreprises près de chez moi</p>
                 </div>
                 <div class="card-footer text-center mt-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rechercheEmploi">
-                        J'accède aux emplois de l'inclusion
-                    </button>
+                    <button type="button"
+                            class="btn btn-primary matomo-event"
+                            data-matomo-action="topic-create-check"
+                            data-matomo-category="engagement"
+                            data-matomo-option="itou-jobseeker"
+                            data-bs-toggle="modal"
+                            data-bs-target="#rechercheEmploi">J'accède aux emplois de l'inclusion</button>
                 </div>
             </div>
         </div>
@@ -40,9 +44,11 @@
                     </p>
                 </div>
                 <div class="card-footer text-center mt-3">
-                    <a href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr" class="btn btn-primary">
-                        J'accède à la documentation des emplois de l'inclusion
-                    </a>
+                    <a href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr"
+                       class="btn btn-primary matomo-event"
+                       data-matomo-action="topic-create-check"
+                       data-matomo-category="engagement"
+                       data-matomo-option="itou-helpdesk">J'accède à la documentation des emplois de l'inclusion</a>
                 </div>
             </div>
         </div>
@@ -57,7 +63,7 @@
                     </p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="https://aide.immersion-facile.beta.gouv.fr/fr/" class="btn btn-primary">
+                    <a href="https://aide.immersion-facile.beta.gouv.fr/fr/" class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="pmsmp">
                         J'accède au centre d'aide Immersion Facilitée
                     </a>
                 </div>
@@ -74,7 +80,11 @@
                     </p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.id %}?checked=1" class="btn btn-primary">Je pose ma question à la communauté</a>
+                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.id %}?checked=1"
+                       class="btn btn-primary matomo-event"
+                       data-matomo-action="topic-create-check"
+                       data-matomo-category="engagement"
+                       data-matomo-option="forum">Je pose ma question à la communauté</a>
                 </div>
             </div>
         </div>
