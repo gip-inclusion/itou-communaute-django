@@ -117,3 +117,10 @@ class ForumModelTest(TestCase):
 
         ForumRatingFactory(forum=forum, session_id=forum_rating.session_id, rating=forum_rating.rating + 1)
         self.assertEqual(forum.get_session_rating(forum_rating.session_id), forum_rating.rating + 1)
+
+    def test_get_average_rating(self):
+        forum = ForumFactory()
+        ForumRatingFactory(forum=forum, rating=1)
+        ForumRatingFactory(forum=forum, rating=5)
+
+        self.assertEqual(forum.get_average_rating(), 3)

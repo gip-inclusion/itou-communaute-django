@@ -11,6 +11,102 @@
           </nav>
   '''
 # ---
+# name: TestForumStatWeekArchiveView.test_header_and_breadcrumb[breadcrumb]
+  '''
+  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+  '''
+# ---
+# name: TestForumStatWeekArchiveView.test_header_and_breadcrumb[title-01]
+  '''
+  <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">
+                          <strong>Partenariat Academie France Travail x La communauté de l'inclusion</strong>
+                          <br/>
+                          Statistiques de la semaine du 20 mai 2024 au 26 mai 2024
+                      </h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+  '''
+# ---
+# name: TestForumStatWeekArchiveView.test_most_rated_forums[most_rated_forums]
+  '''
+  <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <h2>Les 1 fiches pratiques les plus notées sur la période</h2>
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Fiche Pratique</th>
+                                      <th scope="col">Nombres de notations de la semaine</th>
+                                      <th scope="col">Notation moyenne totale</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">Forum A</th>
+                                          <td>2</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+  '''
+# ---
+# name: TestForumStatWeekArchiveView.test_most_viewed_forums[most_viewed_forums]
+  '''
+  <div class="s-section__row row" id="most_viewed">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <h2>Les 2 fiches pratiques les plus lues sur la période</h2>
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">Fiche Pratique</th>
+                                      <th scope="col">Visiteurs uniques</th>
+                                      <th scope="col">Visiteurs uniques entrants</th>
+                                      <th scope="col">Temps de lecture total</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">Forum B</th>
+                                          <td>17</td>
+                                          <td>5</td>
+                                          <td>1978 secondes</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">Forum A</th>
+                                          <td>10</td>
+                                          <td>8</td>
+                                          <td>1000 secondes</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+  '''
+# ---
 # name: TestMonthlyVisitorsView.test_navigation[breadcrumb]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
