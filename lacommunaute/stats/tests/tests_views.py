@@ -9,10 +9,11 @@ from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from faker import Faker
 from machina.core.loading import get_class
-from pytest_django.asserts import assertContains
+from pytest_django.asserts import assertContains, assertNotContains
 
+from lacommunaute.forum.factories import ForumFactory, ForumRatingFactory
 from lacommunaute.stats.enums import Period
-from lacommunaute.stats.factories import StatFactory
+from lacommunaute.stats.factories import ForumStatFactory, StatFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.testing import parse_response_to_soup
@@ -243,3 +244,103 @@ class TestDailyDSPView:
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
+
+
+class TestForumStatWeekArchiveView:
+    def get_url_from_date(self, date):
+        return reverse(
+            "stats:forum_stat_week_archive", kwargs={"year": date.strftime("%Y"), "week": date.strftime("%W")}
+        )
+
+    def test_header_and_breadcrumb(self, client, db, snapshot):
+        response = client.get(self.get_url_from_date(ForumStatFactory(for_snapshot=True).date))
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector=".s-title-01")) == snapshot(name="title-01")
+        assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
+
+    def test_navigation(self, client, db):
+        weeks = [date.today() - relativedelta(weeks=i) for i in range(15, 10, -1)]
+        for week in weeks[1:4]:
+            ForumStatFactory(date=week, for_snapshot=True)
+
+        test_cases = [
+            {"test_week": weeks[1], "not_contains": [weeks[0]], "contains": [weeks[2]]},
+            {"test_week": weeks[2], "not_contains": [], "contains": [weeks[1], weeks[3]]},
+            {"test_week": weeks[3], "not_contains": [weeks[4]], "contains": [weeks[2]]},
+        ]
+
+        for test_case in test_cases:
+            response = client.get(self.get_url_from_date(test_case["test_week"]))
+            for week in test_case["not_contains"]:
+                assertNotContains(response, self.get_url_from_date(week))
+            for week in test_case["contains"]:
+                assertContains(response, self.get_url_from_date(week))
+
+        # out of bound
+        for week in [weeks[0], weeks[4]]:
+            response = client.get(self.get_url_from_date(week))
+            assert response.status_code == 404
+
+    def test_most_viewed_forums(self, client, db, snapshot):
+        forums_stats = [
+            ForumStatFactory(for_snapshot=True, visits=10, entry_visits=8, time_spent=1000, forum__name="Forum A"),
+            ForumStatFactory(for_snapshot=True, visits=17, entry_visits=5, time_spent=1978, forum__name="Forum B"),
+        ]
+
+        response = client.get(self.get_url_from_date(forums_stats[0].date))
+        assert response.status_code == 200
+        assert str(
+            parse_response_to_soup(
+                response, selector="#most_viewed", replace_in_href=[fs.forum for fs in forums_stats]
+            )
+        ) == snapshot(name="most_viewed_forums")
+
+    def test_paginated_most_viewed_forums(self, client, db):
+        ForumStatFactory.create_batch(16, for_snapshot=True)
+        response = client.get(reverse("stats:forum_stat_week_archive", kwargs={"year": 2024, "week": 21}))
+        assert response.status_code == 200
+        assert len(response.context_data["forum_stats"]) == 15
+
+    def test_most_rated_forums(self, client, db, snapshot):
+        fs = ForumStatFactory(for_snapshot=True, forum__name="Forum A")
+
+        # rating within range
+        ForumRatingFactory.create_batch(2, rating=5, forum=fs.forum, set_created=fs.date)
+        # rating out of range
+        ForumRatingFactory.create_batch(2, rating=1, forum=fs.forum)
+
+        # undesired forum
+        ForumFactory()
+
+        # undesired rating
+        ForumRatingFactory(rating=4)
+
+        response = client.get(self.get_url_from_date(fs.date))
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector="#most_rated")) == snapshot(name="most_rated_forums")
+
+    def test_visitors(self, client, db, snapshot):
+        fs = ForumStatFactory(for_snapshot=True)
+
+        # relevant
+        relevant_dates = [
+            fs.date,
+            fs.date + relativedelta(days=6),
+            fs.date + relativedelta(days=6) - relativedelta(days=89),
+        ]
+        visitors = [10, 11, 12]
+        for stat_date, visitor_count in zip(relevant_dates, visitors):
+            StatFactory(date=stat_date, name="nb_uniq_visitors", value=visitor_count)
+
+        # undesired
+        for stat_date in [fs.date + relativedelta(weeks=1), fs.date + relativedelta(days=6) - relativedelta(days=90)]:
+            StatFactory(date=stat_date, name="nb_uniq_visitors", value=99)
+
+        response = client.get(self.get_url_from_date(fs.date))
+        assert response.status_code == 200
+        expected_stats = {
+            "date": ["2024-02-27", "2024-05-20", "2024-05-26"],
+            "nb_uniq_visitors": [12, 10, 11],
+            "nb_uniq_engaged_visitors": [],
+        }
+        assert response.context_data["stats"] == expected_stats

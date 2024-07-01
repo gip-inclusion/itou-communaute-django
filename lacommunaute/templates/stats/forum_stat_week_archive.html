@@ -1,0 +1,188 @@
+{% extends "layouts/base.html" %}
+{% load str_filters %}
+{% load js_filters %}
+{% load static %}
+{% load i18n %}
+{% block title %}Statistiques hebdomadaires{{ block.super }}{% endblock %}
+{% block body_class %}p-statistiques{{ block.super }}{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <nav class="c-breadcrumb" aria-label="Fil d'ariane">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">{% trans "Back to" %}</li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'stats:statistiques' %}">Statistiques</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>Partenariat Academie France Travail x La communauté de l'inclusion</strong>
+                        <br>
+                        Statistiques de la semaine du {{ week|date:"j F Y" }} au {{ end_date|date:"j F Y" }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>Trafic global sur la période</h2>
+                        <canvas id="statChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row" id="most_viewed">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>Les {{ object_list|length }} fiches pratiques les plus lues sur la période</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fiche Pratique</th>
+                                    <th scope="col">Visiteurs uniques</th>
+                                    <th scope="col">Visiteurs uniques entrants</th>
+                                    <th scope="col">Temps de lecture total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in object_list %}
+                                    <tr>
+                                        <th scope="row">{{ item.forum.name }}</th>
+                                        <td>{{ item.visits }}</td>
+                                        <td>{{ item.entry_visits }}</td>
+                                        <td>{{ item.time_spent }} secondes</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row" id="most_rated">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>Les {{ rated_forums|length }} fiches pratiques les plus notées sur la période</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fiche Pratique</th>
+                                    <th scope="col">Nouvelles otations sur la période</th>
+                                    <th scope="col">Evaluation globale</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for forum in rated_forums %}
+                                    <tr>
+                                        <th scope="row">{{ forum.name }}</th>
+                                        <td>{{ forum.rating_count }}</td>
+                                        <td>{{ forum.avg_rating|floatformat:2 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="mb-3 mb-md-5">
+                        {% if previous_week %}
+                            <a href="{% url 'stats:forum_stat_week_archive' previous_week|date:"Y" previous_week|date:"W" %}">semaine du {{ previous_week|date:"j F Y" }}</a>
+                        {% endif %}
+                        {% if previous_week and next_week %}|{% endif %}
+                        {% if next_week %}
+                            <a href="{% url 'stats:forum_stat_week_archive' next_week|date:"Y" next_week|date:"W" %}">semaine du {{ next_week|date:"j F Y" }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1"></script>
+    {# djlint: off #}
+    <script nonce="{{ request.csp_nonce }}">
+        const impact_stats = document.getElementById('impactChart');
+        new Chart(impact_stats, {
+            type: 'bar',
+            data: {
+                labels: {{ impact.date | js }},
+                datasets: [
+                    {
+                        label: 'Professionnels ayant acquis de nouvelles connaissances (estimation)',
+                        data: {{ impact.nb_uniq_visitors_returning | js }},
+                        borderWidth: 2,
+                        borderRadius: 20,
+                        borderSkipped: false,
+                        borderColor: 'rgba(54, 162, 235)',
+                        backgroundColor: 'rgba(154, 208, 245)',
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+                }
+            }
+        });
+</script>
+<script nonce="{{ request.csp_nonce }}">
+    const ctx_stats = document.getElementById('statChart');
+    new Chart(ctx_stats, {
+        type: 'line',
+        data: {
+            labels: {{ stats.date | js }},
+            datasets: [
+                {
+                    label: 'Utilisateurs uniques',
+                    data: {{ stats.nb_uniq_visitors | js }},
+                    borderColor: 'rgba(54, 162, 235)',
+                    backgroundColor: 'rgba(154, 208, 245)',
+                },
+                {
+                    label: 'Utilisateurs engagés',
+                    data: {{ stats.nb_uniq_engaged_visitors | js }},
+                    borderColor: 'rgba(255, 159, 64)',
+                    backgroundColor: 'rgba(255, 207, 159)',
+                },
+            ]
+        },
+        options: {
+            responsive:true,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4,
+        }
+    });
+</script>
+    {# djlint: on #}
+{% endblock %}
