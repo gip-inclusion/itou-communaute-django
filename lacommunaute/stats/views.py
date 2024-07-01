@@ -17,6 +17,19 @@ from lacommunaute.utils.math import percent
 logger = logging.getLogger(__name__)
 
 
+def get_daily_visits_stats(from_date, to_date):
+    indicator_names = [
+        "nb_uniq_visitors",
+        "nb_uniq_engaged_visitors",
+    ]
+    datas = (
+        Stat.objects.filter(period="day", name__in=indicator_names, date__gte=from_date, date__lte=to_date)
+        .values("name", "value")
+        .annotate(date=Cast("date", CharField()))
+    )
+    return extract_values_in_list(datas, indicator_names)
+
+
 class StatistiquesPageView(TemplateView):
     template_name = "stats/statistiques.html"
 
@@ -44,20 +57,6 @@ class StatistiquesPageView(TemplateView):
         stats["engagement_percent"] = percent(stats["nb_uniq_engaged_visitors"], stats["nb_uniq_active_visitors"])
         return stats
 
-    def get_daily_stats(self):
-        indicator_names = [
-            "nb_uniq_visitors",
-            "nb_uniq_active_visitors",
-            "nb_uniq_engaged_visitors",
-        ]
-        after_date = timezone.now() - timezone.timedelta(days=90)
-        datas = (
-            Stat.objects.filter(period="day", name__in=indicator_names, date__gte=after_date)
-            .values("name", "value")
-            .annotate(date=Cast("date", CharField()))
-        )
-        return extract_values_in_list(datas, indicator_names)
-
     def get_monthly_visitors(self):
         indicator_names = ["nb_uniq_visitors_returning"]
         datas = (
@@ -71,8 +70,9 @@ class StatistiquesPageView(TemplateView):
         return DSP.objects.count()
 
     def get_context_data(self, **kwargs):
+        yesterday = localdate() - relativedelta(days=1)
         context = super().get_context_data(**kwargs)
-        context["stats"] = self.get_daily_stats()
+        context["stats"] = get_daily_visits_stats(from_date=yesterday - relativedelta(days=89), to_date=yesterday)
         context["impact"] = self.get_monthly_visitors()
         context["dsp_count"] = self.get_dsp_count()
         context = {**context, **self.get_funnel_data()}

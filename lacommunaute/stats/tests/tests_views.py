@@ -1,3 +1,6 @@
+from datetime import date
+
+import pytest  # noqa
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.urls import reverse
@@ -22,32 +25,9 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 class StatistiquesPageTest(TestCase):
     def test_context_data(self):
         url = reverse("stats:statistiques")
-        date = timezone.now()
-        names = ["nb_uniq_engaged_visitors", "nb_uniq_visitors", "nb_uniq_active_visitors"]
-        for name in names:
-            StatFactory(name=name, date=date)
-        undesired_period_stat = StatFactory(
-            period=Period.WEEK, date=date - timezone.timedelta(days=7), name="nb_uniq_engaged_visitors"
-        )
-        undesired_date_stat = StatFactory(
-            period=Period.DAY, date=date - timezone.timedelta(days=91), name="nb_uniq_engaged_visitors"
-        )
-
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "stats/statistiques.html")
-
-        # expected values
-        self.assertIn("stats", response.context)
-        self.assertIn("date", response.context["stats"])
-        self.assertIn("nb_uniq_engaged_visitors", response.context["stats"])
-        self.assertIn("nb_uniq_visitors", response.context["stats"])
-        self.assertIn("nb_uniq_active_visitors", response.context["stats"])
-        self.assertEqual(response.context["stats"]["date"][0], date.strftime("%Y-%m-%d"))
-
-        # undesired values
-        self.assertNotIn(undesired_period_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
-        self.assertNotIn(undesired_date_stat.date.strftime("%Y-%m-%d"), response.context["stats"]["date"])
 
     def test_month_datas_in_context(self):
         today = localdate()
@@ -121,6 +101,33 @@ class StatistiquesPageTest(TestCase):
         self.assertContains(response, f"<a href={reverse('stats:monthly_visitors')}>")
 
 
+@pytest.fixture(name="setup_statistiques_data")
+def setup_statistiques_data_fixture(request):
+    last_visible_date = date(2024, 6, 30)
+    first_visible_date = last_visible_date - timezone.timedelta(days=89)
+    if request.param == "undesired_data_setup":
+        return [
+            StatFactory(name="nb_uniq_visitors", date=first_visible_date, period=Period.MONTH),
+            StatFactory(name="nb_uniq_visitors", date=first_visible_date, period=Period.WEEK),
+            StatFactory(name=faker.word(), date=first_visible_date, period=Period.DAY),
+            StatFactory(
+                name="nb_uniq_visitors", date=first_visible_date - timezone.timedelta(days=1), period=Period.DAY
+            ),
+            StatFactory(
+                name="nb_uniq_visitors", date=last_visible_date + timezone.timedelta(days=1), period=Period.DAY
+            ),
+        ]
+    if request.param == "desired_data_setup":
+        stats = [
+            ("nb_uniq_visitors", first_visible_date, 8469),
+            ("nb_uniq_visitors", last_visible_date, 8506),
+            ("nb_uniq_engaged_visitors", first_visible_date, 128),
+            ("nb_uniq_engaged_visitors", last_visible_date, 5040),
+        ]
+        return [StatFactory(name=name, date=date, value=value) for name, date, value in stats]
+    return None
+
+
 class TestStatistiquesPageView:
     def test_dsp_count(self, client, db, snapshot):
         DSPFactory.create_batch(10)
@@ -128,6 +135,34 @@ class TestStatistiquesPageView:
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector="#daily_dsp")) == snapshot(name="dsp")
+
+    @pytest.mark.parametrize(
+        "setup_statistiques_data,expected",
+        [
+            (
+                None,
+                {"date": [], "nb_uniq_visitors": [], "nb_uniq_engaged_visitors": []},
+            ),
+            (
+                "undesired_data_setup",
+                {"date": [], "nb_uniq_visitors": [], "nb_uniq_engaged_visitors": []},
+            ),
+            (
+                "desired_data_setup",
+                {
+                    "date": ["2024-04-02", "2024-06-30"],
+                    "nb_uniq_visitors": [8469, 8506],
+                    "nb_uniq_engaged_visitors": [128, 5040],
+                },
+            ),
+        ],
+        indirect=["setup_statistiques_data"],
+    )
+    def test_visitors_in_context_data(self, client, db, setup_statistiques_data, expected):
+        url = reverse("stats:statistiques")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.context["stats"] == expected
 
 
 class TestMonthlyVisitorsView:
