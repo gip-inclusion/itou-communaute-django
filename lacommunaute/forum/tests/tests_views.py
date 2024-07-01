@@ -577,7 +577,11 @@ class TestDocumentationForumContent:
 
         assert len(content.find_all("img", src=re.compile(documentation_forum.image.name))) == 1
         assert (
-            len(content.select("div.textarea_cms_md", string=re.compile(str(documentation_forum.description)[:10])))
+            len(
+                content.select(
+                    "div.textarea_cms_md", string=(lambda x: x.startswith(str(documentation_forum.description)[:10]))
+                )
+            )
             == 1
         )
 
