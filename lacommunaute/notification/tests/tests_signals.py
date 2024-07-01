@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from lacommunaute.forum_conversation.factories import (
-    AnonymousPostFactory,
+    AnonymousTopicFactory,
     PostFactory,
     TopicFactory,
 )
@@ -45,14 +45,13 @@ class PostCreatedTest(TestCase):
         assert notification.delay == NotificationDelay.ASAP
 
     def test_notifications_on_post_creation_anonymous_poster(self):
-        topic = TopicFactory(with_post=True)
-        anonymous_post = AnonymousPostFactory(topic=topic)
+        topic = AnonymousTopicFactory(with_post=True)
 
         post = PostFactory(topic=topic)
-        notification = Notification.objects.get(recipient=anonymous_post.username)
+        notification = Notification.objects.get(recipient=topic.first_post.username)
         assert notification.post == post
-        assert notification.kind == EmailSentTrackKind.FOLLOWING_REPLIES
-        assert notification.delay == NotificationDelay.DAY
+        assert notification.kind == EmailSentTrackKind.FIRST_REPLY
+        assert notification.delay == NotificationDelay.ASAP
 
     def test_notifications_no_approved_post(self):
         topic = TopicFactory(with_post=True)
