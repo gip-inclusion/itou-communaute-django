@@ -135,7 +135,7 @@ class Post(AbstractPost):
     def save(self, *args, **kwargs):
         created = not self.pk
         super().save(*args, **kwargs)
-        if created and self.topic.last_post:
+        if created and (self.is_topic_tail and not self.is_topic_head):
             post_create.send(sender=self.__class__, instance=self)
 
 
