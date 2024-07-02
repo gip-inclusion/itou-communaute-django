@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from faker import Faker
+from freezegun import freeze_time
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains, assertNotContains
 
@@ -160,8 +161,9 @@ class TestStatistiquesPageView:
         indirect=["setup_statistiques_data"],
     )
     def test_visitors_in_context_data(self, client, db, setup_statistiques_data, expected):
-        url = reverse("stats:statistiques")
-        response = client.get(url)
+        with freeze_time("2024-07-01"):
+            url = reverse("stats:statistiques")
+            response = client.get(url)
         assert response.status_code == 200
         assert response.context["stats"] == expected
 
