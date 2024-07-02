@@ -31,7 +31,17 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
     def get_template_names(self):
         if self.request.META.get("HTTP_HX_REQUEST"):
             return ["forum_conversation/topic_list.html"]
+        if self.will_render_documentation_variant():
+            return ["forum/forum_documentation.html"]
+        if self.will_render_documentation_category_variant():
+            return ["forum/forum_documentation_category.html"]
         return ["forum/forum_detail.html"]
+
+    def will_render_documentation_variant(self):
+        return self.get_forum().parent and self.forum.is_in_documentation_area
+
+    def will_render_documentation_category_variant(self):
+        return self.get_forum().is_in_documentation_area and self.forum.level == 0
 
     def get_queryset(self):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
@@ -65,8 +75,8 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         )
         context = context | self.get_topic_filter_context()
 
-        if forum.parent and forum.is_in_documentation_area:
-            context["forums"] = forum.get_siblings(include_self=True)
+        if self.will_render_documentation_variant():
+            context["sibling_forums"] = forum.get_siblings(include_self=True)
         return context
 
 

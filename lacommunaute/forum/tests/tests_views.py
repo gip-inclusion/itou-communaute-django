@@ -1,4 +1,5 @@
 import pytest  # noqa
+import re
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
@@ -9,13 +10,14 @@ from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.utils.testing import parse_response_to_soup
+from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
 
 
 faker = Faker()
@@ -106,6 +108,15 @@ class ForumViewTest(TestCase):
 
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+
+        documentation_category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        documentation_forum = documentation_category_forum.children.first()
+
+        response = self.client.get(documentation_category_forum.get_absolute_url())
+        self.assertTemplateUsed(response, "forum/forum_documentation_category.html")
+
+        response = self.client.get(documentation_forum.get_absolute_url())
+        self.assertTemplateUsed(response, "forum/forum_documentation.html")
 
     def test_show_comments(self):
         topic_url = reverse(
@@ -334,7 +345,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.context_data["forums"].count(), 3)
+        self.assertEqual(response.context_data["sibling_forums"].count(), 3)
         for f in forum.get_children():
             self.assertContains(response, f.name)
 
@@ -513,7 +524,7 @@ class ForumViewTest(TestCase):
         self.assertContains(response, forum.image.url.split("=")[0])
 
 
-class TestForumView:
+class TestForumViewContent:
     def test_not_rated_forum(self, client, db, snapshot):
         category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
         forum = category_forum.get_children().first()
@@ -533,6 +544,56 @@ class TestForumView:
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="#rating-area1")
         assert str(content) == snapshot(name="rated_forum")
+
+
+reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
+
+
+@pytest.fixture(name="documentation_forum")
+def documentation_forum_fixture():
+    return ForumFactory(
+        parent=CategoryForumFactory(with_public_perms=True, name="Parent-Forum"),
+        with_public_perms=True,
+        with_image=True,
+        for_snapshot=True,
+    )
+
+
+class TestDocumentationForumContent:
+    def test_documentation_forum_share_actions(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+        response = client.get(documentation_forum.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        upvotes_area = content.select(f"#upvotesarea{str(documentation_forum.pk)}")[0]
+        assert str(upvotes_area) == snapshot(name="template_documentation_upvotes")
+        social_share_area = content.select(f"#dropdownMenuSocialShare{str(documentation_forum.pk)}")[0]
+        assert str(social_share_area) == snapshot(name="template_documentation_social_share")
+
+    def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
+        sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")
+
+        response = client.get(documentation_forum.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        assert len(content.find_all("img", src=re.compile(documentation_forum.image.name))) == 1
+        assert (
+            len(content.select("div.textarea_cms_md", string=re.compile(str(documentation_forum.description)[:10])))
+            == 1
+        )
+
+        user_add_topic = content.find_all(
+            "a",
+            href=str(
+                reverse("forum_conversation:topic_create", args=(documentation_forum.slug, documentation_forum.pk))
+            ),
+        )
+        assert len(user_add_topic) == 2
+
+        link_to_parent = content.find_all("a", href=documentation_forum.parent.get_absolute_url())
+        assert len(link_to_parent) == 1
+        assert (str(link_to_parent[0])) == snapshot(name="template_documentation_link_to_parent")
+
+        assert len(content.find_all("a", href=sibling_forum.get_absolute_url())) == 1
 
 
 @pytest.fixture(name="discussion_area_forum")
