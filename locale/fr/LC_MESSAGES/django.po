@@ -1032,3 +1032,7 @@ msgstr "Dès que possible"
 
 msgid "The following day"
 msgstr "Le jour suivant"
+
+#: lacommunaute/notification/utils.py
+msgid "responded to"
+msgstr "a répondu à"

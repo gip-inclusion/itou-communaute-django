@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.utils.timezone import now, timedelta
+from django.utils.translation import gettext_lazy as _
 
 from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import EmailSentTrack
@@ -17,11 +18,11 @@ def collect_new_users_for_onboarding():
     )
 
 
-def get_serialized_messages(notifications):
+def get_serialized_messages(notifications, action_verb=_("responded to")):
     return [
         {
             "poster": n.post.poster_display_name,
-            "action": f"a répondu à '{n.post.subject}'",
+            "action": f"{action_verb} '{n.post.subject}'",
             "forum": n.post.topic.forum.name,
             "url": n.post.topic.get_absolute_url(with_fqdn=True),
         }
