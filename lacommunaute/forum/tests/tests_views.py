@@ -549,6 +549,16 @@ class TestForumViewContent:
 reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
 
 
+@pytest.fixture(name="forum_for_snapshot")
+def forum_for_snapshot_fixture():
+    return ForumFactory(
+        parent=ForumFactory(with_public_perms=True, name="Parent-Forum"),
+        with_public_perms=True,
+        with_image=True,
+        for_snapshot=True,
+    )
+
+
 @pytest.fixture(name="documentation_forum")
 def documentation_forum_fixture():
     return ForumFactory(
@@ -557,6 +567,55 @@ def documentation_forum_fixture():
         with_image=True,
         for_snapshot=True,
     )
+
+
+class TestForumDetailContent:
+    def test_template_forum_detail_share_actions(self, client, db, snapshot):
+        forum = ForumFactory(with_public_perms=True)
+        response = client.get(forum.get_absolute_url())
+        content = parse_response_to_soup(response, replace_in_href=[forum])
+
+        assert len(content.select(f"#upvotesarea{str(forum.pk)}")) == 0
+        assert len(content.select(f"#dropdownMenuSocialShare{str(forum.pk)}")) == 0
+
+    def test_forum_detail_header_content(self, client, db, snapshot, reset_forum_sequence, forum_for_snapshot):
+        response = client.get(forum_for_snapshot.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        assert str(content.select("section.s-title-01")[0]) == snapshot(name="forum_detail_heading")
+        assert (
+            len(
+                content.select(
+                    "div.textarea_cms_md", string=(lambda x: x.startswith(str(forum_for_snapshot.description)[:10]))
+                )
+            )
+            == 1
+        )
+
+        # NOTE: tests no subforum content rendered
+        assert len(content.select("ul.list-group")) == 0
+
+    def test_forum_detail_subforum_content_rendered(
+        self, client, db, snapshot, reset_forum_sequence, forum_for_snapshot
+    ):
+        # subforum
+        ForumFactory(parent=forum_for_snapshot, with_public_perms=True, name="Test-Child", for_snapshot=True)
+
+        response = client.get(forum_for_snapshot.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        subforum_content = content.select("ul.list-group")
+        assert len(subforum_content) == 1
+        assert str(subforum_content[0]) == snapshot(name="forum_detail_subforums")
+
+    def test_forum_detail_foot_content(self, client, db, snapshot, reset_forum_sequence, forum_for_snapshot):
+        response = client.get(forum_for_snapshot.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        assert forum_for_snapshot.is_forum
+        forum_actions_block = content.select("div.forum-actions-block")
+        assert len(forum_actions_block) == 1
+        assert str(forum_actions_block[0]) == snapshot(name="forum_detail_forum_actions_block")
 
 
 class TestDocumentationForumContent:
@@ -598,6 +657,35 @@ class TestDocumentationForumContent:
         assert (str(link_to_parent[0])) == snapshot(name="template_documentation_link_to_parent")
 
         assert len(content.find_all("a", href=sibling_forum.get_absolute_url())) == 1
+
+
+class TestDocumentationCategoryForumContent:
+    def test_documentation_category_subforum_list(
+        self, client, db, snapshot, reset_forum_sequence, documentation_forum
+    ):
+        response = client.get(documentation_forum.parent.get_absolute_url())
+        content = parse_response_to_soup(response, replace_img_src=True)
+
+        subforum_content = content.select("#documentation-category-subforums")
+        assert len(subforum_content) == 1
+        assert str(subforum_content[0]) == snapshot(name="documentation_category_subforum_list")
+
+    def test_documentation_category_foot_content(
+        self, client, db, snapshot, reset_forum_sequence, documentation_forum
+    ):
+        response = client.get(documentation_forum.parent.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        # require superuser permission
+        assert len(content.select("#add-documentation-to-category-control")) == 0
+
+        client.force_login(UserFactory(is_superuser=True))
+        response = client.get(documentation_forum.parent.get_absolute_url())
+        content = parse_response_to_soup(response)
+
+        add_documentation_control = content.select("#add-documentation-to-category-control")
+        assert len(add_documentation_control) == 1
+        assert str(add_documentation_control[0]) == snapshot(name="documentation_category_add_file_control")
 
 
 @pytest.fixture(name="discussion_area_forum")
