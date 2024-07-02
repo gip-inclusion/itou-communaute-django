@@ -19,7 +19,7 @@ class reload_module(TestContextDecorator):
             setattr(self._module, key, value)
 
 
-def parse_response_to_soup(response, selector=None, no_html_body=False, replace_in_href=None):
+def parse_response_to_soup(response, selector=None, no_html_body=False, replace_in_href=None, replace_img_src=False):
     soup = BeautifulSoup(response.content, "html5lib", from_encoding=response.charset or "utf-8")
     if no_html_body:
         # If the provided HTML does not contain <html><body> tags
@@ -46,6 +46,10 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
         for attr in ["href", "hx-post"]:
             for links in soup.find_all(attrs={attr: True}):
                 [links.attrs.update({attr: links.attrs[attr].replace(*replacement)}) for replacement in replacements]
+    if replace_img_src:
+        for attr in ["src"]:
+            for links in soup.find_all("img", attrs={attr: True}):
+                links.attrs.update({attr: "[img src]"})
     return soup
 
 
