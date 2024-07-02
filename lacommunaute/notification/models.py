@@ -1,7 +1,11 @@
+from itertools import groupby
+from operator import attrgetter
+
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
 
-from lacommunaute.notification.enums import EmailSentTrackKind
+from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 
 
 class EmailSentTrack(DatedModel):
@@ -18,3 +22,48 @@ class EmailSentTrack(DatedModel):
 
     def __str__(self):
         return f"{self.status_code} - {self.created}"
+
+
+class NotificationQuerySet(models.QuerySet):
+    def group_by_recipient(self):
+        return {
+            recipient: list(group)
+            for recipient, group in groupby(self.order_by("recipient", "kind"), key=attrgetter("recipient"))
+        }
+
+
+class Notification(DatedModel):
+    recipient = models.EmailField(verbose_name=_("recipient"), null=False, blank=False)
+    post = models.ForeignKey(
+        "forum_conversation.Post",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="notifications",
+        verbose_name=_("post"),
+    )
+    kind = models.CharField(
+        verbose_name=_("type"), choices=EmailSentTrackKind.choices, max_length=20, null=False, blank=False
+    )
+    delay = models.CharField(
+        verbose_name=_("delay"),
+        choices=NotificationDelay.choices,
+        max_length=20,
+        null=False,
+        blank=False,
+        default=NotificationDelay.ASAP,
+    )
+    sent_at = models.DateTimeField(verbose_name=_("sent at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Notification")
+        verbose_name_plural = _("Notifications")
+
+    def __str__(self):
+        return f"{self.kind} - {self.created.strftime('%d/%m/%Y')}"
+
+    @property
+    def sent(self):
+        return self.sent_at is not None
+
+    objects = NotificationQuerySet().as_manager()

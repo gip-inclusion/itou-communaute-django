@@ -3,104 +3,135 @@ import json
 import httpx
 import respx
 from django.conf import settings
+from django.template.defaultfilters import pluralize
 from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
 
 from config.settings.base import (
     DEFAULT_FROM_EMAIL,
+    NEW_MESSAGES_EMAIL_MAX_PREVIEW,
     SIB_CONTACT_LIST_URL,
     SIB_CONTACTS_URL,
+    SIB_NEW_MESSAGES_TEMPLATE,
     SIB_ONBOARDING_LIST,
     SIB_SMTP_URL,
     SIB_UNANSWERED_QUESTION_TEMPLATE,
 )
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
-from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
+from lacommunaute.notification.factories import NotificationFactory
+from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
-    send_notifs_on_following_replies,
+    send_messages_notifications,
     send_notifs_on_unanswered_topics,
-    send_notifs_when_first_reply,
 )
+from lacommunaute.notification.utils import get_serialized_messages
 from lacommunaute.users.factories import UserFactory
 
 
 faker = Faker()
 
 
-class SendNotifsWhenFirstReplyTestCase(TestCase):
+class SendMessageNotificationsTestCase(TestCase):
     def setUp(self):
         super().setUp()
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
-    @respx.mock
-    def test_send_notifs_when_first_reply(self):
-        topic = TopicFactory(with_post=True)
-        post = PostFactory(topic=topic)
+    def get_expected_email_payload(self, notifications):
+        grouped_notifications = notifications.select_related(
+            "post", "post__topic", "post__poster"
+        ).group_by_recipient()
 
-        url = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{post.topic.get_absolute_url()}"
-        url += "?mtm_campaign=firstreply&mtm_medium=email"
+        assert (
+            len(grouped_notifications.keys()) == 1
+        ), "get_expected_email_payload requires notifications with only one recipient"
+
+        recipient = list(grouped_notifications.keys())[0]
+        recipient_notifications = grouped_notifications[recipient]
+        message_count = len(recipient_notifications)
+        message_count_text = f"{message_count} message{pluralize(message_count, 's')}"
 
         params = {
-            "url": url,
-            "topic_subject": topic.subject,
-            "display_name": post.poster_display_name,
+            "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
+            "email_thumbnail": (f"Vous avez {message_count_text} à découvrir sur la communauté de l'inclusion"),
+            "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
         }
-        payload = {
+
+        return {
             "to": [{"email": DEFAULT_FROM_EMAIL}],
-            "bcc": [
-                {"email": email}
-                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
-            ],
+            "bcc": [{"email": recipient}],
             "params": params,
             "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "templateId": 2,
+            "templateId": SIB_NEW_MESSAGES_TEMPLATE,
         }
-
-        send_notifs_when_first_reply()
-
-        email_sent_track = EmailSentTrack.objects.get()
-        self.assertEqual(email_sent_track.status_code, 200)
-        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, payload)
-        self.assertEqual(email_sent_track.kind, "first_reply")
-
-
-class SendNotifsOnFollowingReplyTestCase(TestCase):
-    def setUp(self):
-        super().setUp()
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
-    def test_send_notifs_on_following_reply(self):
+    def test_send_messages_notifications_asap(self):
         topic = TopicFactory(with_post=True)
-        PostFactory.create_batch(2, topic=topic)
+        notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.ASAP)
 
-        url = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{topic.get_absolute_url()}"
-        url += "?mtm_campaign=followingreplies&mtm_medium=email"
-
-        params = {"url": url, "topic_subject": topic.subject, "count_txt": "2 nouvelles réponses"}
-        payload = {
-            "to": [{"email": DEFAULT_FROM_EMAIL}],
-            "bcc": [
-                {"email": email}
-                for email in sorted(topic.posts.exclude(id=topic.last_post_id).values_list("poster__email", flat=True))
-            ],
-            "params": params,
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "templateId": 13,
-        }
-
-        send_notifs_on_following_replies()
+        send_messages_notifications(NotificationDelay.ASAP)
 
         email_sent_track = EmailSentTrack.objects.get()
         self.assertEqual(email_sent_track.status_code, 200)
         self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
-        self.assertEqual(email_sent_track.datas, payload)
-        self.assertEqual(email_sent_track.kind, "following_replies")
+        self.assertEqual(
+            email_sent_track.datas, self.get_expected_email_payload(Notification.objects.filter(id=notification.id))
+        )
+
+    @respx.mock
+    def test_send_messages_notifications_day(self):
+        topic = TopicFactory(with_post=True)
+        notification = NotificationFactory(post=topic.first_post, delay=NotificationDelay.DAY)
+
+        send_messages_notifications(NotificationDelay.DAY)
+
+        email_sent_track = EmailSentTrack.objects.get()
+        self.assertEqual(email_sent_track.status_code, 200)
+        self.assertJSONEqual(email_sent_track.response, {"message": "OK"})
+        self.assertEqual(
+            email_sent_track.datas, self.get_expected_email_payload(Notification.objects.filter(id=notification.id))
+        )
+
+    @respx.mock
+    def test_send_messages_notifications_max_messages_preview(self):
+        topic = TopicFactory(with_post=True)
+        notif_count_to_generate = NEW_MESSAGES_EMAIL_MAX_PREVIEW + 1
+
+        NotificationFactory.create_batch(
+            notif_count_to_generate,
+            recipient="test@example.com",
+            delay=NotificationDelay.ASAP,
+            kind=EmailSentTrackKind.FIRST_REPLY,
+            post=topic.first_post,
+        )
+
+        send_messages_notifications(NotificationDelay.ASAP)
+
+        email_sent_track = EmailSentTrack.objects.get()
+        self.assertEqual(len(email_sent_track.datas["params"]["messages"]), NEW_MESSAGES_EMAIL_MAX_PREVIEW)
+        self.assertEqual(
+            email_sent_track.datas["params"]["email_thumbnail"],
+            (f"Vous avez {notif_count_to_generate } messages à découvrir sur la communauté de l'inclusion"),
+        )
+
+    @respx.mock
+    def test_send_messages_notifications_num_queries(self):
+        expected_queries = 1
+
+        NotificationFactory(delay=NotificationDelay.ASAP)
+
+        with self.assertNumQueries(expected_queries):
+            send_messages_notifications(NotificationDelay.ASAP)
+
+        NotificationFactory.create_batch(10, delay=NotificationDelay.ASAP)
+
+        with self.assertNumQueries(expected_queries):
+            send_messages_notifications(NotificationDelay.ASAP)
 
 
 class AddUserToListWhenRegister(TestCase):
