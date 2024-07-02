@@ -1,5 +1,28 @@
 # Journal des modifications
 
+## [2.11.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.10.0...v2.11.0) (2024-07-02)
+
+
+### Features
+
+* **admin:** améliorer le filtrage des stats de forum ([#699](https://github.com/gip-inclusion/itou-communaute-django/issues/699)) ([cd0d301](https://github.com/gip-inclusion/itou-communaute-django/commit/cd0d301d4b48492eddcbd790411abfd4dcdb6329))
+* **admin:** filtrage des stats de forum, ajout tri ([#701](https://github.com/gip-inclusion/itou-communaute-django/issues/701)) ([1da74df](https://github.com/gip-inclusion/itou-communaute-django/commit/1da74df303eea1dd1ebbadab91ff410f86eaa6b3))
+* **forum_conversation:** filtrer les questions dans l'espace d'echanges - stats de suivi ([#700](https://github.com/gip-inclusion/itou-communaute-django/issues/700)) ([bac6e55](https://github.com/gip-inclusion/itou-communaute-django/commit/bac6e5576e9455bc49415139317de302dbf10e1f))
+* **forum_conversation:** filtrer les questions dans l'espace d'échanges ([#681](https://github.com/gip-inclusion/itou-communaute-django/issues/681)) ([48cdd07](https://github.com/gip-inclusion/itou-communaute-django/commit/48cdd078c03bd0b7b1a2a5c002517ffada06dbbb))
+* **forum:** Activation de l'AB Test Notation des forums ([#686](https://github.com/gip-inclusion/itou-communaute-django/issues/686)) ([c5699d4](https://github.com/gip-inclusion/itou-communaute-django/commit/c5699d4af4594207e01b39d0c1c8729da3ad052d))
+* **forum:** collecter les notations des fiches pratiques ([#677](https://github.com/gip-inclusion/itou-communaute-django/issues/677)) ([4c39290](https://github.com/gip-inclusion/itou-communaute-django/commit/4c392904873ca7f6ef8c98ee0f389ad438516add))
+* **home:** petites améliorations ([#689](https://github.com/gip-inclusion/itou-communaute-django/issues/689)) ([7471451](https://github.com/gip-inclusion/itou-communaute-django/commit/7471451b5e9de2bc0ca4884a62dcab94cf5f921a))
+* **stats:** collecter les stats d'activité hebdo des forums de la documentation ([#691](https://github.com/gip-inclusion/itou-communaute-django/issues/691)) ([ab513a8](https://github.com/gip-inclusion/itou-communaute-django/commit/ab513a8398a8cfa4df899e45de1945326372d0bd))
+* **stats:** page hebdo partenaires fiches pratiques ([#695](https://github.com/gip-inclusion/itou-communaute-django/issues/695)) ([f7f26b8](https://github.com/gip-inclusion/itou-communaute-django/commit/f7f26b8816486f426899b52ebd0a54bda85a8c28))
+
+
+### Bug Fixes
+
+* **forum:** ab test forum rating ([#687](https://github.com/gip-inclusion/itou-communaute-django/issues/687)) ([f0e9c2b](https://github.com/gip-inclusion/itou-communaute-django/commit/f0e9c2b4bf2145e438d94fea8db6f86073250541))
+* **forum:** ab test forum rating ([#688](https://github.com/gip-inclusion/itou-communaute-django/issues/688)) ([d3027e4](https://github.com/gip-inclusion/itou-communaute-django/commit/d3027e41315afd0a7f912a4c323fca5da7e4d5b6))
+* **stats:** derniere date collectée des stats matomo ([#684](https://github.com/gip-inclusion/itou-communaute-django/issues/684)) ([015e08b](https://github.com/gip-inclusion/itou-communaute-django/commit/015e08b9fc4fbc3f8f8e286f7c344746f13a3d4e))
+* **stats:** gel du temps dans les tests de la vue `StatistiquesPageView` ([#702](https://github.com/gip-inclusion/itou-communaute-django/issues/702)) ([df66524](https://github.com/gip-inclusion/itou-communaute-django/commit/df66524a7477ec59838a80b9bfbca745fdb6db84))
+
 ## [2.10.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.9.2...v2.10.0) (2024-06-13)
 
 
