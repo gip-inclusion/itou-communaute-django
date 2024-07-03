@@ -41,7 +41,7 @@ def send_messages_notifications(delay: NotificationDelay):
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
         )
 
-    notifications.bulk_update(sent_at=timezone.now())
+    notifications.update(sent_at=timezone.now())
 
 
 def add_user_to_list_when_register():

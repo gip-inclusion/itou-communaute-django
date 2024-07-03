@@ -84,7 +84,7 @@ class SendMessageNotificationsTestCase(TestCase):
         )
 
         self.assertIsNone(Notification.objects.filter(sent_at__isnull=True).first())
-        self.assertEqual(Notification.objects.all().values("sent_at").distinct(), 1)
+        self.assertEqual(Notification.objects.all().values("sent_at").distinct().count(), 1)
 
     @respx.mock
     def test_send_messages_notifications_day(self):
@@ -101,7 +101,7 @@ class SendMessageNotificationsTestCase(TestCase):
         )
 
         self.assertIsNone(Notification.objects.filter(sent_at__isnull=True).first())
-        self.assertEqual(Notification.objects.all().values("sent_at").distinct(), 1)
+        self.assertEqual(Notification.objects.all().values("sent_at").distinct().count(), 1)
 
     @respx.mock
     def test_send_messages_notifications_max_messages_preview(self):
@@ -127,7 +127,7 @@ class SendMessageNotificationsTestCase(TestCase):
 
     @respx.mock
     def test_send_messages_notifications_num_queries(self):
-        expected_queries = 1
+        expected_queries = 2
 
         NotificationFactory(delay=NotificationDelay.ASAP)
 
