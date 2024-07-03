@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.template.defaultfilters import pluralize
 from django.urls import reverse
+from django.utils import timezone
 
 from config.settings.base import DEFAULT_FROM_EMAIL, NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
 from lacommunaute.forum.models import Forum
@@ -14,12 +15,12 @@ from lacommunaute.notification.utils import collect_new_users_for_onboarding, ge
 def send_messages_notifications(delay: NotificationDelay):
     """Notifications are scheduled in the application and then processed later by this task"""
 
+    notifications = Notification.objects.filter(delay=delay, sent_at__isnull=True, post__isnull=False).select_related(
+        "post", "post__topic", "post__poster"
+    )
+
     def get_grouped_notifications():
-        return (
-            Notification.objects.filter(delay=delay, sent_at__isnull=True, post__isnull=False)
-            .select_related("post", "post__topic", "post__poster")
-            .group_by_recipient()
-        )
+        return notifications.group_by_recipient()
 
     grouped_notifications = get_grouped_notifications()
     for recipient in grouped_notifications.keys():
@@ -39,6 +40,8 @@ def send_messages_notifications(delay: NotificationDelay):
             kind=EmailSentTrackKind.FOLLOWING_REPLIES,
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
         )
+
+    notifications.update(sent_at=timezone.now())
 
 
 def add_user_to_list_when_register():
