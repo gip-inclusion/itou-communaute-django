@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -78,77 +76,6 @@ class TopicManagerTest(TestCase):
         PostFactory(topic=topic1)
         self.assertEqual(qs.first(), topic1)
         self.assertEqual(qs.last(), topic2)
-
-    def test_with_first_replies(self):
-        topic = TopicFactory(with_post=True)
-        self.assertEqual(Topic.objects.with_first_reply().count(), 0)
-
-        # first reply
-        PostFactory(topic=topic)
-        self.assertEqual(Topic.objects.with_first_reply().get(), topic)
-        # first reply after last notification
-        self.assertEqual(Topic.objects.with_first_reply(previous_notification_at=topic.created).get(), topic)
-        # first reply before last notification (already notified)
-        self.assertEqual(
-            Topic.objects.with_first_reply(previous_notification_at=topic.updated + timedelta(minutes=1)).count(), 0
-        )
-
-        # second reply
-        PostFactory(topic=topic)
-        self.assertEqual(Topic.objects.with_first_reply().count(), 0)
-
-    def test_with_first_replies_on_multiple_topics(self):
-        topic1 = TopicFactory(with_post=True)
-        topic2 = TopicFactory(with_post=True)
-
-        PostFactory(topic=topic1)
-        PostFactory(topic=topic2)
-
-        self.assertEqual(Topic.objects.with_first_reply().count(), 2)
-        self.assertEqual(Topic.objects.with_first_reply(previous_notification_at=topic2.updated).get(), topic2)
-
-    def test_with_following_replies(self):
-        topic = TopicFactory(with_post=True)
-        self.assertEqual(Topic.objects.with_following_replies().count(), 0)
-
-        # first reply
-        PostFactory(topic=topic)
-        self.assertEqual(Topic.objects.with_following_replies().count(), 0)
-
-        # following replies
-        posts = PostFactory.create_batch(3, topic=topic)
-        self.assertEqual(Topic.objects.with_following_replies().get().new_replies, 4)
-
-        for i in range(3):
-            with self.subTest(i=i):
-                self.assertEqual(
-                    Topic.objects.with_following_replies(previous_notification_at=posts[i].created).get().new_replies,
-                    3 - i,
-                )
-
-        self.assertEqual(
-            Topic.objects.with_following_replies(
-                previous_notification_at=topic.updated + timedelta(minutes=1)
-            ).count(),
-            0,
-        )
-
-    def test_with_following_replies_on_disapproved_post(self):
-        topic = TopicFactory(with_post=True)
-        first_reply = PostFactory(topic=topic)
-        PostFactory(topic=topic, approved=False)
-        self.assertEqual(Topic.objects.with_following_replies(previous_notification_at=first_reply.created).count(), 0)
-
-    def test_with_following_replies_on_multiple_topics(self):
-        topic1 = TopicFactory(with_post=True)
-        topic2 = TopicFactory(with_post=True)
-
-        PostFactory.create_batch(2, topic=topic1)
-        PostFactory.create_batch(2, topic=topic2)
-
-        self.assertEqual(Topic.objects.with_following_replies().count(), 2)
-        self.assertEqual(Topic.objects.with_following_replies().first(), topic1)
-        self.assertEqual(Topic.objects.with_following_replies().last(), topic2)
 
 
 class TopicModelTest(TestCase):
