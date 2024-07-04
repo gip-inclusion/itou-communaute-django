@@ -18,6 +18,7 @@ class GroupFactory(factory.django.DjangoModelFactory):
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
+        skip_postgeneration_save = True
 
     username = factory.LazyAttribute(
         lambda a: "{}_{}_{}".format(a.first_name, a.last_name, random.randrange(111, 999))

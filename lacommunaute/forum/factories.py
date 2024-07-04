@@ -57,6 +57,7 @@ class ForumRatingFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ForumRating
+        skip_postgeneration_save = True
 
     @factory.post_generation
     def set_created(self, create, extracted, **kwargs):

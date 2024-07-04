@@ -9,6 +9,7 @@ from lacommunaute.users.factories import UserFactory
 class DSPFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = DSP
+        skip_postgeneration_save = True
 
     user = factory.SubFactory(UserFactory)
     work_capacity = factory.Faker("pyint", min_value=0, max_value=3)
