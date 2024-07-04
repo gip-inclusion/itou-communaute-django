@@ -2,6 +2,7 @@ from itertools import groupby
 from operator import attrgetter
 
 from django.db import models
+from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
 
@@ -30,6 +31,17 @@ class NotificationQuerySet(models.QuerySet):
             recipient: list(group)
             for recipient, group in groupby(self.order_by("recipient", "kind"), key=attrgetter("recipient"))
         }
+
+    def mark_topic_posts_read(self, topic, user):
+        """
+        Called when a topic's posts are read - to update the read status of associated Notification
+        """
+        if not topic or (not user or user.is_anonymous):
+            raise ValueError()
+
+        self.filter(
+            sent_at__isnull=True, recipient=user.email, post__in=topic.posts.values_list("id", flat=True)
+        ).update(sent_at=F("created"))
 
 
 class Notification(DatedModel):

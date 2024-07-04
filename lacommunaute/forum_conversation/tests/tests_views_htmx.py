@@ -14,6 +14,7 @@ from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -209,6 +210,18 @@ class PostListViewTest(TestCase):
         CertifiedPostFactory(topic=self.topic, post=post, user=self.user)
         response = self.client.get(self.url)
         self.assertContains(response, "Certifié par la Plateforme de l'Inclusion", status_code=200)
+
+    def test_get_marks_notifications_read(self):
+        self.client.force_login(self.user)
+
+        notification = NotificationFactory(recipient=self.user.email, post=self.topic.first_post)
+        self.assertIsNone(notification.sent_at)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        notification.refresh_from_db()
+        self.assertEqual(str(notification.created), str(notification.sent_at))
 
 
 class PostFeedCreateViewTest(TestCase):
