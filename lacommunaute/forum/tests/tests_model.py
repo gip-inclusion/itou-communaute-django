@@ -124,3 +124,7 @@ class ForumModelTest(TestCase):
         ForumRatingFactory(forum=forum, rating=5)
 
         self.assertEqual(forum.get_average_rating(), 3)
+
+    def test_aggregated_forum_stats(self):
+        forum = ForumFactory()
+        self.assertEqual(forum.get_aggregated_forum_stats(), (0, 0))

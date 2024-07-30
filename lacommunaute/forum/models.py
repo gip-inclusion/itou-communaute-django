@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.db.models import Sum
 from django.urls import reverse
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
@@ -13,6 +14,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.stats.models import ForumStat
 from lacommunaute.utils.validators import validate_image_size
 
 
@@ -79,6 +81,16 @@ class Forum(AbstractForum):
 
     def get_average_rating(self):
         return ForumRating.objects.filter(forum=self).aggregate(models.Avg("rating"))["rating__avg"]
+
+    def get_aggregated_forum_stats(self):
+        aggregated_data = ForumStat.objects.filter(forum=self).aggregate(
+            sum_visits=Sum("visits"), sum_timespent=Sum("time_spent")
+        )
+
+        return (
+            aggregated_data.get("sum_visits", 0) or 0,
+            aggregated_data.get("sum_timespent", 0) or 0,
+        )
 
 
 class ForumRating(DatedModel):
