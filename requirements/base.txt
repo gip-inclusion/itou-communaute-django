@@ -4,21 +4,21 @@ anyio==4.4.0 ; python_version >= "3.11" and python_version < "4.0" \
 asgiref==3.8.1 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:3e1e3ecc849832fe52ccf2cb6686b7a55f82bb1d6aee72a58826471390335e47 \
     --hash=sha256:c343bd80a0bec947a9860adb4c432ffa7db769836c64238fc34bdc3fec84d590
-boto3==1.34.137 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:0b21b84db4619b3711a6f643d465a5a25e81231ee43615c55a20ff6b89c6cc3c \
-    --hash=sha256:7cb697d67fd138ceebc6f789919ae370c092a50c6b0ccc4ef483027935502eab
-botocore==1.34.137 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:a980fa4adec4bfa23fff70a3512622e9412c69c791898a52cafc2458b0be6040 \
-    --hash=sha256:e29c8e9bfda0b20a1997792968e85868bfce42fefad9730f633a81adcff3f2ef
-certifi==2024.6.2 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:3cd43f1c6fa7dedc5899d69d3ad0398fd018ad1a17fba83ddaf78aa46c747516 \
-    --hash=sha256:ddc6c8ce995e6987e7faf5e3f1b02b302836a0e5d98ece18392cb1a36c72ad56
+boto3==1.34.150 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:894b222f7850b870a7ac63d7e378ac36c5c34375da24ddc30e131d9fafe369dc \
+    --hash=sha256:ad648c89a4935590a69341e5430fc42a021489a22de171ee3fd7bb204f9ef0fa
+botocore==1.34.150 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:4d23387e0f076d87b637a2a35c0ff2b8daca16eace36b63ce27f65630c6b375a \
+    --hash=sha256:b988d47f4d502df85befce11a48002421e4e6ea4289997b5e0261bac5fa76ce6
+certifi==2024.7.4 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b \
+    --hash=sha256:c198e21b1289c2ab85ee4e67bb4b4ef3ead0892059901a8d5b622f24a1101e90
 django-appconf==1.0.6 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:c3ae442fba1ff7ec830412c5184b17169a7a1e71cf0864a4c3f93cf4c98a1993 \
     --hash=sha256:cfe87ea827c4ee04b9a70fab90b86d704cb02f2981f89da8423cb0fabf88efbf
-django-compressor==4.5 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:2c14e1a80a234432153e64035ae1adaf638c1ba8d7fc9e60a7be2fad5697fdbe \
-    --hash=sha256:9d98c905b741be6cb09ad828c1d22a9ff9244dd08823e2926af8ddd1871c3c65
+django-compressor==4.5.1 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:87741edee4e7f24f3e0b8072d94a990cfb010cb2ca7cc443944da8e193cdea65 \
+    --hash=sha256:c1d8a48a2ee4d8b7f23c411eb9c97e2d88db18a18ba1c9e8178d5f5b8366a822
 django-csp==3.8 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:19b2978b03fcd73517d7d67acbc04fbbcaec0facc3e83baa502965892d1e0719 \
     --hash=sha256:ef0f1a9f7d8da68ae6e169c02e9ac661c0ecf04db70e0d1d85640512a68471c0
@@ -45,18 +45,18 @@ django-permissions-policy==4.20.0 ; python_version >= "3.11" and python_version 
 django-social-share==2.3.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:13d0a1fbb2a90e3a6e7eb556315ececd1e93a906574a3284affbe2f43e2f7398 \
     --hash=sha256:37844f3b4f88a2008604ece7eaedd52fd5914f111f13525200ce1101b750757f
-django-storages==1.14.3 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:31f263389e95ce3a1b902fb5f739a7ed32895f7d8b80179fe7453ecc0dfe102e \
-    --hash=sha256:95a12836cd998d4c7a4512347322331c662d9114c4344f932f5e9c0fce000608
+django-storages==1.14.4 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:69aca94d26e6714d14ad63f33d13619e697508ee33ede184e462ed766dc2a73f \
+    --hash=sha256:d61930acb4a25e3aebebc6addaf946a3b1df31c803a6bf1af2f31c9047febaa3
 django-taggit==5.0.1 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:a0ca8a28b03c4b26c2630fd762cb76ec39b5e41abf727a7b66f897a625c5e647 \
     --hash=sha256:edcd7db1e0f35c304e082a2f631ddac2e16ef5296029524eb792af7430cab4cc
 django-widget-tweaks==1.5.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:1c2180681ebb994e922c754804c7ffebbe1245014777ac47897a81f57cc629c7 \
     --hash=sha256:a41b7b2f05bd44d673d11ebd6c09a96f1d013ee98121cb98c384fe84e33b881e
-django==5.0.6 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:8363ac062bb4ef7c3f12d078f6fa5d154031d129a15170a1066412af49d30905 \
-    --hash=sha256:ff1b61005004e476e0aeea47c7f79b85864c70124030e95146315396f1e7951f
+django==5.0.7 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:bd4505cae0b9bd642313e8fb71810893df5dc2ffcacaa67a33af2d5cd61888f2 \
+    --hash=sha256:f216510ace3de5de01329463a315a629f33480e893a9024fc93d8c32c22913da
 freezegun==1.5.1 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:b29dedfcda6d5e8e083ce71b2b542753ad48cfec44037b3fc79702e2980a89e9 \
     --hash=sha256:bf111d7138a8abe55ab48a71755673dbaa4ab87f4cff5634a4442dfec34c15f1
@@ -85,9 +85,9 @@ libsass==0.23.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:6f209955ede26684e76912caf329f4ccb57e4a043fd77fe0e7348dd9574f1880 \
     --hash=sha256:a2ec85d819f353cbe807432d7275d653710d12b08ec7ef61c124a580a8352f3c \
     --hash=sha256:ea97d1b45cdc2fc3590cb9d7b60f1d8915d3ce17a98c1f2d4dd47ee0d9c68ce6
-markdown2==2.4.13 ; python_version >= "3.11" and python_version < "4" \
-    --hash=sha256:18ceb56590da77f2c22382e55be48c15b3c8f0c71d6398def387275e6c347a9f \
-    --hash=sha256:855bde5cbcceb9beda7c80efdf7f406c23e6079172c497fcfce22fdce998e892
+markdown2==2.5.0 ; python_version >= "3.11" and python_version < "4" \
+    --hash=sha256:300d4429b620ebc974ef512339a9e08bc080473f95135a91f33906e24e8280c1 \
+    --hash=sha256:9bff02911f8b617b61eb269c4c1a5f9b2087d7ff051604f66a61b63cab30adc2
 packaging==24.1 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
     --hash=sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124
@@ -350,18 +350,18 @@ rjsmin==1.2.2 ; python_version >= "3.11" and python_version < "4.0" \
 s3transfer==0.10.2 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:0711534e9356d3cc692fdde846b4a1e4b0cb6519971860796e6bc4c7aea00ef6 \
     --hash=sha256:eca1c20de70a39daee580aef4986996620f365c4e0fda6a86100231d62f1bf69
-sentry-sdk==1.45.0 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:1ce29e30240cc289a027011103a8c83885b15ef2f316a60bcc7c5300afa144f1 \
-    --hash=sha256:509aa9678c0512344ca886281766c2e538682f8acfa50fd8d405f8c417ad0625
+sentry-sdk==1.45.1 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:608887855ccfe39032bfd03936e3a1c4f4fc99b3a4ac49ced54a4220de61c9c1 \
+    --hash=sha256:a16c997c0f4e3df63c0fc5e4207ccb1ab37900433e0f72fef88315d317829a26
 six==1.16.0 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254
 sniffio==1.3.1 ; python_version >= "3.11" and python_version < "4.0" \
     --hash=sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2 \
     --hash=sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc
-sqlparse==0.5.0 ; python_version >= "3.11" and python_version < "4.0" \
-    --hash=sha256:714d0a4932c059d16189f58ef5411ec2287a4360f17cdd0edd2d09d4c5087c93 \
-    --hash=sha256:c204494cd97479d0e39f28c93d46c0b2d5959c7b9ab904762ea6c7af211c8663
+sqlparse==0.5.1 ; python_version >= "3.11" and python_version < "4.0" \
+    --hash=sha256:773dcbf9a5ab44a090f3441e2180efe2560220203dc2f8c0b0fa141e18b505e4 \
+    --hash=sha256:bb6b4df465655ef332548e24f08e205afc81b9ab86cb1c45657a7ff173a3a00e
 tzdata==2024.1 ; python_version >= "3.11" and python_version < "4.0" and sys_platform == "win32" \
     --hash=sha256:2674120f8d891909751c38abcdfd386ac0a5a1127954fbc332af6b5ceae07efd \
     --hash=sha256:9068bc196136463f5245e51efda838afa15aaeca9903f49050dfa2679db4d252
