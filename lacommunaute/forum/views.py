@@ -77,6 +77,9 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
 
         if self.will_render_documentation_variant():
             context["sibling_forums"] = forum.get_siblings(include_self=True)
+
+        if forum.image:
+            context["og_image"] = forum.image
         return context
 
 

@@ -7,7 +7,7 @@ from django.urls import reverse
 from faker import Faker
 from machina.core.loading import get_class
 from taggit.models import Tag
-
+from django.conf import settings
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.models import Forum
@@ -18,7 +18,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
-
+from pytest_django.asserts import assertContains
 
 faker = Faker()
 
@@ -544,6 +544,24 @@ class TestForumViewContent:
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="#rating-area1")
         assert str(content) == snapshot(name="rated_forum")
+
+    def test_opengraph_for_forum_with_image(self, client, db):
+        forum = ForumFactory(with_public_perms=True, with_image=True)
+        response = client.get(forum.get_absolute_url())
+        assertContains(
+            response,
+            f'<meta property="og:image" content="{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/banner',
+        )
+        assertContains(
+            response,
+            f'<meta property="twitter:image" content="{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/banner',
+        )
+
+    def test_opengraph_for_forum_wo_image(self, client, db):
+        forum = ForumFactory(with_public_perms=True)
+        response = client.get(forum.get_absolute_url())
+        assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
+        assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
 
 
 reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
