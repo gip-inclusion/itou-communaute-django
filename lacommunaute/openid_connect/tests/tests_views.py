@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 import httpx
+import jwt
 import respx
 from django.contrib import auth
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -69,7 +70,9 @@ def mock_oauth_dance(
     user_info = OIDC_USERINFO.copy()
     if user_info_email:
         user_info["email"] = user_info_email
-    respx.get(constants.PRO_CONNECT_ENDPOINT_USERINFO).mock(return_value=httpx.Response(200, json=user_info))
+    user_info = user_info | {"aud": constants.OPENID_CONNECT_CLIENT_ID}
+    user_info_jwt = jwt.encode(payload=user_info, key=constants.OPENID_CONNECT_CLIENT_SECRET, algorithm="HS256")
+    respx.get(constants.OPENID_CONNECT_ENDPOINT_USERINFO).mock(return_value=httpx.Response(200, content=user_info_jwt))
 
     csrf_signed = OpenID_State.create_signed_csrf_token()
     url = reverse("openid_connect:callback")
