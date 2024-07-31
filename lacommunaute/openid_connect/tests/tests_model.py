@@ -4,8 +4,8 @@ from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from lacommunaute.forum_member.models import ForumProfile
-from lacommunaute.inclusion_connect import constants
-from lacommunaute.inclusion_connect.models import InclusionConnectState, OIDConnectUserData
+from lacommunaute.openid_connect import constants
+from lacommunaute.openid_connect.models import OIDConnectUserData, OpenID_State
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.testing import reload_module
@@ -20,26 +20,26 @@ OIDC_USERINFO = {
 
 
 @override_settings(
-    INCLUSION_CONNECT_BASE_URL="https://inclusion.connect.fake",
-    INCLUSION_CONNECT_REALM="foobar",
-    INCLUSION_CONNECT_CLIENT_ID="IC_CLIENT_ID_123",
-    INCLUSION_CONNECT_CLIENT_SECRET="IC_CLIENT_SECRET_123",
+    OPENID_CONNECT_BASE_URL="https://openid.connect.fake",
+    OPENID_CONNECT_REALM="foobar",
+    OPENID_CONNECT_CLIENT_ID="IC_CLIENT_ID_123",
+    OPENID_CONNECT_CLIENT_SECRET="IC_CLIENT_SECRET_123",
 )
 @reload_module(constants)
-class InclusionConnectBaseTestCase(TestCase):
+class OpenID_BaseTestCase(TestCase):
     pass
 
 
-class InclusionConnectModelTest(InclusionConnectBaseTestCase):
+class OpenID_ModelTest(OpenID_BaseTestCase):
     def test_state_is_valid(self):
-        csrf_signed = InclusionConnectState.create_signed_csrf_token()
+        csrf_signed = OpenID_State.create_signed_csrf_token()
         self.assertTrue(isinstance(csrf_signed, str))
-        self.assertTrue(InclusionConnectState.is_valid(csrf_signed))
+        self.assertTrue(OpenID_State.is_valid(csrf_signed))
 
     def test_state_delete(self):
-        state = InclusionConnectState.objects.create(csrf="foo")
+        state = OpenID_State.objects.create(csrf="foo")
 
-        InclusionConnectState.objects.cleanup()
+        OpenID_State.objects.cleanup()
 
         state.refresh_from_db()
         self.assertIsNotNone(state)
@@ -47,23 +47,23 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         state.created_at = timezone.now() - constants.OIDC_STATE_EXPIRATION * 2
         state.save()
 
-        InclusionConnectState.objects.cleanup()
+        OpenID_State.objects.cleanup()
 
-        with self.assertRaises(InclusionConnectState.DoesNotExist):
+        with self.assertRaises(OpenID_State.DoesNotExist):
             state.refresh_from_db()
 
     def test_create_user_from_user_info(self):
         """
-        Nominal scenario: there is no user with InclusionConnect email
+        Nominal scenario: there is no user with OpenID_ email
         that is sent, so we create one.
         """
-        ic_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
-        self.assertFalse(User.objects.filter(username=ic_user_data.username).exists())
-        self.assertFalse(User.objects.filter(email=ic_user_data.email).exists())
+        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+        self.assertFalse(User.objects.filter(username=proc_user_data.username).exists())
+        self.assertFalse(User.objects.filter(email=proc_user_data.email).exists())
 
         now = timezone.now()
         with mock.patch("django.utils.timezone.now", return_value=now):
-            user, created = ic_user_data.create_or_update_user()
+            user, created = proc_user_data.create_or_update_user()
         self.assertTrue(created)
         self.assertEqual(user.email, OIDC_USERINFO["email"])
         self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
@@ -82,11 +82,11 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
         user = UserFactory(**(USERINFO))
         ForumProfile.objects.create(user=user)
 
-        ic_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
 
         now = timezone.now()
         with mock.patch("django.utils.timezone.now", return_value=now):
-            _, created = ic_user_data.create_or_update_user()
+            _, created = proc_user_data.create_or_update_user()
 
         self.assertFalse(created)
 
@@ -101,17 +101,17 @@ class InclusionConnectModelTest(InclusionConnectBaseTestCase):
 
     def test_get_existing_user_with_existing_email(self):
         """
-        If there already is an existing django user with email InclusionConnect sent us, we do not create it again,
+        If there already is an existing django user with email OpenID_ sent us, we do not create it again,
         We user it and we update it with the data form the identity_provider.
         """
-        ic_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
         UserFactory(
-            first_name=ic_user_data.first_name,
-            last_name=ic_user_data.last_name,
-            email=ic_user_data.email,
-            username=ic_user_data.username,
+            first_name=proc_user_data.first_name,
+            last_name=proc_user_data.last_name,
+            email=proc_user_data.email,
+            username=proc_user_data.username,
         )
-        user, created = ic_user_data.create_or_update_user()
+        user, created = proc_user_data.create_or_update_user()
         self.assertFalse(created)
         self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])

@@ -164,13 +164,11 @@
                                       </div>
                                   </form>
                               </li>
-                              
+
                                   <li>
-                                      <a class="btn btn-inclusion-connect" href="/inclusion_connect/authorize" rel="nofollow">
-                                          <img alt="Se connecter | S'inscrire" height="37" src="/static/vendor/theme-inclusion/images/logo-inclusion-connect-two-lines.svg"/>
-                                      </a>
+                                      <a class="btn" href="/pro_connect/authorize" rel="nofollow">Se connecter | S'inscrire</a>
                                   </li>
-                              
+
                           </ul>
                       </nav>
                   </div>
@@ -257,13 +255,11 @@
           </div>
           <div class="offcanvas-footer flex-column align-items-stretch">
               <nav aria-label="Menu de navigation principale pour mobile" role="navigation">
-                  
+
                       <div>
-                          <a class="btn btn-inclusion-connect" href="/inclusion_connect/authorize" rel="nofollow">
-                              <img alt="Se connecter | S'inscrire" class="img-fluid" src="/static/vendor/theme-inclusion/images/logo-inclusion-connect-one-line.svg"/>
-                          </a>
+                          <a class="btn" href="/pro_connect/authorize" rel="nofollow">Se connecter | S'inscrire</a>
                       </div>
-                  
+
               </nav>
           </div>
       </div>

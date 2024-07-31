@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import crypto, timezone
 
 from lacommunaute.forum_member.models import ForumProfile
-from lacommunaute.inclusion_connect.constants import OIDC_STATE_EXPIRATION
+from lacommunaute.openid_connect.constants import OIDC_STATE_EXPIRATION
 from lacommunaute.users.models import User
 
 
@@ -16,7 +16,7 @@ class OIDConnectQuerySet(models.QuerySet):
         return self.filter(created_at__lte=at).delete()
 
 
-class InclusionConnectState(models.Model):
+class OpenID_State(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Length used in call to get_random_string()
     csrf = models.CharField(max_length=12, unique=True)
