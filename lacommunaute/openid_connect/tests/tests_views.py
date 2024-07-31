@@ -17,7 +17,7 @@ from lacommunaute.utils.testing import reload_module
 
 OIDC_USERINFO = {
     "given_name": "Michel",
-    "family_name": "AUDIARD",
+    "usual_name": "AUDIARD",
     "email": "michel@lestontons.fr",
     "sub": "af6b26f9-85cd-484e-beb9-bea5be13e30f",
 }
@@ -113,7 +113,7 @@ class OpenID_ViewTest(OpenID_BaseTestCase):
         self.assertEqual(User.objects.count(), 1)
         user = User.objects.get(email=OIDC_USERINFO["email"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
-        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
     @respx.mock
@@ -121,7 +121,7 @@ class OpenID_ViewTest(OpenID_BaseTestCase):
         # User already exists.
         UserFactory(
             first_name=OIDC_USERINFO["given_name"],
-            last_name=OIDC_USERINFO["family_name"],
+            last_name=OIDC_USERINFO["usual_name"],
             username=OIDC_USERINFO["sub"],
             email=OIDC_USERINFO["email"],
         )
@@ -129,7 +129,7 @@ class OpenID_ViewTest(OpenID_BaseTestCase):
         self.assertEqual(User.objects.count(), 1)
         user = User.objects.get(email=OIDC_USERINFO["email"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
-        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
 
