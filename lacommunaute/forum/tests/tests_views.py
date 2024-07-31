@@ -372,7 +372,7 @@ class ForumViewTest(TestCase):
 
         # anonymous
         anonymous_html = (
-            '<a href="/inclusion_connect/authorize?next=%2Fforum%2F'
+            '<a href="/openid_connect/authorize?next=%2Fforum%2F'
             f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
             ' rel="nofollow"'
             ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"'
