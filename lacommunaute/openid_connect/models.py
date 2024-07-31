@@ -113,7 +113,7 @@ class OIDConnectUserData:
         return {
             "username": user_info["sub"],
             "first_name": user_info["given_name"],
-            "last_name": user_info["family_name"],
+            "last_name": user_info["usual_name"],
             "email": user_info["email"],
         }
 
