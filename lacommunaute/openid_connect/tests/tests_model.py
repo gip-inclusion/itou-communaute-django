@@ -13,7 +13,7 @@ from lacommunaute.utils.testing import reload_module
 
 OIDC_USERINFO = {
     "given_name": "Michel",
-    "family_name": "AUDIARD",
+    "usual_name": "AUDIARD",
     "email": "michel@lestontons.fr",
     "sub": "af6b26f9-85cd-484e-beb9-bea5be13e30f",
 }
@@ -66,7 +66,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
             user, created = proc_user_data.create_or_update_user()
         self.assertTrue(created)
         self.assertEqual(user.email, OIDC_USERINFO["email"])
-        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
@@ -92,7 +92,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
 
         user = User.objects.get(username=USERINFO["username"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
-        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.email, OIDC_USERINFO["email"])
         self.assertNotEqual(user.email, USERINFO["email"])
 
@@ -113,6 +113,6 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
         )
         user, created = proc_user_data.create_or_update_user()
         self.assertFalse(created)
-        self.assertEqual(user.last_name, OIDC_USERINFO["family_name"])
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
