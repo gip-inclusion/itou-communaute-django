@@ -7,9 +7,9 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
-from lacommunaute.inclusion_connect import constants
-from lacommunaute.inclusion_connect.models import InclusionConnectState
-from lacommunaute.inclusion_connect.views import InclusionConnectSession
+from lacommunaute.openid_connect import constants
+from lacommunaute.openid_connect.models import OpenID_State
+from lacommunaute.openid_connect.views import OpenID_Session
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.testing import reload_module
@@ -24,13 +24,13 @@ OIDC_USERINFO = {
 
 
 @override_settings(
-    INCLUSION_CONNECT_BASE_URL="https://inclusion.connect.fake",
-    INCLUSION_CONNECT_REALM="foobar",
-    INCLUSION_CONNECT_CLIENT_ID="IC_CLIENT_ID_123",
-    INCLUSION_CONNECT_CLIENT_SECRET="IC_CLIENT_SECRET_123",
+    OPENID_CONNECT_BASE_URL="https://openid.connect.fake",
+    OPENID_CONNECT_REALM="foobar",
+    OPENID_CONNECT_CLIENT_ID="IC_CLIENT_ID_123",
+    OPENID_CONNECT_CLIENT_SECRET="IC_CLIENT_SECRET_123",
 )
 @reload_module(constants)
-class InclusionConnectBaseTestCase(TestCase):
+class OpenID_BaseTestCase(TestCase):
     pass
 
 
@@ -44,7 +44,7 @@ def mock_oauth_dance(
     expected_route="pages:home",
     user_info_email=None,
 ):
-    respx.get(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE).respond(302)
+    respx.get(constants.OPENID_CONNECT_ENDPOINT_AUTHORIZE).respond(302)
     authorize_params = {
         "previous_url": previous_url,
         "next": next_url,
@@ -52,11 +52,11 @@ def mock_oauth_dance(
     authorize_params = {k: v for k, v in authorize_params.items() if v}
 
     # Calling this view is mandatory to start a new session.
-    authorize_url = f"{reverse('inclusion_connect:authorize')}?{urlencode(authorize_params)}"
+    authorize_url = f"{reverse('openid_connect:authorize')}?{urlencode(authorize_params)}"
     test_class.client.get(authorize_url)
 
     # User is logged out from IC when an error happens during the oauth dance.
-    respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
+    respx.get(constants.OPENID_CONNECT_ENDPOINT_LOGOUT).respond(200)
 
     token_json = {
         "access_token": "7890123",
@@ -64,15 +64,15 @@ def mock_oauth_dance(
         "expires_in": 60,
         "id_token": "123456",
     }
-    respx.post(constants.INCLUSION_CONNECT_ENDPOINT_TOKEN).mock(return_value=httpx.Response(200, json=token_json))
+    respx.post(constants.OPENID_CONNECT_ENDPOINT_TOKEN).mock(return_value=httpx.Response(200, json=token_json))
 
     user_info = OIDC_USERINFO.copy()
     if user_info_email:
         user_info["email"] = user_info_email
-    respx.get(constants.INCLUSION_CONNECT_ENDPOINT_USERINFO).mock(return_value=httpx.Response(200, json=user_info))
+    respx.get(constants.PRO_CONNECT_ENDPOINT_USERINFO).mock(return_value=httpx.Response(200, json=user_info))
 
-    csrf_signed = InclusionConnectState.create_signed_csrf_token()
-    url = reverse("inclusion_connect:callback")
+    csrf_signed = OpenID_State.create_signed_csrf_token()
+    url = reverse("openid_connect:callback")
     response = test_class.client.get(url, data={"code": "123", "state": csrf_signed})
     if assert_redirects:
         test_class.assertRedirects(response, reverse(expected_route))
@@ -80,28 +80,28 @@ def mock_oauth_dance(
     return response
 
 
-class InclusionConnectViewTest(InclusionConnectBaseTestCase):
+class OpenID_ViewTest(OpenID_BaseTestCase):
     def test_callback_invalid_state(self):
-        url = reverse("inclusion_connect:callback")
+        url = reverse("openid_connect:callback")
         response = self.client.get(url, data={"code": "123", "state": "000"})
         self.assertEqual(response.status_code, 302)
 
     def test_callback_no_state(self):
-        url = reverse("inclusion_connect:callback")
+        url = reverse("openid_connect:callback")
         response = self.client.get(url, data={"code": "123"})
         self.assertEqual(response.status_code, 302)
 
     def test_callback_no_code(self):
-        url = reverse("inclusion_connect:callback")
+        url = reverse("openid_connect:callback")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
     def test_authorize_endpoint(self):
-        url = f"{reverse('inclusion_connect:authorize')}"
+        url = f"{reverse('openid_connect:authorize')}"
         # Don't use assertRedirects to avoid fetching the last URL.
         response = self.client.get(url, follow=False)
-        self.assertTrue(response.url.startswith(constants.INCLUSION_CONNECT_ENDPOINT_AUTHORIZE))
-        self.assertIn(constants.INCLUSION_CONNECT_SESSION_KEY, self.client.session)
+        self.assertTrue(response.url.startswith(constants.OPENID_CONNECT_ENDPOINT_AUTHORIZE))
+        self.assertIn(constants.OPENID_CONNECT_SESSION_KEY, self.client.session)
 
     ####################################
     ######### Callback tests ###########
@@ -133,10 +133,10 @@ class InclusionConnectViewTest(InclusionConnectBaseTestCase):
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
 
 
-class InclusionConnectSessionTest(InclusionConnectBaseTestCase):
+class OpenID_SessionTest(OpenID_BaseTestCase):
     def test_start_session(self):
-        ic_session = InclusionConnectSession()
-        self.assertEqual(ic_session.key, constants.INCLUSION_CONNECT_SESSION_KEY)
+        proc_session = OpenID_Session()
+        self.assertEqual(proc_session.key, constants.OPENID_CONNECT_SESSION_KEY)
 
         expected_keys = [
             "token",
@@ -146,21 +146,21 @@ class InclusionConnectSessionTest(InclusionConnectBaseTestCase):
             "user_email",
             "request",
         ]
-        ic_session_dict = ic_session.asdict()
+        proc_session_dict = proc_session.asdict()
         for key in expected_keys:
             with self.subTest(key):
-                self.assertIn(key, ic_session_dict.keys())
-                self.assertEqual(ic_session_dict[key], None)
+                self.assertIn(key, proc_session_dict.keys())
+                self.assertEqual(proc_session_dict[key], None)
 
         request = RequestFactory().get("/")
         middleware = SessionMiddleware(lambda x: x)
         middleware.process_request(request)
         request.session.save()
-        request = ic_session.bind_to_request(request=request)
-        self.assertTrue(request.session.get(constants.INCLUSION_CONNECT_SESSION_KEY))
+        request = proc_session.bind_to_request(request=request)
+        self.assertTrue(request.session.get(constants.OPENID_CONNECT_SESSION_KEY))
 
 
-class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
+class OpenID_LoginTest(OpenID_BaseTestCase):
     @respx.mock
     def test_normal_signin(self):
         """
@@ -172,11 +172,11 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
         mock_oauth_dance(self)
 
         # Then log out.
-        response = self.client.post(reverse("inclusion_connect:logout"))
+        response = self.client.post(reverse("openid_connect:logout"))
 
         # Then log in again.
         response = self.client.get(reverse("pages:home"))
-        self.assertContains(response, reverse("inclusion_connect:authorize"))
+        self.assertContains(response, reverse("openid_connect:authorize"))
 
         response = mock_oauth_dance(self, assert_redirects=False)
         expected_redirection = reverse("pages:home")
@@ -187,7 +187,7 @@ class InclusionConnectLoginTest(InclusionConnectBaseTestCase):
         self.assertEqual(users_count, 1)
 
 
-class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
+class OpenID_LogoutTest(OpenID_BaseTestCase):
     @respx.mock
     def test_logout_with_redirection(self):
         mock_oauth_dance(self)
@@ -195,9 +195,9 @@ class InclusionConnectLogoutTest(InclusionConnectBaseTestCase):
             "id_token_hint": 123456,
             "post_logout_redirect_uri": f'http://testserver{reverse("pages:home")}',
         }
-        expected_redirection = f"{constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT}?{urlencode(params)}"
-        respx.get(constants.INCLUSION_CONNECT_ENDPOINT_LOGOUT).respond(200)
-        logout_url = reverse("inclusion_connect:logout")
+        expected_redirection = f"{constants.OPENID_CONNECT_ENDPOINT_LOGOUT}?{urlencode(params)}"
+        respx.get(constants.OPENID_CONNECT_ENDPOINT_LOGOUT).respond(200)
+        logout_url = reverse("openid_connect:logout")
         response = self.client.get(logout_url)
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         self.assertRedirects(response, expected_redirection, fetch_redirect_response=False)

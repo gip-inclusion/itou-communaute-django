@@ -75,7 +75,7 @@ class EventCreateViewTest(TestCase):
     def test_login_is_required(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("inclusion_connect:authorize") + "?next=" + self.url)
+        self.assertEqual(response.url, reverse("openid_connect:authorize") + "?next=" + self.url)
 
     def test_event_is_created(self):
         self.client.force_login(self.user)
@@ -191,7 +191,7 @@ class EventListViewTest(TestCase):
     def test_login_is_required(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("inclusion_connect:authorize") + "?next=" + self.url)
+        self.assertEqual(response.url, reverse("openid_connect:authorize") + "?next=" + self.url)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
