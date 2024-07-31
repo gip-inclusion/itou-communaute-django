@@ -1,8 +1,8 @@
 import dataclasses
-import json
 import logging
 
 import httpx
+import jwt
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.http import HttpResponseRedirect
@@ -123,10 +123,12 @@ def pro_connect_callback(request):  # pylint: disable=too-many-return-statements
     if response.status_code != 200:
         return _redirect_to_login_page_on_error(error_msg="Impossible to get user infos.", request=request)
 
-    try:
-        user_data = json.loads(response.content.decode("utf-8"))
-    except json.decoder.JSONDecodeError:
-        return _redirect_to_login_page_on_error(error_msg="Impossible to decode user infos.", request=request)
+    user_data = jwt.decode(
+        response.content,
+        key=constants.OPENID_CONNECT_CLIENT_SECRET,
+        algorithms=["HS256"],
+        audience=constants.OPENID_CONNECT_CLIENT_ID,
+    )
 
     if "sub" not in user_data:
         # 'sub' is the unique identifier from Inclusion Connect, we need that to match a user later on.
