@@ -19,7 +19,7 @@
             <meta property="og:locale" content="fr_FR">
             <meta property="og:type" content="website">
             <meta property="og:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/">
-            <meta property="og:image" content="{% static 'images/logo-og-communaute.png' %}">
+            <meta property="og:image" content="{% if og_image %}{{ og_image.url }}{% else %}{% static 'images/logo-og-communaute.png' %}{% endif %}">
             <meta property="og:image:alt" content="Logo de la communauté de l'inclusion">
             <meta property="og:image:type" content="image/png">
             <meta property="og:image:width" content="1200">
@@ -27,14 +27,14 @@
             <!-- https://metatags.io Twitter -->
             <meta property="twitter:card" content="summary_large_image">
             <meta property="twitter:url" content="https://communaute-experimentation.inclusion.beta.gouv.fr/">
-            <meta property="twitter:image" content="{% static 'images/logo-og-communaute.png' %}">
+            <meta property="twitter:image" content="{% if og_image %}{{ og_image.url }}{% else %}{% static 'images/logo-og-communaute.png' %}{% endif %}">
             <meta property="twitter:site" content="inclusion_gouv">
             <!-- https://metatags.io Facebook -->
             <meta property="fb:page_id" content="inclusion.gouv">
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
             {% if not debug %}
-                <script src="https://js.sentry-cdn.com/df68a3c4bf3344c59bb63010cbeaa92e.min.js" crossorigin="anonymous"></script>
+                <script src="https://js.sentry-cdn.com/315adbc1472b4c5f875aa426db1fe8f2.min.js" crossorigin="anonymous"></script>
             {% endif %}
         {% endblock head %}
         {% block extra_head %}{% endblock %}
