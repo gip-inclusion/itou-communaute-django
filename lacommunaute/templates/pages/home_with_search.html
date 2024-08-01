@@ -1,0 +1,97 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load date_filters %}
+{% block title %}Accueil{{ block.super }}{% endblock %}
+{% block meta_description %}
+    Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.
+{% endblock meta_description %}
+{% block body_class %}p-home{% endblock %}
+{% block content %}
+    <section class="s-home-search py-5 pt-lg-0">
+        <div class="s-home-search__container container container-max-md">
+            <div class="s-home-search__row row">
+                <div class="s-home-search__col col-12">
+                    <h1 class="text-center text-white">
+                        L'espace d'entraide
+                        <br>
+                        des professionnels de l'inclusion
+                    </h1>
+                    <p class="text-center text-white small">
+                        Améliorer votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.
+                    </p>
+                    <form role="search" class="s-home-search__form" action="{% url 'search:index' %}" name="homepage_search">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group input-group-lg flex-nowrap">
+                                    <input class="form-control" type="search" placeholder="{% trans 'Search in forum' %}" aria-label="{% trans 'Search in forum' %}" name="q">
+                                    <div class="input-group-text bg-white p-0">
+                                        <button class="btn btn-ico btn-primary" aria-label="{% trans 'Search in forum' %}">
+                                            <i class="ri-search-line font-weight-bold" aria-hidden="true"></i>
+                                            <span class="d-none d-sm-inline-flex me-0 me-sm-1">{% trans 'Search' %}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-communaute py-5 pt-lg-0">
+        <div class="container container-max-lg">
+            <div class="row">
+                <div class="col-4">
+                    <div class="c-box mx-3">
+                        <p class="text-center">Je veux poser une question</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="c-box mx-3">
+                        <p class="text-center">Je veux réaliser un diagnostic</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="c-box mx-3">
+                        <p class="text-center">Je veux chercher un emploi inclusif</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-article-figure-01">
+        <div class="s-article-figure-01__container container container-max-lg">
+            <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <h2 class="h1 text-center">Les dernières fiches pratiques mises à jour</h2>
+                </div>
+            </div>
+            <div class="s-article-figure-01__row row">
+                <div class="s-article-figure-01__col s-article-figure-01__col--figure col-12 col-md-3 col-lg-4 d-flex align-items-center justify-content-center">
+                    <figure class="w-50 w-md-100">
+                        <img src="{% static "images/illustration-01.png" %}" class="img-fluid img-fitcover" alt="">
+                    </figure>
+                </div>
+                <div class="s-article-figure-01__col s-article-figure-01__col--article col-12 col-md-9 col-lg-8 d-flex align-items-center">
+                    <article>
+                        <ul class="list-group list-group-flush list-group-link">
+                            {% for forum in forums_category %}
+                                <li class="list-group-item list-group-item-action">
+                                    <div>
+                                        <span class="badge badge-xs bg-info-lighter text-info mb-3">{{ forum.parent.name }}</span>
+                                        <br>
+                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
+                                            {{ forum.name }}
+                                        </a>
+                                        <p class="fs-sm mb-0 mt-1">{{ forum.short_description }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

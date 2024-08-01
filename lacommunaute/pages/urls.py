@@ -15,6 +15,7 @@ app_name = "pages"
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
+    path("ws/", views.HomeWithSearchView.as_view(), name="home_with_search"),
     path("accessibilite/", views.accessibilite, name="accessibilite"),
     path("mentions-legales/", views.mentions_legales, name="mentions_legales"),
     path("politique-de-confidentialite/", views.politique_de_confidentialite, name="politique_de_confidentialite"),

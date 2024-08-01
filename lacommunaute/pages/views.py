@@ -38,6 +38,17 @@ class HomeView(TemplateView):
         return context
 
 
+class HomeWithSearchView(TemplateView):
+    template_name = "pages/home_with_search.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["forums_category"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, parent__type=1).order_by(
+            "-updated"
+        )[:4]
+        return context
+
+
 def accessibilite(request):
     return render(request, "pages/accessibilite.html")
 
