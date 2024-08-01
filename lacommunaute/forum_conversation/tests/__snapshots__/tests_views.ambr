@@ -291,7 +291,7 @@
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
                   
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Fiches pratiques</a>
                   
               </li>
               
