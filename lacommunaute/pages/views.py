@@ -46,6 +46,8 @@ class HomeWithSearchView(TemplateView):
         context["forums_category"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, parent__type=1).order_by(
             "-updated"
         )[:4]
+        context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
+        context["upcoming_events"] = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:4]
         return context
 
 

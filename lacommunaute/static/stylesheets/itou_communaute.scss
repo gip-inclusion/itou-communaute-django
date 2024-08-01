@@ -263,3 +263,15 @@ span.highlighted {
     min-height: initial;
   }
 }
+
+.s-home-cta-contener {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+
+.s-home-cta-contener>.child {
+  flex: 1;
+  margin: 0 10px;
+}
