@@ -32,7 +32,7 @@ class ForumForm(forms.ModelForm):
     )
     image = forms.ImageField(
         required=False,
-        label="Banniere de couverture",
+        label="Banniere de couverture, format 1200 x 630 pixels recommandé",
         widget=forms.FileInput(attrs={"accept": settings.SUPPORTED_IMAGE_FILE_TYPES.keys()}),
     )
 
