@@ -604,7 +604,8 @@ class TestForumDetailContent:
         assert (
             len(
                 content.select(
-                    "div.textarea_cms_md", string=(lambda x: x.startswith(str(forum_for_snapshot.description)[:10]))
+                    "article.textarea_cms_md",
+                    string=(lambda x: x.startswith(str(forum_for_snapshot.description)[:10])),
                 )
             )
             == 1
@@ -656,7 +657,8 @@ class TestDocumentationForumContent:
         assert (
             len(
                 content.select(
-                    "div.textarea_cms_md", string=(lambda x: x.startswith(str(documentation_forum.description)[:10]))
+                    "article.textarea_cms_md",
+                    string=(lambda x: x.startswith(str(documentation_forum.description)[:10])),
                 )
             )
             == 1
