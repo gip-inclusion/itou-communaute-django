@@ -1,8 +1,10 @@
 import logging
 from typing import Any
 
+from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.base import TemplateView
 
@@ -35,6 +37,9 @@ class HomeView(TemplateView):
         )[:4]
         context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
         context["upcoming_events"] = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:4]
+
+        url = reverse("pages:home_with_search")
+        messages.info(self.request, f'Jump to the <a href="{url}">new home page</a>."')
         return context
 
 
