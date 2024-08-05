@@ -333,6 +333,7 @@ MACHINA_MARKUP_LANGUAGE = (
     "machina.core.markdown.markdown",
     {"safe_mode": False, "extras": {"break-on-newline": True, "code-friendly": True, "nofollow": True}},
 )
+SUPPORTED_IMAGE_FILE_TYPES = {"image/png": "png", "image/jpeg": "jpeg", "image/jpg": "jpg", "image/gif": "gif"}
 
 # Django sites framework
 SITE_ID = 1

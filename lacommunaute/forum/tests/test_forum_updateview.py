@@ -14,7 +14,7 @@ from lacommunaute.users.factories import UserFactory
 @pytest.fixture
 def fake_image():
     fake = Faker()
-    image_name = fake.pystr(min_chars=30, max_chars=40, prefix="pytest_", suffix=".png")
+    image_name = fake.pystr(min_chars=30, max_chars=40, prefix="pytest_", suffix=".jpg")
 
     image = Image.new("RGB", (100, 100))
     image_file = BytesIO()

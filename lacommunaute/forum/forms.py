@@ -1,6 +1,7 @@
 import re
 
 from django import forms
+from django.conf import settings
 
 from lacommunaute.forum.models import Forum
 
@@ -29,7 +30,11 @@ class ForumForm(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 20}), required=False, label="Contenu (markdown autorisé)"
     )
-    image = forms.ImageField(required=False, label="Banniere de couverture, format 1200 x 630 pixels recommandé")
+    image = forms.ImageField(
+        required=False,
+        label="Banniere de couverture, format 1200 x 630 pixels recommandé",
+        widget=forms.FileInput(attrs={"accept": settings.SUPPORTED_IMAGE_FILE_TYPES.keys()}),
+    )
 
     def save(self, commit=True):
         forum = super().save(commit=False)
