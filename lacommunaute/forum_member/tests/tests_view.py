@@ -5,7 +5,6 @@ from machina.core.loading import get_class
 from machina.test.factories.forum import create_forum
 from pytest_django.asserts import assertContains, assertNotContains
 
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
@@ -110,21 +109,6 @@ class ModeratorProfileListView(TestCase):
         self.client.force_login(self.profile.user)
         with self.assertNumQueries(11):
             self.client.get(self.url)
-
-
-class TestLeaderBoardListView:
-    def test_content(self, client, db):
-        undesired_forum_profile = ForumProfileFactory()
-        desired_forum_profile = ForumProfileFactory()
-        topic = TopicFactory(with_post=True, poster=desired_forum_profile.user)
-        PostFactory.create_batch(2, topic=topic, poster=desired_forum_profile.user)
-
-        response = client.get(reverse("members:leaderboard"))
-        assertContains(response, get_forum_member_display_name(desired_forum_profile.user))
-        assertNotContains(response, get_forum_member_display_name(undesired_forum_profile.user))
-        assert (
-            response.context_data["subtitle"] == "Contributeurs authentifiés les plus actifs sur les 30 derniers jours"
-        )
 
 
 class TestSeekersListView:

@@ -62,21 +62,6 @@ class ModeratorProfileListView(PermissionRequiredMixin, ListView):
         return context
 
 
-class LeaderBoardListView(ListView):
-    model = ForumProfile
-    template_name = "forum_member/profiles.html"
-    context_object_name = "forum_profiles"
-    paginate_by = 78
-
-    def get_queryset(self):
-        return ForumProfile.objects.power_users()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["subtitle"] = "Contributeurs authentifiés les plus actifs sur les 30 derniers jours"
-        return context
-
-
 class SeekersListView(ListView):
     model = ForumProfile
     template_name = "forum_member/seekers_profiles.html"
