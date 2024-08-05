@@ -23,7 +23,7 @@
                     </div>
                 {% endif %}
                 <div class="col-12 col-sm-auto mt-3">
-                    <div class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</div>
+                    <article class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</article>
                 </div>
                 {% include "forum/partials/rating.html" with forum=forum rating_area_id="1" %}
             </div>
