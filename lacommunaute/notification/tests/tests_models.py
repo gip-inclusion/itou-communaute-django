@@ -45,9 +45,7 @@ class NotificationQuerySetTest(TestCase):
         Notification.objects.mark_topic_posts_read(topic, user)
 
         self.assertEqual(
-            Notification.objects.filter(
-                sent_at__isnull=False, post=topic.first_post, recipient=user.email, sent_at=F("created")
-            ).count(),
+            Notification.objects.filter(post=topic.first_post, recipient=user.email, sent_at=F("created")).count(),
             2,
         )
 
@@ -56,12 +54,14 @@ class NotificationQuerySetTest(TestCase):
         topic = TopicFactory(with_post=True)
 
         old_notification = NotificationFactory(recipient=user.email, post=topic.first_post, is_sent=True)
+        self.assertIsNotNone(old_notification.sent_at)
         self.assertNotEqual(str(old_notification.sent_at), str(old_notification.created))
+        original_send_time = old_notification.sent_at
 
         Notification.objects.mark_topic_posts_read(topic, user)
 
         old_notification.refresh_from_db()
-        self.assertNotEqual(str(old_notification.sent_at), str(old_notification.created))
+        self.assertEqual(original_send_time, old_notification.sent_at)
 
     def test_mark_topic_posts_read_doesnt_impact_other_notifications(self):
         user = UserFactory()

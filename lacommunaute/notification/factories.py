@@ -1,5 +1,9 @@
+import random
+from datetime import timedelta
+
 import factory
 import factory.django
+from django.utils import timezone
 from faker import Faker
 
 from lacommunaute.notification.enums import EmailSentTrackKind
@@ -28,4 +32,4 @@ class NotificationFactory(factory.django.DjangoModelFactory):
         model = Notification
 
     class Params:
-        is_sent = factory.Trait(sent_at=faker.past_datetime())
+        is_sent = factory.Trait(sent_at=(timezone.now() - timedelta(days=random.randint(0, 90))))
