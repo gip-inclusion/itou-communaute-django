@@ -34,7 +34,7 @@
                 {% if forum.description %}
                     <div class="s-section__row row">
                         <div class="col-12">
-                            <div class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30 }}</div>
+                            <article class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30|img_fluid }}</article>
                         </div>
                     </div>
                 {% endif %}
