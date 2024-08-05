@@ -3,6 +3,11 @@
 {% load theme_inclusion %}
 <ul>
     <li>
+        <button type="button" class="btn btn-outline-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="header">
+            Diagnostic Parcours IAE
+        </button>
+    </li>
+    <li>
         <form class="mb-3 mb-xl-0 me-xl-2" action="{% url 'search:index' %}" name="header_search_form">
             <div class="input-group ">
                 <input class="form-control" type="search" placeholder="{% trans "Search forums" %}" aria-label="{% trans "Search forums" %}" name="q">
@@ -13,11 +18,6 @@
                 </div>
             </div>
         </form>
-    </li>
-    <li>
-        <button type="button" class="btn btn-outline-primary matomo-event" data-matomo-category="engagement" data-matomo-action="dsp" data-matomo-option="header">
-            Diagnostic Parcours IAE
-        </button>
     </li>
     {% if user.is_authenticated %}
         <li class="dropdown">
