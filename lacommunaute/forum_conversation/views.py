@@ -15,6 +15,7 @@ from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
+from lacommunaute.notification.models import Notification
 
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,11 @@ class TopicView(views.TopicView):
 
     def get_queryset(self):
         return get_posts_of_a_topic_except_first_one(self.topic, self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            Notification.objects.mark_topic_posts_read(self.get_topic(), request.user)
+        return super().get(request, *args, **kwargs)
 
 
 class TopicListView(FilteredTopicsListViewMixin, ListView):

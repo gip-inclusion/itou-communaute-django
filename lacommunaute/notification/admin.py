@@ -27,7 +27,7 @@ class SentNotificationListFilter(admin.SimpleListFilter):
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ("kind", "delay", "created", "sent_at")
+    list_display = ("recipient", "kind", "delay", "created", "sent_at", "post_id")
     list_filter = ("kind", "delay", SentNotificationListFilter)
     raw_id_fields = ("post",)
     search_fields = ("recipient", "post__id", "post__subject")

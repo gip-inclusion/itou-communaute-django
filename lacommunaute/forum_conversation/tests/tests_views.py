@@ -27,6 +27,7 @@ from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateView
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
@@ -713,6 +714,18 @@ class TopicViewTest(TestCase):
             status_code=200,
         )
 
+    def test_get_marks_notifications_read(self):
+        self.client.force_login(self.poster)
+
+        notification = NotificationFactory(recipient=self.poster.email, post=self.topic.first_post)
+        self.assertIsNone(notification.sent_at)
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        notification.refresh_from_db()
+        self.assertEqual(str(notification.created), str(notification.sent_at))
+
     def test_numqueries(self):
         PostFactory.create_batch(10, topic=self.topic, poster=self.poster)
         UpVoteFactory(content_object=self.topic.last_post, voter=UserFactory())
@@ -720,7 +733,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(39):
+        with self.assertNumQueries(40):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 

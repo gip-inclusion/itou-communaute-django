@@ -7,6 +7,7 @@ from machina.core.loading import get_class
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.notification.models import Notification
 
 
 logger = logging.getLogger(__name__)
@@ -67,6 +68,8 @@ class PostListView(PermissionRequiredMixin, View):
         topic = self.get_topic()
 
         track_handler.mark_topic_read(topic, request.user)
+        if request.user.is_authenticated:
+            Notification.objects.mark_topic_posts_read(topic, request.user)
 
         return render(
             request,
