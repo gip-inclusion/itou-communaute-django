@@ -5,11 +5,15 @@
     <div class="s-section__row row">
         <div class="col-12 col-lg-9">
             <div class="row align-items-sm-center mb-3">
-                <div class="col-12 col-sm">
-                    <span class="badge badge-xs rounded-pill bg-communaute text-white text-decoration-none">
-                        <i class="ri-checkbox-circle-fill"></i>
-                        Certifié par la Plateforme de l'Inclusion le {{ forum.updated|date:"d/m/Y" }}
-                    </span>
+                <div class="col-12 col-sm" id="updated_area">
+                    {% if forum.certified %}
+                        <span class="badge badge-xs rounded-pill bg-communaute text-white text-decoration-none">
+                            <i class="ri-checkbox-circle-fill"></i>
+                            Certifiée par la communauté de l'inclusion le {{ forum.updated|date:"d/m/Y" }}
+                        </span>
+                    {% else %}
+                        <span class="text-secondary text-decoration-none">Fiche mise à jour le {{ forum.updated|date:"d/m/Y" }}</span>
+                    {% endif %}
                 </div>
                 <div class="col-12 col-sm-auto">
                     {% include "partials/upvotes.html" with obj=forum kind="forum" %}
