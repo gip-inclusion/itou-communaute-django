@@ -35,6 +35,7 @@ class ForumForm(forms.ModelForm):
         label="Banniere de couverture, format 1200 x 630 pixels recommandé",
         widget=forms.FileInput(attrs={"accept": settings.SUPPORTED_IMAGE_FILE_TYPES.keys()}),
     )
+    certified = forms.BooleanField(required=False, label="Certifiée par la communauté de l'inclusion")
 
     def save(self, commit=True):
         forum = super().save(commit=False)
@@ -45,4 +46,4 @@ class ForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum
-        fields = ["name", "short_description", "description", "image"]
+        fields = ["name", "short_description", "description", "image", "certified"]

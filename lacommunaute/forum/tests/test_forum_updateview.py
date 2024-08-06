@@ -77,3 +77,23 @@ def test_update_forum_image(client, db, fake_image):
     assert forum.short_description == "new short description"
     assert forum.description.raw == "new description"
     assert forum.image.name == fake_image.name
+
+
+def test_certificied_forum(client, db):
+    client.force_login(UserFactory(is_superuser=True))
+    forum = CategoryForumFactory(with_child=True).get_children().first()
+    url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+
+    response = client.post(
+        url,
+        data={
+            "name": "new name",
+            "short_description": "new short description",
+            "description": "new description",
+            "certified": True,
+        },
+    )
+    assert response.status_code == 302
+
+    forum.refresh_from_db()
+    assert forum.certified is True
