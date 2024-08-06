@@ -79,7 +79,7 @@ def test_update_forum_image(client, db, fake_image):
     assert forum.image.name == fake_image.name
 
 
-def test_certificied_forum(client, db):
+def test_certified_forum(client, db):
     client.force_login(UserFactory(is_superuser=True))
     forum = CategoryForumFactory(with_child=True).get_children().first()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
