@@ -8,26 +8,30 @@
             <div class="s-footer-quick__row row">
                 <div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
                     <strong>Accès rapides</strong>
-                    <ul>
-                        <li>
-                            <a href="{% url 'forum_conversation_extension:topics' %}">{% trans "Discussion area" %}</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'forum_extension:documentation' %}">{% trans "Documents" %}</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'event:current' %}">{% trans "Events" %}</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'search:index' %}">{% trans "Search forums" %}</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'surveys:dsp_create' %}">Diagnostic Parcours IAE</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'members:seekers' %}">Mon stage CIP</a>
-                        </li>
-                    </ul>
+                    <div class="s-footer-quick__gridlist">
+                        <ul>
+                            <li>
+                                <a href="{% url 'forum_conversation_extension:topics' %}">{% trans "Discussion area" %}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'forum_extension:documentation' %}">{% trans "Documents" %}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'event:current' %}">{% trans "Events" %}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'search:index' %}">{% trans "Search forums" %}</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="{% url 'surveys:dsp_create' %}">Diagnostic Parcours IAE</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'members:seekers' %}">Mon stage CIP</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
                     <strong>Liens externes</strong>
@@ -56,7 +60,7 @@
                     <strong>Réseaux sociaux</strong>
                     <ul>
                         <li>
-                            <a href="https://x.com/inclusion_gouv" target="_blank" aria-label="La plateforme de l'inclusion sur X (lien externe)"><i class="ri-twitter-x-fill text-dark" aria-hidden="true"></i> X</a>
+                            <a href="https://x.com/inclusion_gouv" target="_blank" aria-label="La plateforme de l'inclusion sur X (lien externe)"><i class="ri-twitter-x-fill text-dark ri-sm" aria-hidden="true"></i> X</a>
                         </li>
                         <li>
                             <a href="https://www.linkedin.com/company/inclusion-gouv/" target="_blank" aria-label="La plateforme de l'inclusion sur sur Linkedin (lien externe)"><i class="ri-linkedin-box-fill text-dark" aria-hidden="true"></i> LinkedIn</a>
