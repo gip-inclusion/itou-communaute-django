@@ -120,7 +120,7 @@
                       </p>
                   </div>
                   <div class="card-footer text-center">
-                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-[PK of Forum]/topic/create/?checked=1">Je pose ma question à la communauté</a>
+                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-[PK of Forum]/topic/create/?checked">Je pose ma question à la communauté</a>
                   </div>
               </div>
           </div>
