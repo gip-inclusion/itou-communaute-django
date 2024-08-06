@@ -1104,7 +1104,7 @@ class TestTopicCreateCheckView:
         assertContains(
             response,
             reverse("forum_conversation:topic_create", kwargs={"forum_slug": forum.slug, "forum_pk": forum.pk})
-            + "?checked=1",
+            + "?checked",
         )
         content = parse_response_to_soup(response, selector="main", replace_in_href=[forum])
         assert str(content) == snapshot(name="topic_create_check")

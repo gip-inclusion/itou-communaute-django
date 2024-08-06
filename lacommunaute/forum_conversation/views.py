@@ -44,7 +44,7 @@ class TopicCreateView(FormValidMixin, views.TopicCreateView):
 
     def get(self, request, *args, **kwargs):
         forum = self.get_forum()
-        if forum.is_in_documentation_area or self.request.GET.get("checked"):
+        if forum.is_in_documentation_area or "checked" in self.request.GET:
             return super().get(request, *args, **kwargs)
         return redirect(
             reverse(
