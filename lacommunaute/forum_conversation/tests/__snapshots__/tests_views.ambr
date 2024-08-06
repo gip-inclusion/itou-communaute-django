@@ -184,13 +184,15 @@
   '''
   <div class="form-group" id="div_id_content">
       
-          <label class="control-label" for="id_content">
-              Message
-              
-          </label>
-      
-      
-          <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+          
+              <label class="control-label" for="id_content">
+                  Message
+                  
+              </label>
+          
+          
+              <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+          
       
       
       
@@ -217,13 +219,15 @@
   '''
   <div class="form-group" id="div_id_content">
       
-          <label class="control-label" for="id_content">
-              Message
-              
-          </label>
-      
-      
-          <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+          
+              <label class="control-label" for="id_content">
+                  Message
+                  
+              </label>
+          
+          
+              <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
+          
       
       
       
