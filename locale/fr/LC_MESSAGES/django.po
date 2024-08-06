@@ -212,6 +212,9 @@ msgstr "Rechercher"
 msgid "Search in"
 msgstr "Rechercher dans"
 
+msgid "Search in forum"
+msgstr "Rechercher dans la communauté"
+
 #: lacommunaute/templates/machina/board_base.html:28
 msgid "Advanced search"
 msgstr "Recherche avancée"
@@ -980,19 +983,19 @@ msgid "Discussion area"
 msgstr "Espace d'échanges"
 
 msgid "Documents"
-msgstr "Documentation"
+msgstr "Fiches pratiques"
 
 msgid "See all questions"
 msgstr "Voir toutes les questions"
 
 msgid "See all docs"
-msgstr "Voir toute la documentation"
+msgstr "Voir toute les fiches pratiques"
 
 msgid "See all news"
 msgstr "Voir toutes les actualités"
 
 msgid "New topic on doc"
-msgstr "Poser une question sur cette documentation"
+msgstr "Poser une question sur cette fiche"
 
 msgid "Cancel"
 msgstr "Annuler"
