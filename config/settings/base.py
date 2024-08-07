@@ -76,7 +76,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_moderation",
     "lacommunaute.notification",
     "lacommunaute.event",
-    "lacommunaute.inclusion_connect",
+    "lacommunaute.openid_connect",
     "lacommunaute.pages",
     "lacommunaute.forum_file",
     "lacommunaute.search",
@@ -110,7 +110,7 @@ LOCAL_MIDDLEWARE = [
 MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTIES_MIDDLEWARE + LOCAL_MIDDLEWARE
 
 ROOT_URLCONF = "config.urls"
-LOGIN_URL = "/inclusion_connect/authorize"
+LOGIN_URL = "/openid_connect/authorize"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
@@ -294,9 +294,9 @@ HAYSTACK_CONNECTIONS = {
 
 # Inclusion Connect
 # ------------------------------------------------------------------------------
-INCLUSION_CONNECT_BASE_URL = os.getenv("INCLUSION_CONNECT_BASE_URL")
-INCLUSION_CONNECT_CLIENT_ID = os.getenv("INCLUSION_CONNECT_CLIENT_ID")
-INCLUSION_CONNECT_CLIENT_SECRET = os.getenv("INCLUSION_CONNECT_CLIENT_SECRET")
+OPENID_CONNECT_BASE_URL = os.getenv("OPENID_CONNECT_BASE_URL")
+OPENID_CONNECT_CLIENT_ID = os.getenv("OPENID_CONNECT_CLIENT_ID")
+OPENID_CONNECT_CLIENT_SECRET = os.getenv("OPENID_CONNECT_CLIENT_SECRET")
 
 # LOGGING
 # ------------------------------------------------------------------------------

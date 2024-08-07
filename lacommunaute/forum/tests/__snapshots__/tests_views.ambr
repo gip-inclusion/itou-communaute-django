@@ -191,7 +191,7 @@
   <div class="d-inline-block" id="upvotesarea10000">
       
           
-              <a class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-10000%2F%2310000" rel="nofollow" title="Connectez-vous pour sauvegarder">
+              <a class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-placement="top" data-bs-toggle="tooltip" href="/openid_connect/authorize?next=%2Fforum%2Ftest-forum-10000%2F%2310000" rel="nofollow" title="Connectez-vous pour sauvegarder">
                   <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
               </a>
           
