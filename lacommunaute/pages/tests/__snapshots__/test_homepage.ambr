@@ -1,0 +1,286 @@
+# serializer version: 1
+# name: test_page_title_header_footer[homepage_footer]
+  '''
+  <footer id="footer" role="contentinfo">
+      <section class="s-footer-quick">
+          <div class="s-footer-quick__container container">
+              <div class="s-footer-quick__row row">
+                  <div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
+                      <strong>Accès rapides</strong>
+                      <div class="s-footer-quick__gridlist">
+                          <ul>
+                              <li>
+                                  <a href="/topics/">Espace d'échanges</a>
+                              </li>
+                              <li>
+                                  <a href="/documentation/">Documentation</a>
+                              </li>
+                              <li>
+                                  <a href="/calendar/events/">Évènements</a>
+                              </li>
+                              <li>
+                                  <a href="/search/">Chercher dans la communauté</a>
+                              </li>
+                          </ul>
+                          <ul>
+                              <li>
+                                  <a href="/surveys/dsp/create/">Diagnostic Parcours IAE</a>
+                              </li>
+                              <li>
+                                  <a href="/members/seekers/">Mon stage CIP</a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="s-footer-quick__col col-12 col-md-6 col-lg-auto">
+                      <strong>Liens externes</strong>
+                      <ul>
+                          <li>
+                              <a class="matomo-event" data-matomo-action="clic" data-matomo-category="promotion-partenaires" data-matomo-option="inclusion-demain" href="https://www.inclusion-demain.fr/" target="_blank">inclusion-demain.fr</a>
+                          </li>
+                          <li>
+                              <a aria-label="glossaire des mots de l'inclusion" class="matomo-event" data-matomo-action="glossaire" data-matomo-category="landing" data-matomo-option="footer" href="/glossaire/" target="_blank">Glossaire de l'inclusion</a>
+                          </li>
+                          <li>
+                              <a aria-label="Posez votre question sur la page du support des emplois de l'inclusion (lien externe)" class="matomo-event" data-matomo-action="site_emplois" data-matomo-category="support" data-matomo-option="footer" href="https://documentation.inclusion.beta.gouv.fr/aide/emplois/" target="_blank">Support des emplois de l'inclusion</a>
+                          </li>
+                          <li>
+                              <a aria-label="Github (lien externe)" href="https://github.com/betagouv/itou-communaute-django" target="_blank">Github</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="s-footer-quick__col col-12 col-lg-auto">
+                      <strong>Réseaux sociaux</strong>
+                      <ul>
+                          <li>
+                              <a aria-label="La plateforme de l'inclusion sur X (lien externe)" href="https://x.com/inclusion_gouv" target="_blank"><i aria-hidden="true" class="ri-twitter-x-fill text-dark ri-sm"></i> X</a>
+                          </li>
+                          <li>
+                              <a aria-label="La plateforme de l'inclusion sur sur Linkedin (lien externe)" href="https://www.linkedin.com/company/inclusion-gouv/" target="_blank"><i aria-hidden="true" class="ri-linkedin-box-fill text-dark"></i> LinkedIn</a>
+                          </li>
+                          <li>
+                              <a aria-label="La communaute de l'inclusion sur Facebook (lien externe)" href="https://www.facebook.com/communaute.inclusion.gouv/" target="_blank"><i aria-hidden="true" class="ri-facebook-box-fill text-dark"></i> Facebook</a>
+                          </li>
+                          <li>
+                              <a aria-label="La plateforme de l'inclusion sur Youtube (lien externe)" href="https://www.youtube.com/@LaPlateformedelinclusion/videos" target="_blank"><i aria-hidden="true" class="ri-youtube-fill text-dark"></i> Youtube</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-footer-gip">
+          <div class="s-footer-gip__container container">
+              <div class="s-footer-gip__row row">
+                  <div class="s-footer-gip__col s-footer-gip__col--logo col-12 col-md-6 col-lg-auto">
+                      <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" href="https://inclusion.beta.gouv.fr/" target="_blank">
+                          <img alt="Logo de la Plateforme de l'inclusion" height="80" src="/static/vendor/theme-inclusion/images/logo-plateforme-inclusion.svg"/>
+                      </a>
+                  </div>
+                  <div class="s-footer-gip__col col-12 col-md-6 col-lg">
+                      <p class="mb-1">
+                          <strong>Ce service fait partie de la Plateforme de l’inclusion</strong>
+                      </p>
+                      <p class="m-0">
+                          Découvrez les outils qui portent l'inclusion au
+                          <br class="d-none d-md-inline"/>
+                          coeur de leur service. A chaque service, son objectif.
+                          <br/>
+                          <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" class="has-external-link" href="https://inclusion.beta.gouv.fr/" target="_blank">Découvrez nos services</a>
+                      </p>
+                  </div>
+                  <div class="s-footer-gip__col s-footer-gip__col--links col-12 col-lg-auto">
+                      <ul>
+                          <li>
+                              <a aria-label="France Travail (lien externe)" href="https://www.francetravail.fr/accueil/">
+                                  <img alt="France Travail" height="40" src="/static/vendor/theme-inclusion/images/logo-france-travail.svg"/>
+                              </a>
+                          </li>
+                          <li>
+                              <a aria-label="Incubateur de services publics numériques — beta.gouv.fr (lien externe)" href="https://beta.gouv.fr/" target="_blank">beta.gouv.fr</a>
+                          </li>
+                          <li>
+                              <a aria-label="Data.gouv.fr (lien externe)" href="https://www.data.gouv.fr/fr/" target="_blank">data.gouv.fr</a>
+                          </li>
+                          <li>
+                              <a aria-label="Simplifiez le partage et la circulation des données administratives grace à api.gouv.fr (lien externe)" href="https://api.gouv.fr/" target="_blank">api.gouv.fr</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-footer-legal">
+          <div class="s-footer-legal__container container">
+              <div class="s-footer-legal__row row">
+                  <div class="s-footer-legal__col col-12">
+                      <ul>
+                          <li>
+                              <a aria-label="Mentions légales" href="/mentions-legales/">Mentions légales</a>
+                          </li>
+                          <li>
+                              <a aria-label="Accessibilité" href="/accessibilite/">Accessibilité : non conforme</a>
+                          </li>
+                          <li>
+                              <a aria-label="Politique de confidentialité" href="/politique-de-confidentialite/">Politique de confidentialité</a>
+                          </li>
+                          <li>
+                              <a href="/statistiques/">Statistiques</a>
+                          </li>
+                      </ul>
+                      <p>
+                          Sauf mention contraire, tous les contenus de ce site sont sous licence <a aria-label="Licence ouverte Etalab (lien externe)" href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank">etalab-2.0</a>
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </section>
+  </footer>
+  '''
+# ---
+# name: test_page_title_header_footer[homepage_header]
+  '''
+  <header id="header" role="banner">
+      <section class="s-header">
+          <div class="s-header__container container">
+              <div class="s-header__row row">
+                  <div class="s-header__col s-header__col--logo-ministere col col-md-auto d-flex align-items-center pe-0">
+                      <a class="s-header__logo-ministere" href="/">
+                          <img alt="Rébublique Française" src="/static/vendor/theme-inclusion/images/logo-republique-francaise.svg"/>
+                      </a>
+                  </div>
+                  <div class="s-header__col s-header__col--logo-service col-auto d-flex align-items-center px-0">
+                      <a href="/">
+                          <img alt="La communauté de l'inclusion" height="90" src="/static/vendor/theme-inclusion/images/logo-communaute-inclusion.svg"/>
+                      </a>
+                  </div>
+                  <div class="s-header__col s-header__col--nav col d-none d-lg-inline-flex d-lg-flex align-items-center justify-content-end pe-0 pe-xl-3">
+                      <nav aria-label="Navigation principale" id="nav-primary" role="navigation">
+                          <ul>
+                              <li>
+                                  <form action="/search/" name="header_search_form">
+                                      <div class="input-group input-group-rounded-pill">
+                                          <input aria-label="Chercher dans la communauté" class="form-control w-300px" name="q" placeholder="Chercher dans la communauté" type="search"/>
+                                          <div class="input-group-text p-0">
+                                              <button class="btn btn-link btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query_header" type="submit">
+                                                  <i aria-label="Chercher dans la communauté" class="ri-search-line font-weight-bold"></i>
+                                              </button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </li>
+                              
+                                  <li>
+                                      <a class="btn btn-inclusion-connect" href="/inclusion_connect/authorize" rel="nofollow">
+                                          <img alt="Se connecter | S'inscrire" height="37" src="/static/vendor/theme-inclusion/images/logo-inclusion-connect-two-lines.svg"/>
+                                      </a>
+                                  </li>
+                              
+                          </ul>
+                      </nav>
+                  </div>
+                  <div class="s-header__col s-header__col--burger col col-lg-auto d-flex align-items-center justify-content-end d-xl-none ps-0">
+                      <button aria-controls="offcanvasNav" aria-label="Ouvrir le menu de navigation principale pour mobile" class="btn btn-link btn-ico pe-0" data-bs-target="#offcanvasNav" data-bs-toggle="offcanvas" type="button">
+                        <i aria-hidden="true" class="ri-menu-line" id="open"></i>
+                        <span>Menu</span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-postheader d-none d-xl-block">
+          <div class="s-postheader__container container">
+              <div class="s-postheader__row row">
+                  <div class="s-postheader__col col-12 d-flex align-items-center">
+                      <nav aria-label="Navigation secondaire" role="navigation">
+                          <ul>
+                              <li>
+                                  <a class="is-active" href="/">Accueil</a>
+                              </li>
+                              <li>
+                                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics" href="/topics/">Espace d'échanges</a>
+                              </li>
+                              <li>
+                                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_header" href="/documentation/">Documentation</a>
+                              </li>
+                              <li>
+                                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="events" href="/calendar/events/">Évènements</a>
+                              </li>
+                              <li>
+                                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="dsp" href="/surveys/dsp/create/">
+                                      Diagnostic Parcours IAE
+                                  </a>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+      <div aria-label="Navigation principale pour mobile" class="offcanvas" id="offcanvasNav">
+          <div class="offcanvas-header">
+              <h4 class="h5 mb-0 btn-ico align-items-center" id="offcanvasApplyFiltersLabel">
+                  <i aria-hidden="true" class="ri-menu-line"></i>
+                  <span>Menu</span>
+              </h4>
+              <button aria-label="Fermer" class="btn-link px-2 me-n2" data-bs-dismiss="offcanvas" type="button">
+                  <i aria-hidden="true" class="ri-close-line"></i>
+              </button>
+          </div>
+          <div class="offcanvas-body">
+              <nav aria-label="Navigation secondaire pour mobile" role="navigation">
+                  <form action="/search/" class="mb-4" name="header_search_form">
+                      <div class="input-group input-group-rounded-pill">
+                          <input aria-label="Chercher dans la communauté" class="form-control" name="q" placeholder="Chercher dans la communauté" type="search"/>
+                          <div class="input-group-text p-0">
+                              <button class="btn btn-link btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query_header" type="submit">
+                                  <i aria-label="Chercher dans la communauté" class="ri-search-line font-weight-bold"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </form>
+                  <ul class="nav nav-tabs flex-column">
+                      <li class="nav-item">
+                          <a class="nav-link active" href="/">Accueil</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics" href="/topics/">Espace d'échanges</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_header" href="/documentation/">Documentation</a>
+                      </li>
+                      <li>
+                          <a class="nav-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="events" href="/calendar/events/">Évènements</a>
+                      </li>
+                      <li>
+                          <a class="nav-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="dsp" href="/surveys/dsp/create/">
+                              Diagnostic Parcours IAE
+                          </a>
+                      </li>
+                  </ul>
+              </nav>
+          </div>
+          <div class="offcanvas-footer flex-column align-items-stretch">
+              <nav aria-label="Menu de navigation principale pour mobile" role="navigation">
+                  
+                      <div>
+                          <a class="btn btn-inclusion-connect" href="/inclusion_connect/authorize" rel="nofollow">
+                              <img alt="Se connecter | S'inscrire" class="img-fluid" src="/static/vendor/theme-inclusion/images/logo-inclusion-connect-one-line.svg"/>
+                          </a>
+                      </div>
+                  
+              </nav>
+          </div>
+      </div>
+  
+  </header>
+  '''
+# ---
+# name: test_page_title_header_footer[homepage_title]
+  '''
+  <title>
+                  Accueil - La communauté de l'inclusion
+              </title>
+  '''
+# ---

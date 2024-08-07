@@ -1,3 +1,5 @@
+import re
+
 import pytest  # noqa
 from dateutil.relativedelta import relativedelta
 from django.urls import reverse
@@ -8,6 +10,11 @@ from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.utils.testing import parse_response_to_soup
+
+
+def _sub_svg_suffix(content):
+    return re.sub(r"\.\w+\.svg", ".svg", content)
 
 
 def test_context_data(client, db):
@@ -44,9 +51,17 @@ def test_new_topics_order(client, db):
     assert list(response.context_data["topics_public"]) == [topic2, topic1]
 
 
-def test_page_title(db, client):
+def test_page_title_header_footer(db, client, snapshot):
     response = client.get(reverse("pages:home"))
-    assertContains(response, "<title>Accueil- La communauté de l'inclusion</title>", html=True, count=1)
+    assert response.status_code == 200
+
+    assert str(parse_response_to_soup(response, selector="title")) == snapshot(name="homepage_title")
+
+    header = _sub_svg_suffix(str(parse_response_to_soup(response, selector="header")))
+    assert header == snapshot(name="homepage_header")
+
+    footer = _sub_svg_suffix(str(parse_response_to_soup(response, selector="footer")))
+    assert footer == snapshot(name="homepage_footer")
 
 
 def test_events(db, client):
