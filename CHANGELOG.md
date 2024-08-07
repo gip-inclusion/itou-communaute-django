@@ -1,5 +1,27 @@
 # Journal des modifications
 
+## [2.12.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.11.0...v2.12.0) (2024-08-07)
+
+
+### Features
+
+* **documentation:** rendre la certification optionnelle ([#741](https://github.com/gip-inclusion/itou-communaute-django/issues/741)) ([6141112](https://github.com/gip-inclusion/itou-communaute-django/commit/61411127ba4c2bf76dccf825f7ed468260cd5fc4))
+* **footer:** mise à jour des liens sociaux ([#730](https://github.com/gip-inclusion/itou-communaute-django/issues/730)) ([f19602e](https://github.com/gip-inclusion/itou-communaute-django/commit/f19602e425fd9938f11e6ac43d8aaa440557548e))
+* **forum:** attr accept définit sur forms.ImageField ([#734](https://github.com/gip-inclusion/itou-communaute-django/issues/734)) ([0e8b8c9](https://github.com/gip-inclusion/itou-communaute-django/commit/0e8b8c926367d763ab74208485deb68940993f33))
+* **forum:** fin de l'AB test sur la notation des forums ([#708](https://github.com/gip-inclusion/itou-communaute-django/issues/708)) ([6705ead](https://github.com/gip-inclusion/itou-communaute-django/commit/6705eada794a8aedcdb8baf1bbacfca595427edc))
+* **forum:** utiliser l'image du forum dans la vignette opengraph ([#725](https://github.com/gip-inclusion/itou-communaute-django/issues/725)) ([cc137c1](https://github.com/gip-inclusion/itou-communaute-django/commit/cc137c1ce0f141189a2ebd85a6f5bf13199112da))
+* mise à jour entête, pied de page et menu ([#739](https://github.com/gip-inclusion/itou-communaute-django/issues/739)) ([4493267](https://github.com/gip-inclusion/itou-communaute-django/commit/4493267ec9f3919acb91c31db18f78c7c4ac074f))
+* **notification:** passage des notifications en lues ([#712](https://github.com/gip-inclusion/itou-communaute-django/issues/712)) ([a1a6b73](https://github.com/gip-inclusion/itou-communaute-django/commit/a1a6b73a5e992806663f850a2aa835bf7c95c0aa))
+* **seo:** mise à jour de l'image OpenGraph ([#720](https://github.com/gip-inclusion/itou-communaute-django/issues/720)) ([f37521c](https://github.com/gip-inclusion/itou-communaute-django/commit/f37521c27ccffccee9ebe86d5b654f95b38f45c8))
+
+
+### Bug Fixes
+
+* **forum:** balise `article` et dimension des images ([#737](https://github.com/gip-inclusion/itou-communaute-django/issues/737)) ([b1ed91f](https://github.com/gip-inclusion/itou-communaute-django/commit/b1ed91f00ca5a09e529ccb40f4d023f5e197fff0))
+* mise à jour de la public key sentry pour l'envoi des logs ([#732](https://github.com/gip-inclusion/itou-communaute-django/issues/732)) ([616c0aa](https://github.com/gip-inclusion/itou-communaute-django/commit/616c0aa41422077a22486c33731f2b750ebe9694))
+* **upvotes:** largeur du bouton s'abonner dynamique ([#743](https://github.com/gip-inclusion/itou-communaute-django/issues/743)) ([32cb339](https://github.com/gip-inclusion/itou-communaute-django/commit/32cb339bf5c93b549628f3d485f8830f1fa81b51))
+* **upvote:** supprimer un parametrage ambigue ([#742](https://github.com/gip-inclusion/itou-communaute-django/issues/742)) ([168df13](https://github.com/gip-inclusion/itou-communaute-django/commit/168df1352f32090509133173fee3bcafe7a608db))
+
 ## [2.11.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.10.0...v2.11.0) (2024-07-03)
 
 
