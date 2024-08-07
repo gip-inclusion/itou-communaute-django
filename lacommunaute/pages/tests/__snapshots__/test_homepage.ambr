@@ -181,8 +181,8 @@
                   </div>
                   <div class="s-header__col s-header__col--burger col col-lg-auto d-flex align-items-center justify-content-end d-xl-none ps-0">
                       <button aria-controls="offcanvasNav" aria-label="Ouvrir le menu de navigation principale pour mobile" class="btn btn-link btn-ico pe-0" data-bs-target="#offcanvasNav" data-bs-toggle="offcanvas" type="button">
-                        <i aria-hidden="true" class="ri-menu-line" id="open"></i>
-                        <span>Menu</span>
+                          <i aria-hidden="true" class="ri-menu-line" id="open"></i>
+                          <span>Menu</span>
                       </button>
                   </div>
               </div>
@@ -217,7 +217,6 @@
               </div>
           </div>
       </section>
-  
       <div aria-label="Navigation principale pour mobile" class="offcanvas" id="offcanvasNav">
           <div class="offcanvas-header">
               <h4 class="h5 mb-0 btn-ico align-items-center" id="offcanvasApplyFiltersLabel">
@@ -273,14 +272,13 @@
               </nav>
           </div>
       </div>
-  
   </header>
   '''
 # ---
 # name: test_page_title_header_footer[homepage_title]
   '''
   <title>
-                  Accueil - La communauté de l'inclusion
+                  Accueil- La communauté de l'inclusion
               </title>
   '''
 # ---

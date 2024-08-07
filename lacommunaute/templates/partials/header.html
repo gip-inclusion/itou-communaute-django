@@ -9,7 +9,6 @@
 {% url 'search:index' as search_url %}
 {% url 'surveys:dsp_create' as dsp_url %}
 {% url 'event:current' as event_url %}
-
 <header role="banner" id="header">
     <section class="s-header">
         <div class="s-header__container container">
@@ -41,9 +40,14 @@
                             </li>
                             {% if user.is_authenticated %}
                                 <li class="dropdown">
-                                    <button type="button" class="btn btn-outline-primary btn-ico btn-block bg-white dropdown-toggle my-3" data-bs-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
+                                    <button type="button"
+                                            class="btn btn-outline-primary btn-ico btn-block bg-white dropdown-toggle my-3"
+                                            data-bs-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-controls="dashboardUserDropdown"
+                                            aria-expanded="false">
                                         <i class="ri-account-circle-line" aria-hidden="true"></i>
-                                         <span class="d-none d-sm-inline-block ms-0 ms-sm-2">Mon espace</span>
+                                        <span class="d-none d-sm-inline-block ms-0 ms-sm-2">Mon espace</span>
                                     </button>
                                     <div class="dropdown-menu" id="dashboardUserDropdown">
                                         <ul class="list-unstyled">
@@ -117,8 +121,8 @@
                 </div>
                 <div class="s-header__col s-header__col--burger col col-lg-auto d-flex align-items-center justify-content-end d-xl-none ps-0">
                     <button type="button" class="btn btn-link btn-ico pe-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav" aria-controls="offcanvasNav" aria-label="Ouvrir le menu de navigation principale pour mobile">
-                      <i class="ri-menu-line" id="open" aria-hidden="true"></i>
-                      <span>Menu</span>
+                        <i class="ri-menu-line" id="open" aria-hidden="true"></i>
+                        <span>Menu</span>
                     </button>
                 </div>
             </div>
@@ -138,10 +142,10 @@
                             </li>
                             <li>
                                 <a href="{{ documentation_url }}"
-                                class="{% if request.path == documentation_url %}is-active {% endif %}matomo-event"
-                                data-matomo-category="engagement"
-                                data-matomo-action="view"
-                                data-matomo-option="documentation_header">{% trans "Documents" %}</a>
+                                   class="{% if request.path == documentation_url %}is-active {% endif %}matomo-event"
+                                   data-matomo-category="engagement"
+                                   data-matomo-action="view"
+                                   data-matomo-option="documentation_header">{% trans "Documents" %}</a>
                             </li>
                             <li>
                                 <a href="{{ event_url }}" class="{% if request.path == event_url %}is-active {% endif %}matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="events">{% trans "Events" %}</a>
@@ -157,7 +161,6 @@
             </div>
         </div>
     </section>
-
     <div class="offcanvas" id="offcanvasNav" aria-label="Navigation principale pour mobile">
         <div class="offcanvas-header">
             <h4 class="h5 mb-0 btn-ico align-items-center" id="offcanvasApplyFiltersLabel">
@@ -185,14 +188,18 @@
                         <a href="{{ home_url }}" class="nav-link{% if request.path == home_url %} active{% endif %}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ publicforum_url }}" class="nav-link{% if request.path == publicforum_url %} active{% endif %} matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics">{% trans "Discussion area" %}</a>
+                        <a href="{{ publicforum_url }}"
+                           class="nav-link{% if request.path == publicforum_url %} active{% endif %} matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="topics">{% trans "Discussion area" %}</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ documentation_url }}"
-                        class="nav-link{% if request.path == documentation_url %} active{% endif %} matomo-event"
-                        data-matomo-category="engagement"
-                        data-matomo-action="view"
-                        data-matomo-option="documentation_header">{% trans "Documents" %}</a>
+                           class="nav-link{% if request.path == documentation_url %} active{% endif %} matomo-event"
+                           data-matomo-category="engagement"
+                           data-matomo-action="view"
+                           data-matomo-option="documentation_header">{% trans "Documents" %}</a>
                     </li>
                     <li>
                         <a href="{{ event_url }}" class="nav-link{% if request.path == event_url %} active{% endif %} matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="events">{% trans "Events" %}</a>
@@ -209,7 +216,12 @@
             <nav role="navigation" aria-label="Menu de navigation principale pour mobile">
                 {% if user.is_authenticated %}
                     <div class="dropdown-center">
-                        <button type="button" class="btn btn-outline-primary btn-ico btn-block bg-white dropdown-toggle my-3" data-bs-toggle="dropdown" aria-haspopup="true" aria-controls="dashboardUserDropdown" aria-expanded="false">
+                        <button type="button"
+                                class="btn btn-outline-primary btn-ico btn-block bg-white dropdown-toggle my-3"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-controls="dashboardUserDropdown"
+                                aria-expanded="false">
                             <i class="ri-account-circle-line" aria-hidden="true"></i>
                             <span class="d-none d-sm-inline-block ms-0 ms-sm-2">Mon espace</span>
                         </button>
@@ -283,5 +295,4 @@
             </nav>
         </div>
     </div>
-
 </header>
