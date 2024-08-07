@@ -1,13 +1,16 @@
-import pytest  # noqa
 import re
+
+import pytest  # noqa
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from faker import Faker
 from machina.core.loading import get_class
+from pytest_django.asserts import assertContains
 from taggit.models import Tag
-from django.conf import settings
+
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.models import Forum
@@ -18,7 +21,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
-from pytest_django.asserts import assertContains
+
 
 faker = Faker()
 
@@ -592,6 +595,20 @@ class TestDocumentationForumContent:
         assert str(upvotes_area) == snapshot(name="template_documentation_upvotes")
         social_share_area = content.select(f"#dropdownMenuSocialShare{str(documentation_forum.pk)}")[0]
         assert str(social_share_area) == snapshot(name="template_documentation_social_share")
+
+    def test_documentation_certified(self, client, db, documentation_forum):
+        response = client.get(documentation_forum.get_absolute_url())
+        content = re.findall(r"Fiche mise à jour le (\d{2}/\d{2}/\d{4})", response.content.decode())
+        assert len(content) == 1
+
+        documentation_forum.certified = True
+        documentation_forum.save()
+
+        response = client.get(documentation_forum.get_absolute_url())
+        content = re.findall(
+            r"Certifiée par la communauté de l'inclusion le (\d{2}/\d{2}/\d{4})", response.content.decode()
+        )
+        assert len(content) == 1
 
     def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
         sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")

@@ -36,6 +36,7 @@ class Forum(AbstractForum):
         storage=S3Boto3Storage(bucket_name=settings.AWS_STORAGE_BUCKET_NAME, file_overwrite=False),
         validators=[validate_image_size],
     )
+    certified = models.BooleanField(default=False, verbose_name="Certifié par la communauté de l'inclusion")
 
     upvotes = GenericRelation(UpVote, related_query_name="forum")
 

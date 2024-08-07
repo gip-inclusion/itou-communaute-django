@@ -28,15 +28,17 @@
   
   <div class="form-group" id="div_id_q">
       
-          <label class="control-label" for="id_q">
-              Rechercher par mots clés
-              
-                  <span class="text-muted">(optional)</span>
-              
-          </label>
-      
-      
-          <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search"/>
+          
+              <label class="control-label" for="id_q">
+                  Rechercher par mots clés
+                  
+                      <span class="text-muted">(optional)</span>
+                  
+              </label>
+          
+          
+              <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search"/>
+          
       
       
       
@@ -102,15 +104,17 @@
   
   <div class="form-group" id="div_id_q">
       
-          <label class="control-label" for="id_q">
-              Rechercher par mots clés
-              
-                  <span class="text-muted">(optional)</span>
-              
-          </label>
-      
-      
-          <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search" value="Bubba Gump Shrimp Co."/>
+          
+              <label class="control-label" for="id_q">
+                  Rechercher par mots clés
+                  
+                      <span class="text-muted">(optional)</span>
+                  
+              </label>
+          
+          
+              <input class="form-control" id="id_q" maxlength="255" name="q" placeholder="Mots clés ou phrase" type="search" value="Bubba Gump Shrimp Co."/>
+          
       
       
       
