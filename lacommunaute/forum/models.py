@@ -9,6 +9,7 @@ from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
 from machina.models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
+from taggit.managers import TaggableManager
 
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
@@ -39,6 +40,8 @@ class Forum(AbstractForum):
     certified = models.BooleanField(default=False, verbose_name="Certifié par la communauté de l'inclusion")
 
     upvotes = GenericRelation(UpVote, related_query_name="forum")
+
+    tags = TaggableManager()
 
     objects = ForumQuerySet().as_manager()
 
