@@ -1,7 +1,7 @@
 {% load i18n %}
 {% if forum %}
     <div class="row align-items-center">
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-lg-auto">
             <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
                rel="nofollow"
                class="btn btn-primary btn-ico btn-block matomo-event"
@@ -12,15 +12,15 @@
                 <span>{% trans "New topic" %}</span>
             </a>
         </div>
-        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">ou</div>
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-lg-auto py-1 py-lg-0 px-lg-0 text-center">ou</div>
+        <div class="col-12 col-lg-auto">
             <a href="{% url 'search:index' %}" class="btn btn-outline-primary btn-ico btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="search" data-matomo-option="query">
                 <i class="ri-search-line ri-lg"></i>
                 <span>{% trans "Search forums" %}</span>
             </a>
         </div>
-        <div class="col-12 col-md-auto py-1 py-md-0 px-md-0 text-center">ou</div>
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-lg-auto py-1 py-lg-0 px-lg-0 text-center">ou</div>
+        <div class="col-12 col-lg-auto">
             <a href="{% url 'forum_extension:documentation' %}"
                class="btn btn-outline-primary btn-ico btn-block matomo-event"
                data-matomo-category="engagement"
