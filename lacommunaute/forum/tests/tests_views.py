@@ -366,86 +366,6 @@ class ForumViewTest(TestCase):
             status_code=200,
         )
 
-    def test_upvote_actions(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
-        child_forum = forum.get_children().first()
-
-        # anonymous
-        anonymous_html = (
-            '<a href="/inclusion_connect/authorize?next=%2Fforum%2F'
-            f'{child_forum.slug}-{child_forum.pk}%2F%23{child_forum.pk}"'
-            ' rel="nofollow"'
-            ' class="btn btn-sm btn-ico-only btn-link btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top"'
-            ' title="Connectez-vous pour sauvegarder">'
-            ' <i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>'
-        )
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-        self.assertContains(response, anonymous_html, status_code=200, html=True)
-
-        # authenticated
-        self.client.force_login(self.user)
-        no_upvote_html = (
-            '<button type="submit"'
-            ' title="Sauvegarder"'
-            ' class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
-            ' data-matomo-category="engagement"'
-            ' data-matomo-action="upvote"'
-            ' data-matomo-option="post"'
-            " >"
-            ' <i class="ri-bookmark-line me-1" aria-hidden="true"></i>'
-            "<span>0</span>"
-        )
-        response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": forum.slug}))
-        self.assertContains(response, no_upvote_html, status_code=200, html=True)
-
-        child_forum.upvotes.create(voter=self.user)
-        upvoted_html = (
-            '<button type="submit"'
-            ' title="Sauvegarder"'
-            ' class="btn btn-sm btn-ico btn-secondary matomo-event px-2"'
-            ' data-matomo-category="engagement"'
-            ' data-matomo-action="upvote"'
-            ' data-matomo-option="post"'
-            " >"
-            ' <i class="ri-bookmark-fill me-1" aria-hidden="true"></i>'
-            "<span>1</span>"
-        )
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-        self.assertContains(response, upvoted_html, status_code=200, html=True)
-
-    def test_upvotes_count(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
-        child_forum = forum.get_children().first()
-
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-        self.assertContains(
-            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
-        )
-
-        child_forum.upvotes.create(voter=self.user)
-
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-        self.assertContains(
-            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>1</span>', status_code=200
-        )
-
-        child_forum.upvotes.create(voter=UserFactory())
-
-        response = self.client.get(
-            reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
-        )
-        self.assertContains(
-            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>2</span>', status_code=200
-        )
-
     def test_can_view_update_forum_link(self):
         url = reverse("forum_extension:edit_forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug})
         response = self.client.get(self.url)
@@ -524,6 +444,9 @@ class ForumViewTest(TestCase):
         self.assertContains(response, forum.image.url.split("=")[0])
 
 
+reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
+
+
 class TestForumViewContent:
     def test_not_rated_forum(self, client, db, snapshot):
         category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
@@ -563,8 +486,31 @@ class TestForumViewContent:
         assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
         assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
 
+    @pytest.mark.parametrize(
+        "upvote_count, logged", [(0, False), (0, True), (1, False), (1, True), (2, False), (2, True)]
+    )
+    def test_upvotes_counts(self, client, db, reset_forum_sequence, snapshot, upvote_count, logged):
+        forum = CategoryForumFactory(with_public_perms=True, with_child=True, for_snapshot=True)
+        child_forum = forum.get_children().first()
 
-reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
+        for _ in range(upvote_count):
+            child_forum.upvotes.create(voter=UserFactory())
+
+        response = client.get(child_forum.get_absolute_url())
+        content = parse_response_to_soup(
+            response, selector=f"#upvotesarea{child_forum.pk}", replace_in_href=[child_forum]
+        )
+        assert str(content) == snapshot(name=f"upvotes_counts_{upvote_count}")
+
+        if logged:
+            user = UserFactory()
+            client.force_login(user)
+            child_forum.upvotes.create(voter=user)
+            response = client.get(child_forum.get_absolute_url())
+            content = parse_response_to_soup(
+                response, selector=f"#upvotesarea{child_forum.pk}", replace_in_href=[child_forum]
+            )
+            assert str(content) == snapshot(name=f"upvotes_counts_{upvote_count}_self_upvoted")
 
 
 @pytest.fixture(name="forum_for_snapshot")
