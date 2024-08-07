@@ -55,6 +55,7 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     tags = ModelMultipleChoiceField(
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )
+    new_tag = CharField(required=False, label="Ajouter un tag")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -67,6 +68,8 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     def save(self):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
+        if self.cleaned_data.get("new_tag"):
+            post.topic.tags.add(self.cleaned_data["new_tag"])
 
         if self.user.is_anonymous:
             post.username = self.cleaned_data["username"]
