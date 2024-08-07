@@ -16,6 +16,7 @@
     {% if post_form.update_reason %}
         {% include "partials/form_field.html" with field=post_form.update_reason %}
     {% endif %}
+    {% include "partials/form_field.html" with field=post_form.lock_topic %}
     <!-- Sub "forms" tabs -->
     {% if poll_option_formset or attachment_formset %}
         <ul class="nav nav-tabs nav-tabs--communaute border-bottom-0">
@@ -36,22 +37,6 @@
     {% endif %}
     <!-- Sub "forms" panes -->
     <div class="tab-content">
-        <div class="tab-pane active" id="options">
-            <div class="row">
-                <div class="col-md-12">
-                    {% if post_form.lock_topic %}
-                        <div class="form-group">
-                            {% with field=post_form.lock_topic %}
-                                <div class="form-check mt-2">
-                                    {{ field | add_class:'form-check-input' }}
-                                    <label class="form-check-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-                                </div>
-                            {% endwith %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
         <div class="tab-pane" id="tags">
             <div class="row">
                 <div id="tags_formset" class="col-md-12">{% include "partials/form_field.html" with field=post_form.tags %}</div>
