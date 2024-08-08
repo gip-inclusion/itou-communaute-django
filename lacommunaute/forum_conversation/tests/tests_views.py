@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa
 from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware
@@ -254,6 +254,22 @@ class TestTopicCreateView:
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="#div_id_content")
         assert str(content) == snapshot(name="topic_create")
+
+    def test_add_a_new_tag(self, db, client):
+        forum = ForumFactory(with_public_perms=True)
+        client.force_login(UserFactory())
+        tag = faker.word()
+        response = client.post(
+            reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug}),
+            {
+                "subject": faker.sentence(),
+                "content": faker.paragraph(nb_sentences=5),
+                "new_tag": tag,
+            },
+            follow=True,
+        )
+        assert response.status_code == 200
+        assert forum.topics.first().tags.filter(name=tag).exists()
 
 
 class TopicUpdateViewTest(TestCase):

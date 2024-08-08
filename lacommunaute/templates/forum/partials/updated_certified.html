@@ -1,0 +1,11 @@
+{% if forum.certified %}
+    <span class="badge badge-md rounded-pill bg-communaute-light text-communaute text-decoration-none">
+        <i class="ri-checkbox-circle-fill"></i>
+        Certifiée par la communauté de l'inclusion le {{ forum.updated|date:"d/m/Y" }}
+    </span>
+{% else %}
+    <span class="fs-sm">Fiche mise à jour le {{ forum.updated|date:"d/m/Y" }}</span>
+{% endif %}
+{% if user.is_superuser %}
+    <a href="{% url 'forum_extension:edit_forum' forum.slug forum.id %}"><small>Mettre à jour</small></a>
+{% endif %}
