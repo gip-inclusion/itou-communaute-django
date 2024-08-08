@@ -19,11 +19,9 @@
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
                 <div class="s-title-01__col col-12">
+                    {% include "forum/partials/tags.html" with tags=forum.tags.all only %}
                     <h1>{{ forum.name }}</h1>
-                    {% if user.is_superuser %}
-                        <a href="{% url 'forum_extension:edit_forum' forum.slug forum.id %}"><small>Mettre à jour</small></a>
-                    {% endif %}
-                    {% if forum.short_description %}<h2 class="mt-3">{{ forum.short_description }}</h2>{% endif %}
+                    {% if forum.short_description %}<h2 class="mt-3 fs-base">{{ forum.short_description }}</h2>{% endif %}
                 </div>
             </div>
         </div>

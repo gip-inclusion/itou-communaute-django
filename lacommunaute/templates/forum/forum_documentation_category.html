@@ -1,4 +1,10 @@
 {% extends "forum/forum_detail.html" %}
+{% block forum_head_content %}
+    {{ block.super }}
+    {% if user.is_superuser %}
+        <a href="{% url 'forum_extension:edit_forum' forum.slug forum.id %}"><small>Mettre à jour</small></a>
+    {% endif %}
+{% endblock %}
 {% block subforum_list %}
     <div class="row mt-4" id="documentation-category-subforums">
         {% for node in sub_forums.top_nodes %}
