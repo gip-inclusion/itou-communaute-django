@@ -3,7 +3,6 @@ from django.db.models import F
 from django.forms import HiddenInput
 from django.test import TestCase
 from faker import Faker
-from machina.conf import settings as machina_settings
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
@@ -37,7 +36,7 @@ class PostFormTest(TestCase):
         post = form.create_post()
         self.assertEqual(
             post.subject,
-            f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}",
+            self.topic.subject,
         )
 
     def test_reply_as_authenticated_user(self):
