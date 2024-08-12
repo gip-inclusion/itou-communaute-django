@@ -670,6 +670,25 @@ class TestDocumentationCategoryForumContent:
         assert len(add_documentation_control) == 1
         assert str(add_documentation_control[0]) == snapshot(name="documentation_category_add_file_control")
 
+    def test_filter_subforums_on_tags(self, client, db):
+        tag = faker.word()
+        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        second_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tag])
+        third_child = ForumFactory(parent=category_forum, with_public_perms=True)
+
+        # edge case: grand_child is filtered out. No actual use case to display them in the subforum list
+        ForumFactory(parent=third_child, with_public_perms=True, with_tags=[tag])
+
+        response = client.get(category_forum.get_absolute_url())
+        assert response.status_code == 200
+        assert [node.obj for node in response.context_data["sub_forums"].top_nodes] == list(
+            category_forum.get_children()
+        )
+
+        response = client.get(category_forum.get_absolute_url() + f"?forum_tags={tag}")
+        assert response.status_code == 200
+        assert [node.obj for node in response.context_data["sub_forums"].top_nodes] == [second_child]
+
 
 @pytest.fixture(name="discussion_area_forum")
 def discussion_area_forum_fixture():
