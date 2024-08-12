@@ -50,6 +50,7 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     tags = ModelMultipleChoiceField(
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )
+    new_tags = CharField(required=False, label="Ajouter un tag ou plusieurs tags (séparés par des virgules)")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -59,5 +60,10 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     def save(self):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
+        (
+            post.topic.tags.add(*[tag.strip() for tag in self.cleaned_data["new_tags"].split(",")])
+            if self.cleaned_data.get("new_tags")
+            else None
+        )
 
         return post

@@ -40,6 +40,7 @@
         <div class="tab-pane" id="tags">
             <div class="row">
                 <div id="tags_formset" class="col-md-12">{% include "partials/form_field.html" with field=post_form.tags %}</div>
+                {% include "partials/form_field.html" with field=post_form.new_tags %}
             </div>
         </div>
         {% if poll_option_formset %}
