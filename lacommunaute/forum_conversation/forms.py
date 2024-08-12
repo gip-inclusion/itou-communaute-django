@@ -1,8 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.forms import CharField, CheckboxSelectMultiple, HiddenInput, ModelMultipleChoiceField
 from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, TopicForm as AbstractTopicForm
-from machina.conf import settings as machina_settings
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.models import Post
@@ -43,10 +41,7 @@ class PostForm(CreateUpdatePostMixin, AbstractPostForm):
 
     def create_post(self):
         post = super().create_post()
-        post.subject = f"{machina_settings.TOPIC_ANSWER_SUBJECT_PREFIX} {self.topic.subject}"
-
-        if self.user.is_anonymous:
-            post.username = self.cleaned_data["username"]
+        post.subject = self.topic.subject
 
         return post
 
@@ -58,19 +53,11 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        try:
-            if hasattr(self.instance, "topic"):
-                self.fields["tags"].initial = self.instance.topic.tags.all()
-        except ObjectDoesNotExist:
-            pass
+        if self.instance.pk:
+            self.fields["tags"].initial = self.instance.topic.tags.all()
 
     def save(self):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
-
-        if self.user.is_anonymous:
-            post.username = self.cleaned_data["username"]
-
-        post.save()
 
         return post
