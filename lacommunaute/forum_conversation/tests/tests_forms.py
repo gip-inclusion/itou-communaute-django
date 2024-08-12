@@ -15,6 +15,7 @@ from lacommunaute.forum_conversation.factories import (
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
+from taggit.models import Tag
 
 
 faker = Faker(settings.LANGUAGE_CODE)
@@ -203,6 +204,26 @@ class TestTopicForm:
         assert topic.first_post.poster == user
         assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == superuser
+
+    def test_init_tags_when_creating_topic(self, db, client, public_forum):
+        response = client.get(get_create_topic_url(public_forum))
+        assert response.status_code == 200
+        assert response.context_data["post_form"].fields["tags"].initial is None
+
+    def test_init_tags_when_updating_topic(self, db, client, public_forum):
+        topic = TopicFactory(forum=public_forum, with_post=True)
+        client.force_login(topic.poster)
+        response = client.get(get_update_topic_url(topic))
+        assert response.status_code == 200
+        assert set(response.context_data["post_form"].fields["tags"].initial) == set(Tag.objects.none())
+
+    def test_init_tags_when_updating_tagged_topic(self, db, client, public_forum):
+        topic = TopicFactory(forum=public_forum, with_post=True, with_tags=[faker.word() for _ in range(2)])
+        client.force_login(topic.poster)
+
+        response = client.get(get_update_topic_url(topic))
+        assert response.status_code == 200
+        assert set(response.context_data["post_form"].fields["tags"].initial) == set(Tag.objects.all())
 
 
 class TestPostForm:

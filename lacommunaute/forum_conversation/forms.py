@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F
 from django.forms import CharField, CheckboxSelectMultiple, HiddenInput, ModelMultipleChoiceField
 from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, TopicForm as AbstractTopicForm
@@ -54,11 +53,8 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        try:
-            if hasattr(self.instance, "topic"):
-                self.fields["tags"].initial = self.instance.topic.tags.all()
-        except ObjectDoesNotExist:
-            pass
+        if self.instance.pk:
+            self.fields["tags"].initial = self.instance.topic.tags.all()
 
     def save(self):
         post = super().save()
