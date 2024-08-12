@@ -44,9 +44,6 @@ class PostForm(CreateUpdatePostMixin, AbstractPostForm):
         post = super().create_post()
         post.subject = self.topic.subject
 
-        if self.user.is_anonymous:
-            post.username = self.cleaned_data["username"]
-
         return post
 
 
@@ -66,10 +63,5 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
     def save(self):
         post = super().save()
         post.topic.tags.set(self.cleaned_data["tags"])
-
-        if self.user.is_anonymous:
-            post.username = self.cleaned_data["username"]
-
-        post.save()
 
         return post
