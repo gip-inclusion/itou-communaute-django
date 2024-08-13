@@ -332,51 +332,6 @@
       </div>
   '''
 # ---
-# name: TestForumViewContent.test_upvotes_actions[upvotes_actions_anonymous]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" rel="nofollow" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
-              </a>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_actions[upvotes_actions_authenticated]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
-                  <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
-                  </button>
-              </form>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_actions[upvotes_actions_upvoted]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
-                  <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>1</span>
-                  </button>
-              </form>
-          
-      
-  </div>
-  '''
-# ---
 # name: TestForumViewContent.test_upvotes_counts[0-False][upvotes_counts_0]
   '''
   <div class="d-inline-block" id="upvotesarea10000">
@@ -414,19 +369,6 @@
                       <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>1</span>
                   </button>
               </form>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_counts[0][upvotes_counts_0]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" rel="nofollow" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
-              </a>
           
       
   </div>
@@ -474,19 +416,6 @@
   </div>
   '''
 # ---
-# name: TestForumViewContent.test_upvotes_counts[1][upvotes_counts_1]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" rel="nofollow" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>1</span>
-              </a>
-          
-      
-  </div>
-  '''
-# ---
 # name: TestForumViewContent.test_upvotes_counts[2-False][upvotes_counts_2]
   '''
   <div class="d-inline-block" id="upvotesarea10000">
@@ -522,67 +451,6 @@
                   <input name="pk" type="hidden" value="10000"/>
                   <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
                       <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>3</span>
-                  </button>
-              </form>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_counts[2][upvotes_counts_2]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/inclusion_connect/authorize?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" rel="nofollow" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>2</span>
-              </a>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_counts[upvotes_counts_0]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
-                  <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
-                  </button>
-              </form>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_counts[upvotes_counts_1]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
-                  <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>1</span>
-                  </button>
-              </form>
-          
-      
-  </div>
-  '''
-# ---
-# name: TestForumViewContent.test_upvotes_counts[upvotes_counts_2]
-  '''
-  <div class="d-inline-block" id="upvotesarea10000">
-      
-          
-              <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
-                  <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>2</span>
                   </button>
               </form>
           
