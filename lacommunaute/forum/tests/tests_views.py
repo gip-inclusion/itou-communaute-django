@@ -703,6 +703,31 @@ class TestDocumentationCategoryForumContent:
             [second_child, third_child]
         )
 
+    def test_show_subforum_tags(self, client, db, snapshot, reset_forum_sequence):
+        category_forum = CategoryForumFactory(with_public_perms=True, for_snapshot=True)
+        ForumFactory(parent=category_forum, with_public_perms=True, for_snapshot=True, name="Test-1")
+        ForumFactory(
+            parent=category_forum,
+            with_public_perms=True,
+            with_tags=["tag1", "tag2"],
+            with_image=True,
+            for_snapshot=True,
+            name="Test-2",
+        )
+        response = client.get(category_forum.get_absolute_url())
+        assert response.status_code == 200
+
+        content = parse_response_to_soup(response, selector="main", replace_img_src=True)
+        assert str(content) == snapshot(name="documentation_category_subforum_tags")
+
+    def test_numqueries_on_tags(self, client, db, django_assert_num_queries):
+        category_forum = CategoryForumFactory(with_public_perms=True)
+        ForumFactory.create_batch(
+            20, parent=category_forum, with_public_perms=True, with_tags=[f"tag{i}" for i in range(3)]
+        )
+        with django_assert_num_queries(18):
+            client.get(category_forum.get_absolute_url())
+
 
 @pytest.fixture(name="discussion_area_forum")
 def discussion_area_forum_fixture():

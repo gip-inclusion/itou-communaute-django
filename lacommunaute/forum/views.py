@@ -48,10 +48,13 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
 
     def get_descendants(self):
+        qs = self.get_forum().get_descendants()
+
         forum_tags = self.request.GET.get("forum_tags")
         if forum_tags:
-            return self.get_forum().get_descendants().filter(tags__slug__in=forum_tags.split(","))
-        return self.get_forum().get_descendants()
+            qs = qs.filter(tags__slug__in=forum_tags.split(","))
+
+        return qs.prefetch_related("tags")
 
     def get_context_data(self, **kwargs):
         forum = self.get_forum()
