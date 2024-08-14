@@ -261,13 +261,7 @@
                       
                       <div class="card-body pb-0">
                           <p class="h3 lh-base">Test-2</p>
-                          
-                              <span class="tag bg-info-lighter text-info">tag1</span>
-  
-                          
-                              <span class="tag bg-info-lighter text-info">tag2</span>
-  
-                          
+                          <div><span class="tag bg-info-lighter text-info">tag1</span><span class="tag bg-info-lighter text-info">tag2</span></div>
                           <div class="mt-3">Test description</div>
                       </div>
                       <div class="card-footer text-end">

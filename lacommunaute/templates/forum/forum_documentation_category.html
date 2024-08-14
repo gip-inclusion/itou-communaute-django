@@ -11,9 +11,14 @@
                     {% endif %}
                     <div class="card-body pb-0">
                         <p class="h3 lh-base">{{ node.obj.name }}</p>
-                        {% for tag in node.obj.tags.all %}
-                            {% include "partials/tag.html" with tag=tag only %}
-                        {% endfor %}
+                        {% spaceless %}
+                            {% for tag in node.obj.tags.all %}
+                                {% if forloop.first %}<div>{% endif %}
+                                    {% include "partials/tag.html" with tag=tag only %}
+                                    {% if forloop.last %}</div>{% endif %}
+                                {% empty %} {% comment %} no div {% endcomment %}
+                            {% endfor %}
+                        {% endspaceless %}
                         {% if node.obj.short_description %}<div class="mt-3">{{ node.obj.short_description }}</div>{% endif %}
                     </div>
                     <div class="card-footer text-end">
