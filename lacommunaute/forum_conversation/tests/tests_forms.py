@@ -103,7 +103,7 @@ class TestTopicForm:
 
         response = client.post(
             get_create_topic_url(public_forum),
-            data={"subject": "Test", "content": faker.sentences(2), "username": username},
+            data={"subject": "Test", "content": faker.paragraph(nb_sentences=5), "username": username},
         )
         assert response.status_code == 302
 
@@ -120,7 +120,7 @@ class TestTopicForm:
         session = client.session
         session["anonymous_topic"] = topic.first_post.anonymous_key
 
-        data = {"subject": faker.word(), "content": faker.sentences(2), "username": username}
+        data = {"subject": faker.word(), "content": faker.paragraph(nb_sentences=5), "username": username}
         response = client.post(get_update_topic_url(topic), data=data)
         assert response.status_code == 302
 
@@ -139,7 +139,7 @@ class TestTopicForm:
 
         data = {
             "subject": faker.word(),
-            "content": faker.sentences(2),
+            "content": faker.paragraph(nb_sentences=5),
             **superuser_hidden_fields,
         }
         response = client.post(get_update_topic_url(topic), data=data)
@@ -157,7 +157,7 @@ class TestTopicForm:
         client.force_login(user)
 
         response = client.post(
-            get_create_topic_url(public_forum), data={"subject": "Test", "content": faker.sentences(2)}
+            get_create_topic_url(public_forum), data={"subject": "Test", "content": faker.paragraph(nb_sentences=5)}
         )
         assert response.status_code == 302
 
@@ -173,7 +173,7 @@ class TestTopicForm:
         user = topic.poster
         client.force_login(user)
 
-        data = {"subject": faker.word(), "content": faker.sentences(2)}
+        data = {"subject": faker.word(), "content": faker.paragraph(nb_sentences=5)}
         response = client.post(get_update_topic_url(topic), data=data)
         assert response.status_code == 302
 
@@ -192,7 +192,7 @@ class TestTopicForm:
 
         data = {
             "subject": faker.word(),
-            "content": faker.sentences(2),
+            "content": faker.paragraph(nb_sentences=5),
             **superuser_hidden_fields,
         }
         response = client.post(get_update_topic_url(topic), data=data)
@@ -231,7 +231,9 @@ class TestPostForm:
         topic = TopicFactory(forum=public_forum, with_post=True)
         username = faker.email()
 
-        response = client.post(get_reply_topic_url(topic), data={"content": faker.sentences(2), "username": username})
+        response = client.post(
+            get_reply_topic_url(topic), data={"content": faker.paragraph(nb_sentences=5), "username": username}
+        )
         assert response.status_code == 200  # htmx view
 
         topic.refresh_from_db()
@@ -247,7 +249,7 @@ class TestPostForm:
         session = client.session
         session["anonymous_post"] = post.anonymous_key
 
-        data = {"content": faker.sentences(2), "username": username}
+        data = {"content": faker.paragraph(nb_sentences=5), "username": username}
         response = client.post(get_post_update_url(post), data=data)
         assert response.status_code == 302
 
@@ -263,7 +265,7 @@ class TestPostForm:
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)
 
-        data = {"content": faker.sentences(2), **superuser_hidden_fields}
+        data = {"content": faker.paragraph(nb_sentences=5), **superuser_hidden_fields}
         response = client.post(get_post_update_url(post), data=data)
         assert response.status_code == 302
 
@@ -278,7 +280,7 @@ class TestPostForm:
         user = UserFactory()
         client.force_login(user)
 
-        response = client.post(get_reply_topic_url(topic), data={"content": faker.sentences(2)})
+        response = client.post(get_reply_topic_url(topic), data={"content": faker.paragraph(nb_sentences=5)})
         assert response.status_code == 200
 
         topic.refresh_from_db()
@@ -295,7 +297,7 @@ class TestPostForm:
         user = post.poster
         client.force_login(user)
 
-        data = {"content": faker.sentences(2)}
+        data = {"content": faker.paragraph(nb_sentences=5)}
         response = client.post(get_post_update_url(post), data=data)
         assert response.status_code == 302
 
@@ -311,7 +313,7 @@ class TestPostForm:
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)
 
-        data = {"content": faker.sentences(2), **superuser_hidden_fields}
+        data = {"content": faker.paragraph(nb_sentences=5), **superuser_hidden_fields}
         response = client.post(get_post_update_url(post), data=data)
         assert response.status_code == 302
 
