@@ -250,6 +250,12 @@
   </div>
   '''
 # ---
+# name: TestTopicListView.test_clickable_tags[clickable_tags_page1]
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tags=tag&amp;page=1">tag</a>'
+# ---
+# name: TestTopicListView.test_clickable_tags[clickable_tags_page2]
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tags=tag&amp;page=1">tag</a>'
+# ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">

@@ -1,0 +1,5 @@
+{% if url %}
+    <a href="{{ url }}" class="tag bg-info-lighter text-info">{{ tag.name }}</a>
+{% else %}
+    <span class="tag bg-info-lighter text-info">{{ tag.name }}</span>
+{% endif %}

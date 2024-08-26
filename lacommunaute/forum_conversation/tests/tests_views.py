@@ -1015,32 +1015,22 @@ class TopicListViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
-    def test_clickable_tags(self):
-        tag = Tag.objects.create(name="tag")
-        TopicFactory(with_post=True, forum=self.forum, with_tags=[tag.name])
-        self.client.force_login(self.user)
 
-        response = self.client.get(self.url)
-        self.assertContains(
-            response,
-            (
-                f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
-                '<span class="tag bg-info-lighter '
-                f'text-info">{ tag.name }</span></a>'
-            ),
-        )
+class TestTopicListView:
+    def test_clickable_tags(self, client, db, snapshot):
+        forum = ForumFactory(with_public_perms=True)
+        TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
 
-        TopicFactory.create_batch(10, with_post=True, forum=self.forum)
-        response = self.client.get(self.url + "?page=2")
-        self.assertContains(
-            response,
-            (
-                f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
-                '<span class="tag bg-info-lighter '
-                f'text-info">{ tag.name }</span></a>'
-            ),
-            status_code=200,
-        )
+        response = client.get(reverse("forum_conversation_extension:topics"))
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page1")
+
+        # add 10 Topics before the tagged one to put it on the second page
+        TopicFactory.create_batch(10, with_post=True, forum=forum)
+
+        response = client.get(reverse("forum_conversation_extension:topics") + "?page=2")
+        assert response.status_code == 200
+        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page2")
 
 
 class TestPosterTemplate:
