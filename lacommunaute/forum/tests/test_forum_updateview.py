@@ -127,8 +127,7 @@ def test_added_tags_are_saved(client, db):
     forum = ForumFactory()
 
     Tag.objects.bulk_create([Tag(name=tag, slug=tag) for tag in [faker.word() for _ in range(3)]])
-    # new_tag is not in the database
-    new_tag = faker.word()
+    tags_list = [faker.word() for i in range(2)]
 
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
     response = client.post(
@@ -138,11 +137,29 @@ def test_added_tags_are_saved(client, db):
             "short_description": forum.short_description,
             "description": forum.description.raw,
             "tags": [Tag.objects.first().pk],
-            "new_tag": new_tag,
+            "new_tags": ", ".join(tags_list),
         },
     )
 
     assert response.status_code == 302
 
     forum.refresh_from_db()
-    assert all(tag in [tag.name for tag in forum.tags.all()] for tag in [Tag.objects.first().name, new_tag])
+    assert all(tag in [tag.name for tag in forum.tags.all()] for tag in [Tag.objects.first().name] + tags_list)
+
+
+def test_update_forum_without_tag(client, db):
+    client.force_login(UserFactory(is_superuser=True))
+    forum = ForumFactory()
+    url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+    response = client.post(
+        url,
+        data={
+            "name": forum.name,
+            "short_description": forum.short_description,
+            "description": forum.description.raw,
+        },
+    )
+    assert response.status_code == 302
+
+    forum.refresh_from_db()
+    assert forum.tags.count() == 0

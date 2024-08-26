@@ -44,7 +44,7 @@ class ForumForm(forms.ModelForm):
         widget=CheckboxSelectMultiple,
         required=False,
     )
-    new_tag = CharField(required=False, label="Ajouter un tag")
+    new_tags = CharField(required=False, label="Ajouter un tag ou plusieurs tags (séparés par des virgules)")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -58,7 +58,11 @@ class ForumForm(forms.ModelForm):
         if commit:
             forum.save()
             forum.tags.set(self.cleaned_data["tags"])
-            forum.tags.add(self.cleaned_data["new_tag"]) if self.cleaned_data.get("new_tag") else None
+            (
+                forum.tags.add(*[tag.strip() for tag in self.cleaned_data["new_tags"].split(",")])
+                if self.cleaned_data.get("new_tags")
+                else None
+            )
         return forum
 
     class Meta:

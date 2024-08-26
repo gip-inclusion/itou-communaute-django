@@ -49,4 +49,4 @@ def test_form_field():
     assert not form.fields["image"].required
     assert not form.fields["certified"].required
     assert not form.fields["tags"].required
-    assert not form.fields["new_tag"].required
+    assert not form.fields["new_tags"].required
