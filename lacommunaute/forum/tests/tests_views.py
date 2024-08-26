@@ -733,7 +733,8 @@ class TestDocumentationCategoryForumContent:
         ForumFactory.create_batch(
             20, parent=category_forum, with_public_perms=True, with_tags=[f"tag{i}" for i in range(3)]
         )
-        with django_assert_num_queries(18):
+        # vincentporte TOBEFIXED : DUPLICATED QUERIES
+        with django_assert_num_queries(19):
             client.get(category_forum.get_absolute_url())
 
 

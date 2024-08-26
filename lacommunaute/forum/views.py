@@ -10,6 +10,7 @@ from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
+from taggit.models import Tag
 
 from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.forms import ForumForm
@@ -25,7 +26,32 @@ logger = logging.getLogger(__name__)
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 
 
-class ForumView(BaseForumView, FilteredTopicsListViewMixin):
+class SubCategoryForumListMixin:
+    def get_descendants(self):
+        qs = self.get_forum().get_descendants()
+
+        forum_tags = self.request.GET.get("forum_tags")
+        if forum_tags:
+            qs = qs.filter(tags__slug__in=forum_tags.split(","))
+
+        return qs.prefetch_related("tags")
+
+    def get_descendants_tags(self):
+        return Tag.objects.filter(
+            taggit_taggeditem_items__content_type=ContentType.objects.get_for_model(Forum),
+            taggit_taggeditem_items__object_id__in=self.get_forum().get_descendants().values_list("id", flat=True),
+        ).distinct()
+
+    def forum_tags_context(self):
+        return {
+            # TODO : remove permission management, though all forums are public in our case
+            "sub_forums": forum_visibility_content_tree_from_forums(self.request, self.get_descendants()),
+            "sub_forums_tags": self.get_descendants_tags(),
+            "active_forum_tag_slug": self.request.GET.get("forum_tags") or None,
+        }
+
+
+class ForumView(BaseForumView, FilteredTopicsListViewMixin, SubCategoryForumListMixin):
     paginate_by = settings.FORUM_TOPICS_NUMBER_PER_PAGE
 
     def get_template_names(self):
@@ -45,15 +71,6 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
 
     def get_queryset(self):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
-
-    def get_descendants(self):
-        qs = self.get_forum().get_descendants()
-
-        forum_tags = self.request.GET.get("forum_tags")
-        if forum_tags:
-            qs = qs.filter(tags__slug__in=forum_tags.split(","))
-
-        return qs.prefetch_related("tags")
 
     def get_context_data(self, **kwargs):
         forum = self.get_forum()
@@ -84,14 +101,23 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         )
         context = context | self.get_topic_filter_context()
 
-        # vincentporte, overide the method to add the sub_forums, not testing permissions ^v^
-        context["sub_forums"] = forum_visibility_content_tree_from_forums(self.request, self.get_descendants())
+        if self.will_render_documentation_category_variant():
+            context = context | self.forum_tags_context()
 
         if self.will_render_documentation_variant():
             context["sibling_forums"] = forum.get_siblings(include_self=True)
 
         if forum.image:
             context["og_image"] = forum.image
+        return context
+
+
+class SubCategoryForumListView(BaseForumView, SubCategoryForumListMixin):
+    template_name = "forum/partials/subcategory_forum_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = context | self.forum_tags_context()
         return context
 
 

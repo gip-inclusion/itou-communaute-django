@@ -1,0 +1,175 @@
+# serializer version: 1
+# name: test_listview_filtering[subcategoryforum_listview_filtering_on_existing_tag]
+  '''
+  <html><head></head><body><div class="container-fluid" id="subforums_area">
+      
+          <div class="c-box">
+              <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
+              <div class="container-fluid d-flex justify-content-center">
+                  
+      
+          
+              <button class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">
+                  <i class="ri-close-circle-fill"></i>Jazz
+              </button>
+          
+      
+  
+      
+          
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+          
+      
+  
+  
+              </div>
+          </div>
+      
+      <div class="row mt-4" id="documentation-category-subforums">
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
+                      
+                          <div class="card-header card-header-thumbnail rounded">
+                              <img alt="Ella Fitzgerald" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                          </div>
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Ella Fitzgerald</p>
+                          <div>
+      
+          <span class="tag bg-info-lighter text-info">Jazz</span>
+      
+  
+      
+          <span class="tag bg-info-lighter text-info">Blues</span>
+      
+  
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/ella-fitzgerald-[PK of Forum]/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          
+      </div>
+  </div>
+  </body></html>
+  '''
+# ---
+# name: test_listview_filtering[subcategoryforum_listview_filtering_on_non_existing_tag]
+  '''
+  <html><head></head><body><div class="container-fluid" id="subforums_area">
+      
+          <div class="c-box">
+              <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
+              <div class="container-fluid d-flex justify-content-center">
+                  
+      
+          
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
+          
+      
+  
+      
+          
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+          
+      
+  
+  
+              </div>
+          </div>
+      
+      <div class="row mt-4" id="documentation-category-subforums">
+          
+      </div>
+  </div>
+  </body></html>
+  '''
+# ---
+# name: test_listview_filtering[subcategoryforum_listview_without_filter]
+  '''
+  <html><head></head><body><div class="container-fluid" id="subforums_area">
+      
+          <div class="c-box">
+              <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
+              <div class="container-fluid d-flex justify-content-center">
+                  
+      
+          
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
+          
+      
+  
+      
+          
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+          
+      
+  
+  
+              </div>
+          </div>
+      
+      <div class="row mt-4" id="documentation-category-subforums">
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
+                      
+                          <div class="card-header card-header-thumbnail rounded">
+                              <img alt="Ella Fitzgerald" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                          </div>
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Ella Fitzgerald</p>
+                          <div>
+      
+          <span class="tag bg-info-lighter text-info">Jazz</span>
+      
+  
+      
+          <span class="tag bg-info-lighter text-info">Blues</span>
+      
+  
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/ella-fitzgerald-[PK of Forum]/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
+                      
+                          <div class="card-header card-header-thumbnail rounded">
+                              <img alt="Mayra Andrade" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                          </div>
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Mayra Andrade</p>
+                          <div>
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/mayra-andrade-[PK of Forum]/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          
+      </div>
+  </div>
+  </body></html>
+  '''
+# ---
