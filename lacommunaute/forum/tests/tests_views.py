@@ -670,6 +670,39 @@ class TestDocumentationCategoryForumContent:
         assert len(add_documentation_control) == 1
         assert str(add_documentation_control[0]) == snapshot(name="documentation_category_add_file_control")
 
+    def test_filter_subforums_on_tags(self, client, db):
+        tags = [faker.word() for _ in range(3)]
+        category_forum = CategoryForumFactory(with_public_perms=True)
+        first_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0]])
+        second_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0], tags[1]])
+        third_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[2]])
+        # forum without tags
+        ForumFactory(parent=category_forum, with_public_perms=True)
+
+        # edge case: grand_child is filtered out. No actual use case to display them in the subforum list
+        ForumFactory(parent=third_child, with_public_perms=True, with_tags=[tags[2]])
+
+        # no filter
+        response = client.get(category_forum.get_absolute_url())
+        assert response.status_code == 200
+        assert [node.obj for node in response.context_data["sub_forums"].top_nodes] == list(
+            category_forum.get_children()
+        )
+
+        # filter on first tag
+        response = client.get(category_forum.get_absolute_url() + f"?forum_tags={tags[0]}")
+        assert response.status_code == 200
+        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set(
+            [first_child, second_child]
+        )
+
+        # filter on multiple tags
+        response = client.get(category_forum.get_absolute_url() + f"?forum_tags={tags[1]},{tags[2]}")
+        assert response.status_code == 200
+        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set(
+            [second_child, third_child]
+        )
+
 
 @pytest.fixture(name="discussion_area_forum")
 def discussion_area_forum_fixture():

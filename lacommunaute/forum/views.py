@@ -23,6 +23,7 @@ from lacommunaute.utils.perms import add_public_perms_on_forum
 logger = logging.getLogger(__name__)
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
+ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 
 
 class ForumView(BaseForumView, FilteredTopicsListViewMixin):
@@ -45,6 +46,12 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
 
     def get_queryset(self):
         return self.filter_queryset(self.get_forum().topics.optimized_for_topics_list(self.request.user.id))
+
+    def get_descendants(self):
+        forum_tags = self.request.GET.get("forum_tags")
+        if forum_tags:
+            return self.get_forum().get_descendants().filter(tags__slug__in=forum_tags.split(","))
+        return self.get_forum().get_descendants()
 
     def get_context_data(self, **kwargs):
         forum = self.get_forum()
@@ -74,6 +81,14 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
             else reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": self.forum.slug})
         )
         context = context | self.get_topic_filter_context()
+
+        # vincentporte, overide the method to add the sub_forums, not testing permissions ^v^
+        context["sub_forums"] = ForumVisibilityContentTree.from_forums(
+            self.request.forum_permission_handler.forum_list_filter(
+                self.get_descendants(),
+                self.request.user,
+            ),
+        )
 
         if self.will_render_documentation_variant():
             context["sibling_forums"] = forum.get_siblings(include_self=True)
