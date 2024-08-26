@@ -1025,7 +1025,7 @@ class TopicListViewTest(TestCase):
             response,
             (
                 f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
-                '<span class="badge badge-xs rounded-pill bg-info-lighter '
+                '<span class="tag bg-info-lighter '
                 f'text-info">{ tag.name }</span></a>'
             ),
         )
@@ -1036,7 +1036,7 @@ class TopicListViewTest(TestCase):
             response,
             (
                 f'<a href="{self.url}?tags={tag.slug}&amp;page=1">'
-                '<span class="badge badge-xs rounded-pill bg-info-lighter '
+                '<span class="tag bg-info-lighter '
                 f'text-info">{ tag.name }</span></a>'
             ),
             status_code=200,
