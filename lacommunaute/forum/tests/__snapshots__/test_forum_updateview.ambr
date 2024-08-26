@@ -15,28 +15,28 @@
               
                   <div class="form-check form-check-inline">
                       <input checked="" class="form-check-input" id="id_tags_0" name="tags" type="checkbox" value="9999"/>
-                      <label class="form-check-label badge badge-sm rounded-pill bg-info-lighter text-info" for="id_tags_0">
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_0">
                           iae
                       </label>
                   </div>
               
                   <div class="form-check form-check-inline">
                       <input checked="" class="form-check-input" id="id_tags_1" name="tags" type="checkbox" value="10000"/>
-                      <label class="form-check-label badge badge-sm rounded-pill bg-info-lighter text-info" for="id_tags_1">
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_1">
                           siae
                       </label>
                   </div>
               
                   <div class="form-check form-check-inline">
                       <input checked="" class="form-check-input" id="id_tags_2" name="tags" type="checkbox" value="10001"/>
-                      <label class="form-check-label badge badge-sm rounded-pill bg-info-lighter text-info" for="id_tags_2">
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_2">
                           prescripteur
                       </label>
                   </div>
               
                   <div class="form-check form-check-inline">
                       <input class="form-check-input" id="id_tags_3" name="tags" type="checkbox" value="10002"/>
-                      <label class="form-check-label badge badge-sm rounded-pill bg-info-lighter text-info" for="id_tags_3">
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_3">
                           undesired_tag
                       </label>
                   </div>
