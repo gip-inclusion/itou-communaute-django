@@ -2,6 +2,8 @@ import re
 
 from django import forms
 from django.conf import settings
+from django.forms import CharField, CheckboxSelectMultiple, ModelMultipleChoiceField
+from taggit.models import Tag
 
 from lacommunaute.forum.models import Forum
 
@@ -36,12 +38,31 @@ class ForumForm(forms.ModelForm):
         widget=forms.FileInput(attrs={"accept": settings.SUPPORTED_IMAGE_FILE_TYPES.keys()}),
     )
     certified = forms.BooleanField(required=False, label="Certifiée par la communauté de l'inclusion")
+    tags = ModelMultipleChoiceField(
+        label="Sélectionner un ou plusieurs tags",
+        queryset=Tag.objects.all(),
+        widget=CheckboxSelectMultiple,
+        required=False,
+    )
+    new_tags = CharField(required=False, label="Ajouter un tag ou plusieurs tags (séparés par des virgules)")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields["tags"].initial = self.instance.tags.all()
 
     def save(self, commit=True):
         forum = super().save(commit=False)
         forum.description = wrap_iframe_in_div_tag(self.cleaned_data.get("description"))
+
         if commit:
             forum.save()
+            forum.tags.set(self.cleaned_data["tags"])
+            (
+                forum.tags.add(*[tag.strip() for tag in self.cleaned_data["new_tags"].split(",")])
+                if self.cleaned_data.get("new_tags")
+                else None
+            )
         return forum
 
     class Meta:

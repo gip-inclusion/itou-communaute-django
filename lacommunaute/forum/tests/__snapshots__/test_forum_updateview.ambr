@@ -1,0 +1,51 @@
+# serializer version: 1
+# name: test_selected_tags_are_preloaded[selected_tags_preloaded]
+  '''
+  <div class="form-group" id="div_id_tags">
+      
+          
+              <label class="control-label" for="id_tags">
+                  Sélectionner un ou plusieurs tags
+                  
+                      <span class="text-muted">(optional)</span>
+                  
+              </label>
+          
+          
+              
+                  <div class="form-check form-check-inline">
+                      <input checked="" class="form-check-input" id="id_tags_0" name="tags" type="checkbox" value="9999"/>
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_0">
+                          iae
+                      </label>
+                  </div>
+              
+                  <div class="form-check form-check-inline">
+                      <input checked="" class="form-check-input" id="id_tags_1" name="tags" type="checkbox" value="10000"/>
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_1">
+                          siae
+                      </label>
+                  </div>
+              
+                  <div class="form-check form-check-inline">
+                      <input checked="" class="form-check-input" id="id_tags_2" name="tags" type="checkbox" value="10001"/>
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_2">
+                          prescripteur
+                      </label>
+                  </div>
+              
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" id="id_tags_3" name="tags" type="checkbox" value="10002"/>
+                      <label class="form-check-label tag bg-info-lighter text-info" for="id_tags_3">
+                          undesired_tag
+                      </label>
+                  </div>
+              
+          
+      
+      
+      
+      
+  </div>
+  '''
+# ---

@@ -38,6 +38,15 @@ class ForumFactory(BaseForumFactory):
         for user in extracted:
             UpVote.objects.create(voter=user, content_object=self)
 
+    @factory.post_generation
+    def with_tags(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        if isinstance(extracted, list):
+            for tag in extracted:
+                self.tags.add(tag)
+
 
 class CategoryForumFactory(ForumFactory):
     type = Forum.FORUM_CAT
