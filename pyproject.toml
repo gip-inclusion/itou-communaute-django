@@ -25,6 +25,7 @@ django-csp = "^3.7"
 django-permissions-policy = "^4.15.0"
 langdetect = "^1.0.9"
 freezegun = "^1.5.1"
+pyjwt = "^2.9.0"
 
 
 [tool.poetry.group.dev.dependencies]
