@@ -46,7 +46,7 @@ def _redirect_to_login_page_on_error(error_msg, request=None):
     return HttpResponseRedirect(reverse("pages:home"))
 
 
-def openid_connect_authorize(request):
+def pro_connect_authorize(request):
     # Start a new session.
     previous_url = request.GET.get("previous_url", reverse("pages:home"))
     next_url = request.GET.get("next")
@@ -65,7 +65,6 @@ def openid_connect_authorize(request):
         "scope": constants.OPENID_CONNECT_SCOPES,
         "state": signed_csrf,
         "nonce": crypto.get_random_string(length=12),
-        "from": "communaute",  # Display a "La communauté" logo on the connection page.
         "acr_values": "eidas1",  # Force the eIDAS authentication.
     }
     redirect_url = (
@@ -74,7 +73,7 @@ def openid_connect_authorize(request):
     return HttpResponseRedirect(f"{redirect_url}?{urlencode(data)}")
 
 
-def openid_connect_callback(request):  # pylint: disable=too-many-return-statements
+def pro_connect_callback(request):  # pylint: disable=too-many-return-statements
     code = request.GET.get("code")
     state = request.GET.get("state")
     if code is None or not OpenID_State.is_valid(state):
@@ -150,7 +149,7 @@ def openid_connect_callback(request):  # pylint: disable=too-many-return-stateme
     return HttpResponseRedirect(next_url)
 
 
-def openid_connect_logout(request):
+def pro_connect_logout(request):
     token = request.GET.get("token")
     post_logout_redirect_uri = request.GET.get("redirect_url", reverse("pages:home"))
 

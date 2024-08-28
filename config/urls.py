@@ -26,7 +26,7 @@ tracking_urlpatterns_factory = get_class("forum_tracking.urls", "urlpatterns_fac
 urlpatterns = [
     path("admin/", admin.site.urls),
     # Inclusion Connect URLs.
-    path("openid_connect/", include(openid_connect_urls)),
+    path("", include(openid_connect_urls)),
     # www.
     path("", include(pages_urls)),
     path("members/", include(forum_member_urls)),
