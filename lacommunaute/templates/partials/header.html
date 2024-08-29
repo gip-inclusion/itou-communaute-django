@@ -104,16 +104,14 @@
                                                 <div class="dropdown-divider"></div>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" id="js-logout" href="{% url 'inclusion_connect:logout' %}">Déconnexion</a>
+                                                <a class="dropdown-item text-danger" id="js-logout" href="{% url 'openid_connect:logout' %}">Déconnexion</a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                             {% else %}
                                 <li>
-                                    <a href="{% url 'inclusion_connect:authorize' %}" rel="nofollow" class="btn btn-inclusion-connect">
-                                        <img src="{% static_theme_images 'logo-inclusion-connect-two-lines.svg' %}" alt="Se connecter | S'inscrire" height="37">
-                                    </a>
+                                    <a href="{% url 'openid_connect:authorize' %}" rel="nofollow" class="btn">Se connecter | S'inscrire</a>
                                 </li>
                             {% endif %}
                         </ul>
@@ -280,16 +278,14 @@
                                     <div class="dropdown-divider"></div>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-danger" id="js-logout" href="{% url 'inclusion_connect:logout' %}">Déconnexion</a>
+                                    <a class="dropdown-item text-danger" id="js-logout" href="{% url 'openid_connect:logout' %}">Déconnexion</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 {% else %}
                     <div>
-                        <a href="{% url 'inclusion_connect:authorize' %}" rel="nofollow" class="btn btn-inclusion-connect">
-                            <img src="{% static_theme_images 'logo-inclusion-connect-one-line.svg' %}" alt="Se connecter | S'inscrire" class="img-fluid">
-                        </a>
+                        <a href="{% url 'openid_connect:authorize' %}" rel="nofollow" class="btn">Se connecter | S'inscrire</a>
                     </div>
                 {% endif %}
             </nav>
