@@ -17,7 +17,7 @@
   
       
           
-              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tag=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
           
       
   
@@ -71,13 +71,13 @@
                   
       
           
-              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tag=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
           
       
   
       
           
-              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tag=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
           
       
   
@@ -102,13 +102,13 @@
                   
       
           
-              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tag=jazz" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-jazz">Jazz</button>
           
       
   
       
           
-              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tags=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
+              <button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/category-forum-[PK of Forum]/subs/?forum_tag=blues" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-blues">Blues</button>
           
       
   

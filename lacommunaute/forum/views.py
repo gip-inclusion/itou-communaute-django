@@ -30,19 +30,19 @@ class SubCategoryForumListMixin:
     def get_descendants(self):
         qs = self.get_forum().get_descendants()
 
-        forum_tags = self.request.GET.get("forum_tags")
-        if forum_tags:
-            qs = qs.filter(tags__slug__in=forum_tags.split(","))
+        forum_tag = self.request.GET.get("forum_tag") or None
+        if forum_tag:
+            qs = qs.filter(tags__slug=forum_tag)
 
         return qs.prefetch_related("tags")
 
-    def get_descendants_tags(self):
+    def get_tags_of_descendants(self):
         return Tag.objects.filter(
             taggit_taggeditem_items__content_type=ContentType.objects.get_for_model(Forum),
             taggit_taggeditem_items__object_id__in=self.get_forum().get_descendants().values_list("id", flat=True),
         ).distinct()
 
-    def forum_tags_context(self):
+    def forum_tag_context(self):
         return {
             # TODO : remove permission management, though all forums are public in our case
             "sub_forums": forum_visibility_content_tree_from_forums(self.request, self.get_descendants()),
@@ -102,7 +102,7 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin, SubCategoryForumList
         context = context | self.get_topic_filter_context()
 
         if self.will_render_documentation_category_variant():
-            context = context | self.forum_tags_context()
+            context = context | self.forum_tag_context()
 
         if self.will_render_documentation_variant():
             context["sibling_forums"] = forum.get_siblings(include_self=True)
@@ -117,7 +117,7 @@ class SubCategoryForumListView(BaseForumView, SubCategoryForumListMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context = context | self.forum_tags_context()
+        context = context | self.forum_tag_context()
         return context
 
 

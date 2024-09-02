@@ -189,7 +189,7 @@
   </div>
   '''
 # ---
-# name: TestDocumentationCategoryForumContent.test_show_subforum_tags[documentation_category_subforum_tags]
+# name: TestDocumentationCategoryForumContent.test_show_subforum_tag[documentation_category_subforum_tag]
   '''
   <main class="s-main" id="main" role="main">
 

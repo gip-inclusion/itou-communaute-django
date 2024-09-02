@@ -1,6 +1,6 @@
 {% extends "forum/forum_detail.html" %}
 {% block subforum_list %}
-    {% include "forum/partials/subcategory_forum_list.html" with forum=forum sub_forums=sub_forums sub_forums_tags=sub_forums_tags active_forum_tag_slug=active_forum_tag_slug only %}
+    {% include "forum/partials/subcategory_forum_list.html" with forum=forum sub_forums=sub_forums tags_of_descendants=tags_of_descendants active_forum_tag_slug=active_forum_tag_slug only %}
 {% endblock subforum_list %}
 {% block forum_foot_content %}
     {% if user.is_superuser %}

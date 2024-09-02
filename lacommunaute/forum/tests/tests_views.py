@@ -697,21 +697,19 @@ class TestDocumentationCategoryForumContent:
             category_forum.get_children()
         )
 
-        # filter on first tag
-        response = client.get(category_forum.get_absolute_url() + f"?forum_tags={tags[0]}")
+        # filter on one tag
+        response = client.get(category_forum.get_absolute_url() + f"?forum_tag={tags[0]}")
         assert response.status_code == 200
         assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set(
             [first_child, second_child]
         )
 
-        # filter on multiple tags
-        response = client.get(category_forum.get_absolute_url() + f"?forum_tags={tags[1]},{tags[2]}")
+        # filtering on multiple tags is not supported yet
+        response = client.get(category_forum.get_absolute_url() + f"?forum_tag={tags[1]},{tags[2]}")
         assert response.status_code == 200
-        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set(
-            [second_child, third_child]
-        )
+        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set([])
 
-    def test_show_subforum_tags(self, client, db, snapshot, reset_forum_sequence):
+    def test_show_subforum_tag(self, client, db, snapshot, reset_forum_sequence):
         category_forum = CategoryForumFactory(with_public_perms=True, for_snapshot=True)
         ForumFactory(parent=category_forum, with_public_perms=True, for_snapshot=True, name="Test-1")
         ForumFactory(
@@ -726,7 +724,7 @@ class TestDocumentationCategoryForumContent:
         assert response.status_code == 200
 
         content = parse_response_to_soup(response, selector="main", replace_img_src=True)
-        assert str(content) == snapshot(name="documentation_category_subforum_tags")
+        assert str(content) == snapshot(name="documentation_category_subforum_tag")
 
     def test_numqueries_on_tags(self, client, db, django_assert_num_queries):
         category_forum = CategoryForumFactory(with_public_perms=True)

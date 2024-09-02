@@ -40,7 +40,7 @@ def test_listview_filtering(client, db, documentation_forum, snapshot):
             "forum_extension:subcategory_forums",
             kwargs={"slug": documentation_forum.slug, "pk": documentation_forum.pk},
         )
-        + "?forum_tags=rock"
+        + "?forum_tag=rock"
     )
     assert response.status_code == 200
     content = parse_response_to_soup(
@@ -53,7 +53,7 @@ def test_listview_filtering(client, db, documentation_forum, snapshot):
             "forum_extension:subcategory_forums",
             kwargs={"slug": documentation_forum.slug, "pk": documentation_forum.pk},
         )
-        + "?forum_tags=jazz"
+        + "?forum_tag=jazz"
     )
     assert response.status_code == 200
     content = parse_response_to_soup(

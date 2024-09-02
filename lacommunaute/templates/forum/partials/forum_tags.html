@@ -18,7 +18,7 @@
             <button id="filterforum-{{ tag.slug }}"
                     hx-target="#subforums_area"
                     hx-swap="outerHTML"
-                    hx-get="{% url 'forum_extension:subcategory_forums' forum.slug forum.pk %}?forum_tags={{ tag.slug }}"
+                    hx-get="{% url 'forum_extension:subcategory_forums' forum.slug forum.pk %}?forum_tag={{ tag.slug }}"
                     class="tag bg-info-lighter text-info matomo-event"
                     data-matomo-category="engagement"
                     data-matomo-action="filter"

@@ -1,9 +1,9 @@
 <div id="subforums_area" class="container-fluid">
-    {% if sub_forums_tags %}
+    {% if tags_of_descendants %}
         <div class="c-box">
             <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
             <div class="container-fluid d-flex justify-content-center">
-                {% include "forum/partials/forum_tags.html" with forum=forum tags=sub_forums_tags active_forum_tag_slug=active_forum_tag_slug only %}
+                {% include "forum/partials/forum_tags.html" with forum=forum tags=tags_of_descendants active_forum_tag_slug=active_forum_tag_slug only %}
             </div>
         </div>
     {% endif %}
