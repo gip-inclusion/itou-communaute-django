@@ -1,11 +1,8 @@
 from django.views.generic import DetailView, ListView
-from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.partner.models import Partner
-
-
-ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
+from lacommunaute.utils.perms import forum_visibility_content_tree_from_forums
 
 
 class PartnerListView(ListView):
@@ -22,10 +19,7 @@ class PartnerDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["sub_forums"] = ForumVisibilityContentTree.from_forums(
-            self.request.forum_permission_handler.forum_list_filter(
-                Forum.objects.filter(partner=self.object),
-                self.request.user,
-            ),
+        context["sub_forums"] = forum_visibility_content_tree_from_forums(
+            self.request, Forum.objects.filter(partner=self.object)
         )
         return context

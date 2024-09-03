@@ -17,13 +17,12 @@ from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.utils.perms import add_public_perms_on_forum
+from lacommunaute.utils.perms import add_public_perms_on_forum, forum_visibility_content_tree_from_forums
 
 
 logger = logging.getLogger(__name__)
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
-ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 
 
 class ForumView(BaseForumView, FilteredTopicsListViewMixin):
@@ -86,12 +85,7 @@ class ForumView(BaseForumView, FilteredTopicsListViewMixin):
         context = context | self.get_topic_filter_context()
 
         # vincentporte, overide the method to add the sub_forums, not testing permissions ^v^
-        context["sub_forums"] = ForumVisibilityContentTree.from_forums(
-            self.request.forum_permission_handler.forum_list_filter(
-                self.get_descendants(),
-                self.request.user,
-            ),
-        )
+        context["sub_forums"] = forum_visibility_content_tree_from_forums(self.request, self.get_descendants())
 
         if self.will_render_documentation_variant():
             context["sibling_forums"] = forum.get_siblings(include_self=True)

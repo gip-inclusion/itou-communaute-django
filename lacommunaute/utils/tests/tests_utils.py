@@ -40,8 +40,6 @@ from lacommunaute.utils.urls import urlize
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
 
-ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
-
 faker = Faker()
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
