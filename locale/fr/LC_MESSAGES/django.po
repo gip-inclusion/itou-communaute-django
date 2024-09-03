@@ -1032,3 +1032,9 @@ msgstr "Dès que possible"
 
 msgid "The following day"
 msgstr "Le jour suivant"
+
+msgid "Partner"
+msgstr "Partenaire"
+
+msgid "Partners"
+msgstr "Nos partenaires"
