@@ -19,6 +19,7 @@ from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
 
@@ -640,6 +641,13 @@ class TestDocumentationForumContent:
         assert (str(link_to_parent[0])) == snapshot(name="template_documentation_link_to_parent")
 
         assert len(content.find_all("a", href=sibling_forum.get_absolute_url())) == 1
+
+    def test_documentation_forum_with_partner(self, client, db, snapshot, documentation_forum):
+        documentation_forum.partner = PartnerFactory(for_snapshot=True, with_logo=True)
+        documentation_forum.save()
+        response = client.get(documentation_forum.get_absolute_url())
+        content = parse_response_to_soup(response, replace_in_href=[documentation_forum.partner], replace_img_src=True)
+        assert str(content.select("#partner_area")) == snapshot(name="documentation_forum_with_partner")
 
 
 class TestDocumentationCategoryForumContent:
