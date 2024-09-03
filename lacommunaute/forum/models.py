@@ -14,6 +14,7 @@ from taggit.managers import TaggableManager
 from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.partner.models import Partner
 from lacommunaute.utils.validators import validate_image_size
 
 
@@ -42,6 +43,7 @@ class Forum(AbstractForum):
     upvotes = GenericRelation(UpVote, related_query_name="forum")
 
     tags = TaggableManager()
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, null=True, blank=True)
 
     objects = ForumQuerySet().as_manager()
 
