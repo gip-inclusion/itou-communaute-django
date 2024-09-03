@@ -9,3 +9,8 @@ class PartnerListView(ListView):
     context_object_name = "partners"
     paginate_by = 8 * 3
 
+
+class PartnerDetailView(DetailView):
+    model = Partner
+    template_name = "partner/detail.html"
+    context_object_name = "partner"
