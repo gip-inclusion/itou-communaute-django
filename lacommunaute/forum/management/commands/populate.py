@@ -6,6 +6,7 @@ from django.db import connection
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import AnonymousTopicFactory, PostFactory, TopicFactory
+from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.users.factories import UserFactory
 
 
@@ -36,6 +37,9 @@ class Command(BaseCommand):
 
         EventFactory.create_batch(5)
         sys.stdout.write("events created\n")
+
+        PartnerFactory.create_batch(5, with_logo=True)
+        sys.stdout.write("partners created\n")
 
         # refresh materialized view
         with connection.cursor() as cursor:

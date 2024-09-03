@@ -1,0 +1,57 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans "Partners" %} {{ block.super }}
+{% endblock title %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row mb-3">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">{% trans "Partners" %}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section" id="partner-list">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4">
+                        {% for partner in partners %}
+                            <div class="col mb-3 mb-md-5">
+                                <div class="card c-card has-one-link-inside h-100">
+                                    {% if partner.logo %}
+                                        <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="card-img-top" loading="lazy" />
+                                    {% endif %}
+                                    <div class="card-body pb-0">
+                                        <p class="h3 lh-base">{{ partner.name }}</p>
+                                        <div class="card-text">{{ partner.short_description }}</div>
+                                    </div>
+                                    <div class="card-footer text-end">
+                                        <a href="{% url "partner:detail" partner.slug partner.pk %}"
+                                           class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
+                                           data-matomo-category="engagement"
+                                           data-matomo-action="view"
+                                           data-matomo-option="partner">
+                                            <i class="ri-arrow-right-line ri-lg" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col">
+                                <p>Bientôt disponible</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if page_obj.has_previous or page_obj.has_next %}
+                        {% with pagination_size="pagination-sm justify-content-center mt-5" %}
+                            {% include "partials/pagination.html" %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
