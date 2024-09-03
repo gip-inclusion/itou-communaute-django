@@ -10,6 +10,7 @@ from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
+from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
 
@@ -163,3 +164,34 @@ def test_update_forum_without_tag(client, db):
 
     forum.refresh_from_db()
     assert forum.tags.count() == 0
+
+
+@pytest.mark.parametrize(
+    "initial_partner,post_partner",
+    [
+        (lambda: None, lambda: None),
+        (lambda: None, lambda: PartnerFactory()),
+        (lambda: PartnerFactory(), lambda: None),
+        (lambda: PartnerFactory(), lambda: PartnerFactory()),
+    ],
+)
+def test_select_partner(client, db, initial_partner, post_partner):
+    initial_partner = initial_partner()
+    post_partner = post_partner()
+    forum = ForumFactory(partner=initial_partner)
+    client.force_login(UserFactory(is_superuser=True))
+
+    url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+    response = client.post(
+        url,
+        data={
+            "name": forum.name,
+            "short_description": forum.short_description,
+            "description": forum.description.raw,
+            "partner": post_partner.id if post_partner else "",
+        },
+    )
+    assert response.status_code == 302
+
+    forum.refresh_from_db()
+    assert forum.partner == post_partner

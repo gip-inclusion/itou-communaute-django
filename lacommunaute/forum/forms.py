@@ -6,6 +6,7 @@ from django.forms import CharField, CheckboxSelectMultiple, ModelMultipleChoiceF
 from taggit.models import Tag
 
 from lacommunaute.forum.models import Forum
+from lacommunaute.partner.models import Partner
 
 
 def wrap_iframe_in_div_tag(text):
@@ -38,6 +39,11 @@ class ForumForm(forms.ModelForm):
         widget=forms.FileInput(attrs={"accept": settings.SUPPORTED_IMAGE_FILE_TYPES.keys()}),
     )
     certified = forms.BooleanField(required=False, label="Certifiée par la communauté de l'inclusion")
+    partner = forms.ModelChoiceField(
+        label="Sélectionner un partenaire",
+        queryset=Partner.objects.all(),
+        required=False,
+    )
     tags = ModelMultipleChoiceField(
         label="Sélectionner un ou plusieurs tags",
         queryset=Tag.objects.all(),
@@ -67,4 +73,4 @@ class ForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum
-        fields = ["name", "short_description", "description", "image", "certified"]
+        fields = ["name", "short_description", "description", "image", "certified", "partner"]
