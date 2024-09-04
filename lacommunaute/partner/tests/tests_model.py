@@ -28,3 +28,10 @@ def test_logo_url(db):
 def test_get_absolute_url(db):
     partner = PartnerFactory()
     assert partner.get_absolute_url() == f"/partners/{partner.slug}-{partner.pk}/"
+
+
+def test_ordering(db):
+    partners = PartnerFactory.create_batch(2)
+    assert list(Partner.objects.all()) == partners[::-1]
+    partners[0].save()
+    assert list(Partner.objects.all()) == partners
