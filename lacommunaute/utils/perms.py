@@ -1,8 +1,10 @@
 from machina.core.db.models import get_model
+from machina.core.loading import get_class
 
 
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
+ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 
 
 def add_public_perms_on_forum(forum):
@@ -30,3 +32,12 @@ def add_public_perms_on_forum(forum):
         for permission in ForumPermission.objects.filter(codename__in=perms)
     ]
     UserForumPermission.objects.bulk_create(anonymous_authorized_perms + authentified_authorized_perms)
+
+
+def forum_visibility_content_tree_from_forums(request, forums):
+    return ForumVisibilityContentTree.from_forums(
+        request.forum_permission_handler.forum_list_filter(
+            forums,
+            request.user,
+        ),
+    )

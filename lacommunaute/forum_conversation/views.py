@@ -20,7 +20,6 @@ from lacommunaute.notification.models import Notification
 
 logger = logging.getLogger(__name__)
 
-ForumVisibilityContentTree = get_class("forum.visibility", "ForumVisibilityContentTree")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 track_handler = TrackingHandler()
 

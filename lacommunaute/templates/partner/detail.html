@@ -38,6 +38,14 @@
                     {% endif %}
                 </div>
             </div>
+            {% if sub_forums %}
+                <div class="s-section__row row mt-5">
+                    <div class="col-12">
+                        <h2>Leurs contributions dans la communauté</h2>
+                    </div>
+                    <div class="col-12">{% include "forum/partials/category_subforums_list.html" with sub_forums=sub_forums only %}</div>
+                </div>
+            {% endif %}
         </div>
     </section>
 {% endblock content %}

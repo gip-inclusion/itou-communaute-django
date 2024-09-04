@@ -14,32 +14,40 @@ class Command(BaseCommand):
     help = "hydratation d'un site de validation"
 
     def handle(self, *args, **options):
+        tags = ["Pirmadienis", "Poniedziałek", "Lundi", "Montag"]
+
         UserFactory(username="communaute", password="password", is_superuser=True, is_staff=True)
         sys.stdout.write("superuser created\n")
 
+        partners = PartnerFactory.create_batch(5, with_logo=True)
+        sys.stdout.write("partners created\n")
+
         forum = ForumFactory(name="Espace d'échanges", with_public_perms=True)
         TopicFactory.create_batch(20, forum=forum, with_post=True)
-        TopicFactory.create_batch(
-            3, forum=forum, with_post=True, with_tags=["Pirmadienis", "Poniedziałek", "Lundi", "Montag"]
-        )
+        TopicFactory.create_batch(3, forum=forum, with_post=True, with_tags=tags)
         TopicFactory(forum=forum, with_post=True, with_certified_post=True)
         AnonymousTopicFactory.create_batch(2, forum=forum, with_post=True)
         PostFactory.create_batch(3, topic=TopicFactory(forum=forum, with_post=True))
         sys.stdout.write("public forum created\n")
 
-        for i in range(1, 3):
+        for i in range(1, 4):
             parent = CategoryForumFactory(with_public_perms=True, name=f"Thème {i}")
-            for j in range(1, 3):
+            for j in range(1, 4):
                 TopicFactory.create_batch(
-                    2, forum=ForumFactory(parent=parent, with_public_perms=True, name=f"Fiche {i}-{j}"), with_post=True
+                    2,
+                    forum=ForumFactory(
+                        parent=parent,
+                        with_public_perms=True,
+                        with_partner=partners[j],
+                        with_tags=tags[:j],
+                        name=f"Fiche {i}-{j}",
+                    ),
+                    with_post=True,
                 )
         sys.stdout.write("documentation created\n")
 
         EventFactory.create_batch(5)
         sys.stdout.write("events created\n")
-
-        PartnerFactory.create_batch(5, with_logo=True)
-        sys.stdout.write("partners created\n")
 
         # refresh materialized view
         with connection.cursor() as cursor:

@@ -47,6 +47,14 @@ class ForumFactory(BaseForumFactory):
             for tag in extracted:
                 self.tags.add(tag)
 
+    @factory.post_generation
+    def with_partner(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        self.partner = extracted
+        self.save()
+
 
 class CategoryForumFactory(ForumFactory):
     type = Forum.FORUM_CAT

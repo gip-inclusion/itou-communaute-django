@@ -29,6 +29,11 @@
                 <div class="col-12 col-sm-auto mt-3">
                     <article class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30|img_fluid }}</article>
                 </div>
+                {% if forum.partner %}
+                    <div class="col-12 col-sm-auto mt-3" id="partner_area">
+                        {% include "forum/partials/partner.html" with partner=forum.partner only %}
+                    </div>
+                {% endif %}
                 {% include "forum/partials/rating.html" with forum=forum rating_area_id="1" %}
             </div>
         </div>
