@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.partner.factories import PartnerFactory
 
 
 def test_sitemap(client, db):
@@ -14,22 +15,21 @@ def test_sitemap(client, db):
     assert "sitemap.xml" in response.templates[0].name
 
 
-def test_topic_is_in_sitemap(client, db):
-    topic = TopicFactory(with_post=True)
-    url = reverse("pages:django.contrib.sitemaps.views.sitemap")
-    response = client.get(url)
-    assert response.status_code == 200
-    assert topic.get_absolute_url() in response.content.decode()
-    assert f"<lastmod>{topic.last_post_on.strftime('%Y-%m-%d')}</lastmod>" in response.content.decode()
+@pytest.mark.parametrize(
+    "factory, factory_kwargs,lastmod_field",
+    [
+        (TopicFactory, {"with_post": True}, "last_post_on"),
+        (ForumFactory, {}, "updated"),
+        (PartnerFactory, {}, "updated"),
+    ],
+)
+def test_objects_are_in_sitemap(client, db, factory, factory_kwargs, lastmod_field):
+    obj = factory(**factory_kwargs)
+    response = client.get(reverse("pages:django.contrib.sitemaps.views.sitemap"))
 
-
-def test_forum_is_in_sitemap(client, db):
-    forum = ForumFactory()
-    url = reverse("pages:django.contrib.sitemaps.views.sitemap")
-    response = client.get(url)
     assert response.status_code == 200
-    assert reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}) in response.content.decode()
-    assert f"<lastmod>{forum.updated.strftime('%Y-%m-%d')}</lastmod>" in response.content.decode()
+    assert obj.get_absolute_url() in response.content.decode()
+    assert f"<lastmod>{getattr(obj, lastmod_field).strftime('%Y-%m-%d')}</lastmod>" in response.content.decode()
 
 
 def test_flatpage_is_in_sitemap(client, db):
