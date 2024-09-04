@@ -17,7 +17,7 @@
                                           <div class="card-text">short description for SEO</div>
                                       </div>
                                       <div class="card-footer text-end">
-                                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner" href="/partners/best-partner-ever-[PK of Partner]/">
+                                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner" href="/partenaires/best-partner-ever-[PK of Partner]/">
                                               <i aria-hidden="true" class="ri-arrow-right-line ri-lg"></i>
                                           </a>
                                       </div>
@@ -41,7 +41,7 @@
           
               
                   <li class="page-item active">
-                      <a class="page-link" href="/partners/?page=1">1</a>
+                      <a class="page-link" href="/partenaires/?page=1">1</a>
                   </li>
                   
               
@@ -49,12 +49,12 @@
               
                   
                   <li class="page-item">
-                      <a class="page-link" href="/partners/?page=2">2</a>
+                      <a class="page-link" href="/partenaires/?page=2">2</a>
                   </li>
               
           
           <li class="page-item">
-              <a aria-label="Suivant" class="page-link" href="/partners/?page=2"><i class="ri-arrow-right-s-line"></i></a>
+              <a aria-label="Suivant" class="page-link" href="/partenaires/?page=2"><i class="ri-arrow-right-s-line"></i></a>
           </li>
       </ul>
   '''
