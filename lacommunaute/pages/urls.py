@@ -9,6 +9,7 @@ sitemaps = {
     "pages": sitemaps.PagesSitemap,
     "forum": sitemaps.ForumSitemap,
     "topic": sitemaps.TopicSitemap,
+    "partner": sitemaps.PartnerSitemap,
 }
 
 app_name = "pages"
