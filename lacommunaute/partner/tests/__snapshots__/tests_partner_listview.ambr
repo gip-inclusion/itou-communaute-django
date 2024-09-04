@@ -10,14 +10,16 @@
                               <div class="col mb-3 mb-md-5">
                                   <div class="card c-card has-one-link-inside h-100">
                                       
-                                          <img alt="Best Partner Ever" class="card-img-top" loading="lazy" src="[img src]"/>
+                                          <div class="card-header card-header--partners">
+                                              <img alt="Best Partner Ever" class="img-fluid" loading="lazy" src="[img src]"/>
+                                          </div>
                                       
                                       <div class="card-body pb-0">
                                           <p class="h3 lh-base">Best Partner Ever</p>
                                           <div class="card-text">short description for SEO</div>
                                       </div>
                                       <div class="card-footer text-end">
-                                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner" href="/partners/best-partner-ever-[PK of Partner]/">
+                                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner" href="/partenaires/best-partner-ever-[PK of Partner]/">
                                               <i aria-hidden="true" class="ri-arrow-right-line ri-lg"></i>
                                           </a>
                                       </div>
@@ -41,7 +43,7 @@
           
               
                   <li class="page-item active">
-                      <a class="page-link" href="/partners/?page=1">1</a>
+                      <a class="page-link" href="/partenaires/?page=1">1</a>
                   </li>
                   
               
@@ -49,12 +51,12 @@
               
                   
                   <li class="page-item">
-                      <a class="page-link" href="/partners/?page=2">2</a>
+                      <a class="page-link" href="/partenaires/?page=2">2</a>
                   </li>
               
           
           <li class="page-item">
-              <a aria-label="Suivant" class="page-link" href="/partners/?page=2"><i class="ri-arrow-right-s-line"></i></a>
+              <a aria-label="Suivant" class="page-link" href="/partenaires/?page=2"><i class="ri-arrow-right-s-line"></i></a>
           </li>
       </ul>
   '''

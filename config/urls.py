@@ -39,7 +39,7 @@ urlpatterns = [
     path("", include(forum_moderation_urls)),
     path("calendar/", include(event_urls)),
     path("surveys/", include(surveys_urls)),
-    path("partners/", include(partner_urls)),
+    path("partenaires/", include(partner_urls)),
     path("statistiques/", include(stats_urls)),
     # machina legacy
     path("", include(conversation_urlpatterns_factory.urlpatterns)),

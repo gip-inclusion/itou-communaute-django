@@ -22,7 +22,9 @@
                             <div class="col mb-3 mb-md-5">
                                 <div class="card c-card has-one-link-inside h-100">
                                     {% if partner.logo %}
-                                        <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="card-img-top" loading="lazy" />
+                                        <div class="card-header card-header--partners">
+                                            <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" loading="lazy" class="img-fluid">
+                                        </div>
                                     {% endif %}
                                     <div class="card-body pb-0">
                                         <p class="h3 lh-base">{{ partner.name }}</p>

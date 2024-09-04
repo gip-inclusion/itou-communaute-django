@@ -314,7 +314,7 @@
 # name: TestDocumentationForumContent.test_documentation_forum_with_partner[documentation_forum_with_partner]
   '''
   [<div class="col-12 col-sm-auto mt-3" id="partner_area">
-                          <a href="/partners/best-partner-ever-[PK of Partner]/">
+                          <a href="/partenaires/best-partner-ever-[PK of Partner]/">
       <div class="d-flex gap-3 align-items-center mb-2">
           
               <img alt="Best Partner Ever" class="img-fluid" loading="lazy" src="[img src]" width="100"/>

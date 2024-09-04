@@ -12,7 +12,7 @@
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
-                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partners/">Nos partenaires</a>
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partenaires/">Nos partenaires</a>
               </li>
           </ol>
       </nav>
@@ -72,7 +72,7 @@
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
-                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partners/">Nos partenaires</a>
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partenaires/">Nos partenaires</a>
               </li>
           </ol>
       </nav>
@@ -134,7 +134,7 @@
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
-                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partners/">Nos partenaires</a>
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partenaires/">Nos partenaires</a>
               </li>
           </ol>
       </nav>
@@ -194,7 +194,7 @@
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
-                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partners/">Nos partenaires</a>
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="partner-list" href="/partenaires/">Nos partenaires</a>
               </li>
           </ol>
       </nav>
