@@ -238,24 +238,36 @@
                       <div class="col-12">
                           <h2>Leurs contributions dans la communauté</h2>
                       </div>
-                      <div class="col-12"><div class="row mt-4" id="documentation-category-subforums">
+                      <div class="col-12"><div class="container-fluid" id="subforums_area">
       
-          <div class="col-12 col-md-4 mb-3 mb-md-5">
-              <div class="card c-card has-one-link-inside h-100">
-                  
-                  <div class="card-body pb-0">
-                      <p class="h3 lh-base">Test Forum</p>
-                      <div><span class="tag bg-info-lighter text-info">sun</span><span class="tag bg-info-lighter text-info">moon</span></div>
-                      <div class="mt-3">Test description</div>
-                  </div>
-                  <div class="card-footer text-end">
-                      <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-forum-[PK of Forum]/">
-                          <i class="ri-arrow-right-line ri-lg"></i>
-                      </a>
+      <div class="row mt-4" id="documentation-category-subforums">
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Test Forum</p>
+                          <div>
+      
+          <span class="tag bg-info-lighter text-info">sun</span>
+      
+  
+      
+          <span class="tag bg-info-lighter text-info">moon</span>
+      
+  
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-forum-[PK of Forum]/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
                   </div>
               </div>
-          </div>
-      
+          
+      </div>
   </div>
   </div>
                   </div>
