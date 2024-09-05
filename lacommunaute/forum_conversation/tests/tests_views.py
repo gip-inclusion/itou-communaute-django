@@ -9,6 +9,7 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+
 from pytest_django.asserts import assertContains, assertNotContains
 from taggit.models import Tag
 
@@ -1074,35 +1075,6 @@ class TestPosterTemplate:
             response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
         )
         assert str(soup) == snapshot(name="topic_in_its_own_public_forum")
-
-
-class NewsFeedTopicListViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.url = reverse("forum_conversation_extension:newsfeed")
-
-    def test_template_name(self):
-        response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "forum_conversation/topics_newsfeed.html")
-
-        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
-        self.assertTemplateUsed(response, "forum_conversation/topic_list_newsfeed.html")
-
-    def test_queryset(self):
-        news_topics = TopicFactory.create_batch(
-            2, with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True)
-        )
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM, with_public_perms=True))
-
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerySetEqual(response.context_data["topics"], [topic for topic in news_topics[::-1]])
-
-    def test_context_data(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["forum"], None)
-        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:newsfeed"))
 
 
 class TestTopicCreateCheckView:

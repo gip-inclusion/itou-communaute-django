@@ -81,22 +81,6 @@
       </nav>
   '''
 # ---
-# name: TestBreadcrumb.test_newsfeed_forum[newsfeed_forum]
-  '''
-  <nav aria-label="Fil d'ariane" class="c-breadcrumb">
-          <ol class="breadcrumb">
-              <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="newsfeed_breadcrumb" href="/news/">Actualités</a>
-                  
-              </li>
-              
-              
-          </ol>
-      </nav>
-  '''
-# ---
 # name: TestBreadcrumb.test_sub_discussion_area_forum[sub_discussion_area_forum]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
