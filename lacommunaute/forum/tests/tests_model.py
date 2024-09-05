@@ -1,9 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
 
@@ -23,12 +21,6 @@ class ForumModelTest(TestCase):
         topic = TopicFactory(forum=ForumFactory(), posts_count=1)
         TopicFactory(forum=ForumFactory(parent=topic.forum), posts_count=1)
         self.assertEqual(topic.forum.count_unanswered_topics, 2)
-
-    def test_kind(self):
-        self.assertEqual(
-            Forum.kind.field.flatchoices,
-            [("PUBLIC_FORUM", "Espace public"), ("NEWS", "Actualités")],
-        )
 
     def test_get_absolute_url(self):
         forum = ForumFactory()

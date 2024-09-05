@@ -7,7 +7,6 @@ from lacommunaute.forum.models import ForumRating
 class ForumAdmin(BaseForumAdmin):
     fieldsets = BaseForumAdmin.fieldsets
     fieldsets[0][1]["fields"] += ("short_description", "certified", "tags", "partner")
-    fieldsets[1][1]["fields"] += ("kind",)
 
 
 @admin.register(ForumRating)

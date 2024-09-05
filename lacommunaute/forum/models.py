@@ -8,7 +8,6 @@ from machina.models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 from taggit.managers import TaggableManager
 
-from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.partner.models import Partner
@@ -16,9 +15,6 @@ from lacommunaute.utils.validators import validate_image_size
 
 
 class Forum(AbstractForum):
-    kind = models.CharField(
-        max_length=20, choices=Forum_Kind.choices, default=Forum_Kind.PUBLIC_FORUM, verbose_name="Type"
-    )
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
     )
