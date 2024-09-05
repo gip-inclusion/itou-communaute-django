@@ -46,8 +46,8 @@ class SubCategoryForumListMixin:
         return {
             # TODO : remove permission management, though all forums are public in our case
             "sub_forums": forum_visibility_content_tree_from_forums(self.request, self.get_descendants()),
-            "sub_forums_tags": self.get_descendants_tags(),
-            "active_forum_tag_slug": self.request.GET.get("forum_tags") or None,
+            "tags_of_descendants": self.get_tags_of_descendants(),
+            "active_forum_tag_slug": self.request.GET.get("forum_tag") or None,
         }
 
 
@@ -116,8 +116,7 @@ class SubCategoryForumListView(BaseForumView, SubCategoryForumListMixin):
     template_name = "forum/partials/subcategory_forum_list.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context = context | self.forum_tag_context()
+        context = super().get_context_data(**kwargs) | self.forum_tag_context()
         return context
 
 
