@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Exists, OuterRef, Prefetch, Q, QuerySet
 
-from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
@@ -37,5 +36,5 @@ def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[
     return qs.order_by("created")
 
 
-def can_certify_post(forum, user):
-    return user.is_authenticated and forum.kind == Forum_Kind.PUBLIC_FORUM and user.is_staff
+def can_certify_post(user):
+    return user.is_authenticated and user.is_staff

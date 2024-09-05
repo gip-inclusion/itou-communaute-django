@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
@@ -78,14 +77,11 @@ class CanCertifyPostShortcutTest(TestCase):
         cls.forum = ForumFactory.create()
 
     def test_user_is_not_authenticated(self):
-        self.assertFalse(can_certify_post(self.forum, AnonymousUser()))
-
-    def test_forum_is_newsfeed(self):
-        self.assertFalse(can_certify_post(ForumFactory.create(kind=ForumKind.NEWS), self.user))
+        self.assertFalse(can_certify_post(AnonymousUser()))
 
     def test_user_is_staff(self):
         self.user.is_staff = True
-        self.assertTrue(can_certify_post(self.forum, self.user))
+        self.assertTrue(can_certify_post(self.user))
 
     def test_user_is_not_staff(self):
-        self.assertFalse(can_certify_post(self.forum, self.user))
+        self.assertFalse(can_certify_post(self.user))
