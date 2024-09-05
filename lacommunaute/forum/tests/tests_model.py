@@ -73,20 +73,11 @@ class ForumModelTest(TestCase):
         sub_discussion_area_forum = ForumFactory(parent=discussion_area_forum)
         forum = ForumFactory()
         sub_forum = ForumFactory(parent=forum)
-        news_forum = ForumFactory(kind=ForumKind.NEWS)
 
         self.assertTrue(discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(sub_discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(forum.is_toplevel_discussion_area)
         self.assertFalse(sub_forum.is_toplevel_discussion_area)
-        self.assertFalse(news_forum.is_toplevel_discussion_area)
-
-    def test_is_newsfeed(self):
-        news_forum = ForumFactory(kind=ForumKind.NEWS)
-        discussion_area_forum = ForumFactory()
-
-        self.assertTrue(news_forum.is_newsfeed)
-        self.assertFalse(discussion_area_forum.is_newsfeed)
 
     def test_get_session_rating(self):
         forum = ForumFactory()

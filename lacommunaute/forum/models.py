@@ -62,11 +62,7 @@ class Forum(AbstractForum):
 
     @cached_property
     def is_toplevel_discussion_area(self):
-        return self == Forum.objects.filter(kind=Forum_Kind.PUBLIC_FORUM, lft=1, level=0).first()
-
-    @cached_property
-    def is_newsfeed(self):
-        return self.kind == Forum_Kind.NEWS
+        return self == Forum.objects.filter(lft=1, level=0).first()
 
     def get_session_rating(self, session_key):
         return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)

@@ -9,7 +9,6 @@ from django.views.generic import ListView
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
@@ -129,9 +128,7 @@ class TopicListView(FilteredTopicsListViewMixin, ListView):
         return ["forum_conversation/topics_public.html"]
 
     def get_queryset(self):
-        return self.filter_queryset(
-            Topic.objects.filter(forum__kind=ForumKind.PUBLIC_FORUM).optimized_for_topics_list(self.request.user.id)
-        )
+        return self.filter_queryset(Topic.objects.optimized_for_topics_list(self.request.user.id))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -143,7 +140,7 @@ class TopicListView(FilteredTopicsListViewMixin, ListView):
         )
 
         context["loadmoretopic_suffix"] = "topics"
-        context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
+        context["forum"] = Forum.objects.filter(lft=1, level=0).first()
         context = context | self.get_topic_filter_context()
 
         return context

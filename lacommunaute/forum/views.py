@@ -12,7 +12,6 @@ from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 from taggit.models import Tag
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_conversation.forms import PostForm
@@ -140,7 +139,7 @@ class CategoryForumListView(ListView):
     context_object_name = "forums"
 
     def get_queryset(self) -> QuerySet[Forum]:
-        return Forum.objects.filter(type=Forum.FORUM_CAT, kind=ForumKind.PUBLIC_FORUM, level=0)
+        return Forum.objects.filter(type=Forum.FORUM_CAT, level=0)
 
 
 class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
@@ -151,7 +150,6 @@ class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
         return self.request.user.is_superuser
 
     def form_valid(self, form):
-        form.instance.kind = ForumKind.PUBLIC_FORUM
         response = super().form_valid(form)
         add_public_perms_on_forum(form.instance)
         return response
