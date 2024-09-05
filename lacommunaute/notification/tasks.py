@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.utils import timezone
 
 from config.settings.base import DEFAULT_FROM_EMAIL, NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
-from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
@@ -54,7 +53,7 @@ def send_notifs_on_unanswered_topics(list_id: int) -> None:
     contacts = collect_users_from_list(list_id)
 
     if contacts:
-        count = Topic.objects.unanswered().filter(forum__in=Forum.objects.public()).count()
+        count = Topic.objects.unanswered().count()
         link = (
             f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
             reverse("forum_conversation_extension:topics"),

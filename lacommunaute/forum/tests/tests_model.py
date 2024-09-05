@@ -8,13 +8,6 @@ from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
 
 
-class ForumManagerTest(TestCase):
-    def test_public_method(self):
-        forum = ForumFactory(kind=ForumKind.PUBLIC_FORUM)
-        ForumFactory(kind=ForumKind.NEWS)
-        self.assertEqual(forum, Forum.objects.public().get())
-
-
 class ForumModelTest(TestCase):
     def test_get_unanswered_topics(self):
         topic1 = TopicFactory(forum=ForumFactory(), posts_count=1)

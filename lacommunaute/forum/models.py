@@ -15,11 +15,6 @@ from lacommunaute.partner.models import Partner
 from lacommunaute.utils.validators import validate_image_size
 
 
-class ForumQuerySet(models.QuerySet):
-    def public(self):
-        return self.filter(kind=Forum_Kind.PUBLIC_FORUM)
-
-
 class Forum(AbstractForum):
     kind = models.CharField(
         max_length=20, choices=Forum_Kind.choices, default=Forum_Kind.PUBLIC_FORUM, verbose_name="Type"
@@ -38,7 +33,7 @@ class Forum(AbstractForum):
     tags = TaggableManager()
     partner = models.ForeignKey(Partner, on_delete=models.CASCADE, null=True, blank=True)
 
-    objects = ForumQuerySet().as_manager()
+    objects = models.Manager()
 
     def get_absolute_url(self):
         return reverse(

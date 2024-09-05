@@ -21,7 +21,7 @@ class PagesSitemap(Sitemap):
 
 class ForumSitemap(Sitemap):
     def items(self):
-        return Forum.objects.public().order_by("id")
+        return Forum.objects.all().order_by("id")
 
     def location(self, obj: Model) -> str:
         return reverse("forum_extension:forum", kwargs={"pk": obj.pk, "slug": obj.slug})
@@ -32,7 +32,7 @@ class ForumSitemap(Sitemap):
 
 class TopicSitemap(Sitemap):
     def items(self):
-        return Topic.objects.exclude(approved=False).filter(forum__in=Forum.objects.public()).order_by("-last_post_on")
+        return Topic.objects.exclude(approved=False).order_by("-last_post_on")
 
     def lastmod(self, obj: Model) -> str:
         return obj.last_post_on
