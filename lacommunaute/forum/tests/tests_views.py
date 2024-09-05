@@ -11,7 +11,6 @@ from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
@@ -162,42 +161,6 @@ class ForumViewTest(TestCase):
         self.assertContains(response, f'hx-get="{topic_url}"', status_code=200)
         self.assertContains(response, "+ voir la suite")
         self.assertEqual(response.context_data["loadmoretopic_suffix"], "topicsinforum")
-
-    def test_moderator_links(self):
-        self.client.force_login(self.user)
-
-        # no permission
-        response = self.client.get(self.url)
-        self.assertNotContains(
-            response,
-            reverse(
-                "members:forum_profiles",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
-
-        # permission
-        assign_perm("can_approve_posts", self.user, self.forum)
-        response = self.client.get(self.url)
-        self.assertContains(
-            response,
-            reverse(
-                "members:forum_profiles",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
-
-        # permission but no members group
-        self.forum.members_group = None
-        self.forum.save()
-        response = self.client.get(self.url)
-        self.assertNotContains(
-            response,
-            reverse(
-                "members:forum_profiles",
-                kwargs={"pk": self.forum.pk, "slug": self.forum.slug},
-            ),
-        )
 
     def test_poll_form(self):
         topic = TopicFactory(forum=self.forum, poster=self.user, with_post=True, with_poll_vote=True)
@@ -425,11 +388,6 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
 
         certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
-        TopicFactory(
-            with_post=True,
-            with_certified_post=True,
-            forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True),
-        )
 
         response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
         self.assertEqual(response.context_data["paginator"].count, 1)

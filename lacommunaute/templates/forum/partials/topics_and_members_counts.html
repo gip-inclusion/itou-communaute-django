@@ -1,11 +1,7 @@
 {% load i18n %}
 {% load str_filters %}
 <small class="text-muted">
-    {% if node.obj.kind == 'PRIVATE_FORUM' %}
-        <i class="ri-lock-2-fill"></i> {{ node.obj.members_group.user_set.count }} membre{{ node.obj.members_group.user_set.count|pluralizefr }}
-    {% endif %}
     {% if node.obj.is_forum %}
-        {% if node.obj.kind == 'PRIVATE_FORUM' %}-{% endif %}
         {% if node.topics_count > 1 %}
             {{ node.topics_count }} {% trans "Topics" %}
         {% else %}

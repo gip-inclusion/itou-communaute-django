@@ -7,7 +7,6 @@ from django.utils import timezone
 from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.event.factories import EventFactory
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
@@ -24,7 +23,6 @@ def test_context_data(client, db):
     disapproved_topic = TopicFactory(with_post=True, forum=ForumFactory())
     disapproved_topic.approved = False
     disapproved_topic.save()
-    TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM))
 
     url = reverse("pages:home")
 

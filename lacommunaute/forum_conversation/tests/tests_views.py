@@ -765,7 +765,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(39):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
@@ -912,7 +912,6 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["active_tags_label"], " ou ".join([tag.name for tag in tags]))
 
     def test_queryset(self):
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url)
@@ -929,7 +928,6 @@ class TopicListViewTest(TestCase):
                 self.assertContains(response, topic.subject)
 
     def test_queryset_for_unanswered_topic(self):
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
         response = self.client.get(self.url + "?filter=NEW")
@@ -943,11 +941,6 @@ class TopicListViewTest(TestCase):
     def test_queryset_for_certified_topic(self):
         certified_topic = TopicFactory(
             with_post=True, with_certified_post=True, forum=ForumFactory(with_public_perms=True)
-        )
-        TopicFactory(
-            with_post=True,
-            with_certified_post=True,
-            forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True),
         )
 
         response = self.client.get(self.url + "?filter=CERTIFIED")
@@ -1099,7 +1092,6 @@ class NewsFeedTopicListViewTest(TestCase):
         news_topics = TopicFactory.create_batch(
             2, with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True)
         )
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PRIVATE_FORUM, with_public_perms=True))
         TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM, with_public_perms=True))
 
         response = self.client.get(self.url)
