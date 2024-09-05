@@ -424,6 +424,7 @@ class PostFeedCreateViewTest(TestCase):
         assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN
 
 
+# vincentporte : not to futur self, rewrite it in pytest style
 class CertifiedPostViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -457,8 +458,8 @@ class CertifiedPostViewTest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_certify_with_permission(self):
-        self.topic.forum.members_group.user_set.add(self.user)
-        self.topic.forum.members_group.save()
+        self.user.is_staff = True
+        self.user.save()
         self.client.force_login(self.user)
         response = self.client.post(self.url, data=self.form_data)
 
@@ -471,8 +472,8 @@ class CertifiedPostViewTest(TestCase):
         self.assertEqual(ForumReadTrack.objects.count(), 1)
 
     def test_uncertify_with_permission(self):
-        self.topic.forum.members_group.user_set.add(self.user)
-        self.topic.forum.members_group.save()
+        self.user.is_staff = True
+        self.user.save()
         CertifiedPost(topic=self.topic, post=self.topic.last_post, user=self.user).save()
         self.client.force_login(self.user)
         response = self.client.post(self.url, data=self.form_data)
@@ -482,8 +483,8 @@ class CertifiedPostViewTest(TestCase):
         self.assertEqual(ForumReadTrack.objects.count(), 1)
 
     def test_rendered_content(self):
-        self.topic.forum.members_group.user_set.add(self.user)
-        self.topic.forum.members_group.save()
+        self.user.is_staff = True
+        self.user.save()
         self.client.force_login(self.user)
         response = self.client.post(self.url, data=self.form_data)
 

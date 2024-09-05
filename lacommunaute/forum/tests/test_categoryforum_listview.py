@@ -2,7 +2,6 @@ import pytest  # noqa
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import UserFactory
@@ -19,7 +18,6 @@ def test_queryset(client, db):
     forum = ForumFactory(type=Forum.FORUM_CAT)
     unvisible_forums = (
         ForumFactory(type=Forum.FORUM_CAT, parent=forum),
-        ForumFactory(type=Forum.FORUM_CAT, kind=ForumKind.PRIVATE_FORUM),
         ForumFactory(),
         ForumFactory(type=Forum.FORUM_LINK),
     )

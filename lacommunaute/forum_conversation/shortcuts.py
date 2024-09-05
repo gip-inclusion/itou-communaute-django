@@ -38,8 +38,4 @@ def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[
 
 
 def can_certify_post(forum, user):
-    return (
-        user.is_authenticated
-        and forum.kind == Forum_Kind.PUBLIC_FORUM
-        and (user.groups.filter(forum=forum).exists() or user.is_staff)
-    )
+    return user.is_authenticated and forum.kind == Forum_Kind.PUBLIC_FORUM and user.is_staff

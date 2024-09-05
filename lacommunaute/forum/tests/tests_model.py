@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.db import IntegrityError
 from django.test import TestCase
 
 from lacommunaute.forum.enums import Kind as ForumKind
@@ -13,18 +12,10 @@ class ForumManagerTest(TestCase):
     def test_public_method(self):
         forum = ForumFactory(kind=ForumKind.PUBLIC_FORUM)
         ForumFactory(kind=ForumKind.NEWS)
-        ForumFactory(kind=ForumKind.PRIVATE_FORUM)
         self.assertEqual(forum, Forum.objects.public().get())
 
 
 class ForumModelTest(TestCase):
-    def test_invitation_token_is_unique(self):
-        forum = ForumFactory()
-
-        with self.assertRaises(IntegrityError):
-            forum.id = None
-            forum.save()
-
     def test_get_unanswered_topics(self):
         topic1 = TopicFactory(forum=ForumFactory(), posts_count=1)
         topic2 = TopicFactory(forum=ForumFactory(parent=topic1.forum), posts_count=1)
@@ -43,7 +34,7 @@ class ForumModelTest(TestCase):
     def test_kind(self):
         self.assertEqual(
             Forum.kind.field.flatchoices,
-            [("PUBLIC_FORUM", "Espace public"), ("PRIVATE_FORUM", "Espace privé"), ("NEWS", "Actualités")],
+            [("PUBLIC_FORUM", "Espace public"), ("NEWS", "Actualités")],
         )
 
     def test_get_absolute_url(self):
@@ -89,24 +80,20 @@ class ForumModelTest(TestCase):
         sub_discussion_area_forum = ForumFactory(parent=discussion_area_forum)
         forum = ForumFactory()
         sub_forum = ForumFactory(parent=forum)
-        private_forum = ForumFactory(kind=ForumKind.PRIVATE_FORUM)
         news_forum = ForumFactory(kind=ForumKind.NEWS)
 
         self.assertTrue(discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(sub_discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(forum.is_toplevel_discussion_area)
         self.assertFalse(sub_forum.is_toplevel_discussion_area)
-        self.assertFalse(private_forum.is_toplevel_discussion_area)
         self.assertFalse(news_forum.is_toplevel_discussion_area)
 
     def test_is_newsfeed(self):
         news_forum = ForumFactory(kind=ForumKind.NEWS)
         discussion_area_forum = ForumFactory()
-        private_forum = ForumFactory(kind=ForumKind.PRIVATE_FORUM)
 
         self.assertTrue(news_forum.is_newsfeed)
         self.assertFalse(discussion_area_forum.is_newsfeed)
-        self.assertFalse(private_forum.is_newsfeed)
 
     def test_get_session_rating(self):
         forum = ForumFactory()

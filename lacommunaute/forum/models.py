@@ -1,7 +1,4 @@
-import uuid
-
 from django.conf import settings
-from django.contrib.auth.models import Group
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
@@ -24,10 +21,6 @@ class ForumQuerySet(models.QuerySet):
 
 
 class Forum(AbstractForum):
-    members_group = models.ForeignKey(
-        Group, blank=True, null=True, on_delete=models.CASCADE, verbose_name=("Members Group")
-    )
-    invitation_token = models.UUIDField(default=uuid.uuid4, unique=True)
     kind = models.CharField(
         max_length=20, choices=Forum_Kind.choices, default=Forum_Kind.PUBLIC_FORUM, verbose_name="Type"
     )

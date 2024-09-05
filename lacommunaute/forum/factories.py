@@ -3,13 +3,11 @@ from machina.test.factories.forum import ForumFactory as BaseForumFactory
 
 from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.users.factories import GroupFactory
 from lacommunaute.utils.perms import add_public_perms_on_forum
 
 
 class ForumFactory(BaseForumFactory):
     type = Forum.FORUM_POST
-    members_group = factory.SubFactory(GroupFactory, name=factory.SelfAttribute("..name"))
     name = factory.Sequence(lambda n: f"Forum {n}")
     description = factory.Faker("sentence", nb_words=100)
     short_description = factory.Faker("sentence", nb_words=10)

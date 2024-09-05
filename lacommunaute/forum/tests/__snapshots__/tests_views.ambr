@@ -373,7 +373,6 @@
                                           </span>
                                       </a>
                                   
-                                  
                               </div>
   '''
 # ---
@@ -400,7 +399,6 @@
                                           <div class="flex-grow-1">
                                               <a class="matomo-event h4 d-block mb-0" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/test-child-10001/">Test-Child</a>
                                               <small class="text-muted">
-                                                  
                                                   
                                                       0 Sujet
                                                   
