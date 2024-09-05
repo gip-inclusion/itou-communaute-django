@@ -153,31 +153,32 @@
 # name: TestDocumentationCategoryForumContent.test_documentation_category_subforum_list[documentation_category_subforum_list]
   '''
   <div class="row mt-4" id="documentation-category-subforums">
-      
-          <div class="col-12 col-md-4 mb-3 mb-md-5">
-              <div class="card c-card has-one-link-inside h-100">
-                  
-                      <div class="card-header card-header-thumbnail rounded">
-                          <img alt="Test Forum" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
-                      </div>
-                  
-                  <div class="card-body pb-0">
-                      <p class="h3 lh-base">Test Forum</p>
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
                       
-                      <div class="mt-3">Test description</div>
-                  </div>
-                  <div class="card-footer text-end">
-                      <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-forum-10000/">
-                          <i class="ri-arrow-right-line ri-lg"></i>
-                      </a>
+                          <div class="card-header card-header-thumbnail rounded">
+                              <img alt="Test Forum" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                          </div>
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Test Forum</p>
+                          <div>
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-forum-10000/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
                   </div>
               </div>
-          </div>
-      
-  </div>
+          
+      </div>
   '''
 # ---
-# name: TestDocumentationCategoryForumContent.test_show_subforum_tags[documentation_category_subforum_tags]
+# name: TestDocumentationCategoryForumContent.test_show_subforum_tag[documentation_category_subforum_tag]
   '''
   <main class="s-main" id="main" role="main">
               
@@ -234,44 +235,77 @@
                   <div class="s-section__row row">
                       <div class="s-section__col col-12">
                           
+      <div class="container-fluid" id="subforums_area">
+      
+          <div class="c-box">
+              <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
+              <div class="container-fluid d-flex justify-content-center">
+                  
+      
+          
+              <button aria-label="Filtrer par tag1" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/test-forum-9999/subs/?forum_tag=tag1" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-tag1">tag1</button>
+          
+      
+  
+      
+          
+              <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="forum" hx-get="/forum/test-forum-9999/subs/?forum_tag=tag2" hx-swap="outerHTML" hx-target="#subforums_area" id="filterforum-tag2">tag2</button>
+          
+      
+  
+  
+              </div>
+          </div>
+      
       <div class="row mt-4" id="documentation-category-subforums">
-      
-          <div class="col-12 col-md-4 mb-3 mb-md-5">
-              <div class="card c-card has-one-link-inside h-100">
-                  
-                  <div class="card-body pb-0">
-                      <p class="h3 lh-base">Test-1</p>
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
                       
-                      <div class="mt-3">Test description</div>
-                  </div>
-                  <div class="card-footer text-end">
-                      <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-1-10000/">
-                          <i class="ri-arrow-right-line ri-lg"></i>
-                      </a>
-                  </div>
-              </div>
-          </div>
-      
-          <div class="col-12 col-md-4 mb-3 mb-md-5">
-              <div class="card c-card has-one-link-inside h-100">
-                  
-                      <div class="card-header card-header-thumbnail rounded">
-                          <img alt="Test-2" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Test-1</p>
+                          <div>
+  </div>
+                          <div class="mt-3">Test description</div>
                       </div>
-                  
-                  <div class="card-body pb-0">
-                      <p class="h3 lh-base">Test-2</p>
-                      <div><span class="tag bg-info-lighter text-info">tag1</span><span class="tag bg-info-lighter text-info">tag2</span></div>
-                      <div class="mt-3">Test description</div>
-                  </div>
-                  <div class="card-footer text-end">
-                      <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-2-10001/">
-                          <i class="ri-arrow-right-line ri-lg"></i>
-                      </a>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-1-10000/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
                   </div>
               </div>
-          </div>
+          
+              <div class="col-12 col-md-4 mb-3 mb-md-5">
+                  <div class="card c-card has-one-link-inside h-100">
+                      
+                          <div class="card-header card-header-thumbnail rounded">
+                              <img alt="Test-2" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+                          </div>
+                      
+                      <div class="card-body pb-0">
+                          <p class="h3 lh-base">Test-2</p>
+                          <div>
       
+          <span class="tag bg-info-lighter text-info">tag1</span>
+      
+  
+      
+          <span class="tag bg-info-lighter text-info">tag2</span>
+      
+  
+  </div>
+                          <div class="mt-3">Test description</div>
+                      </div>
+                      <div class="card-footer text-end">
+                          <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="fiches_techniques" href="/forum/test-2-10001/">
+                              <i class="ri-arrow-right-line ri-lg"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          
+      </div>
   </div>
   
   

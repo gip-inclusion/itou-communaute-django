@@ -1,0 +1,32 @@
+{% for tag in tags %}
+    {% if forum %}
+        {% if tag.slug == active_forum_tag_slug %}
+            <button id="filterforum-{{ tag.slug }}"
+                    hx-target="#subforums_area"
+                    hx-swap="outerHTML"
+                    hx-get="{% url 'forum_extension:subcategory_forums' forum.slug forum.pk %}"
+                    class="tag bg-info text-white matomo-event"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Supprimer ce filtre"
+                    aria-label="Supprimer ce filtre"
+                    data-matomo-category="engagement"
+                    data-matomo-action="unfilter"
+                    data-matomo-option="forum">
+                <i class="ri-close-fill ri-xs"></i>{{ tag.name }}
+            </button>
+        {% else %}
+            <button id="filterforum-{{ tag.slug }}"
+                    hx-target="#subforums_area"
+                    hx-swap="outerHTML"
+                    hx-get="{% url 'forum_extension:subcategory_forums' forum.slug forum.pk %}?forum_tag={{ tag.slug }}"
+                    class="tag bg-info-lighter text-info matomo-event"
+                    data-matomo-category="engagement"
+                    aria-label="Filtrer par {{ tag.name }}"
+                    data-matomo-action="filter"
+                    data-matomo-option="forum">{{ tag.name }}</button>
+        {% endif %}
+    {% else %}
+        <span class="tag bg-info-lighter text-info">{{ tag.name }}</span>
+    {% endif %}
+{% endfor %}

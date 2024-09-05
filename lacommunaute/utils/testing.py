@@ -43,7 +43,7 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
             )
             for replacement in replace_in_href
         ]
-        for attr in ["href", "hx-post"]:
+        for attr in ["href", "hx-post", "hx-get"]:
             for links in soup.find_all(attrs={attr: True}):
                 [links.attrs.update({attr: links.attrs[attr].replace(*replacement)}) for replacement in replacements]
     if replace_img_src:

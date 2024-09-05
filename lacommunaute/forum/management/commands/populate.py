@@ -32,6 +32,9 @@ class Command(BaseCommand):
 
         for i in range(1, 4):
             parent = CategoryForumFactory(with_public_perms=True, name=f"Thème {i}")
+            TopicFactory.create_batch(
+                2, forum=ForumFactory(parent=parent, with_public_perms=True, name=f"Fiche {i}-0"), with_post=True
+            )
             for j in range(1, 4):
                 TopicFactory.create_batch(
                     2,

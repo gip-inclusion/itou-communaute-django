@@ -632,6 +632,24 @@ class UtilsParseResponseToSoupTest(TestCase):
             "</body></html>"
         )
 
+    def test_replace_in_hxget(self):
+        topic = TopicFactory()
+        response = HttpResponse(
+            "<html><head></head><body>"
+            f'<div hx-get="/{topic.pk}/">salmon</div>'
+            '<div hx-get="/bream/">bream</div>'
+            '<div hx-get="/red_mullet/">red mullet</div>'
+            "</body></html>"
+        )
+        soup = parse_response_to_soup(response, replace_in_href=[topic, ("red_mullet", "slug2")])
+        assert str(soup) == (
+            "<html><head></head><body>"
+            '<div hx-get="/[PK of Topic]/">salmon</div>'
+            '<div hx-get="/bream/">bream</div>'
+            '<div hx-get="/slug2/">red mullet</div>'
+            "</body></html>"
+        )
+
 
 class TestAddPublicPermsOnForum:
     def test_public_perms(self, db):
