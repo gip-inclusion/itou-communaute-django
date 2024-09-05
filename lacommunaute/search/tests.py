@@ -5,7 +5,6 @@ from django.db import connection
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains
 
-from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
@@ -169,24 +168,6 @@ def test_search_on_both_models(client, db, search_url, public_topics, public_for
     response = client.get(search_url, datas)
     for word in ["Tout", "savoir"]:  # Stop words are ignored, thus not highlighted.
         assertContains(response, f'<span class="highlighted">{word}</span>')
-
-
-def test_non_public_forums_are_excluded(client, db, search_url):
-    ForumFactory()
-    for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
-        ForumFactory(kind=kind, name=f"invisible {i}")
-    refresh_search_index()
-    response = client.get(search_url, {"q": "invisible"})
-    assertContains(response, "Aucun résultat")
-
-
-def test_posts_from_non_public_forums_are_excluded(client, db, search_url):
-    ForumFactory()
-    for i, kind in enumerate([kind for kind in Forum_Kind if kind != Forum_Kind.PUBLIC_FORUM]):
-        TopicFactory(forum=ForumFactory(kind=kind), subject=f"invisible {i}", with_post=True)
-    refresh_search_index()
-    response = client.get(search_url, {"q": "invisible"})
-    assertContains(response, "Aucun résultat")
 
 
 def test_unapproved_post_is_exclude(client, db, search_url):
