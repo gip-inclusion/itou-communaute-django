@@ -53,15 +53,15 @@ class Migration(migrations.Migration):
                     forum_forum.name,
                     concat_ws(' ', forum_forum.short_description, forum_forum.description),
                     (
-                        setweight(
-                            to_tsvector('french', forum_forum.name),
-                            'A'
-                        )
-                        ||
-                        setweight(
-                            to_tsvector('french', concat_ws(' ', forum_forum.short_description, forum_forum.description)),
-                            'B'
-                        )
+                     setweight(
+                         to_tsvector('french', forum_forum.name),
+                         'A'
+                     )
+                     ||
+                     setweight(
+                         to_tsvector('french', concat_ws(' ', forum_forum.short_description, forum_forum.description)),
+                         'B'
+                     )
                     ),
                     forum_forum.id,
                     forum_forum.slug,
@@ -116,15 +116,15 @@ class Migration(migrations.Migration):
                     forum_forum.name,
                     concat_ws(' ', forum_forum.short_description, forum_forum.description),
                     (
-                        setweight(
-                            to_tsvector('french', forum_forum.name),
-                            'A'
-                        )
-                        ||
-                        setweight(
-                            to_tsvector('french', concat_ws(' ', forum_forum.short_description, forum_forum.description)),
-                            'B'
-                        )
+                     setweight(
+                        to_tsvector('french', forum_forum.name),
+                        'A'
+                     )
+                     ||
+                     setweight(
+                        to_tsvector('french', concat_ws(' ', forum_forum.short_description, forum_forum.description)),
+                        'B'
+                     )
                     ),
                     forum_forum.id,
                     forum_forum.slug,
