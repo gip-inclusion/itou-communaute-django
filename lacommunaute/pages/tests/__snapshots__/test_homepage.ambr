@@ -95,11 +95,6 @@
                   <div class="s-footer-gip__col s-footer-gip__col--links col-12 col-lg-auto">
                       <ul>
                           <li>
-                              <a aria-label="France Travail (lien externe)" href="https://www.francetravail.fr/accueil/">
-                                  <img alt="France Travail" height="40" src="/static/vendor/theme-inclusion/images/logo-france-travail.svg"/>
-                              </a>
-                          </li>
-                          <li>
                               <a aria-label="Incubateur de services publics numériques — beta.gouv.fr (lien externe)" href="https://beta.gouv.fr/" target="_blank">beta.gouv.fr</a>
                           </li>
                           <li>
