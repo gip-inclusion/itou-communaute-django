@@ -1,5 +1,29 @@
 # Journal des modifications
 
+## [2.13.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.12.0...v2.13.0) (2024-09-05)
+
+
+### Features
+
+* **event:** amélioration de l'admin ([#753](https://github.com/gip-inclusion/itou-communaute-django/issues/753)) ([ca56d83](https://github.com/gip-inclusion/itou-communaute-django/commit/ca56d83be47fcf8c628c19fd141ecf73a4adeadc))
+* **forum:** retrait des communautés privées ([#768](https://github.com/gip-inclusion/itou-communaute-django/issues/768)) ([1c120e3](https://github.com/gip-inclusion/itou-communaute-django/commit/1c120e3b4b4dfe0323c52aae39bc5f2931157f98))
+* **partner:** ajout des pages partenaires ([#757](https://github.com/gip-inclusion/itou-communaute-django/issues/757)) ([33fd1c6](https://github.com/gip-inclusion/itou-communaute-django/commit/33fd1c6dc578c5b781571385b72c6b6a7b9d1329))
+* **partner:** améliorations post déploiement ([#763](https://github.com/gip-inclusion/itou-communaute-django/issues/763)) ([09a865f](https://github.com/gip-inclusion/itou-communaute-django/commit/09a865faebb2d38817a9c46db717ba4c8588aafc))
+* **partner:** lien avec les fiches pratiques ([#761](https://github.com/gip-inclusion/itou-communaute-django/issues/761)) ([60bb2ee](https://github.com/gip-inclusion/itou-communaute-django/commit/60bb2eeacd0f13de209ff6fe34a58b1a9979969d))
+* **partner:** referencer les fiches partenaires dans sitemap.xml ([#759](https://github.com/gip-inclusion/itou-communaute-django/issues/759)) ([91bea96](https://github.com/gip-inclusion/itou-communaute-django/commit/91bea9659ffe94a265b74ed62786a214047f6e03))
+* **tags:** afficher les filtres sur les tags ([#752](https://github.com/gip-inclusion/itou-communaute-django/issues/752)) ([7a10488](https://github.com/gip-inclusion/itou-communaute-django/commit/7a10488313296da6b3748539a2fde4587eec979c))
+* **tags:** afficher les Tags dans la liste des fiches pratiques d'une categorie ([#751](https://github.com/gip-inclusion/itou-communaute-django/issues/751)) ([ed005b7](https://github.com/gip-inclusion/itou-communaute-django/commit/ed005b7fab89810255f793f627b39442ce77b119))
+* **tags:** ajouter des étiquettes à un forum ([#746](https://github.com/gip-inclusion/itou-communaute-django/issues/746)) ([7f435bb](https://github.com/gip-inclusion/itou-communaute-django/commit/7f435bb71c8ac56eff38798c0d26deca4a99f607))
+* **tags:** ajouter une étiquette inexistante à un sujet ([#744](https://github.com/gip-inclusion/itou-communaute-django/issues/744)) ([b82ea73](https://github.com/gip-inclusion/itou-communaute-django/commit/b82ea73bac3523ec615ebef5e97970bf4f81ae02))
+* **tags:** filtrer les `forum` enfants à partir des tags ([#750](https://github.com/gip-inclusion/itou-communaute-django/issues/750)) ([eb6683a](https://github.com/gip-inclusion/itou-communaute-django/commit/eb6683a9b12751fbc522d06bfab45ef7a10b4b90))
+
+
+### Bug Fixes
+
+* **forum_conversation:** Résolution des erreurs de tests sur les contenus des messages ([#754](https://github.com/gip-inclusion/itou-communaute-django/issues/754)) ([8e0f35d](https://github.com/gip-inclusion/itou-communaute-django/commit/8e0f35de60f908cb07cb63698aac036800765dd4))
+* **partner:** mise en forme des logos de la vue en liste ([#764](https://github.com/gip-inclusion/itou-communaute-django/issues/764)) ([7a84319](https://github.com/gip-inclusion/itou-communaute-django/commit/7a843198c6c2d6ea73448c75428d18cbbb6751b2))
+* **post:** simplification du sujet des `Post` ([#748](https://github.com/gip-inclusion/itou-communaute-django/issues/748)) ([3c2a5a0](https://github.com/gip-inclusion/itou-communaute-django/commit/3c2a5a0aecedc0cf6ce113f675fea0b5a7d57d05))
+
 ## [2.12.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.11.0...v2.12.0) (2024-08-07)
 
 
