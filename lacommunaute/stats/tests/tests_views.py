@@ -355,18 +355,18 @@ class TestForumStatWeekArchiveView:
 
 
 @pytest.mark.parametrize(
-    "forum_stat,status_code",
+    "forum_stats,status_code",
     [
         (lambda: None, 404),
-        (lambda: ForumStatFactory(period="week", for_snapshot=True), 302),
+        (lambda: [ForumStatFactory(for_snapshot=True), ForumStatFactory(for_snapshot_older=True)], 302),
     ],
 )
-def test_redirect_to_latest_weekly_stats(client, db, forum_stat, status_code):
-    forum_stat = forum_stat()
+def test_redirect_to_latest_weekly_stats(client, db, forum_stats, status_code):
+    forum_stats = forum_stats()
     response = client.get(reverse("stats:redirect_to_latest_weekly_stats"))
     assert response.status_code == status_code
-    if forum_stat:
+    if forum_stats:
         assert response.url == reverse(
             "stats:forum_stat_week_archive",
-            kwargs={"year": forum_stat.date.year, "week": forum_stat.date.strftime("%W")},
+            kwargs={"year": forum_stats[0].date.year, "week": forum_stats[0].date.strftime("%W")},
         )
