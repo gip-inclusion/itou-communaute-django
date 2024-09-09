@@ -4,6 +4,8 @@ import logging
 from dateutil.relativedelta import relativedelta
 from django.db.models import Avg, CharField, Count, Q
 from django.db.models.functions import Cast
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from django.views.generic.base import TemplateView
@@ -160,3 +162,17 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
         context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
         return context
+
+
+def redirect_to_latest_weekly_stats(request):
+    latest_weekly_stat = ForumStat.objects.filter(period="week").order_by("-date").first()
+
+    if latest_weekly_stat:
+        return redirect(
+            reverse(
+                "stats:forum_stat_week_archive",
+                kwargs={"year": latest_weekly_stat.date.year, "week": latest_weekly_stat.date.strftime("%W")},
+            )
+        )
+
+    return render(request, "404.html", status=404)

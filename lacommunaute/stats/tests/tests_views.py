@@ -346,3 +346,21 @@ class TestForumStatWeekArchiveView:
             "nb_uniq_engaged_visitors": [],
         }
         assert response.context_data["stats"] == expected_stats
+
+
+@pytest.mark.parametrize(
+    "forum_stat,status_code",
+    [
+        (lambda: None, 404),
+        (lambda: ForumStatFactory(period="week", for_snapshot=True), 302),
+    ],
+)
+def test_redirect_to_latest_weekly_stats(client, db, forum_stat, status_code):
+    forum_stat = forum_stat()
+    response = client.get(reverse("stats:redirect_to_latest_weekly_stats"))
+    assert response.status_code == status_code
+    if forum_stat:
+        assert response.url == reverse(
+            "stats:forum_stat_week_archive",
+            kwargs={"year": forum_stat.date.year, "week": forum_stat.date.strftime("%W")},
+        )
