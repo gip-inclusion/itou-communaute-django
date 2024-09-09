@@ -43,7 +43,9 @@
   <div class="s-section__row row" id="most_rated">
                   <div class="s-section__col col-12">
                       <div class="c-box mb-3 mb-md-5">
-                          <h2>Les 1 fiches pratiques les plus notées sur la période</h2>
+                          <h2>
+                              Les 1 fiches pratiques les plus notées pendant la semaine du 20 mai 2024 au 26 mai 2024
+                          </h2>
                           <table class="table">
                               <thead>
                                   <tr>
@@ -72,7 +74,9 @@
   <div class="s-section__row row" id="most_viewed">
                   <div class="s-section__col col-12">
                       <div class="c-box mb-3 mb-md-5">
-                          <h2>Les 2 fiches pratiques les plus lues sur la période</h2>
+                          <h2>
+                              Les 2 fiches pratiques les plus lues pendant la semaine du 20 mai 2024 au 26 mai 2024
+                          </h2>
                           <table class="table">
                               <thead>
                                   <tr>

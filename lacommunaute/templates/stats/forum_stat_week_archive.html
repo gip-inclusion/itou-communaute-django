@@ -31,22 +31,12 @@
     </section>
     <section class="s-section">
         <div class="s-section__container container">
-            <div class="s-section__row row">
-                <div class="s-section__col col-12">
-                    <div class="c-box mb-3 mb-md-5">
-                        <h2>Trafic global sur la période</h2>
-                        <canvas id="statChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="s-section">
-        <div class="s-section__container container">
             <div class="s-section__row row" id="most_viewed">
                 <div class="s-section__col col-12">
                     <div class="c-box mb-3 mb-md-5">
-                        <h2>Les {{ object_list|length }} fiches pratiques les plus lues sur la période</h2>
+                        <h2>
+                            Les {{ object_list|length }} fiches pratiques les plus lues pendant la semaine du {{ week|date:"j F Y" }} au {{ end_date|date:"j F Y" }}
+                        </h2>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -77,7 +67,9 @@
             <div class="s-section__row row" id="most_rated">
                 <div class="s-section__col col-12">
                     <div class="c-box mb-3 mb-md-5">
-                        <h2>Les {{ rated_forums|length }} fiches pratiques les plus notées sur la période</h2>
+                        <h2>
+                            Les {{ rated_forums|length }} fiches pratiques les plus notées pendant la semaine du {{ week|date:"j F Y" }} au {{ end_date|date:"j F Y" }}
+                        </h2>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -96,6 +88,18 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <h2>Trafic quotidien jusqu'au {{ end_date|date:"j F Y" }}</h2>
+                        <canvas id="statChart"></canvas>
                     </div>
                 </div>
             </div>
