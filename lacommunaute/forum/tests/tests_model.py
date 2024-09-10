@@ -2,6 +2,7 @@ from django.conf import settings
 from django.test import TestCase
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
 
@@ -87,3 +88,15 @@ class ForumModelTest(TestCase):
         ForumRatingFactory(forum=forum, rating=5)
 
         self.assertEqual(forum.get_average_rating(), 3)
+
+
+class TestForumQueryset:
+    def test_get_main_forum_wo_forum(self, db):
+        assert Forum.objects.get_main_forum() is None
+
+    def test_get_main_forum_w_several_forums(self, db):
+        # level 0
+        forums = ForumFactory.create_batch(2)
+        # level 1
+        ForumFactory(parent=forums[0])
+        assert Forum.objects.get_main_forum() == forums[0]

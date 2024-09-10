@@ -14,6 +14,11 @@ from lacommunaute.partner.models import Partner
 from lacommunaute.utils.validators import validate_image_size
 
 
+class ForumQuerySet(models.QuerySet):
+    def get_main_forum(self):
+        return self.filter(lft=1, level=0).first()
+
+
 class Forum(AbstractForum):
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
@@ -29,7 +34,7 @@ class Forum(AbstractForum):
     tags = TaggableManager()
     partner = models.ForeignKey(Partner, on_delete=models.CASCADE, null=True, blank=True)
 
-    objects = models.Manager()
+    objects = ForumQuerySet().as_manager()
 
     def get_absolute_url(self):
         return reverse(
@@ -58,7 +63,7 @@ class Forum(AbstractForum):
 
     @cached_property
     def is_toplevel_discussion_area(self):
-        return self == Forum.objects.filter(lft=1, level=0).first()
+        return self == Forum.objects.get_main_forum()
 
     def get_session_rating(self, session_key):
         return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)

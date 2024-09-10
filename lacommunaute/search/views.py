@@ -57,5 +57,5 @@ class SearchView(FormMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["forum"] = Forum.objects.filter(lft=1, level=0).first()
+        context["forum"] = Forum.objects.get_main_forum()
         return context

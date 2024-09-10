@@ -28,7 +28,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["topics_public"] = Topic.objects.filter(approved=True).order_by("-created")[:4]
         context["forums_category"] = Forum.objects.filter(parent__type=1).order_by("-updated")[:4]
-        context["forum"] = Forum.objects.filter(lft=1, level=0).first()
+        context["forum"] = Forum.objects.get_main_forum()
         context["upcoming_events"] = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:4]
         return context
 
