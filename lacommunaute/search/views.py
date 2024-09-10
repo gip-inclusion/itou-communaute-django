@@ -3,7 +3,6 @@ from django.db.models import F
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.search.enums import CommonIndexKind
 from lacommunaute.search.forms import SearchForm
@@ -58,5 +57,5 @@ class SearchView(FormMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["forum"] = Forum.objects.filter(kind=ForumKind.PUBLIC_FORUM, lft=1, level=0).first()
+        context["forum"] = Forum.objects.get_main_forum()
         return context

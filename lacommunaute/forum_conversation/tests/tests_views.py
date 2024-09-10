@@ -9,10 +9,10 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
+
 from pytest_django.asserts import assertContains, assertNotContains
 from taggit.models import Tag
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.enums import Filters
 from lacommunaute.forum_conversation.factories import (
@@ -808,7 +808,6 @@ def test_breadcrumbs_on_topic_view(client, db, snapshot):
     discussion_area_topic = TopicFactory(
         with_post=True, forum=ForumFactory(with_public_perms=True, parent=discussion_area_forum, name="Forum B")
     )
-    newsfeed_topic = TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
 
     response = client.get(
         reverse(
@@ -859,21 +858,6 @@ def test_breadcrumbs_on_topic_view(client, db, snapshot):
     )
     assert str(content) == snapshot(name="discussion_area_topic")
 
-    response = client.get(
-        reverse(
-            "forum_conversation:topic",
-            kwargs={
-                "forum_pk": newsfeed_topic.forum.pk,
-                "forum_slug": newsfeed_topic.forum.slug,
-                "pk": newsfeed_topic.pk,
-                "slug": newsfeed_topic.slug,
-            },
-        )
-    )
-    assert response.status_code == 200
-    content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
-    assert str(content) == snapshot(name="newsfeed_topic")
-
 
 class TopicListViewTest(TestCase):
     @classmethod
@@ -912,8 +896,6 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["active_tags_label"], " ou ".join([tag.name for tag in tags]))
 
     def test_queryset(self):
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
-
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
@@ -928,8 +910,8 @@ class TopicListViewTest(TestCase):
                 self.assertContains(response, topic.subject)
 
     def test_queryset_for_unanswered_topic(self):
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True))
-
+        # answered topic
+        PostFactory(topic=TopicFactory(with_post=True, forum=self.forum))
         response = self.client.get(self.url + "?filter=NEW")
         self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, self.topic.subject, status_code=200)
@@ -1074,35 +1056,6 @@ class TestPosterTemplate:
             response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
         )
         assert str(soup) == snapshot(name="topic_in_its_own_public_forum")
-
-
-class NewsFeedTopicListViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.url = reverse("forum_conversation_extension:newsfeed")
-
-    def test_template_name(self):
-        response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "forum_conversation/topics_newsfeed.html")
-
-        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
-        self.assertTemplateUsed(response, "forum_conversation/topic_list_newsfeed.html")
-
-    def test_queryset(self):
-        news_topics = TopicFactory.create_batch(
-            2, with_post=True, forum=ForumFactory(kind=ForumKind.NEWS, with_public_perms=True)
-        )
-        TopicFactory(with_post=True, forum=ForumFactory(kind=ForumKind.PUBLIC_FORUM, with_public_perms=True))
-
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerySetEqual(response.context_data["topics"], [topic for topic in news_topics[::-1]])
-
-    def test_context_data(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["forum"], None)
-        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:newsfeed"))
 
 
 class TestTopicCreateCheckView:

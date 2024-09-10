@@ -1,18 +1,10 @@
 from django.conf import settings
 from django.test import TestCase
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
-
-
-class ForumManagerTest(TestCase):
-    def test_public_method(self):
-        forum = ForumFactory(kind=ForumKind.PUBLIC_FORUM)
-        ForumFactory(kind=ForumKind.NEWS)
-        self.assertEqual(forum, Forum.objects.public().get())
 
 
 class ForumModelTest(TestCase):
@@ -30,12 +22,6 @@ class ForumModelTest(TestCase):
         topic = TopicFactory(forum=ForumFactory(), posts_count=1)
         TopicFactory(forum=ForumFactory(parent=topic.forum), posts_count=1)
         self.assertEqual(topic.forum.count_unanswered_topics, 2)
-
-    def test_kind(self):
-        self.assertEqual(
-            Forum.kind.field.flatchoices,
-            [("PUBLIC_FORUM", "Espace public"), ("NEWS", "Actualités")],
-        )
 
     def test_get_absolute_url(self):
         forum = ForumFactory()
@@ -80,20 +66,11 @@ class ForumModelTest(TestCase):
         sub_discussion_area_forum = ForumFactory(parent=discussion_area_forum)
         forum = ForumFactory()
         sub_forum = ForumFactory(parent=forum)
-        news_forum = ForumFactory(kind=ForumKind.NEWS)
 
         self.assertTrue(discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(sub_discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(forum.is_toplevel_discussion_area)
         self.assertFalse(sub_forum.is_toplevel_discussion_area)
-        self.assertFalse(news_forum.is_toplevel_discussion_area)
-
-    def test_is_newsfeed(self):
-        news_forum = ForumFactory(kind=ForumKind.NEWS)
-        discussion_area_forum = ForumFactory()
-
-        self.assertTrue(news_forum.is_newsfeed)
-        self.assertFalse(discussion_area_forum.is_newsfeed)
 
     def test_get_session_rating(self):
         forum = ForumFactory()
@@ -111,3 +88,15 @@ class ForumModelTest(TestCase):
         ForumRatingFactory(forum=forum, rating=5)
 
         self.assertEqual(forum.get_average_rating(), 3)
+
+
+class TestForumQueryset:
+    def test_get_main_forum_wo_forum(self, db):
+        assert Forum.objects.get_main_forum() is None
+
+    def test_get_main_forum_w_several_forums(self, db):
+        # level 0
+        forums = ForumFactory.create_batch(2)
+        # level 1
+        ForumFactory(parent=forums[0])
+        assert Forum.objects.get_main_forum() == forums[0]

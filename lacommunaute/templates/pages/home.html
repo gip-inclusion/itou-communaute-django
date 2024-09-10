@@ -10,7 +10,6 @@
 {% block body_class %}p-homepage{{ block.super }}{% endblock %}
 {% block content %}
     {% url 'forum_conversation_extension:topics' as publicforum_url %}
-    {% url 'forum_conversation_extension:newsfeed' as newsfeed_url %}
     {% url 'forum_extension:documentation' as documentation_url %}
     {% url 'event:current' as event_url %}
     <section class="s-hero-title-01--communaute mt-5">

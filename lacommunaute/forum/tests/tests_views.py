@@ -748,10 +748,3 @@ class TestBreadcrumb:
             replace_in_href=[parent_forum, parent_forum.get_children().first()],
         )
         assert str(content) == snapshot(name="grandchild_category_forum")
-
-    def test_newsfeed_forum(self, client, db, snapshot, discussion_area_forum):
-        forum = ForumFactory(kind="NEWS", with_public_perms=True)
-        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
-        assert str(content) == snapshot(name="newsfeed_forum")

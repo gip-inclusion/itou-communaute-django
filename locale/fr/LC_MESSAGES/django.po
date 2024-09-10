@@ -248,8 +248,6 @@ msgstr "Marquer les sous-communautés lues"
 msgid "New topic"
 msgstr "Poser une question"
 
-msgid "New news"
-msgstr "Nouvelle actualité"
 
 #: lacommunaute/templates/machina/forum/forum_detail.html:40
 #: lacommunaute/templates/machina/forum/forum_detail.html:65
@@ -890,11 +888,7 @@ msgstr "Se connecter"
 msgid "Go to this forum"
 msgstr "Accéder à cette thématique"
 
-#: lacommunaute/templates/pages/home.html:89
-msgid "Join this forum"
-msgstr "Rejoindre cette thématique"
 #: lacommunaute/templates/forum_conversation/partials/social_share_buttons.html:5
-
 msgid "Share this topics on "
 msgstr "Partager ce sujet sur "
 
@@ -924,9 +918,6 @@ msgstr "Ce sujet m'intéresse"
 
 msgid "Votes"
 msgstr "Réponses aux sondages"
-
-msgid "Forum Members"
-msgstr "Liste des membres de la communauté"
 
 msgid "Show me the subforum"
 msgstr "Voir la sous-thématique"
@@ -987,9 +978,6 @@ msgstr "Voir toutes les questions"
 
 msgid "See all docs"
 msgstr "Voir toute la documentation"
-
-msgid "See all news"
-msgstr "Voir toutes les actualités"
 
 msgid "New topic on doc"
 msgstr "Poser une question sur cette documentation"

@@ -3,7 +3,6 @@ from django.urls import reverse
 from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
-from lacommunaute.forum.enums import Kind as ForumKind
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.forum.factories import CategoryForumFactory
@@ -65,7 +64,6 @@ def test_create_subcategory_with_perms(client, db):
 
     forum = category_forum.children.get()
     assert forum.type == Forum.FORUM_POST
-    assert forum.kind == ForumKind.PUBLIC_FORUM
     assert forum.parent == category_forum
 
     assert UserForumPermission.objects.filter(forum=forum).count() == 14

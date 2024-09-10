@@ -6,8 +6,6 @@
             <li class="breadcrumb-item">
                 {% if forum.is_in_documentation_area %}
                     <a href="{% url 'forum_extension:documentation' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation_breadcrumb">{% trans "Documents" %}</a>
-                {% elif forum.is_newsfeed %}
-                    <a href="{% url 'forum_conversation_extension:newsfeed' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="newsfeed_breadcrumb">Actualités</a>
                 {% else %}
                     <a href="{% url 'forum_conversation_extension:topics' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics_breadcrumb">{% trans "Discussion area" %}</a>
                 {% endif %}
@@ -19,7 +17,7 @@
                     </li>
                 {% endif %}
             {% endfor %}
-            {% if topic and not forum.is_toplevel_discussion_area and not forum.is_newsfeed %}
+            {% if topic and not forum.is_toplevel_discussion_area %}
                 <li class="breadcrumb-item">
                     <a href="{% url 'forum_extension:forum' forum.slug forum.id %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">{{ forum.name }}</a>
                 </li>

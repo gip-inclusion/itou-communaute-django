@@ -8,7 +8,6 @@ from machina.models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 from taggit.managers import TaggableManager
 
-from lacommunaute.forum.enums import Kind as Forum_Kind
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.partner.models import Partner
@@ -16,14 +15,11 @@ from lacommunaute.utils.validators import validate_image_size
 
 
 class ForumQuerySet(models.QuerySet):
-    def public(self):
-        return self.filter(kind=Forum_Kind.PUBLIC_FORUM)
+    def get_main_forum(self):
+        return self.filter(lft=1, level=0).first()
 
 
 class Forum(AbstractForum):
-    kind = models.CharField(
-        max_length=20, choices=Forum_Kind.choices, default=Forum_Kind.PUBLIC_FORUM, verbose_name="Type"
-    )
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
     )
@@ -67,11 +63,7 @@ class Forum(AbstractForum):
 
     @cached_property
     def is_toplevel_discussion_area(self):
-        return self == Forum.objects.filter(kind=Forum_Kind.PUBLIC_FORUM, lft=1, level=0).first()
-
-    @cached_property
-    def is_newsfeed(self):
-        return self.kind == Forum_Kind.NEWS
+        return self == Forum.objects.get_main_forum()
 
     def get_session_rating(self, session_key):
         return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)

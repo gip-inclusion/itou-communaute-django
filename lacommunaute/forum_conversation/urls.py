@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from lacommunaute.forum_conversation.views import NewsFeedTopicListView, TopicCreateCheckView, TopicListView
+from lacommunaute.forum_conversation.views import TopicCreateCheckView, TopicListView
 from lacommunaute.forum_conversation.views_htmx import (
     CertifiedPostView,
     PostFeedCreateView,
@@ -24,7 +24,6 @@ conversation_urlpatterns = [
 
 urlpatterns = [
     path("topics/", TopicListView.as_view(), name="topics"),
-    path("news/", NewsFeedTopicListView.as_view(), name="newsfeed"),
     path(
         "forum/<str:forum_slug>-<int:forum_pk>/",
         include(conversation_urlpatterns),
