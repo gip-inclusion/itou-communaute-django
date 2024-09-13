@@ -13,19 +13,9 @@
   border: 0;
 }
 
-.p-homepage {
-  .s-main::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: 260px;
-    background-image: url('data:image/svg+xml;utf8,%3csvg xmlns="http://www.w3.org/2000/svg" width="416" height="416"%3e%3cpath fill="%23D1EDE5" fill-rule="evenodd" d="M237.285 413.902C123.557 430.077 18.239 350.982 2.1 237.26-14.08 123.57 64.977 18.245 178.699 2.107c113.734-16.211 219.015 62.877 235.19 176.605 16.18 113.691-62.907 218.972-176.604 235.19z"/%3e%3c/svg%3e');
-    background-repeat: no-repeat;
-    background-size: 554px;
-    background-position: bottom right;
+.p-home {
+  #header_search_form {
+    display: none;
   }
 }
 
@@ -40,7 +30,7 @@
     border-radius: 50%;
     overflow: hidden;
 
-    >img {
+    > img {
       width: 100%;
       height: auto;
       object-fit: cover;
@@ -59,11 +49,10 @@
 .card-header-thumbnail {
   height: 200px;
 
-  >img {
+  > img {
     height: 100%;
   }
 }
-
 
 .card.forumlist .card-body .forum-icon {
   display: inline-block;
@@ -110,7 +99,7 @@ span.highlighted {
 .input-group-rounded-pill {
   border-radius: 50rem !important;
 
-  >input {
+  > input {
     border-top-left-radius: 50rem !important;
     border-bottom-left-radius: 50rem !important;
   }
@@ -162,13 +151,13 @@ span.highlighted {
     }
   }
 
-  >div {
+  > div {
     padding: 16px 8px;
     margin: 0;
     margin-bottom: 8px;
     min-height: 140px;
 
-    >span {
+    > span {
       display: block;
     }
 
@@ -188,7 +177,7 @@ span.highlighted {
 }
 
 .definition {
-  >div {
+  > div {
     padding: 16px 8px 0 16px;
     margin-bottom: 8px;
 
@@ -209,7 +198,7 @@ span.highlighted {
       padding-top: 40%;
     }
 
-    >iframe {
+    > iframe {
       position: absolute;
       top: 0;
       left: 0;

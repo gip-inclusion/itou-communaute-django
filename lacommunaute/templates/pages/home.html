@@ -7,156 +7,231 @@
     Entraide, information et apprentissage pour les professionnels de l'Insertion par l'Activité Economique. Améliorer sa pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi.
 {% endblock meta_description %}
 "
-{% block body_class %}p-homepage{{ block.super }}{% endblock %}
+{% block body_class %}p-home{{ block.super }}{% endblock %}
 {% block content %}
     {% url 'forum_conversation_extension:topics' as publicforum_url %}
     {% url 'forum_extension:documentation' as documentation_url %}
     {% url 'event:current' as event_url %}
-    <section class="s-hero-title-01--communaute mt-5">
-        <div class="s-hero-title-01__container container">
-            <div class="s-hero-title-01__row row align-items-center">
-                <div class="s-hero-title-01__col s-hero-title-01__col--article col-12">
-                    <h1 class="s-hero-title-01__col--article__title h1-hero">L’espace d’entraide des professionnels de l’inclusion</h1>
+    {% url 'surveys:dsp_create' as dsp_url %}
+
+    <section class="s-home-title-01 s-home-title-01--communaute mb-md-6 mb-lg-10" style="--home-title-bg: url({% static 'images/home-bg-illu.png' %})">
+        <div class="s-home-title-01__container container container-max-lg">
+            <div class="s-home-title-01__row row">
+                <div class="s-home-title-01__col col-12 col-md-8 col-lg-7 mb-4">
+                    <h1 class="h1-hero">L’espace d’entraide des professionnels de l’inclusion</h1>
+                    <p class="lead mb-md-5">Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi</p>
+                    <form action="{% url 'search:index' %}" role="search" class="s-home-title-01__form">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group input-group-lg flex-nowrap">
+                                    <div class="input-group-text bg-white rounded-start ps-0 pe-2">
+                                        <i class="ri-map-pin-line ri-lg text-disabled" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="input-group-text bg-white p-0 flex-grow-1">
+                                        <input type="search" class="form-control"  placeholder="{% trans 'Search in forum' %}" name="q" aria-describedby="homeSearchBtn">
+                                        <button class="btn btn-ico btn-primary matomo-event" type="submit" id="homeSearchBtn" aria-label="{% trans 'Search in forum' %}" data-matomo-category="engagement" data-matomo-action="search" data-matomo-option="submit_query_header_hp">
+                                            <i class="ri-search-line font-weight-bold" aria-hidden="true"></i>
+                                            <span class="d-none d-sm-inline-flex me-0 me-sm-1">{% trans 'Search' %}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="s-hero-title-01__row row align-items-center">
-                <div class="s-hero-title-01__col s-hero-title-01__col--title col-12 col-lg-8 mt-3 mt-lg-5">
-                    <h2 class="h1 mb-3 mb-lg-5">
-                        Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi ✨
-                    </h2>
-                    <ul class="lead list-unstyled mb-md-5">
-                        <li class="d-flex mb-2">
-                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ms-2">Posez vos questions et répondre aux autres professionnels</span>
+            <div class="s-home-title-01__row row">
+                <div class="s-home-title-01__col col-12 mt-md-6 mt-lg-6">
+                    <div class="s-home-title-01__btn-group flex-column flex-md-row gap-3 gap-md-4 mb-md-n5 mb-lg-n8">
+                        <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
+                            <div class="w-25 w-md-40">
+                                <img src="{% static 'images/home-title-01-illu-card-01.png' %}" class="img-fluid" alt="">
+                            </div>
+                            <div class="ps-3">
+                                <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                rel="nofollow"
+                                data-matomo-category="engagement"
+                                data-matomo-action="contribute"
+                                data-matomo-option="new_topic"
+                                class="btn-link stretched-link matomo-event"
+                                >Je veux poser <br class="d-none d-md-inline">une question</a>
+                            </div>
+                        </div>
+                        <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
+                            <div class="w-25 w-md-40">
+                                <img src="{% static 'images/home-title-01-illu-card-02.png' %}" class="img-fluid" alt="">
+                            </div>
+                            <div class="ps-3">
+                                <a href="{{ dsp_url }}"
+                                rel="nofollow"
+                                data-matomo-category="engagement"
+                                data-matomo-action="view"
+                                data-matomo-option="dsp"
+                                class="btn-link stretched-link matomo-event"
+                                >Je veux réaliser <br class="d-none d-md-inline">un diagnostic</a>
+                            </div>
+                        </div>
+                        <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
+                            <div class="w-25 w-md-40">
+                                <img src="{% static 'images/home-title-01-illu-card-03.png' %}" class="img-fluid" alt="">
+                            </div>
+                            <div class="ps-3">
+                                <button type="button"
+                                data-matomo-action="topic-create-check"
+                                data-matomo-category="engagement"
+                                data-matomo-option="itou-jobseeker"
+                                data-bs-toggle="modal"
+                                data-bs-target="#rechercheEmploi"
+                                class="btn-link stretched-link matomo-event"
+                                >Je veux chercher <br class="d-none d-md-inline">un emploi inclusif</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-banner-01 my-5 my-md-9">
+        <div class="s-banner-01__container container container-max-lg">
+            <div class="s-banner-01__row row g-0">
+                <div class="s-banner-01__col col-12 pe-md-0">
+                    <div class="row g-0 align-items-end">
+                        <div class="col-12 col-md-8">
+                            <p class="h1 text-tertiary">La boîte à outils des CIP</p>
+                            <p class="mb-md-4">La boîte à outils des CIP est espace dédié rassemblant des outils, des guides pour accompagner les acteurs de l'inclusion dans leur soutien aux personnes éloignées du marché du travail, confrontées à des obstacles multiples et complexes.</p>
+                            <a href="{% url 'forum_extension:forum' "la-boîte-à-outils-des-cip" 149 %}"
+                            data-matomo-category="engagement"
+                            data-matomo-action="view"
+                            data-matomo-option="highlight"
+                            class="btn btn-outline-primary matomo-event">
+                                Consulter les fiches de la boite à outils
+                            </a>
+                        </div>
+                        <div class="d-none d-md-inline col-md-4 ps-3 mb-n4">
+                            <img src="{% static 'images/home-banner-01-illu.png' %}" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section my-5 my-md-9">
+        <div class="s-section__container container container-max-lg">
+            <div class="s-section__row row align-items-center">
+                <div class="s-section__col d-none d-md-inline col-md-4 pe-4">
+                    <img src="{% static 'images/home-illu-01.png' %}" class="img-fluid" loading="lazy" alt="">
+                </div>
+                <div class="s-section__col col-12 col-md-8">
+                    <p class="h1 text-tertiary">
+                        Les dernières mises à jour
+                        <br class="d-none d-lg-inline">
+                        des fiches pratiques
+                    </p>
+                    <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
+                        {% for forum in forums_category %}
+                            <li class="list-group-item list-group-item-action">
+                                <div>
+                                    <div class="tag-group mb-1">
+                                        <span class="tag tag-lg bg-info-lighter text-info text-uppercase">{{ forum.parent.name }}</span>
+                                    </div>
+                                    <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
+                                        data-matomo-category="engagement"
+                                        data-matomo-action="view"
+                                        data-matomo-option="forum"
+                                        class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
+                                        {{ forum.name }}
+                                    </a>
+                                    <p class="mb-0">{{ forum.short_description|truncatechars_html:200 }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="{{ documentation_url }}"
+                    class="btn btn-outline-primary matomo-event"
+                    data-matomo-category="engagement"
+                    data-matomo-action="view"
+                    data-matomo-option="documentation"
+                    class="btn btn-outline-primary">
+                        {% trans "See all docs" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-section my-5 my-md-10">
+        <div class="s-section__container container container-max-lg">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-3 mb-md-4">
+                        <span class="h1 mb-md-0 text-tertiary">Les dernières actualités</span>
+                        <div>
+                            <a href="" class="btn btn-outline-primary">Toutes les actualités</a>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush list-group-horizontal-md list-group-link mt-3 mt-md-4">
+                        <li class="list-group-item list-group-item-action">
+                            <div>
+                                <div class="tag-group mb-1">
+                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
+                                </div>
+                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
+                            </div>
                         </li>
-                        <li class="d-flex mb-2">
-                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ms-2">Retrouvez les dernières actus et infos pour sa veille informelle</span>
+                        <li class="list-group-item list-group-item-action">
+                            <div>
+                                <div class="tag-group mb-1">
+                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
+                                </div>
+                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
+                            </div>
                         </li>
-                        <li class="d-flex mb-2">
-                            <i class="text-success ri-checkbox-circle-fill ri-xxl"></i>
-                            <span class="ms-2">Progressez grâce à des ressources exclusives</span>
+                        <li class="list-group-item list-group-item-action">
+                            <div>
+                                <div class="tag-group mb-1">
+                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
+                                </div>
+                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
-                <div class="s-hero-title-01__col col-12 d-none d-lg-inline-flex col-md-4">
-                    <div>
-                        <img src="{% static 'images/hp-illustration-01.svg' %}" class="img-fluid w-lg-75" loading="lazy" alt="">
-                    </div>
-                </div>
             </div>
-            <div class="s-hero-title-01__row row align-items-center">
-                <div class="s-hero-title-01__col s-hero-title-01__col--title col-12 mt-3 mt-lg-5 mb-lg-5">
-                    {% include "partials/ask_a_question.html" %}
+        </div>
+    </section>
+
+    <section class="s-section my-5 my-md-9">
+        <div class="s-section__container container container-max-lg">
+            <div class="s-section__row row align-items-center">
+                <div class="s-section__col d-none d-md-inline col-md-4 pe-4">
+                    <img src="{% static 'images/Microphone.png' %}" class="img-fluid" loading="lazy" alt="">
+                </div>
+                <div class="s-section__col col-12 col-md-8">
+                    <p class="h1 text-tertiary">
+                        La parole aux CIP
+                    </p>
+                    <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
+                        {% for forum in forums_category %}
+                            <li class="list-group-item list-group-item-action">
+                                <div>
+                                    <a href=""
+                                        data-matomo-category="engagement"
+                                        data-matomo-action="view"
+                                        data-matomo-option="blogpost"
+                                        class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
+                                        {% lorem 2 w random %}
+                                    </a>
+                                    <p class="mb-0">{% lorem %}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
-    <section class="s-section mt-0">
-        <div class="s-section__container container">
-            <div class="s-section__row row mt-3 mt-md-5">
-                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
-                    <div class="c-box p-0 h-100">
-                        <div class="p-3 p-lg-4 bg-communaute-light">
-                            <h3 class="m-0">
-                                <i class="ri-dashboard-2-fill ri-lg font-weight-normal" aria-hidden="true"></i>
-                                La boîte à outils des CIP
-                            </h3>
-                        </div>
-                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                            La boîte à outils des CIP est espace dédié rassemblant des outils, des guides pour accompagner les acteurs de l'inclusion dans leur soutien aux personnes éloignées du marché du travail, confrontées à des obstacles multiples et complexes.
-                        </div>
-                        <div class="p-3 p-lg-4">
-                            <a href="{% url 'forum_extension:forum' "la-boîte-à-outils-des-cip" 149 %}"
-                               class="btn btn-ico btn-outline-primary matomo-event"
-                               data-matomo-category="engagement"
-                               data-matomo-action="view"
-                               data-matomo-option="highlight">
-                                <span>Consulter les fiches de la boîte à outils</span>
-                                <i class="ri-arrow-right-up-line"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
-                    <div class="c-box p-0 h-100">
-                        <div class="p-3 p-lg-4 bg-light">
-                            <h3 class="m-0">
-                                <i class="ri-article-line ri-lg font-weight-normal" aria-hidden="true"></i>
-                                Les fiches pratique mises à jour
-                            </h3>
-                        </div>
-                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                            <ul class="list-unstyled mb-lg-5">
-                                {% for forum in forums_category %}
-                                    <li class="mb-3 position-relative">
-                                        <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">
-                                            {{ forum.name }}
-                                        </a>
-                                        <small>dans {{ forum.parent.name }}</small>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=None dated=forum.updated only %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="p-3 p-lg-4">
-                            <a href="{{ documentation_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation">{% trans "See all docs" %}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
-                    <div class="c-box p-0 h-100">
-                        <div class="p-3 p-lg-4 bg-light">
-                            <h3 class="m-0">
-                                <i class="ri-user-line ri-lg font-weight-normal" aria-hidden="true"></i>
-                                Les dernières questions posées
-                            </h3>
-                        </div>
-                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                            <ul class="list-unstyled mb-lg-5">
-                                {% for topic in topics_public %}
-                                    <li class="mb-3 position-relative">
-                                        <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                                           class="matomo-event btn-link stretched-link"
-                                           data-matomo-category="engagement"
-                                           data-matomo-action="view"
-                                           data-matomo-option="topic">{{ topic.subject }}</a>
-                                        {% include "forum_conversation/partials/poster_light.html" with poster=topic.first_post.poster_display_name dated=topic.created only %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="p-3 p-lg-4">
-                            <a href="{{ publicforum_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics">{% trans "See all questions" %}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="s-section__col col-12 col-md-6 mb-3 mb-md-5">
-                    <div class="c-box p-0 h-100">
-                        <div class="p-3 p-lg-4 bg-light">
-                            <h3 class="m-0">
-                                <i class="ri-calendar-event-fill ri-lg font-weight-normal" aria-hidden="true"></i>
-                                Les évènements à venir
-                            </h3>
-                        </div>
-                        <div class="px-3 px-lg-4 pt-3 pt-lg-4">
-                            <ul class="list-unstyled mb-lg-5">
-                                {% for event in upcoming_events %}
-                                    <li class="mb-3 position-relative">
-                                        <a href="{% url 'event:detail' event.pk %}" class="matomo-event btn-link stretched-link" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="event">
-                                            {{ event.name }}
-                                        </a>
-                                        <small class="text-muted">{% include 'event/partials/event_date.html' with event=event only %}</small>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="p-3 p-lg-4">
-                            <a href="{{ event_url }}" class="btn btn-outline-primary btn-block matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="events">Voir tous les évènements</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
+    {% include 'forum_conversation/partials/itou_modal.html' %}
 {% endblock %}

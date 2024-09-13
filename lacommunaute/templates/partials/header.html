@@ -26,7 +26,7 @@
                 <div class="s-header__col s-header__col--nav col d-none d-lg-inline-flex d-lg-flex align-items-center justify-content-end pe-0 pe-xl-3">
                     <nav role="navigation" id="nav-primary" aria-label="Navigation principale">
                         <ul>
-                            <li>
+                            <li id="header_search_form">
                                 <form action="{% url 'search:index' %}" name="header_search_form">
                                     <div class="input-group input-group-rounded-pill">
                                         <input class="form-control w-300px" type="search" placeholder="{% trans "Search forums" %}" aria-label="{% trans "Search forums" %}" name="q">
