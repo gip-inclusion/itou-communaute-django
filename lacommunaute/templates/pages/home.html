@@ -19,7 +19,9 @@
             <div class="s-home-title-01__row row">
                 <div class="s-home-title-01__col col-12 col-md-8 col-lg-7 mb-4">
                     <h1 class="h1-hero">L’espace d’entraide des professionnels de l’inclusion</h1>
-                    <p class="lead mb-md-5">Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi</p>
+                    <p class="lead mb-md-5">
+                        Améliorez votre pratique professionnelle d’accompagnateurs de personnes éloignées de l’emploi
+                    </p>
                     <form action="{% url 'search:index' %}" role="search" class="s-home-title-01__form">
                         <div class="row">
                             <div class="col-12">
@@ -28,8 +30,14 @@
                                         <i class="ri-map-pin-line ri-lg text-disabled" aria-hidden="true"></i>
                                     </div>
                                     <div class="input-group-text bg-white p-0 flex-grow-1">
-                                        <input type="search" class="form-control"  placeholder="{% trans 'Search in forum' %}" name="q" aria-describedby="homeSearchBtn">
-                                        <button class="btn btn-ico btn-primary matomo-event" type="submit" id="homeSearchBtn" aria-label="{% trans 'Search in forum' %}" data-matomo-category="engagement" data-matomo-action="search" data-matomo-option="submit_query_header_hp">
+                                        <input type="search" class="form-control"  placeholder="{% trans 'Search forums' %}" name="q" aria-describedby="homeSearchBtn">
+                                        <button class="btn btn-ico btn-primary matomo-event"
+                                                type="submit"
+                                                id="homeSearchBtn"
+                                                aria-label="{% trans 'Search forums' %}"
+                                                data-matomo-category="engagement"
+                                                data-matomo-action="search"
+                                                data-matomo-option="submit_query_header_hp">
                                             <i class="ri-search-line font-weight-bold" aria-hidden="true"></i>
                                             <span class="d-none d-sm-inline-flex me-0 me-sm-1">{% trans 'Search' %}</span>
                                         </button>
@@ -49,12 +57,13 @@
                             </div>
                             <div class="ps-3">
                                 <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                                rel="nofollow"
-                                data-matomo-category="engagement"
-                                data-matomo-action="contribute"
-                                data-matomo-option="new_topic"
-                                class="btn-link stretched-link matomo-event"
-                                >Je veux poser <br class="d-none d-md-inline">une question</a>
+                                   rel="nofollow"
+                                   data-matomo-category="engagement"
+                                   data-matomo-action="contribute"
+                                   data-matomo-option="new_topic"
+                                   class="btn-link stretched-link matomo-event">Je veux poser
+                                    <br class="d-none d-md-inline">
+                                une question</a>
                             </div>
                         </div>
                         <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
@@ -62,13 +71,9 @@
                                 <img src="{% static 'images/home-title-01-illu-card-02.png' %}" class="img-fluid" alt="">
                             </div>
                             <div class="ps-3">
-                                <a href="{{ dsp_url }}"
-                                rel="nofollow"
-                                data-matomo-category="engagement"
-                                data-matomo-action="view"
-                                data-matomo-option="dsp"
-                                class="btn-link stretched-link matomo-event"
-                                >Je veux réaliser <br class="d-none d-md-inline">un diagnostic</a>
+                                <a href="{{ dsp_url }}" rel="nofollow" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="dsp" class="btn-link stretched-link matomo-event">Je veux réaliser
+                                    <br class="d-none d-md-inline">
+                                un diagnostic</a>
                             </div>
                         </div>
                         <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
@@ -77,13 +82,16 @@
                             </div>
                             <div class="ps-3">
                                 <button type="button"
-                                data-matomo-action="topic-create-check"
-                                data-matomo-category="engagement"
-                                data-matomo-option="itou-jobseeker"
-                                data-bs-toggle="modal"
-                                data-bs-target="#rechercheEmploi"
-                                class="btn-link stretched-link matomo-event"
-                                >Je veux chercher <br class="d-none d-md-inline">un emploi inclusif</button>
+                                        data-matomo-action="topic-create-check"
+                                        data-matomo-category="engagement"
+                                        data-matomo-option="itou-jobseeker"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#rechercheEmploi"
+                                        class="btn-link stretched-link matomo-event">
+                                    Je veux chercher
+                                    <br class="d-none d-md-inline">
+                                    un emploi inclusif
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -91,7 +99,6 @@
             </div>
         </div>
     </section>
-
     <section class="s-banner-01 my-5 my-md-9">
         <div class="s-banner-01__container container container-max-lg">
             <div class="s-banner-01__row row g-0">
@@ -99,12 +106,14 @@
                     <div class="row g-0 align-items-end">
                         <div class="col-12 col-md-8">
                             <p class="h1 text-tertiary">La boîte à outils des CIP</p>
-                            <p class="mb-md-4">La boîte à outils des CIP est espace dédié rassemblant des outils, des guides pour accompagner les acteurs de l'inclusion dans leur soutien aux personnes éloignées du marché du travail, confrontées à des obstacles multiples et complexes.</p>
+                            <p class="mb-md-4">
+                                La boîte à outils des CIP est espace dédié rassemblant des outils, des guides pour accompagner les acteurs de l'inclusion dans leur soutien aux personnes éloignées du marché du travail, confrontées à des obstacles multiples et complexes.
+                            </p>
                             <a href="{% url 'forum_extension:forum' "la-boîte-à-outils-des-cip" 149 %}"
-                            data-matomo-category="engagement"
-                            data-matomo-action="view"
-                            data-matomo-option="highlight"
-                            class="btn btn-outline-primary matomo-event">
+                               data-matomo-category="engagement"
+                               data-matomo-action="view"
+                               data-matomo-option="highlight"
+                               class="btn btn-outline-primary matomo-event">
                                 Consulter les fiches de la boite à outils
                             </a>
                         </div>
@@ -116,7 +125,6 @@
             </div>
         </div>
     </section>
-
     <section class="s-section my-5 my-md-9">
         <div class="s-section__container container container-max-lg">
             <div class="s-section__row row align-items-center">
@@ -133,14 +141,11 @@
                         {% for forum in forums_category %}
                             <li class="list-group-item list-group-item-action">
                                 <div>
-                                    <div class="tag-group mb-1">
-                                        <span class="tag tag-lg bg-info-lighter text-info text-uppercase">{{ forum.parent.name }}</span>
-                                    </div>
                                     <a href="{% url 'forum_extension:forum' forum.slug forum.pk %}"
-                                        data-matomo-category="engagement"
-                                        data-matomo-action="view"
-                                        data-matomo-option="forum"
-                                        class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
+                                       data-matomo-category="engagement"
+                                       data-matomo-action="view"
+                                       data-matomo-option="forum"
+                                       class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
                                         {{ forum.name }}
                                     </a>
                                     <p class="mb-0">{{ forum.short_description|truncatechars_html:200 }}</p>
@@ -149,19 +154,16 @@
                         {% endfor %}
                     </ul>
                     <a href="{{ documentation_url }}"
-                    class="btn btn-outline-primary matomo-event"
-                    data-matomo-category="engagement"
-                    data-matomo-action="view"
-                    data-matomo-option="documentation"
-                    class="btn btn-outline-primary">
-                        {% trans "See all docs" %}
-                    </a>
+                       class="btn btn-outline-primary matomo-event"
+                       data-matomo-category="engagement"
+                       data-matomo-action="view"
+                       data-matomo-option="documentation"
+                       class="btn btn-outline-primary">{% trans "See all docs" %}</a>
                 </div>
             </div>
         </div>
     </section>
-
-    <section class="s-section my-5 my-md-10">
+    {% comment %}<section class="s-section my-5 my-md-10">
         <div class="s-section__container container container-max-lg">
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
@@ -200,27 +202,20 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <section class="s-section my-5 my-md-9">
+    </section>{% endcomment %}
+    {% comment %}<section class="s-section my-5 my-md-9">
         <div class="s-section__container container container-max-lg">
             <div class="s-section__row row align-items-center">
                 <div class="s-section__col d-none d-md-inline col-md-4 pe-4">
                     <img src="{% static 'images/Microphone.png' %}" class="img-fluid" loading="lazy" alt="">
                 </div>
                 <div class="s-section__col col-12 col-md-8">
-                    <p class="h1 text-tertiary">
-                        La parole aux CIP
-                    </p>
+                    <p class="h1 text-tertiary">La parole aux CIP</p>
                     <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
                         {% for forum in forums_category %}
                             <li class="list-group-item list-group-item-action">
                                 <div>
-                                    <a href=""
-                                        data-matomo-category="engagement"
-                                        data-matomo-action="view"
-                                        data-matomo-option="blogpost"
-                                        class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
+                                    <a href="" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="blogpost" class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
                                         {% lorem 2 w random %}
                                     </a>
                                     <p class="mb-0">{% lorem %}</p>
@@ -231,7 +226,6 @@
                 </div>
             </div>
         </div>
-    </section>
-
+    </section>{% endcomment %}
     {% include 'forum_conversation/partials/itou_modal.html' %}
 {% endblock %}
