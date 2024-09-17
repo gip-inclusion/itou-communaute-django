@@ -64,20 +64,7 @@
           <div class="col-12 mb-5">
               <p class="h2">Quelle est ma situation ?</p>
           </div>
-          <div class="col-12 col-md-6 mb-3">
-              <div class="card c-card h-100">
-                  <div class="card-header">
-                      <h3 class="h4">Je suis à la recherche d'un emploi</h3>
-                  </div>
-                  <div class="card-body pb-0">
-                      <p>Je recherche des offres d'emploi ou des entreprises près de chez moi</p>
-                  </div>
-                  <div class="card-footer text-center mt-3">
-                      <button class="btn btn-primary matomo-event" data-bs-target="#rechercheEmploi" data-bs-toggle="modal" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="itou-jobseeker" type="button">J'accède aux emplois de l'inclusion</button>
-                  </div>
-              </div>
-          </div>
-          <div class="col-12 col-md-6 mb-3">
+          <div class="col-12 col-md-4 mb-3">
               <div class="card c-card h-100">
                   <div class="card-header">
                       <h3 class="h4">J'utilise le site des emplois de l'inclusion</h3>
@@ -92,7 +79,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-12 col-md-6 mb-3">
+          <div class="col-12 col-md-4 mb-3">
               <div class="card c-card h-100">
                   <div class="card-header">
                       <h3 class="h4">J'accueille des personnes en PMSMP</h3>
@@ -109,7 +96,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-12 col-md-6 mb-3">
+          <div class="col-12 col-md-4 mb-3">
               <div class="card c-card h-100">
                   <div class="card-header">
                       <h3 class="h4">Je suis un/une professionnel/le de l'insertion, en formation ou en activité</h3>
@@ -121,54 +108,6 @@
                   </div>
                   <div class="card-footer text-center">
                       <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-[PK of Forum]/topic/create/?checked">Je pose ma question à la communauté</a>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div aria-hidden="true" aria-labelledby="rechercheEmploiMiniLabel" class="modal modal--mini fade" id="rechercheEmploi" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h3 class="modal-title" id="rechercheEmploiLabel">
-                          Vous recherchez un emploi à temps plein, à temps partiel ou en interim ?
-                      </h3>
-                      <button aria-label="Fermer" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                  </div>
-                  <div class="modal-body home-content-body">
-                      <p class="mb-4">
-                          Ce ne sera pas long !
-                          <br/>
-                          Inscrivez-vous et accédez à toutes les fonctionnalités du site des emplois de l'inclusion.
-                      </p>
-                      <ul class="mb-5">
-                          <li class="d-flex mb-2">
-                              <span>
-                                  <i class="text-success ri-checkbox-circle-fill"></i>
-                              </span>
-                              <span class="font-weight-bold ml-2">Créer votre espace candidat</span>
-                          </li>
-                          <li class="d-flex mb-2">
-                              <span>
-                                  <i class="text-success ri-checkbox-circle-fill"></i>
-                              </span>
-                              <span class="font-weight-bold ml-2">Rechercher les offres d'emploi à proximité de votre ville</span>
-                          </li>
-                          <li class="d-flex mb-2">
-                              <span>
-                                  <i class="text-success ri-checkbox-circle-fill"></i>
-                              </span>
-                              <span class="font-weight-bold ml-2">Candidatez aux offres !</span>
-                          </li>
-                          <li class="d-flex mb-2">
-                              <span>
-                                  <i class="text-success ri-checkbox-circle-fill"></i>
-                              </span>
-                              <span class="font-weight-bold ml-2">N'oubliez pas de faire valider votre élégibilité par votre conseiller France Travail.</span>
-                          </li>
-                      </ul>
-                      <p class="text-center">
-                          <a class="btn btn-lg btn-primary" href="https://emplois.inclusion.beta.gouv.fr/signup/job_seeker/situation">Je crée mon espace candidat sur le site des emplois</a>
-                      </p>
                   </div>
               </div>
           </div>
