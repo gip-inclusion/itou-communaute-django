@@ -222,8 +222,8 @@
       <div class="container-fluid" id="subforums_area">
       
           <div class="c-box">
-              <div class="container-fluid d-flex justify-content-center mb-3">Afficher les fiches contenant l'étiquette</div>
-              <div class="container-fluid d-flex justify-content-center">
+              <div class="text-center mb-3">Afficher les fiches contenant l'étiquette</div>
+              <div class="text-center tag-group">
                   
       
           

@@ -56,9 +56,6 @@
                       <strong>Réseaux sociaux</strong>
                       <ul>
                           <li>
-                              <a aria-label="La plateforme de l'inclusion sur X (lien externe)" href="https://x.com/inclusion_gouv" target="_blank"><i aria-hidden="true" class="ri-twitter-x-fill text-dark ri-sm"></i> X</a>
-                          </li>
-                          <li>
                               <a aria-label="La plateforme de l'inclusion sur sur Linkedin (lien externe)" href="https://www.linkedin.com/company/inclusion-gouv/" target="_blank"><i aria-hidden="true" class="ri-linkedin-box-fill text-dark"></i> LinkedIn</a>
                           </li>
                           <li>
@@ -155,7 +152,7 @@
                   <div class="s-header__col s-header__col--nav col d-none d-lg-inline-flex d-lg-flex align-items-center justify-content-end pe-0 pe-xl-3">
                       <nav aria-label="Navigation principale" id="nav-primary" role="navigation">
                           <ul>
-                              <li>
+                              <li id="header_search_form">
                                   <form action="/search/" name="header_search_form">
                                       <div class="input-group input-group-rounded-pill">
                                           <input aria-label="Chercher dans la communauté" class="form-control w-300px" name="q" placeholder="Chercher dans la communauté" type="search"/>
@@ -276,7 +273,7 @@
 # name: test_page_title_header_footer[homepage_title]
   '''
   <title>
-                  Accueil- La communauté de l'inclusion
+                  Accueil - La communauté de l'inclusion
               </title>
   '''
 # ---

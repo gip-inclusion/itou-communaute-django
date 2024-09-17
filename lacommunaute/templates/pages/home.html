@@ -13,7 +13,7 @@
     {% url 'forum_extension:documentation' as documentation_url %}
     {% url 'event:current' as event_url %}
     {% url 'surveys:dsp_create' as dsp_url %}
-    <section class="s-home-title-01 s-home-title-01--communaute mb-md-6 mb-lg-10" style="--home-title-bg: url({% static 'images/commu-home-illu-02-light.png' %})">
+    <section class="s-home-title-01 s-home-title-01--communaute mb-md-6 mb-lg-10" style="--home-title-bg: url({% static 'images/commu-home-illu-02b-light.png' %})">
         <div class="s-home-title-01__container container container-max-lg">
             <div class="s-home-title-01__row row">
                 <div class="s-home-title-01__col col-12 col-md-8 col-lg-7 mb-4">
@@ -50,21 +50,23 @@
             <div class="s-home-title-01__row row">
                 <div class="s-home-title-01__col col-12 mt-md-6 mt-lg-6">
                     <div class="s-home-title-01__btn-group flex-column flex-md-row gap-3 gap-md-4 mb-md-n5 mb-lg-n8">
-                        <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
-                            <div class="w-25 w-md-40">
-                                <img src="{% static 'images/home-title-01-illu-card-01.png' %}" class="img-fluid" alt="">
+                        {% if forum %}
+                            <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
+                                <div class="w-25 w-md-40">
+                                    <img src="{% static 'images/home-title-01-illu-card-01.png' %}" class="img-fluid" alt="">
+                                </div>
+                                <div class="ps-3">
+                                    <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
+                                       rel="nofollow"
+                                       data-matomo-category="engagement"
+                                       data-matomo-action="contribute"
+                                       data-matomo-option="new_topic"
+                                       class="btn-link stretched-link matomo-event">Je veux poser
+                                        <br class="d-none d-md-inline">
+                                    une question</a>
+                                </div>
                             </div>
-                            <div class="ps-3">
-                                <a href="{% url 'forum_conversation:topic_create' forum.slug forum.pk %}"
-                                   rel="nofollow"
-                                   data-matomo-category="engagement"
-                                   data-matomo-action="contribute"
-                                   data-matomo-option="new_topic"
-                                   class="btn-link stretched-link matomo-event">Je veux poser
-                                    <br class="d-none d-md-inline">
-                                une question</a>
-                            </div>
-                        </div>
+                        {% endif %}
                         <div class="s-home-title-01__btn flex-grow-1 p-3 py-md-4">
                             <div class="w-25 w-md-40">
                                 <img src="{% static 'images/home-title-01-illu-card-02.png' %}" class="img-fluid" alt="">
@@ -131,11 +133,7 @@
                     <img src="{% static 'images/home-illu-01.png' %}" class="img-fluid" loading="lazy" alt="">
                 </div>
                 <div class="s-section__col col-12 col-md-8">
-                    <p class="h1 text-tertiary">
-                        Les dernières mises à jour
-                        <br class="d-none d-lg-inline">
-                        des fiches pratiques
-                    </p>
+                    <p class="h1 text-tertiary">Les fiches pratiques mises à jour</p>
                     <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
                         {% for forum in forums_category %}
                             <li class="list-group-item list-group-item-action">
@@ -162,46 +160,33 @@
             </div>
         </div>
     </section>
-    {% comment %}<section class="s-section my-5 my-md-10">
+    <section class="s-section my-5 my-md-10">
         <div class="s-section__container container container-max-lg">
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-3 mb-md-4">
-                        <span class="h1 mb-md-0 text-tertiary">Les dernières actualités</span>
+                        <span class="h1 mb-md-0 text-tertiary">Les prochains évènements</span>
                         <div>
-                            <a href="" class="btn btn-outline-primary">Toutes les actualités</a>
+                            <a href="{{ event_url }}" class="btn btn-outline-primary matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="events">Tous les évènements</a>
                         </div>
                     </div>
                     <ul class="list-group list-group-flush list-group-horizontal-md list-group-link mt-3 mt-md-4">
-                        <li class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="tag-group mb-1">
-                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
+                        {% for event in upcoming_events %}
+                            <li class="list-group-item list-group-item-action">
+                                <div>
+                                    <small class="text-muted">{% include 'event/partials/event_date.html' with event=event only %}</small>
+                                    <br>
+                                    <a href="{% url 'event:detail' event.pk %}" class="text-decoration-none stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="event">{{ event.name }}</a>
                                 </div>
-                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="tag-group mb-1">
-                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
-                                </div>
-                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
-                            </div>
-                        </li>
-                        <li class="list-group-item list-group-item-action">
-                            <div>
-                                <div class="tag-group mb-1">
-                                    <span class="tag tag-lg bg-info-lighter text-info text-uppercase">Parcours CIP</span>
-                                </div>
-                                <a href="" class="text-decoration-none stretched-link">La veille informationnelle consiste à la mise en place d'un système d'information permettant de collecter, de traiter et de diffusers.</a>
-                            </div>
-                        </li>
+                            </li>
+                        {% empty %}
+                            No event yet …
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
-    </section>{% endcomment %}
+    </section>
     {% comment %}<section class="s-section my-5 my-md-9">
         <div class="s-section__container container container-max-lg">
             <div class="s-section__row row align-items-center">

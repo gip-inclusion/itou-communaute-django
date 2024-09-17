@@ -8,7 +8,6 @@ from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -17,36 +16,13 @@ def _sub_svg_suffix(content):
 
 
 def test_context_data(client, db):
-    topic = TopicFactory(with_post=True, forum=ForumFactory())
     article = ForumFactory(parent=ForumFactory(type=1))
-
-    disapproved_topic = TopicFactory(with_post=True, forum=ForumFactory())
-    disapproved_topic.approved = False
-    disapproved_topic.save()
-
     url = reverse("pages:home")
 
     response = client.get(url)
     assert response.status_code == 200
 
-    assert response.context_data["topics_public"].get() == topic
     assert response.context_data["forums_category"].get() == article
-
-
-def test_new_topics_order(client, db):
-    topic1 = TopicFactory(with_post=True, forum=ForumFactory())
-    topic2 = TopicFactory(with_post=True, forum=ForumFactory())
-    url = reverse("pages:home")
-
-    response = client.get(url)
-    assert response.status_code == 200
-    assert list(response.context_data["topics_public"]) == [topic2, topic1]
-
-    PostFactory(topic=topic1)
-
-    response = client.get(url)
-    assert response.status_code == 200
-    assert list(response.context_data["topics_public"]) == [topic2, topic1]
 
 
 def test_page_title_header_footer(db, client, snapshot):
@@ -67,7 +43,7 @@ def test_events(db, client):
     visible_future_event = EventFactory.create_batch(4, date=timezone.now() + relativedelta(days=1))
     unvisible_future_event = EventFactory(date=timezone.now() + relativedelta(days=1))
     response = client.get(reverse("pages:home"))
-    assertContains(response, "Les évènements à venir", count=1)
+    assertContains(response, "Les prochains évènements", count=1)
     assertNotContains(response, old_event.name)
     for future_event in visible_future_event:
         assertContains(response, future_event.name)
