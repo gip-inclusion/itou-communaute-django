@@ -946,6 +946,10 @@ msgid "On %(date)s from %(time)s to %(end_time)s"
 msgstr "Le %(date)s de %(time)s à %(end_time)s"
 
 #, python-format
+msgid "%(date)s, %(time)s to %(end_time)s"
+msgstr "%(date)s, %(time)s à %(end_time)s"
+
+#, python-format
 msgid "From %(date)s %(time)s to %(end_date)s %(end_time)s"
 msgstr "Du %(date)s %(time)s au %(end_date)s %(end_time)s"
 
