@@ -273,7 +273,7 @@
 # name: test_page_title_header_footer[homepage_title]
   '''
   <title>
-                  Accueil - La communauté de l'inclusion
+                  Accueil- La communauté de l'inclusion
               </title>
   '''
 # ---
