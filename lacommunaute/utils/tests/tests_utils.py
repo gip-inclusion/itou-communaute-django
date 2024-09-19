@@ -24,6 +24,7 @@ from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.date import get_last_sunday
+from lacommunaute.utils.iframe import wrap_iframe_in_div_tag
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import (
     collect_forum_stats_from_matomo_api,
@@ -707,3 +708,20 @@ class TestTheLastSunday:
     )
     def test_the_last_sunday(self, day, expected_sunday):
         assert get_last_sunday(datetime(2024, 5, day)) == expected_sunday
+
+
+class TestWrapIframeInDiv:
+    def test_wrap_iframe_in_div_tag(self):
+        inputs = [
+            "<iframe src='xxx'></iframe>",
+            "<div><iframe src='yyy'></iframe></div>",
+            "<div><iframe src='zzz'></iframe>",
+            "<iframe src='www'></iframe></div>",
+        ]
+        outputs = [
+            "<div><iframe src='xxx'></iframe></div>",
+            "<div><iframe src='yyy'></iframe></div>",
+            "<div><iframe src='zzz'></iframe>",
+            "<iframe src='www'></iframe></div>",
+        ]
+        assert wrap_iframe_in_div_tag(" ".join(inputs)) == " ".join(outputs)
