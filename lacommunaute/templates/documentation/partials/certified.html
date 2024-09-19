@@ -1,0 +1,7 @@
+{% if obj.certified %}
+    <span class="badge badge-xs rounded-pill bg-communaute text-white text-decoration-none">
+        <i class="ri-checkbox-circle-fill"></i>
+        Certifiée par la communauté de l'inclusion
+    </span>
+{% endif %}
+<span class="fs-sm">Mis à jour le {{ obj.updated_at|date:"d/m/Y" }}</span>

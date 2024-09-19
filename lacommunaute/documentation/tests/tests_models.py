@@ -31,3 +31,7 @@ class TestDocument:
         DocumentFactory(for_snapshot=True)
         with pytest.raises(IntegrityError):
             DocumentFactory(for_snapshot=True)
+
+    def test_get_absolute_url(self, db):
+        document = DocumentFactory()
+        assert document.get_absolute_url() == f"/documentation/{document.category.pk}/{document.slug}-{document.pk}/"

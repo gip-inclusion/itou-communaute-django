@@ -1,8 +1,9 @@
 from dateutil.relativedelta import relativedelta
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
 
 from lacommunaute.forum.models import Forum
-from lacommunaute.stats.models import ForumStat, Stat
+from lacommunaute.stats.models import DocumentationStat, ForumStat, Stat
 
 
 class ForumWithStatsFilter(admin.SimpleListFilter):
@@ -16,6 +17,21 @@ class ForumWithStatsFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(forum=self.value())
+        return queryset
+
+
+class DocumentationContentTypeFilter(admin.SimpleListFilter):
+    title = "Documentation type"
+    parameter_name = "content_type"
+
+    def lookups(self, request, model_admin):
+        content_types = ContentType.objects.filter(model__in=["category", "document"], app_label="documentation")
+
+        return [(ct.id, ct.name) for ct in content_types]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(content_type_id=self.value())
         return queryset
 
 
@@ -43,3 +59,9 @@ class ForumStatAdmin(BaseStatAdmin):
     list_display = BaseStatAdmin.list_display + ("forum", "visits", "entry_visits", "time_spent")
     list_filter = BaseStatAdmin.list_filter + (ForumWithStatsFilter,)
     raw_id_fields = ("forum",)
+
+
+@admin.register(DocumentationStat)
+class DocumentionStatAdmin(BaseStatAdmin):
+    list_display = BaseStatAdmin.list_display + ("content_type", "object_id", "visits", "entry_visits", "time_spent")
+    list_filter = BaseStatAdmin.list_filter + (DocumentationContentTypeFilter,)

@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from lacommunaute.forum.models import Forum
@@ -38,6 +40,7 @@ class Stat(models.Model):
     objects = StatQuerySet().as_manager()
 
 
+# to be removed after documentation refactor
 class ForumStat(models.Model):
     """
     Represents a statistical data point, relative to a forum, for a given date and period.
@@ -60,3 +63,25 @@ class ForumStat(models.Model):
 
     def __str__(self):
         return f"{self.date} - {self.period} - {self.forum}"
+
+
+class DocumentationStat(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveBigIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+    date = models.DateField(verbose_name="Date")
+    period = models.CharField(max_length=10, verbose_name="Période", choices=Period.choices)
+    visits = models.IntegerField(verbose_name="Visites", default=0)
+    entry_visits = models.IntegerField(verbose_name="Visites entrantes", default=0)
+    time_spent = models.IntegerField(verbose_name="Temps passé", default=0)
+
+    objects = models.Manager()
+
+    class Meta:
+        verbose_name = "Stat de la documentation"
+        verbose_name_plural = "Stats de la documentation"
+        ordering = ["date", "period", "content_type", "object_id"]
+        unique_together = ("date", "period", "content_type", "object_id")
+
+    def __str__(self):
+        return f"{self.date} - {self.period} "

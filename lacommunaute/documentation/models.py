@@ -43,6 +43,19 @@ class Document(AbstractPublication):
     def __str__(self):
         return f"{self.name}"
 
+    def get_absolute_url(self, with_fqdn=False):
+        absolute_url = reverse(
+            "documentation:document_detail",
+            kwargs={
+                "category_pk": self.category.pk,
+                "slug": self.slug,
+                "pk": self.pk,
+            },
+        )
+        if with_fqdn:
+            return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{absolute_url}"
+        return absolute_url
+
 
 # use AbstractDatedModel after ForumRanting migration
 class DocumentRating(models.Model):

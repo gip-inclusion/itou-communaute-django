@@ -15,6 +15,7 @@
         <div class="card-footer text-end">
             {% if kind == "document" %}
                 <a href="#" class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="document">
+                    {% comment %}{% url 'documentation:document_detail' obj.category.slug obj.category.pk obj.slug obj.pk %}{% endcomment %}
                     <span>Consulter la fiche</span>
                     <i class="ri-arrow-right-line ri-lg"></i>
                 </a>

@@ -20,18 +20,22 @@ class ForumQuerySet(models.QuerySet):
 
 
 class Forum(AbstractForum):
+    # to be removed after documentation refactor
     short_description = models.CharField(
         max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
     )
+    # to be removed after documentation refactor
     image = models.ImageField(
         storage=S3Boto3Storage(bucket_name=settings.AWS_STORAGE_BUCKET_NAME, file_overwrite=False),
         validators=[validate_image_size],
     )
+    # to be removed after documentation refactor
     certified = models.BooleanField(default=False, verbose_name="Certifié par la communauté de l'inclusion")
-
+    # to be removed after documentation refactor
     upvotes = GenericRelation(UpVote, related_query_name="forum")
-
+    # to be removed after documentation refactor
     tags = TaggableManager()
+    # to be removed after documentation refactor
     partner = models.ForeignKey(Partner, on_delete=models.CASCADE, null=True, blank=True)
 
     objects = ForumQuerySet().as_manager()
@@ -56,12 +60,6 @@ class Forum(AbstractForum):
         return self.upvotes.count()
 
     @cached_property
-    def is_in_documentation_area(self):
-        return (self.type == Forum.FORUM_CAT and self.get_level() == 0) or (
-            self.get_level() > 0 and self.get_ancestors().first().type == Forum.FORUM_CAT
-        )
-
-    @cached_property
     def is_toplevel_discussion_area(self):
         return self == Forum.objects.get_main_forum()
 
@@ -72,6 +70,7 @@ class Forum(AbstractForum):
         return ForumRating.objects.filter(forum=self).aggregate(models.Avg("rating"))["rating__avg"]
 
 
+# to be removed after documentation refactor
 class ForumRating(DatedModel):
     session_id = models.CharField(max_length=40)
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE)

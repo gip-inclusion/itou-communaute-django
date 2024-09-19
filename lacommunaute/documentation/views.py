@@ -65,3 +65,9 @@ class CategoryUpdateView(UserPassesTestMixin, UpdateView):
         context["title"] = f"Mettre à jour la catégorie {self.object.name}"
         context["back_url"] = self.object.get_absolute_url()
         return context
+
+
+class DocumentDetailView(DetailView):
+    model = Document
+    template_name = "documentation/document_detail.html"
+    context_object_name = "document"
