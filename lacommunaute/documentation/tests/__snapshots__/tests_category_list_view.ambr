@@ -1,0 +1,147 @@
+# serializer version: 1
+# name: test_category_list_view[objects0-200-category_list_view_is_empty][category_list_view_is_empty]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1>Documentation</h1>
+                      <h2 class="mt-3">
+                          Retrouver les ressources nécessaires pour améliorer ses diagnostics socio-professionnels et ses accompagnements des personnes éloignées de l’emploi
+                      </h2>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  
+              </div>
+          </div>
+      </section>
+      
+  
+              
+          </main>
+  '''
+# ---
+# name: test_category_list_view[objects1-200-category_list_view_with_categories][category_list_view_with_categories]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1>Documentation</h1>
+                      <h2 class="mt-3">
+                          Retrouver les ressources nécessaires pour améliorer ses diagnostics socio-professionnels et ses accompagnements des personnes éloignées de l’emploi
+                      </h2>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  
+                      <div class="col-12 col-md-4 mb-3 mb-md-5">
+      <div class="card c-card has-one-link-inside h-100">
+          
+              <div class="card-header card-header-thumbnail rounded">
+                  <img alt="titre 1" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+              </div>
+          
+          <div class="card-body pb-0">
+              <p class="h3 lh-base">titre 1</p>
+              <div>
+                  
+              </div>
+              <div class="mt-3">short desc 1</div>
+          </div>
+          <div class="card-footer text-end">
+              
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-1-[PK of Category]/">
+                      <span>Consulter les fiches du thème</span>
+                      <i class="ri-arrow-right-line ri-lg"></i>
+                  </a>
+              
+          </div>
+      </div>
+  </div>
+  
+                  
+                      <div class="col-12 col-md-4 mb-3 mb-md-5">
+      <div class="card c-card has-one-link-inside h-100">
+          
+              <div class="card-header card-header-thumbnail rounded">
+                  <img alt="titre 2" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+              </div>
+          
+          <div class="card-body pb-0">
+              <p class="h3 lh-base">titre 2</p>
+              <div>
+                  
+              </div>
+              <div class="mt-3">short desc 2</div>
+          </div>
+          <div class="card-footer text-end">
+              
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-2-[PK of Category]/">
+                      <span>Consulter les fiches du thème</span>
+                      <i class="ri-arrow-right-line ri-lg"></i>
+                  </a>
+              
+          </div>
+      </div>
+  </div>
+  
+                  
+                      <div class="col-12 col-md-4 mb-3 mb-md-5">
+      <div class="card c-card has-one-link-inside h-100">
+          
+              <div class="card-header card-header-thumbnail rounded">
+                  <img alt="titre 3" class="img-fitcover img-fluid" loading="lazy" src="[img src]"/>
+              </div>
+          
+          <div class="card-body pb-0">
+              <p class="h3 lh-base">titre 3</p>
+              <div>
+                  
+              </div>
+              <div class="mt-3">short desc 3</div>
+          </div>
+          <div class="card-footer text-end">
+              
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-3-[PK of Category]/">
+                      <span>Consulter les fiches du thème</span>
+                      <i class="ri-arrow-right-line ri-lg"></i>
+                  </a>
+              
+          </div>
+      </div>
+  </div>
+  
+                  
+              </div>
+          </div>
+      </section>
+      
+  
+              
+          </main>
+  '''
+# ---
