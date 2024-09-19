@@ -3,7 +3,7 @@
         <div class="s-title-01__row row">
             <div class="s-title-01__col col-12">
                 <h1>{{ obj.name }}</h1>
-                {% if user.is_superuser %}<a href="#"><small>Mettre à jour</small></a>{% endif %}
+                {% if user.is_superuser %}<a href="{{ obj.get_update_url }}"><small>Mettre à jour</small></a>{% endif %}
                 {% if obj.short_description %}<h2 class="mt-3">{{ obj.short_description }}</h2>{% endif %}
             </div>
         </div>

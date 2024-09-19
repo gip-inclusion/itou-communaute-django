@@ -24,6 +24,9 @@ class Category(AbstractPublication):
             return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{absolute_url}"
         return absolute_url
 
+    def get_update_url(self):
+        return reverse("documentation:category_update", kwargs={"pk": self.pk, "slug": self.slug})
+
 
 class Document(AbstractPublication):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="documents")

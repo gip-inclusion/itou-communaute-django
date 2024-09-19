@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from lacommunaute.documentation.factories import CategoryFactory
 from lacommunaute.utils.testing import parse_response_to_soup
+from lacommunaute.users.factories import UserFactory
 
 
 @pytest.fixture(name="url")
@@ -30,3 +31,27 @@ def test_category_list_view(client, db, url, objects, status_code, snapshot_name
     assert response.status_code == status_code
     content = parse_response_to_soup(response, selector="main", replace_img_src=True, replace_in_href=categories)
     assert str(content) == snapshot(name=snapshot_name)
+
+
+@pytest.mark.parametrize(
+    "user_factory,link_is_visible",
+    [
+        (None, False),
+        (UserFactory, False),
+        (lambda: UserFactory(is_superuser=True), True),
+    ],
+)
+def test_create_category_link_for_superuser_only(client, db, url, user_factory, link_is_visible):
+    user = user_factory() if user_factory else None
+    if user:
+        client.force_login(user)
+
+    response = client.get(url)
+    assert response.status_code == 200
+
+    category_create_url = reverse("documentation:category_create")
+
+    if link_is_visible:
+        assert category_create_url in str(response.content)
+    else:
+        assert category_create_url not in str(response.content)

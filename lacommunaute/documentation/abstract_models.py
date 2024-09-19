@@ -22,10 +22,10 @@ class AbstractPublication(AbstractDatedModel):
     slug = models.SlugField(max_length=255, verbose_name=_("Slug"), unique=True)
 
     description = MarkupTextField(verbose_name=_("Description"), null=True, blank=True)
-    short_description = models.CharField(
-        max_length=400, blank=True, null=True, verbose_name="Description courte (SEO)"
-    )
+    short_description = models.CharField(max_length=400, verbose_name="Description courte (SEO)")
     image = models.ImageField(
+        blank=True,
+        null=True,
         storage=S3Boto3Storage(bucket_name=settings.AWS_STORAGE_BUCKET_NAME, file_overwrite=False),
         validators=[validate_image_size],
     )
