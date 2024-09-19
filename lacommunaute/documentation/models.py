@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.urls import reverse
 from taggit.managers import TaggableManager
 
 from lacommunaute.documentation.abstract_models import AbstractPublication
@@ -16,6 +17,12 @@ class Category(AbstractPublication):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self, with_fqdn=False):
+        absolute_url = reverse("documentation:category_detail", kwargs={"slug": self.slug, "pk": self.pk})
+        if with_fqdn:
+            return f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{absolute_url}"
+        return absolute_url
 
 
 class Document(AbstractPublication):

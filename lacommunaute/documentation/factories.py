@@ -37,3 +37,12 @@ class DocumentFactory(AbstractDocumentationFactory):
             short_description="Test short description",
             category=factory.SubFactory(CategoryFactory, for_snapshot=True),
         )
+
+    @factory.post_generation
+    def with_tags(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        if isinstance(extracted, list):
+            for tag in extracted:
+                self.tags.add(tag)
