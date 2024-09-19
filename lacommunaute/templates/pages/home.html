@@ -10,7 +10,7 @@
 {% block body_class %}p-home{{ block.super }}{% endblock %}
 {% block content %}
     {% url 'forum_conversation_extension:topics' as publicforum_url %}
-    {% url 'forum_extension:documentation' as documentation_url %}
+    {% url 'documentation:category_list' as documentation_url %}
     {% url 'event:current' as event_url %}
     {% url 'surveys:dsp_create' as dsp_url %}
     <section class="s-home-title-01 s-home-title-01--communaute mb-md-6 mb-lg-10" style="--home-title-bg: url({% static 'images/commu-home-illu-02b-light.png' %})">
