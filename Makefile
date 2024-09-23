@@ -26,3 +26,12 @@ index:
 	INSTANCE_NUMBER=0 \
 	POSTGRESQL_ADDON_URI=$(POSTGRESQL_ADDON_URI) \
 	clevercloud/rebuild_index.sh
+
+# DB
+
+.PHONY: resetdb
+resetdb:
+	dropdb --if-exists $(POSTGRESQL_ADDON_DB)
+	createdb $(POSTGRESQL_ADDON_DB)
+	python manage.py migrate
+	python manage.py populate
