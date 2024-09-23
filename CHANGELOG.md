@@ -1,5 +1,19 @@
 # Journal des modifications
 
+## [2.14.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.13.0...v2.14.0) (2024-09-23)
+
+
+### Features
+
+* **forum:** retrait de la notion de `kind` sur `Forum` ([#769](https://github.com/gip-inclusion/itou-communaute-django/issues/769)) ([e0daecb](https://github.com/gip-inclusion/itou-communaute-django/commit/e0daecbe728c54af2f604b9adce79c302266a563))
+* refonte homepage pour mise en valeur recherche et Call To Actions ([#776](https://github.com/gip-inclusion/itou-communaute-django/issues/776)) ([4550cf9](https://github.com/gip-inclusion/itou-communaute-django/commit/4550cf9d289aaae11cd094a68bd4257f3337ad00))
+* **stats:** ajout d'un lien vers la page de stats hebdos ([#774](https://github.com/gip-inclusion/itou-communaute-django/issues/774)) ([028814a](https://github.com/gip-inclusion/itou-communaute-django/commit/028814aedf54bd6ab093b64040da5c79df77bef7))
+
+
+### Bug Fixes
+
+* mise à jour des urls de statistiques ([#772](https://github.com/gip-inclusion/itou-communaute-django/issues/772)) ([6cd6ec3](https://github.com/gip-inclusion/itou-communaute-django/commit/6cd6ec3c72120882843c80580bf3ed17b8bec6ea))
+
 ## [2.13.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.12.0...v2.13.0) (2024-09-05)
 
 
