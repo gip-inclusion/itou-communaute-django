@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.partner.forms import PartnerForm
@@ -45,4 +45,12 @@ class PartnerCreateView(PartnerCreateUpdateMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Créer une nouvelle page partenaire"
         context["back_url"] = reverse("partner:list")
+        return context
+
+
+class PartnerUpdateView(PartnerCreateUpdateMixin, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Modifier la page {self.object.name}"
+        context["back_url"] = reverse("partner:detail", kwargs={"pk": self.object.pk, "slug": self.object.slug})
         return context
