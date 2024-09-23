@@ -1,0 +1,21 @@
+{% load i18n %}
+<form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% for error in post_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <i class="icon-exclamation-sign"></i> {{ error }}
+        </div>
+    {% endfor %}
+    {% include "partials/form_field.html" with field=form.name %}
+    {% include "partials/form_field.html" with field=form.short_description %}
+    {% include "partials/form_field.html" with field=form.description %}
+    {% include "partials/form_field.html" with field=form.logo %}
+    {% include "partials/form_field.html" with field=form.url %}
+    <hr class="mb-5">
+    <div class="form-actions form-row">
+        <div class="form-group col-auto">
+            <input type="submit" class="btn btn-primary" value="{% trans "Submit" %}" />
+            <a href="{{ back_url }}" class="btn btn-outline-warning">{% trans "Cancel" %}</a>
+        </div>
+    </div>
+</form>
