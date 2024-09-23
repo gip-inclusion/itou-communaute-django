@@ -28,7 +28,7 @@ class PartnerDetailView(DetailView):
         return context
 
 
-class PartnerCreateView(UserPassesTestMixin, CreateView):
+class PartnerCreateUpdateMixin(UserPassesTestMixin):
     model = Partner
     template_name = "partner/create_or_update.html"
     form_class = PartnerForm
@@ -36,11 +36,13 @@ class PartnerCreateView(UserPassesTestMixin, CreateView):
     def test_func(self):
         return self.request.user.is_superuser
 
+    def get_success_url(self):
+        return reverse("partner:detail", kwargs={"pk": self.object.pk, "slug": self.object.slug})
+
+
+class PartnerCreateView(PartnerCreateUpdateMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Créer une nouvelle page partenaire"
         context["back_url"] = reverse("partner:list")
         return context
-
-    def get_success_url(self):
-        return reverse("partner:detail", kwargs={"pk": self.object.pk, "slug": self.object.slug})
