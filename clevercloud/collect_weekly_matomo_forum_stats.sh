@@ -15,4 +15,6 @@ fi
 # $APP_HOME is set by default by clever cloud.
 cd $APP_HOME
 
-python manage.py collect_matomo_forum_stats
+# reactivate after documentation migration
+# python manage.py collect_matomo_forum_stats
+echo "Collecting weekly matomo stats for the forum is disabled for now."
