@@ -54,6 +54,12 @@ NB : accéder au bash du conteneur `commu_django` pour exécuter ces commandes
 $ docker exec -it commu_django bash
 ```
 
+### restaurer une base de données
+
+* le client postgresql doit être installé sur la machine hôte
+* le script `./scripts/scripts/import-latest-db-backup.sh` doit être exécuté
+
+
 ## Mises à jour
 
 Ajouter d'une dépendance :
