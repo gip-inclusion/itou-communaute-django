@@ -6,7 +6,7 @@
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
                   
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="#">Documentation</a>
                   
               </li>
               
@@ -22,7 +22,7 @@
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
                   
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="#">Documentation</a>
                   
               </li>
               
@@ -60,7 +60,7 @@
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
                   
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="#">Documentation</a>
                   
               </li>
               
@@ -127,7 +127,7 @@
               <div class="s-section__container container">
                   <div class="s-section__row row">
                       <div class="s-section__col col-12">
-                          <a aria-label="Ajouter une fiche pratique" class="btn btn-outline-primary" href="/documentation/category/9999/create/" role="button">Ajouter une fiche pratique</a>
+                          <a aria-label="Ajouter une fiche pratique" class="btn btn-outline-primary" href="#" role="button">Ajouter une fiche pratique</a>
                       </div>
                   </div>
               </div>
@@ -176,7 +176,7 @@
               <li class="breadcrumb-item">Retourner vers</li>
               <li class="breadcrumb-item">
                   
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="#">Documentation</a>
                   
               </li>
               
