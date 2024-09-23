@@ -56,4 +56,15 @@
             </div>
         </div>
     </section>
+    {% if user.is_superuser %}
+        <section class="s-section">
+            <div class="s-section__container container">
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12">
+                        <a href="{% url 'partner:create' %}" aria-label="Ajouter un nouveau partenaire" role="button" class="btn btn-outline-primary">Ajouter un nouveau partenaire</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
 {% endblock content %}
