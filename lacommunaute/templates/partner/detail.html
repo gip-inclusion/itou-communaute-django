@@ -19,7 +19,7 @@
                         <h1 class="mb-0">{{ partner.name }}</h1>
                     </div>
                     {% if user.is_superuser %}
-                        <a href="{% url 'admin:partner_partner_change' partner.pk %}"><small>Mettre à jour</small></a>
+                        <a href="{% url 'partner:update' partner.slug partner.pk %}"><small>Mettre à jour</small></a>
                     {% endif %}
                     <h2 class="mt-3">{{ partner.short_description }}</h2>
                 </div>
