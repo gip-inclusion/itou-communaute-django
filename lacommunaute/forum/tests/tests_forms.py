@@ -1,25 +1,8 @@
 import pytest  # noqa
 
-from lacommunaute.forum.forms import wrap_iframe_in_div_tag
 
 from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum
-
-
-def test_wrap_iframe_in_div_tag():
-    inputs = [
-        "<iframe src='xxx'></iframe>",
-        "<div><iframe src='yyy'></iframe></div>",
-        "<div><iframe src='zzz'></iframe>",
-        "<iframe src='www'></iframe></div>",
-    ]
-    outputs = [
-        "<div><iframe src='xxx'></iframe></div>",
-        "<div><iframe src='yyy'></iframe></div>",
-        "<div><iframe src='zzz'></iframe>",
-        "<iframe src='www'></iframe></div>",
-    ]
-    assert wrap_iframe_in_div_tag(" ".join(inputs)) == " ".join(outputs)
 
 
 def test_saved_forum_description(db):
