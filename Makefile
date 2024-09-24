@@ -5,6 +5,8 @@ POSTGRESQL_ADDON_USER ?= communaute
 POSTGRESQL_ADDON_PASSWORD ?= password
 POSTGRESQL_ADDON_URI ?= "postgresql://$(POSTGRESQL_ADDON_USER):$(POSTGRESQL_ADDON_PASSWORD)@$(POSTGRESQL_ADDON_HOST):$(POSTGRESQL_ADDON_PORT)/$(POSTGRESQL_ADDON_DB)"
 
+DJLINT_EXCLUDE ?= lacommunaute/templates/middleware/
+
 # QUALITY ASSURANCE
 # ~~~~~~~~~~~~~~~~~
 # The following rules can be used to check code quality, import sorting, etc.
@@ -14,7 +16,7 @@ POSTGRESQL_ADDON_URI ?= "postgresql://$(POSTGRESQL_ADDON_USER):$(POSTGRESQL_ADDO
 quality:
 	black --check lacommunaute
 	ruff check lacommunaute
-	djlint --lint --check lacommunaute
+	djlint --lint --check lacommunaute --exclude $(DJLINT_EXCLUDE)
 
 fix:
 	black lacommunaute
