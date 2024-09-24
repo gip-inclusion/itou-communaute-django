@@ -5,7 +5,7 @@
             <li class="breadcrumb-item">{% trans "Back to" %}</li>
             <li class="breadcrumb-item">
                 {% if forum.is_in_documentation_area %}
-                    <a href="#" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation_breadcrumb">{% trans "Documents" %}</a>
+                    <a href="{% url 'documentation:category_list' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation_breadcrumb">{% trans "Documents" %}</a>
                 {% else %}
                     <a href="{% url 'forum_conversation_extension:topics' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics_breadcrumb">{% trans "Discussion area" %}</a>
                 {% endif %}
