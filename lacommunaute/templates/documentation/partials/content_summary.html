@@ -1,0 +1,29 @@
+<div class="col-12 col-md-4 mb-3 mb-md-5">
+    <div class="card c-card has-one-link-inside h-100">
+        {% if obj.image %}
+            <div class="card-header card-header-thumbnail rounded">
+                <img src="{{ obj.image.url }}" alt="{{ obj.name }}" class="img-fitcover img-fluid" loading="lazy" />
+            </div>
+        {% endif %}
+        <div class="card-body pb-0">
+            <p class="h3 lh-base">{{ obj.name }}</p>
+            <div>
+                {% for tag in obj.tags.all %}<span class="tag bg-info-lighter text-info">{{ tag.name }}</span>{% endfor %}
+            </div>
+            {% if obj.short_description %}<div class="mt-3">{{ obj.short_description }}</div>{% endif %}
+        </div>
+        <div class="card-footer text-end">
+            {% if kind == "document" %}
+                <a href="#" class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="document">
+                    <span>Consulter la fiche</span>
+                    <i class="ri-arrow-right-line ri-lg"></i>
+                </a>
+            {% elif kind == "category" %}
+                <a href="#" class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="category">
+                    <span>Consulter les fiches du thème</span>
+                    <i class="ri-arrow-right-line ri-lg"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
