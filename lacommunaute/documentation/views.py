@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from taggit.models import Tag
 
 from lacommunaute.documentation.models import Category, Document
@@ -55,5 +55,14 @@ class CategoryCreateView(CategoryCreateUpdateMixin, CreateView):
         additionnal_context = {
             "title": "Créer une nouvelle catégorie",
             "back_url": reverse("documentation:category_list"),
+        }
+        return super().get_context_data(**kwargs) | additionnal_context
+
+
+class CategoryUpdateView(CategoryCreateUpdateMixin, UpdateView):
+    def get_context_data(self, **kwargs):
+        additionnal_context = {
+            "title": f"Modifier la catégorie {self.object.name}",
+            "back_url": self.object.get_absolute_url(),
         }
         return super().get_context_data(**kwargs) | additionnal_context
