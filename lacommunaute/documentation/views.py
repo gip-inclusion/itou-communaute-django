@@ -1,5 +1,8 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView
 from taggit.models import Tag
 
 from lacommunaute.documentation.models import Category, Document
@@ -31,3 +34,26 @@ class CategoryDetailView(DetailView):
         context["tags"] = self.get_tags_of_documents()
         context["active_tag_slug"] = self.request.GET.get("tag") or None
         return context
+
+
+class CreateUpdateMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class CategoryCreateUpdateMixin(CreateUpdateMixin):
+    model = Category
+    template_name = "documentation/category_create_or_update.html"
+    fields = ["name", "short_description", "description", "image"]
+
+
+class CategoryCreateView(CategoryCreateUpdateMixin, CreateView):
+    def get_context_data(self, **kwargs):
+        additionnal_context = {
+            "title": "Créer une nouvelle catégorie",
+            "back_url": reverse("documentation:category_list"),
+        }
+        return super().get_context_data(**kwargs) | additionnal_context
