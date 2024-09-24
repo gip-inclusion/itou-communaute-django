@@ -1,6 +1,7 @@
 import pytest  # noqa
 
 from lacommunaute.documentation.factories import CategoryFactory, DocumentFactory
+from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -24,3 +25,15 @@ def test_category_detail_view_with_tagged_documents(client, db, category, active
     assert response.status_code == 200
     content = parse_response_to_soup(response, selector="main", replace_img_src=True, replace_in_href=[category])
     assert str(content) == snapshot(name=snapshot_name)
+
+
+@pytest.mark.parametrize(
+    "user,link_is_visible",
+    [(None, False), (lambda: UserFactory(), False), (lambda: UserFactory(is_superuser=True), True)],
+)
+def test_link_to_update_view(client, db, category, user, link_is_visible):
+    if user:
+        client.force_login(user())
+    response = client.get(category.get_absolute_url())
+    assert response.status_code == 200
+    assert bool(category.get_update_url() in response.content.decode()) == link_is_visible

@@ -20,6 +20,9 @@ class Category(Publication):
     def get_absolute_url(self):
         return reverse("documentation:category_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
+    def get_update_url(self):
+        return reverse("documentation:category_update", kwargs={"pk": self.pk, "slug": self.slug})
+
 
 class Document(Publication):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="documents")
