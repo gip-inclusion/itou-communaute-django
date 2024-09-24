@@ -74,7 +74,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-1-[PK of Category]/">
                       <span>Consulter les fiches du thème</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -100,7 +100,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-2-[PK of Category]/">
                       <span>Consulter les fiches du thème</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -126,7 +126,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="category" href="/documentation/titre-3-[PK of Category]/">
                       <span>Consulter les fiches du thème</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>

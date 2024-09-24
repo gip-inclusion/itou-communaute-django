@@ -19,7 +19,11 @@
                     <i class="ri-arrow-right-line ri-lg"></i>
                 </a>
             {% elif kind == "category" %}
-                <a href="#" class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="category">
+                <a href="{% url 'documentation:category_detail' obj.slug obj.pk %}"
+                   class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
+                   data-matomo-category="engagement"
+                   data-matomo-action="view"
+                   data-matomo-option="category">
                     <span>Consulter les fiches du thème</span>
                     <i class="ri-arrow-right-line ri-lg"></i>
                 </a>
