@@ -1,6 +1,8 @@
 import sys
 
+from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
+from taggit.models import TaggedItem
 
 from lacommunaute.documentation.models import Category, Document
 from lacommunaute.forum.models import Forum
@@ -26,8 +28,10 @@ def create_categories_from_catforums():
 def create_document_from_forums(category_transpo_dict):
     # TODO next :
     # add redirections when get_absolute_url is setup
-    # migrate UpVotes and TaggedItems
+    # migrate UpVotes
 
+    forum_content_type = ContentType.objects.get_for_model(Forum)
+    document_content_type = ContentType.objects.get_for_model(Document)
     transpo_dict = {}
 
     for forum in Forum.objects.filter(parent__type=1):
@@ -39,6 +43,9 @@ def create_document_from_forums(category_transpo_dict):
             category=category_transpo_dict[forum.parent],
             partner=forum.partner,
             certified=forum.certified,
+        )
+        TaggedItem.objects.filter(content_type=forum_content_type, object_id=forum.id).update(
+            content_type=document_content_type, object_id=document.id
         )
         transpo_dict[forum] = document
 
