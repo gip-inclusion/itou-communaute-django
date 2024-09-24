@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.urls import reverse
 from taggit.managers import TaggableManager
 
 from lacommunaute.forum_upvote.models import UpVote
@@ -15,6 +16,9 @@ class Category(Publication):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse("documentation:category_detail", kwargs={"pk": self.pk, "slug": self.slug})
 
 
 class Document(Publication):

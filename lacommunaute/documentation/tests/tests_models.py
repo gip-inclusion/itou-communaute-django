@@ -13,6 +13,10 @@ class TestCategory:
         with pytest.raises(IntegrityError):
             CategoryFactory(for_snapshot=True)
 
+    def test_get_absolute_url(self, db):
+        category = CategoryFactory()
+        assert category.get_absolute_url() == f"/documentation/{category.slug}-{category.pk}/"
+
 
 class TestDocument:
     def test_slug(self, db):
