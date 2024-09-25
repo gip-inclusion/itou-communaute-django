@@ -611,6 +611,13 @@ class UtilsParseResponseToSoupTest(TestCase):
         soup = parse_response_to_soup(response, replace_img_src=True)
         assert str(soup) == '<html><head></head><body><img src="[img src]"/></body></html>'
 
+    def test_replace_current_date(self):
+        response = HttpResponse(
+            f'<html><head></head><body><div>Today is {datetime.now().strftime("%d/%m/%Y")}</div></body></html>'
+        )
+        soup = parse_response_to_soup(response, replace_current_date_format="%d/%m/%Y")
+        assert str(soup) == "<html><head></head><body><div>Today is [CURRENT DATE]</div></body></html>"
+
     def test_replace_in_href_mixing_tuple_and_object(self):
         topic = TopicFactory()
         response = HttpResponse(
