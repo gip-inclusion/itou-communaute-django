@@ -1,0 +1,11 @@
+{% load str_filters %}
+{% if obj.image %}
+    <div class="col-12 col-sm-auto mb-3">
+        <div class="d-none d-md-block forum-image mt-3" loading="lazy">
+            <img src="{{ obj.image.url }}" alt="{{ obj.name }}" class="rounded img-fluid" />
+        </div>
+    </div>
+{% endif %}
+<div class="col-12">
+    <article class="textarea_cms_md">{{ obj.description.rendered|urlizetrunc_target_blank:30|img_fluid }}</article>
+</div>

@@ -41,3 +41,7 @@ class CommonIndex(models.Model):
 
     class Meta:
         managed = False
+
+
+# ajouter Document dans la materilized view
+# ajouter Categorie dans la materilized view

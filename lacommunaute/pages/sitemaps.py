@@ -8,6 +8,9 @@ from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.partner.models import Partner
 
 
+# ajouter CategorySitemap et DocumentSitemap ici
+
+
 class PagesSitemap(Sitemap):
     def items(self):
         return FlatPage.objects.filter(registration_required=False).order_by("title")
