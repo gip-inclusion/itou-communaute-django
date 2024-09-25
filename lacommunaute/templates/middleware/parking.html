@@ -1,0 +1,80 @@
+{% load static %}
+{% load compress %}
+{% load theme_inclusion %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Améliorations en cours</title>
+        <link rel="shortcut icon" href="{% static_theme_images "favicon.ico" %}" type="image/ico">
+        {% import_static_CSS_theme_inclusion %}
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'stylesheets/itou_communaute.scss' %}" type="text/x-scss">
+        {% endcompress %}
+    </head>
+    <body id="top">
+        <header role="banner" id="header">
+            <section class="s-header">
+                <div class="s-header__container container">
+                    <div class="s-header__row row">
+                        <div class="s-header__col s-header__col--logo-ministere col col-md-auto d-flex align-items-center pe-0">
+                            <a href="{% url 'pages:home' %}" class="s-header__logo-ministere">
+                                <img src="{% static_theme_images 'logo-republique-francaise.svg' %}" alt="Rébublique Française">
+                            </a>
+                        </div>
+                        <div class="s-header__col s-header__col--logo-service col-auto d-flex align-items-center px-0">
+                            <a href="{% url 'pages:home' %}">
+                                <img src="{% static_theme_images 'logo-communaute-inclusion.svg' %}" height="90" alt="La communauté de l'inclusion">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </header>
+        <main id="main" role="main" class="s-main">
+            <section class="s-cms">
+                <div class="s-cms__container container container-max-lg">
+                    <div class="s-cms__row row">
+                        <div class="s-cms__col col-12">
+                            <article>
+                                <h1 class="h2">
+                                    Nous faisons quelques améliorations sur le site de la communauté.
+                                    <br>
+                                    Elles sont bientôt terminées … promis !
+                                </h1>
+                                <div style="width:100%;height:0;padding-bottom:56%;position:relative;">
+                                    <iframe src="https://giphy.com/embed/8vnjJZSKFYUa13gGri" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer role="contentinfo" id="footer">
+            <section class="s-footer-gip">
+                <div class="s-footer-gip__container container">
+                    <div class="s-footer-gip__row row">
+                        <div class="s-footer-gip__col s-footer-gip__col--logo col-12 col-md-6 col-lg-auto">
+                            <a href="https://inclusion.beta.gouv.fr/" target="_blank" aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)">
+                                <img src="{% static_theme_images 'logo-plateforme-inclusion.svg' %}" height="80" alt="Logo de la Plateforme de l'inclusion">
+                            </a>
+                        </div>
+                        <div class="s-footer-gip__col col-12 col-md-6 col-lg">
+                            <p class="mb-1">
+                                <strong>Ce service fait partie de la Plateforme de l’inclusion</strong>
+                            </p>
+                            <p class="m-0">
+                                Découvrez les outils qui portent l'inclusion au
+                                <br class="d-none d-md-inline">
+                                coeur de leur service. A chaque service, son objectif.
+                                <br>
+                                <a href="https://inclusion.beta.gouv.fr/" target="_blank" class="has-external-link" aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)">Découvrez nos services</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </footer>
+    </body>
+</html>

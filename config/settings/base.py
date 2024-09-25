@@ -17,6 +17,7 @@ APPS_DIR = os.path.abspath(os.path.join(ROOT_DIR, "lacommunaute"))
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
+PARKING_PAGE = os.getenv("PARKING_PAGE", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "communaute.inclusion.beta.gouv.fr,").split(",")
 
@@ -96,6 +97,7 @@ DJANGO_MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "lacommunaute.utils.middleware.ParkingPageMiddleware",
 ]
 
 THIRD_PARTIES_MIDDLEWARE = [
