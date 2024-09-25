@@ -14,7 +14,11 @@
         </div>
         <div class="card-footer text-end">
             {% if kind == "document" %}
-                <a href="#" class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="document">
+                <a href="{% url 'documentation:document_detail' obj.category.pk obj.slug obj.pk %}"
+                   class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
+                   data-matomo-category="engagement"
+                   data-matomo-action="view"
+                   data-matomo-option="document">
                     <span>Consulter la fiche</span>
                     <i class="ri-arrow-right-line ri-lg"></i>
                 </a>
