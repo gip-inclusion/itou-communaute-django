@@ -11,12 +11,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
@@ -133,12 +131,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
@@ -257,12 +253,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
