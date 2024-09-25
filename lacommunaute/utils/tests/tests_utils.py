@@ -606,6 +606,11 @@ class UtilsParseResponseToSoupTest(TestCase):
         response = HttpResponse('<html><head></head><body><div id="foo">bar</div></body></html>')
         assert str(parse_response_to_soup(response, selector="#foo")) == '<div id="foo">bar</div>'
 
+    def test_replace_img_src(self):
+        response = HttpResponse('<html><head></head><body><img src="http://server.com/image.jpg"></body></html>')
+        soup = parse_response_to_soup(response, replace_img_src=True)
+        assert str(soup) == '<html><head></head><body><img src="[img src]"/></body></html>'
+
     def test_replace_in_href_mixing_tuple_and_object(self):
         topic = TopicFactory()
         response = HttpResponse(
