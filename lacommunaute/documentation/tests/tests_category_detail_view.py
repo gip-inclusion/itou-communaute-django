@@ -42,3 +42,13 @@ def test_link_to_update_view(client, db, category, user, link_is_visible):
     response = client.get(category.get_absolute_url())
     assert response.status_code == 200
     assert bool(category.get_update_url() in response.content.decode()) == link_is_visible
+
+
+@pytest.mark.parametrize(
+    "headers,expected_template_name",
+    [(None, "documentation/category_detail.html"), ({"HX-Request": True}, "documentation/document_list.html")],
+)
+def test_template_name(client, db, category, headers, expected_template_name):
+    response = client.get(category.get_absolute_url(), headers=headers)
+    assert response.status_code == 200
+    assert response.template_name == [expected_template_name]

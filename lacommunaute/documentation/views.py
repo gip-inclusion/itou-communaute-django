@@ -17,8 +17,12 @@ class CategoryListView(ListView):
 
 class CategoryDetailView(DetailView):
     model = Category
-    template_name = "documentation/category_detail.html"
     context_object_name = "category"
+
+    def get_template_names(self):
+        if self.request.META.get("HTTP_HX_REQUEST"):
+            return ["documentation/document_list.html"]
+        return ["documentation/category_detail.html"]
 
     def get_tags_of_documents(self):
         return Tag.objects.filter(
