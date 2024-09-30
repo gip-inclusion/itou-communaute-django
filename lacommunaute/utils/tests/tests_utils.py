@@ -711,17 +711,26 @@ class TestTheLastSunday:
 
 
 class TestWrapIframeInDiv:
-    def test_wrap_iframe_in_div_tag(self):
-        inputs = [
-            "<iframe src='xxx'></iframe>",
-            "<div><iframe src='yyy'></iframe></div>",
-            "<div><iframe src='zzz'></iframe>",
-            "<iframe src='www'></iframe></div>",
-        ]
-        outputs = [
-            "<div><iframe src='xxx'></iframe></div>",
-            "<div><iframe src='yyy'></iframe></div>",
-            "<div><iframe src='zzz'></iframe>",
-            "<iframe src='www'></iframe></div>",
-        ]
-        assert wrap_iframe_in_div_tag(" ".join(inputs)) == " ".join(outputs)
+    @pytest.mark.parametrize(
+        "input,output",
+        [
+            ("<iframe src='xxx'></iframe>", "<div><iframe src='xxx'></iframe></div>"),
+            (
+                "markdown text <iframe src='xxx'></iframe> markdown text",
+                "markdown text <div><iframe src='xxx'></iframe></div> markdown text",
+            ),
+            ("<div><iframe src='xxx'></iframe></div>", "<div><iframe src='xxx'></iframe></div>"),
+            ("<div><iframe src='xxx'></iframe> text", "<div><iframe src='xxx'></iframe></div> text"),
+            ("<iframe src='xxx'></iframe></div>", "<div><iframe src='xxx'></iframe></div>"),
+            (
+                "<iframe src='xxx'></iframe><iframe src='yyy'></iframe>",
+                "<div><iframe src='xxx'></iframe></div><div><iframe src='yyy'></iframe></div>",
+            ),
+            (
+                "<div><iframe src='xxx'></iframe><iframe src='yyy'></iframe></div>",
+                "<div><iframe src='xxx'></iframe></div><div><iframe src='yyy'></iframe></div>",
+            ),
+        ],
+    )
+    def test_wrap_iframe_in_div_tag(self, input, output):
+        assert wrap_iframe_in_div_tag(input) == output
