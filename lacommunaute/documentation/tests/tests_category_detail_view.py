@@ -20,6 +20,7 @@ def fixture_category():
 )
 def test_category_detail_view_with_tagged_documents(client, db, category, active_tag, snapshot_name, snapshot):
     DocumentFactory(category=category, with_tags=["tag1", "tag2"], for_snapshot=True)
+    DocumentFactory(category=category, for_snapshot=True, name="Document without tags")
     url = f"{category.get_absolute_url()}?tag={active_tag}" if active_tag else category.get_absolute_url()
     response = client.get(url)
     assert response.status_code == 200
@@ -52,3 +53,6 @@ def test_template_name(client, db, category, headers, expected_template_name):
     response = client.get(category.get_absolute_url(), headers=headers)
     assert response.status_code == 200
     assert response.template_name == [expected_template_name]
+
+
+# test numqueries with and without tag
