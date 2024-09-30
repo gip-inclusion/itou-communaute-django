@@ -21,9 +21,9 @@
                         {% for partner in partners %}
                             <div class="col mb-3 mb-md-5">
                                 <div class="card c-card has-one-link-inside h-100">
-                                    {% if partner.logo %}
+                                    {% if partner.image %}
                                         <div class="card-header card-header--partners mb-3">
-                                            <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" loading="lazy" class="img-fluid">
+                                            <img src="{{ partner.image.url }}" alt="{{ partner.name }}" loading="lazy" class="img-fluid">
                                         </div>
                                     {% endif %}
                                     <div class="card-body pb-0">

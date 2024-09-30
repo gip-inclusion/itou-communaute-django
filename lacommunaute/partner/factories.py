@@ -19,7 +19,7 @@ class PartnerFactory(factory.django.DjangoModelFactory):
     url = factory.LazyAttribute(lambda x: faker.url())
 
     class Params:
-        with_logo = factory.Trait(logo=factory.django.ImageField(filename="test.jpg"))
+        with_image = factory.Trait(image=factory.django.ImageField(filename="test.jpg"))
         for_snapshot = factory.Trait(
             name="Best Partner Ever",
             description="### h3 long MD description \n lorem ipsum dolor sit amet, consectetur adipiscing elit.",

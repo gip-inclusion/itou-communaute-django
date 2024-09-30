@@ -17,12 +17,13 @@ def test_slug_is_generated(db):
     assert partner.slug == "test-partner"
 
 
-def test_logo_url(db):
-    partner = PartnerFactory(with_logo=True)
+def test_image_url(db):
+    partner = PartnerFactory(with_image=True)
     assert (
-        partner.logo.url.split("?")[0] == f"{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/{partner.logo.name}"
+        partner.image.url.split("?")[0]
+        == f"{settings.MEDIA_URL}{settings.AWS_STORAGE_BUCKET_NAME}/{partner.image.name}"
     )
-    assert "AWSAccessKeyId=" in partner.logo.url
+    assert "AWSAccessKeyId=" in partner.image.url
 
 
 def test_get_absolute_url(db):

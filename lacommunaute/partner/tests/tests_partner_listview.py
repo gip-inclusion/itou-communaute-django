@@ -12,7 +12,7 @@ def url_fixture():
 
 
 def test_listview(client, db, snapshot, url):
-    partner = PartnerFactory(for_snapshot=True, with_logo=True)
+    partner = PartnerFactory(for_snapshot=True, with_image=True)
     response = client.get(url)
     assert response.status_code == 200
     assert str(

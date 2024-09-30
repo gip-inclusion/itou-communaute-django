@@ -19,7 +19,7 @@ class Command(BaseCommand):
         UserFactory(username="communaute", password="password", is_superuser=True, is_staff=True)
         sys.stdout.write("superuser created\n")
 
-        partners = PartnerFactory.create_batch(5, with_logo=True)
+        partners = PartnerFactory.create_batch(5, with_image=True)
         sys.stdout.write("partners created\n")
 
         forum = ForumFactory(name="Espace d'échanges", with_public_perms=True)
