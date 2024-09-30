@@ -13,8 +13,8 @@
             {% if obj.short_description %}<div class="mt-3">{{ obj.short_description }}</div>{% endif %}
         </div>
         <div class="card-footer text-end">
-            {% if kind == "document" %}
-                <a href="{% url 'documentation:document_detail' obj.category.pk obj.slug obj.pk %}"
+            {% if category %}
+                <a href="{% url 'documentation:document_detail' category.pk category.slug obj.pk %}"
                    class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
                    data-matomo-category="engagement"
                    data-matomo-action="view"
@@ -22,7 +22,7 @@
                     <span>Consulter la fiche</span>
                     <i class="ri-arrow-right-line ri-lg"></i>
                 </a>
-            {% elif kind == "category" %}
+            {% else %}
                 <a href="{% url 'documentation:category_detail' obj.slug obj.pk %}"
                    class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
                    data-matomo-category="engagement"
