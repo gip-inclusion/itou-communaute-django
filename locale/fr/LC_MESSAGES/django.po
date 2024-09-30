@@ -1030,3 +1030,6 @@ msgstr "Partenaire"
 
 msgid "Partners"
 msgstr "Nos partenaires"
+
+msgid "Short Description"
+msgstr "Description courte (SEO)"
