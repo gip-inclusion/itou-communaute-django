@@ -1,8 +1,8 @@
 from django.db import models
-from machina.models.abstract_models import DatedModel
 
 from lacommunaute.surveys import enums
 from lacommunaute.users.models import User
+from lacommunaute.utils.abstract_models import DatedModel
 
 
 class Recommendation(models.Model):

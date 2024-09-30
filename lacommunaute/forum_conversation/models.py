@@ -6,13 +6,13 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
-from machina.models.abstract_models import DatedModel
 from taggit.managers import TaggableManager
 
 from lacommunaute.forum_conversation.signals import post_create
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.models import User
+from lacommunaute.utils.abstract_models import DatedModel
 
 
 class TopicQuerySet(models.QuerySet):

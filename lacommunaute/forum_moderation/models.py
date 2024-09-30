@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from machina.models.abstract_models import DatedModel
 
 from lacommunaute.forum_moderation.enums import BlockedPostReason
+from lacommunaute.utils.abstract_models import DatedModel
 
 
 class BlockedEmail(DatedModel):

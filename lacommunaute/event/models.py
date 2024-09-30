@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-from machina.models.abstract_models import DatedModel
+
+from lacommunaute.utils.abstract_models import DatedModel
 
 
 class Event(DatedModel):
