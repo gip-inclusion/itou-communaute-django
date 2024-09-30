@@ -1,8 +1,9 @@
 import pytest  # noqa
-
+from django.db import connection
 from lacommunaute.documentation.factories import CategoryFactory, DocumentFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
+from django.test.utils import CaptureQueriesContext
 
 
 @pytest.fixture(name="category")
@@ -55,4 +56,21 @@ def test_template_name(client, db, category, headers, expected_template_name):
     assert response.template_name == [expected_template_name]
 
 
-# test numqueries with and without tag
+@pytest.fixture(name="category_with_tons_of_documents")
+def category_with_tons_of_documents():
+    category = CategoryFactory()
+    DocumentFactory(category=category, with_tags=[f"tag{i}" for i in range(50)])
+    DocumentFactory.create_batch(25, category=category)
+    return category
+
+
+@pytest.mark.parametrize("tag,expected_count", [(None, 10), ("tag1", 12)])
+def test_numqueries(client, db, category_with_tons_of_documents, tag, expected_count):
+    url = (
+        f"{category_with_tons_of_documents.get_absolute_url()}?tag={tag}"
+        if tag
+        else category_with_tons_of_documents.get_absolute_url()
+    )
+    with CaptureQueriesContext(connection) as queries:
+        client.get(url)
+    assert len(queries) == expected_count
