@@ -3,16 +3,14 @@ import logging
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import View
 from django.views.generic import UpdateView
 from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 from taggit.models import Tag
 
 from lacommunaute.forum.forms import ForumForm
-from lacommunaute.forum.models import Forum, ForumRating
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
@@ -131,19 +129,3 @@ class ForumUpdateView(UserPassesTestMixin, UpdateView):
         context["title"] = f"Mettre à jour le forum {self.object.name}"
         context["back_url"] = reverse("forum_extension:forum", kwargs={"pk": self.object.pk, "slug": self.object.slug})
         return context
-
-
-class ForumRatingView(View):
-    def post(self, request, *args, **kwargs):
-        forum_rating = ForumRating.objects.create(
-            forum=get_object_or_404(Forum, pk=self.kwargs["pk"]),
-            user=request.user if request.user.is_authenticated else None,
-            rating=int(request.POST["rating"]),
-            session_id=request.session.session_key,
-        )
-
-        return render(
-            request,
-            "forum/partials/rating.html",
-            context={"forum": forum_rating.forum, "rating": forum_rating.rating},
-        )

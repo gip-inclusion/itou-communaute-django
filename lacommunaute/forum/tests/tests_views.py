@@ -11,7 +11,7 @@ from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
@@ -389,26 +389,6 @@ reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
 
 
 class TestForumViewContent:
-    def test_not_rated_forum(self, client, db, snapshot):
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
-        forum = category_forum.get_children().first()
-
-        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area1", replace_in_href=[category_forum, forum])
-        assert str(content) == snapshot(name="not_rated_forum")
-
-    def test_rated_forum(self, client, db, snapshot):
-        client.session.save()
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
-        forum = category_forum.get_children().first()
-        ForumRatingFactory(forum=forum, rating=5, session_id=client.session.session_key)
-
-        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area1")
-        assert str(content) == snapshot(name="rated_forum")
-
     def test_opengraph_for_forum_with_image(self, client, db):
         forum = ForumFactory(with_public_perms=True, with_image=True)
         response = client.get(forum.get_absolute_url())
