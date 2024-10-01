@@ -72,6 +72,7 @@ class Forum(AbstractForum):
         return ForumRating.objects.filter(forum=self).aggregate(models.Avg("rating"))["rating__avg"]
 
 
+# TODO : to be removed after migration
 class ForumRating(DatedModel):
     session_id = models.CharField(max_length=40)
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE)

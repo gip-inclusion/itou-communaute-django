@@ -1,7 +1,7 @@
 import factory
 from machina.test.factories.forum import ForumFactory as BaseForumFactory
 
-from lacommunaute.forum.models import Forum, ForumRating
+from lacommunaute.forum.models import Forum
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.utils.perms import add_public_perms_on_forum
 
@@ -64,18 +64,3 @@ class CategoryForumFactory(ForumFactory):
             return
 
         ForumFactory(parent=self, with_public_perms=True, with_image=True, name=f"{self.name} - Forum")
-
-
-class ForumRatingFactory(factory.django.DjangoModelFactory):
-    forum = factory.SubFactory(ForumFactory)
-    rating = factory.Faker("random_int", min=1, max=5)
-
-    class Meta:
-        model = ForumRating
-        skip_postgeneration_save = True
-
-    @factory.post_generation
-    def set_created(self, create, extracted, **kwargs):
-        if extracted:
-            self.created = extracted
-            self.save()
