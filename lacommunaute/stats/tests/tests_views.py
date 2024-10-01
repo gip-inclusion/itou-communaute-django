@@ -12,6 +12,7 @@ from freezegun import freeze_time
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains, assertNotContains
 
+from lacommunaute.documentation.factories import DocumentFactory, DocumentRatingFactory
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.stats.enums import Period
 from lacommunaute.stats.factories import ForumStatFactory, StatFactory
@@ -361,23 +362,25 @@ class TestForumStatWeekArchiveView:
         assert response.status_code == 200
         assert len(response.context_data["forum_stats"]) == 15
 
-    def test_most_rated_forums(self, client, db, snapshot):
+    def test_most_rated_documents(self, client, db, snapshot):
+        # required to unblock the view, until ForumStat is migrated to the new model
         fs = ForumStatFactory(for_snapshot=True, forum__name="Forum A")
+        document = DocumentFactory(name="Document A")
 
         # rating within range
-        ForumRatingFactory.create_batch(2, rating=5, forum=fs.forum, set_created=fs.date)
+        DocumentRatingFactory.create_batch(2, rating=5, document=document, set_created=fs.date)
         # rating out of range
-        ForumRatingFactory.create_batch(2, rating=1, forum=fs.forum)
+        DocumentRatingFactory.create_batch(2, rating=1, document=document)
 
-        # undesired forum
-        ForumFactory()
+        # undesired document
+        DocumentFactory()
 
         # undesired rating
-        ForumRatingFactory(rating=4)
+        DocumentRatingFactory(rating=4)
 
         response = client.get(self.get_url_from_date(fs.date))
         assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="#most_rated")) == snapshot(name="most_rated_forums")
+        assert str(parse_response_to_soup(response, selector="#most_rated")) == snapshot(name="most_rated_documents")
 
     def test_visitors(self, client, db, snapshot):
         fs = ForumStatFactory(for_snapshot=True)

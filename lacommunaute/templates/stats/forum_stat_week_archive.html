@@ -68,7 +68,7 @@
                 <div class="s-section__col col-12">
                     <div class="c-box mb-3 mb-md-5">
                         <h2>
-                            Les {{ rated_forums|length }} fiches pratiques les plus notées pendant la semaine du {{ week|date:"j F Y" }} au {{ end_date|date:"j F Y" }}
+                            Les {{ rated_documents|length }} fiches pratiques les plus notées pendant la semaine du {{ week|date:"j F Y" }} au {{ end_date|date:"j F Y" }}
                         </h2>
                         <table class="table">
                             <thead>
@@ -79,11 +79,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for forum in rated_forums %}
+                                {% for document in rated_documents %}
                                     <tr>
-                                        <th scope="row">{{ forum.name }}</th>
-                                        <td>{{ forum.rating_count }}</td>
-                                        <td>{{ forum.avg_rating|floatformat:2 }}</td>
+                                        <th scope="row">{{ document.name }}</th>
+                                        <td>{{ document.rating_count }}</td>
+                                        <td>{{ document.avg_rating|floatformat:2 }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

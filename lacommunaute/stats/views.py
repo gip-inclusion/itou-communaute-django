@@ -12,6 +12,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.dates import WeekArchiveView
 
+from lacommunaute.documentation.models import Document
 from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.stats.models import ForumStat, Stat
 from lacommunaute.surveys.models import DSP
@@ -140,15 +141,16 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         start_date = datetime.date(self.get_year(), 1, 1) + datetime.timedelta(weeks=self.get_week() - 1)
         return start_date, start_date + datetime.timedelta(days=6)
 
-    def get_most_rated_forums(self, start_date, end_date):
+    def get_most_rated_documents(self, start_date, end_date):
         return (
-            Forum.objects.annotate(avg_rating=Avg("forumrating__rating"))
+            Document.objects.annotate(avg_rating=Avg("documentrating__rating"))
             .filter(avg_rating__isnull=False)
             .annotate(
                 rating_count=Count(
-                    "forumrating",
+                    "documentrating",
                     filter=Q(
-                        forumrating__created__gte=start_date, forumrating__created__lt=end_date + relativedelta(days=1)
+                        documentrating__created__gte=start_date,
+                        documentrating__created__lt=end_date + relativedelta(days=1),
                     ),
                 )
             )
@@ -161,7 +163,7 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         start_date, end_date = self.get_dates_of_the_week()
         context["end_date"] = end_date
         context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
-        context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
+        context["rated_documents"] = self.get_most_rated_documents(start_date, end_date)
         return context
 
 

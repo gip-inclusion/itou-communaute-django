@@ -872,7 +872,7 @@
       </section>
   '''
 # ---
-# name: TestForumStatWeekArchiveView.test_most_rated_forums[most_rated_forums]
+# name: TestForumStatWeekArchiveView.test_most_rated_documents[most_rated_documents]
   '''
   <div class="s-section__row row" id="most_rated">
                   <div class="s-section__col col-12">
@@ -891,7 +891,7 @@
                               <tbody>
                                   
                                       <tr>
-                                          <th scope="row">Forum A</th>
+                                          <th scope="row">Document A</th>
                                           <td>2</td>
                                           <td>3,00</td>
                                       </tr>
