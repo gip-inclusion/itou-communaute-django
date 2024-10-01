@@ -65,12 +65,6 @@ class Forum(AbstractForum):
     def is_toplevel_discussion_area(self):
         return self == Forum.objects.get_main_forum()
 
-    def get_session_rating(self, session_key):
-        return getattr(ForumRating.objects.filter(forum=self, session_id=session_key).first(), "rating", None)
-
-    def get_average_rating(self):
-        return ForumRating.objects.filter(forum=self).aggregate(models.Avg("rating"))["rating__avg"]
-
 
 # TODO : to be removed after migration
 class ForumRating(DatedModel):

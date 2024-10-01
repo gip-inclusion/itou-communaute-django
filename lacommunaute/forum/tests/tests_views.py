@@ -193,7 +193,7 @@ class ForumViewTest(TestCase):
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(23):
+        with self.assertNumQueries(22):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
@@ -335,7 +335,7 @@ class ForumViewTest(TestCase):
         tag = faker.word()
         topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
 
-        with self.assertNumQueries(20):
+        with self.assertNumQueries(19):
             response = self.client.get(
                 reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tag": tag}
             )
@@ -653,7 +653,7 @@ class TestDocumentationCategoryForumContent:
             20, parent=category_forum, with_public_perms=True, with_tags=[f"tag{i}" for i in range(3)]
         )
         # vincentporte TOBEFIXED : DUPLICATED QUERIES
-        with django_assert_num_queries(19):
+        with django_assert_num_queries(18):
             client.get(category_forum.get_absolute_url())
 
 

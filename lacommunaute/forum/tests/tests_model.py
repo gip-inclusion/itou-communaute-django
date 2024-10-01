@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
@@ -71,23 +71,6 @@ class ForumModelTest(TestCase):
         self.assertFalse(sub_discussion_area_forum.is_toplevel_discussion_area)
         self.assertFalse(forum.is_toplevel_discussion_area)
         self.assertFalse(sub_forum.is_toplevel_discussion_area)
-
-    def test_get_session_rating(self):
-        forum = ForumFactory()
-        forum_rating = ForumRatingFactory(forum=forum)
-
-        self.assertIsNone(forum.get_session_rating("test"))
-        self.assertEqual(forum.get_session_rating(forum_rating.session_id), forum_rating.rating)
-
-        ForumRatingFactory(forum=forum, session_id=forum_rating.session_id, rating=forum_rating.rating + 1)
-        self.assertEqual(forum.get_session_rating(forum_rating.session_id), forum_rating.rating + 1)
-
-    def test_get_average_rating(self):
-        forum = ForumFactory()
-        ForumRatingFactory(forum=forum, rating=1)
-        ForumRatingFactory(forum=forum, rating=5)
-
-        self.assertEqual(forum.get_average_rating(), 3)
 
 
 class TestForumQueryset:
