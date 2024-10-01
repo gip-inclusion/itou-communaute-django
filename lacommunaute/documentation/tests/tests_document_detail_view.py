@@ -1,6 +1,6 @@
 import pytest
 
-from lacommunaute.documentation.factories import DocumentFactory
+from lacommunaute.documentation.factories import DocumentFactory, DocumentRatingFactory
 from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.utils.testing import parse_response_to_soup  # noqa
 
@@ -53,3 +53,13 @@ def test_detail_view(client, db, document, snapshot, setup_func, snapshot_name):
         replace_current_date_format="%d/%m/%Y",
     )
     assert str(content) == snapshot(name=snapshot_name)
+
+
+def test_detail_view_with_rated_document(client, db, document, snapshot):
+    client.session.save()
+    DocumentRatingFactory(document=document, rating=3, session_id=client.session.session_key)
+
+    response = client.get(document.get_absolute_url())
+    assert response.status_code == 200
+    content = parse_response_to_soup(response, selector="#rating-area")
+    assert str(content) == snapshot(name="document_detail_view_with_rated_document")

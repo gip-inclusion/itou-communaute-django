@@ -534,3 +534,50 @@
           </main>
   '''
 # ---
+# name: test_detail_view_with_rated_document[document_detail_view_with_rated_document]
+  '''
+  <div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
+          <div class="d-flex gap-3 align-items-center mb-2">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                          
+                      </div>
+                  
+              </div>
+              <div class="text-muted">1 avis, moyenne 3,00</div>
+          </div>
+      
+      <hr/>
+  </div>
+  '''
+# ---
