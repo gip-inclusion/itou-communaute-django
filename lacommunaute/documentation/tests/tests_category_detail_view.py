@@ -29,7 +29,8 @@ def test_category_detail_view_with_tagged_documents(client, db, category, active
         response,
         selector="main",
         replace_img_src=True,
-        replace_in_href=[category] + [doc for doc in category.documents.all()],
+        replace_in_href=[(category.get_absolute_url(), "[Category detail view url]")]
+        + [(doc.get_absolute_url(), "[Document detail view url]") for doc in category.documents.all()],
     )
     assert str(content) == snapshot(name=snapshot_name)
 

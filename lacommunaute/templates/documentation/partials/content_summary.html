@@ -14,7 +14,7 @@
         </div>
         <div class="card-footer text-end">
             {% if category %}
-                <a href="{% url 'documentation:document_detail' category.pk category.slug obj.pk %}"
+                <a href="{% url 'documentation:document_detail' category.pk obj.slug obj.pk %}"
                    class="btn btn-sm btn-ico btn-link stretched-link matomo-event"
                    data-matomo-category="engagement"
                    data-matomo-action="view"

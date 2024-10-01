@@ -49,8 +49,8 @@
             <div class="s-section__row row">
                 <div class="s-section__col col-12">
                     <div class="row mt-4" id="documents">
-                        {% for obj in documents %}
-                            {% include 'documentation/partials/content_summary.html' with obj=obj category=category only %}
+                        {% for document in documents %}
+                            {% include 'documentation/partials/content_summary.html' with obj=document category=category only %}
                         {% endfor %}
                     </div>
                 </div>

@@ -65,11 +65,11 @@
                               <div class="text-center tag-group">
                                   
                                       
-                                          <button aria-label="Filtrer par tag1" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/?tag=tag1" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">tag1</button>
+                                          <button aria-label="Filtrer par tag1" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]?tag=tag1" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">tag1</button>
                                       
                                   
                                       
-                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
+                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
                                       
                                   
                               </div>
@@ -101,7 +101,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-category-[PK of Document]/">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="[Document detail view url]">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -127,7 +127,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-category-[PK of Document]/">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="[Document detail view url]">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -215,13 +215,13 @@
                               <div class="text-center tag-group">
                                   
                                       
-                                          <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">
+                                          <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">
                                               <i class="ri-close-fill ri-xs"></i>tag1
                                           </button>
                                       
                                   
                                       
-                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
+                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
                                       
                                   
                               </div>
@@ -253,7 +253,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-category-[PK of Document]/">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="[Document detail view url]">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -341,11 +341,11 @@
                               <div class="text-center tag-group">
                                   
                                       
-                                          <button aria-label="Filtrer par tag1" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/?tag=tag1" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">tag1</button>
+                                          <button aria-label="Filtrer par tag1" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]?tag=tag1" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag1">tag1</button>
                                       
                                   
                                       
-                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="/documentation/test-category-[PK of Category]/?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
+                                          <button aria-label="Filtrer par tag2" class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="document" hx-get="[Category detail view url]?tag=tag2" hx-push-url="true" hx-swap="outerHTML" hx-target="#documents_area" id="filterdocument-tag2">tag2</button>
                                       
                                   
                               </div>
