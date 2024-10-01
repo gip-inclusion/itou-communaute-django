@@ -1,7 +1,7 @@
 import factory
 from faker import Faker
 
-from lacommunaute.documentation.models import Category, Document
+from lacommunaute.documentation.models import Category, Document, DocumentRating
 
 
 faker = Faker()
@@ -46,3 +46,18 @@ class DocumentFactory(AbstractDocumentationFactory):
         if isinstance(extracted, list):
             for tag in extracted:
                 self.tags.add(tag)
+
+
+class DocumentRatingFactory(factory.django.DjangoModelFactory):
+    document = factory.SubFactory(DocumentFactory)
+    rating = factory.Faker("random_int", min=1, max=5)
+
+    class Meta:
+        model = DocumentRating
+        skip_postgeneration_save = True
+
+    @factory.post_generation
+    def set_created(self, create, extracted, **kwargs):
+        if extracted:
+            self.created = extracted
+            self.save()
