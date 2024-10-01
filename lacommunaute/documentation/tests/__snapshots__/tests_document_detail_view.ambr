@@ -64,6 +64,39 @@
   </div>
   
                           
+                          <div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
+          <form hx-post="/documentation/[PK of Category]/[Slug of Document]-[PK of Document]/rate/" hx-swap="outerHTML" hx-target="#rating-area" id="rating-button">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+              </div>
+          </form>
+      
+      <hr/>
+  </div>
+  
                       </div>
                   </div>
                   <div class="col-12 col-lg-3 vertical-line">
@@ -166,6 +199,39 @@
   </div>
   
                           
+                          <div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
+          <form hx-post="/documentation/[PK of Category]/[Slug of Document]-[PK of Document]/rate/" hx-swap="outerHTML" hx-target="#rating-area" id="rating-button">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+              </div>
+          </form>
+      
+      <hr/>
+  </div>
+  
                       </div>
                   </div>
                   <div class="col-12 col-lg-3 vertical-line">
@@ -273,6 +339,39 @@
   
                               </div>
                           
+                          <div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
+          <form hx-post="/documentation/[PK of Category]/[Slug of Document]-[PK of Document]/rate/" hx-swap="outerHTML" hx-target="#rating-area" id="rating-button">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+              </div>
+          </form>
+      
+      <hr/>
+  </div>
+  
                       </div>
                   </div>
                   <div class="col-12 col-lg-3 vertical-line">
@@ -370,6 +469,39 @@
   </div>
   
                           
+                          <div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Cette fiche vous a-t-elle été utile ?</h3>
+          <form hx-post="/documentation/[PK of Category]/[Slug of Document]-[PK of Document]/rate/" hx-swap="outerHTML" hx-target="#rating-area" id="rating-button">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+                      <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
+                          <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                      </button>
+                  
+              </div>
+          </form>
+      
+      <hr/>
+  </div>
+  
                       </div>
                   </div>
                   <div class="col-12 col-lg-3 vertical-line">

@@ -1,11 +1,14 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Avg, Count
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from taggit.models import Tag
 
-from lacommunaute.documentation.models import Category, Document
+from lacommunaute.documentation.models import Category, Document, DocumentRating
 
 
 class CategoryListView(ListView):
@@ -87,3 +90,27 @@ class CategoryUpdateView(CategoryCreateUpdateMixin, UpdateView):
             "back_url": self.object.get_absolute_url(),
         }
         return super().get_context_data(**kwargs) | additionnal_context
+
+
+class DocumentRatingView(View):
+    def get_sum_and_mean_of_ratings(self):
+        return DocumentRating.objects.filter(document=self.kwargs["pk"]).aggregate(
+            count=Count("rating"), average=Avg("rating")
+        )
+
+    def post(self, request, *args, **kwargs):
+        document_rating = DocumentRating.objects.create(
+            document=get_object_or_404(Document, pk=self.kwargs["pk"]),
+            user=request.user if request.user.is_authenticated else None,
+            rating=int(request.POST["rating"]),
+            session_id=request.session.session_key,
+        )
+
+        return render(
+            request,
+            "documentation/partials/rating.html",
+            context={
+                "rating": document_rating.rating,
+                **self.get_sum_and_mean_of_ratings(),
+            },
+        )

@@ -1,0 +1,97 @@
+# serializer version: 1
+# name: test_post_rating[<lambda>-user_post_document_rating][user_post_document_rating]
+  '''
+  <html><head></head><body><div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
+          <div class="d-flex gap-3 align-items-center mb-2">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+              </div>
+              <div class="text-muted">1 avis, moyenne 5,00</div>
+          </div>
+      
+      <hr/>
+  </div>
+  </body></html>
+  '''
+# ---
+# name: test_post_rating[None-anonymous_post_document_rating][anonymous_post_document_rating]
+  '''
+  <html><head></head><body><div class="mb-5 rating" id="rating-area">
+      <hr/>
+      
+          <h3 class="h3">Merci d'avoir noté cette fiche !</h3>
+          <div class="d-flex gap-3 align-items-center mb-2">
+              <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+                      <div class="btn btn-ico-only">
+                          
+                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                          
+                      </div>
+                  
+              </div>
+              <div class="text-muted">1 avis, moyenne 5,00</div>
+          </div>
+      
+      <hr/>
+  </div>
+  </body></html>
+  '''
+# ---

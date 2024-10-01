@@ -6,6 +6,7 @@ from lacommunaute.documentation.views import (
     CategoryListView,
     CategoryUpdateView,
     DocumentDetailView,
+    DocumentRatingView,
 )
 
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path("category/create/", CategoryCreateView.as_view(), name="category_create"),
     path("<str:slug>-<int:pk>/update/", CategoryUpdateView.as_view(), name="category_update"),
     path("<int:category_pk>/<str:slug>-<int:pk>/", DocumentDetailView.as_view(), name="document_detail"),
+    path("<int:category_pk>/<str:slug>-<int:pk>/rate/", DocumentRatingView.as_view(), name="document_rate"),
 ]
