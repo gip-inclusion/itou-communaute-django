@@ -17,8 +17,8 @@
             {% else %}
                 {{ poster }},
             {% endif %}
-            {% if forum and forum != topic.forum %}
-                dans <a href="{% url 'forum_extension:forum' topic.forum.slug topic.forum.pk %}">{{ topic.forum }}</a>,
+            {% if topic.document %}
+                dans <a href="{% url 'documentation:document_detail' topic.document.category.id topic.document.slug topic.document.pk %}">{{ topic.document }}</a>,
             {% endif %}
         {% endwith %}
     {% endspaceless %}
