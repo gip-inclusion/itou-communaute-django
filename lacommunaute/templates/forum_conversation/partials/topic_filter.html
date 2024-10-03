@@ -5,7 +5,7 @@
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
                     <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}
-                        {% if active_tags %}avec l'étiquette {{ active_tags_label }}{% endif %}
+                        {% if active_tag %}avec l'étiquette {{ active_tag.name|lower }}{% endif %}
                     </span>
                 </div>
                 <div>
@@ -21,7 +21,7 @@
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
                                             hx-push-url="true"
-                                            hx-get="{{ filter_dropdown_endpoint }}?filter={{ filter.0 }}{% if active_tags %}&tags={{ active_tags }}{% endif %}"
+                                            hx-get="{{ filter_dropdown_endpoint }}?filter={{ filter.0 }}{% if active_tag %}&tag={{ active_tag.slug }}{% endif %}"
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"
