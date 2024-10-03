@@ -1,5 +1,5 @@
 {% load url_add_query %}
 {% for tag in tags %}
-    {% url_add_query request.path tags=tag.slug page=1 as url_with_query_params %}
+    {% url_add_query request.path tag=tag.slug page=1 as url_with_query_params %}
     <a href="{{ url_with_query_params }}" class="tag bg-info-lighter text-info">{{ tag.name }}</a>
 {% endfor %}

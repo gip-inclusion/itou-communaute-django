@@ -787,14 +787,14 @@ def test_queryset_for_tagged_topic(client, db, snapshot):
     tagged_topic = TopicFactory(with_post=True, with_tags=tags)
     untagged_topic = TopicFactory(with_post=True)
 
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
+    response = client.get(reverse("forum_conversation_extension:topics"), {"tag": tags[0]})
     content = parse_response_to_soup(response, selector="#topic-list-filter-header")
     assert str(content) == snapshot(name="tagged_topic")
     assertContains(response, tagged_topic.subject)
     assertNotContains(response, untagged_topic.subject)
 
     TopicFactory(with_post=True, with_tags=tags)
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
+    response = client.get(reverse("forum_conversation_extension:topics"), {"tag": tags[0]})
     content = parse_response_to_soup(response, selector="#topic-list-filter-header")
     assert str(content) == snapshot(name="tagged_topics")
 
