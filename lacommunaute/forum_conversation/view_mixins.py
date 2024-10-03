@@ -47,6 +47,6 @@ class FilteredTopicsListViewMixin:
 
         return {
             "active_tag": self.get_tag(),
-            "active_filter_name": getattr(Filters, active_filter, Filters.ALL).label,
+            "active_filter": getattr(Filters, active_filter, Filters.ALL),
             "filters": Filters.choices,
         }

@@ -190,10 +190,16 @@
   '''
 # ---
 # name: TestTopicListView.test_clickable_tags[10-?page=2-clickable_tags_page2][clickable_tags_page2]
-  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
+  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
+# ---
+# name: TestTopicListView.test_clickable_tags[10-query_param1-clickable_tags_page2][clickable_tags_page2]
+  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
 # ---
 # name: TestTopicListView.test_clickable_tags[None-None-clickable_tags_page1][clickable_tags_page1]
-  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
+  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
+# ---
+# name: TestTopicListView.test_clickable_tags[None-query_param0-clickable_tags_page1][clickable_tags_page1]
+  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
 # ---
 # name: TestTopicListView.test_filter_dropdown_with_tags[filter_dropdown_with_tags]
   '''
@@ -287,7 +293,7 @@
                       
                           <span class="fs-sm">
                               sous l'étiquette
-                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
+                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
                                   <i class="ri-close-fill ri-xs"></i>buckley
                               </button>
                           </span>
@@ -302,7 +308,7 @@
                       
                           <span class="fs-sm">
                               sous l'étiquette
-                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
+                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
                                   <i class="ri-close-fill ri-xs"></i>buckley
                               </button>
                           </span>
