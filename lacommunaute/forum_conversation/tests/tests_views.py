@@ -9,7 +9,6 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-
 from pytest_django.asserts import assertContains, assertNotContains
 from taggit.models import Tag
 
@@ -776,7 +775,7 @@ def test_queryset_filtered_on_tag(client, db, tag):
     other_topic = TopicFactory(with_post=True, forum=forum)
     tagged_topic = TopicFactory(with_post=True, forum=forum, with_tags=[tag])
 
-    response = client.get(reverse("forum_conversation_extension:topics"), data={"tags": tag})
+    response = client.get(reverse("forum_conversation_extension:topics"), data={"tag": tag})
     assert response.context_data["paginator"].count == 1
     assertContains(response, tagged_topic.subject)
     assertNotContains(response, other_topic.subject)
@@ -872,7 +871,7 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-        self.assertEqual(response.context_data["active_tags"], "")
+        self.assertEqual(list(response.context_data["active_tag"]), [])
 
         for filter, label in Filters.choices:
             with self.subTest(filter=filter, label=label):
@@ -888,9 +887,9 @@ class TopicListViewTest(TestCase):
 
     def test_context_with_tag(self):
         tags = [Tag.objects.create(name=faker.sentence()) for i in range(2)]
-        response = self.client.get(self.url, {"tags": ",".join([tag.slug for tag in tags])})
-        self.assertEqual(response.context_data["active_tags"], ",".join([tag.slug for tag in tags]))
-        self.assertEqual(response.context_data["active_tags_label"], " ou ".join([tag.name for tag in tags]))
+        for tag in tags:
+            response = self.client.get(self.url, {"tag": tag.slug})
+            self.assertEqual(response.context_data["active_tag"], tag)
 
     def test_queryset(self):
         response = self.client.get(self.url)
@@ -973,19 +972,24 @@ class TopicListViewTest(TestCase):
         self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
         self.assertEqual(response.context_data["filter_dropdown_endpoint"], None)
 
-    def test_filter_dropdown_with_tags(self):
-        tag = Tag.objects.create(name=faker.words(nb=3))
-        response = self.client.get(self.url + f"?tags={tag.slug}")
-        self.assertContains(response, f'hx-get="/topics/?filter=ALL&tags={tag.slug}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=NEW&tags={tag.slug}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=CERTIFIED&tags={tag.slug}"')
-
     def test_template_name(self):
         response = self.client.get(self.url)
         self.assertTemplateUsed(response, "forum_conversation/topics_public.html")
 
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+
+
+@pytest.fixture(name="public_forum_with_topic")
+def fixture_public_forum_with_topic(db):
+    forum = ForumFactory(with_public_perms=True)
+    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+    return forum
+
+
+@pytest.fixture(name="topics_url")
+def fixture_topics_url():
+    return reverse("forum_conversation_extension:topics")
 
 
 class TestTopicListView:
@@ -1003,6 +1007,11 @@ class TestTopicListView:
         response = client.get(reverse("forum_conversation_extension:topics") + "?page=2")
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page2")
+
+    def test_filter_dropdown_with_tags(self, client, db, public_forum_with_topic, topics_url, snapshot):
+        response = client.get(topics_url + "?tag=tag")
+        content = parse_response_to_soup(response, selector="#filterTopicsDropdown")
+        assert str(content) == snapshot(name="filter_dropdown_with_tags")
 
 
 class TestPosterTemplate:

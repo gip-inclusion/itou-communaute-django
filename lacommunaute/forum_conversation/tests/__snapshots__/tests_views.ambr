@@ -190,10 +190,31 @@
   '''
 # ---
 # name: TestTopicListView.test_clickable_tags[clickable_tags_page1]
-  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;page=1">tag</a>'
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;filter=">tag</a>'
 # ---
 # name: TestTopicListView.test_clickable_tags[clickable_tags_page2]
-  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;page=1">tag</a>'
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;filter=">tag</a>'
+# ---
+# name: TestTopicListView.test_filter_dropdown_with_tags[filter_dropdown_with_tags]
+  '''
+  <div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">
+                          <ul class="list-unstyled">
+                              
+                                  <li>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">Les plus récentes</button>
+                                  </li>
+                              
+                                  <li>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=NEW&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">En attente de réponse</button>
+                                  </li>
+                              
+                                  <li>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=CERTIFIED&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">Réponse certifiée</button>
+                                  </li>
+                              
+                          </ul>
+                      </div>
+  '''
 # ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]
   '''
