@@ -875,20 +875,20 @@ class TopicListViewTest(TestCase):
         self.assertEqual(response.context_data["filters"], Filters.choices)
         self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
         self.assertEqual(response.context_data["forum"], self.forum)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
         self.assertEqual(list(response.context_data["active_tag"]), [])
 
-        for filter, label in Filters.choices:
-            with self.subTest(filter=filter, label=label):
-                response = self.client.get(self.url + f"?filter={filter}")
+        for filter in Filters:
+            with self.subTest(filter=filter):
+                response = self.client.get(self.url + f"?filter={filter.value}")
                 self.assertEqual(
                     response.context_data["loadmoretopic_url"],
-                    reverse("forum_conversation_extension:topics") + f"?filter={filter}",
+                    reverse("forum_conversation_extension:topics") + f"?filter={filter.value}",
                 )
-                self.assertEqual(response.context_data["active_filter_name"], label)
+                self.assertEqual(response.context_data["active_filter"], filter)
 
         response = self.client.get(self.url + "?filter=FAKE")
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
 
     def test_context_with_tag(self):
         tags = [Tag.objects.create(name=faker.sentence()) for i in range(2)]

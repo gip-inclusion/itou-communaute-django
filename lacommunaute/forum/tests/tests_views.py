@@ -83,20 +83,20 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertIsNone(response.context_data["rating"])
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
         self.assertEqual(list(response.context_data["active_tag"]), [])
 
-        for filter, label in Filters.choices:
-            with self.subTest(filter=filter, label=label):
-                response = self.client.get(self.url + f"?filter={filter}")
+        for filter in Filters:
+            with self.subTest(filter=filter):
+                response = self.client.get(self.url + f"?filter={filter.value}")
                 self.assertEqual(
                     response.context_data["loadmoretopic_url"],
-                    loadmoretopic_url + f"?filter={filter}",
+                    loadmoretopic_url + f"?filter={filter.value}",
                 )
-                self.assertEqual(response.context_data["active_filter_name"], label)
+                self.assertEqual(response.context_data["active_filter"], filter)
 
         response = self.client.get(self.url + "?filter=FAKE")
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
 
         tag = Tag.objects.create(name="tag_1", slug="tag_1")
         response = self.client.get(self.url + f"?tag={tag.name}")
@@ -365,14 +365,14 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["paginator"].count, 0)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.NEW)
 
         new_topic = TopicFactory(with_post=True, forum=self.forum)
 
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
         self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, new_topic.subject, status_code=200)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.NEW)
 
         for topic in Topic.objects.exclude(id=new_topic.id):
             with self.subTest(topic):
@@ -382,7 +382,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["paginator"].count, 0)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
 
         certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
 
@@ -390,7 +390,7 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, certified_topic.subject, status_code=200)
         self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
-        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
 
         for topic in Topic.objects.exclude(id=certified_topic.id):
             with self.subTest(topic):
