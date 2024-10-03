@@ -201,15 +201,15 @@
                           <ul class="list-unstyled">
                               
                                   <li>
-                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">Les plus récentes</button>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">les plus récentes</button>
                                   </li>
                               
                                   <li>
-                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=NEW&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">En attente de réponse</button>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=NEW&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">en attente de réponse</button>
                                   </li>
                               
                                   <li>
-                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=CERTIFIED&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">Réponse certifiée</button>
+                                      <button class="dropdown-item matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=CERTIFIED&amp;tag=tag" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filter-ontag-button">avec une réponse certifiée</button>
                                   </li>
                               
                           </ul>
