@@ -1010,7 +1010,7 @@ class TestTopicListView:
         url = topics_url + query_param if query_param else topics_url
         response = client.get(url)
         assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name=snapshot_name)
+        assert str(parse_response_to_soup(response, selector="#filtertopics-button")) == snapshot(name=snapshot_name)
 
     def test_filter_dropdown_with_tags(self, client, db, public_forum_with_topic, topics_url, snapshot):
         response = client.get(topics_url + "?tag=tag")

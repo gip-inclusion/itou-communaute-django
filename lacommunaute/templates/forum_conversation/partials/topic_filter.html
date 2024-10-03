@@ -4,9 +4,27 @@
         <div class="col-12 col-sm">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
-                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}
-                        {% if active_tag %}avec l'étiquette {{ active_tag.name|lower }}{% endif %}
-                    </span>
+                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}</span>
+                    {% if active_tag %}
+                        <span class="fs-sm">
+                            sous l'étiquette
+                            <button id="unfilter-ontag-button"
+                                    hx-target="#topicsarea"
+                                    hx-swap="outerHTML"
+                                    hx-push-url="true"
+                                    hx-get="{{ filter_dropdown_endpoint }}?filter={{ active_filter.name }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-title="Supprimer ce filtre"
+                                    aria-label="Supprimer ce filtre"
+                                    class="tag bg-info text-white matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="unfilter"
+                                    data-matomo-option="topics">
+                                <i class="ri-close-fill ri-xs"></i>{{ active_tag.name|lower }}
+                            </button>
+                        </span>
+                    {% endif %}
                 </div>
                 <div>
                     <span class="fs-sm">Filtrer par :</span>
@@ -17,7 +35,7 @@
                         <ul class="list-unstyled">
                             {% for filter in filters %}
                                 <li>
-                                    <button id="filtertopics-button"
+                                    <button id="filter-ontag-button"
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
                                             hx-push-url="true"
