@@ -887,7 +887,7 @@ class TestTopicListView:
         ],
     )
     def test_queryset_on_filter(
-        self, client, db, public_forum_with_topic, topics_url, filter, expected_topic, unexpected_topic
+        self, client, db, public_forum_with_topic, topics_url, filter, expected_topic, unexpected_topic, snapshot
     ):
         expected_topic = expected_topic(public_forum_with_topic)
         if unexpected_topic:
@@ -899,6 +899,8 @@ class TestTopicListView:
             assert unexpected_topic not in response.context["topics"]
         if filter == "CERTIFIED":
             assert expected_topic.certified_post.post.content.raw[:100] in response.content.decode()
+        content = parse_response_to_soup(response, selector="#topic-list-filter-header")
+        assert str(content) == snapshot(name=f"{filter}-tagged_topics")
 
     @pytest.mark.parametrize(
         "tag,expected_topic,unexpected_topic",

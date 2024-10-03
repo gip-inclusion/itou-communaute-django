@@ -5,6 +5,7 @@
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
                     <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}</span>
+                    {% if active_filter.name != filters.0.1 %}{{ active_filter.label|lower }}{% endif %}
                     {% if active_tag %}
                         <span class="fs-sm">
                             sous l'étiquette

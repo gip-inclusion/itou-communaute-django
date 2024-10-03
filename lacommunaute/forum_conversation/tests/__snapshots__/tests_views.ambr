@@ -216,10 +216,38 @@
                       </div>
   '''
 # ---
+# name: TestTopicListView.test_queryset_on_filter[ALL-<lambda>-None][ALL-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">2 questions</span>
+                      les plus récentes
+                      
+                  </div>
+  '''
+# ---
+# name: TestTopicListView.test_queryset_on_filter[CERTIFIED-<lambda>-<lambda>][CERTIFIED-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">1 question</span>
+                      avec une réponse certifiée
+                      
+                  </div>
+  '''
+# ---
+# name: TestTopicListView.test_queryset_on_filter[NEW-<lambda>-<lambda>][NEW-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">2 questions</span>
+                      en attente de réponse
+                      
+                  </div>
+  '''
+# ---
 # name: TestTopicListView.test_queryset_on_tag[-<lambda>-None][-tagged_topics]
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">
                       <span class="h5 m-0">2 questions</span>
+                      les plus récentes
                       
                   </div>
   '''
@@ -228,6 +256,7 @@
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">
                       <span class="h5 m-0">1 question</span>
+                      les plus récentes
                       
                           <span class="fs-sm">
                               sous l'étiquette
@@ -243,6 +272,7 @@
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">
                       <span class="h5 m-0">2 questions</span>
+                      les plus récentes
                       
                           <span class="fs-sm">
                               sous l'étiquette
