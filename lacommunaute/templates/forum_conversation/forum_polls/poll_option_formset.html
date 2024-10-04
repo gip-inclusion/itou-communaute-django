@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load widget_tweaks %}
-<label class="font-weight-bold">{% trans "Poll options" %}</label>
+<label class="fw-bold">{% trans "Poll options" %}</label>
 {{ poll_option_formset.management_form }}
 {% for form in poll_option_formset.forms %}
     <div class="poll-option-form row">

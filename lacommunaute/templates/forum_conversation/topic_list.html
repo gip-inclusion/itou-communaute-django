@@ -24,7 +24,7 @@
                                 {% endif %}
                             </div>
                             <p class="h4 mb-0 flex-grow-1">
-                                <span class="topic-icon font-weight-normal">
+                                <span class="topic-icon fw-normal">
                                     <i class="{% if topic.is_sticky %}ri-lightbulb-flash-line{% elif topic.is_announce %}ri-information-line{% else %}ri-record-circle-line{% endif %} ri-xl aria-hidden=" true " "></i>
                                 </span>
                                 <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
