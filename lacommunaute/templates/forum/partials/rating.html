@@ -42,9 +42,9 @@
                 {% for star in "12345" %}
                     <div class="btn btn-ico-only">
                         {% if forloop.counter > rating %}
-                            <i class="ri-star-line font-weight-medium" aria-hidden="true"></i>
+                            <i class="ri-star-line fw-medium" aria-hidden="true"></i>
                         {% else %}
-                            <i class="ri-star-fill font-weight-medium" aria-hidden="true"></i>
+                            <i class="ri-star-fill fw-medium" aria-hidden="true"></i>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -55,7 +55,7 @@
                 <div class="btn-group btn-group-lg" role="group" aria-label="Notation de la fiche pratique">
                     {% for star in "12345" %}
                         <button type="submit" name="rating" value="{{ star }}" class="btn btn-ico-only btn-secondary matomo-event" data-matomo-category="engagement" data-matomo-action="rate" data-matomo-option="post">
-                            <i class="ri-star-line font-weight-medium" aria-hidden="true"></i>
+                            <i class="ri-star-line fw-medium" aria-hidden="true"></i>
                         </button>
                     {% endfor %}
                 </div>

@@ -407,23 +407,23 @@
                   <div aria-label="Notation de la fiche pratique" class="btn-group btn-group-lg" role="group">
                       
                           <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="1">
-                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           </button>
                       
                           <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="2">
-                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           </button>
                       
                           <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="3">
-                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           </button>
                       
                           <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="4">
-                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           </button>
                       
                           <button class="btn btn-ico-only btn-secondary matomo-event" data-matomo-action="rate" data-matomo-category="engagement" data-matomo-option="post" name="rating" type="submit" value="5">
-                              <i aria-hidden="true" class="ri-star-line font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           </button>
                       
                   </div>
@@ -442,31 +442,31 @@
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill font-weight-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
