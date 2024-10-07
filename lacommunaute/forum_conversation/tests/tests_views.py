@@ -782,21 +782,18 @@ def test_queryset_filtered_on_tag(client, db, tag):
     assertNotContains(response, other_topic.subject)
 
 
-def test_queryset_for_tagged_topic(client, db, snapshot):
+@pytest.mark.parametrize("num_of_tagged_topics", [1, 2])
+def test_queryset_for_tagged_topic(client, db, num_of_tagged_topics, snapshot):
     tags = ["buckley", "jeff"]
-    tagged_topic = TopicFactory(with_post=True, with_tags=tags)
+    tagged_topics = TopicFactory.create_batch(num_of_tagged_topics, with_post=True, with_tags=tags)
     untagged_topic = TopicFactory(with_post=True)
 
     response = client.get(reverse("forum_conversation_extension:topics"), {"tag": tags[0]})
     content = parse_response_to_soup(response, selector="#topic-list-filter-header")
-    assert str(content) == snapshot(name="tagged_topic")
-    assertContains(response, tagged_topic.subject)
+    assert str(content) == snapshot(name=f"{num_of_tagged_topics}-tagged_topics")
+    for tagged_topic in tagged_topics:
+        assertContains(response, tagged_topic.subject)
     assertNotContains(response, untagged_topic.subject)
-
-    TopicFactory(with_post=True, with_tags=tags)
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tag": tags[0]})
-    content = parse_response_to_soup(response, selector="#topic-list-filter-header")
-    assert str(content) == snapshot(name="tagged_topics")
 
 
 def test_breadcrumbs_on_topic_view(client, db, snapshot):
