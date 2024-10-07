@@ -82,6 +82,13 @@ class TopicFactory(BaseTopicFactory):
             for tag in extracted:
                 self.tags.add(tag)
 
+    @factory.post_generation
+    def answered(self, create, extracted, **kwargs):
+        if not create or not extracted:
+            return
+
+        PostFactory(topic=self)
+
 
 class AnonymousTopicFactory(TopicFactory):
     poster = None
