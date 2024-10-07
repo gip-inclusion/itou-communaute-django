@@ -769,25 +769,30 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+@pytest.fixture(name="topics_url")
+def fixture_topics_url():
+    return reverse("forum_conversation_extension:topics")
+
+
 @pytest.mark.parametrize("tag", ["lower", "UPPER"])
-def test_queryset_filtered_on_tag(client, db, tag):
+def test_queryset_filtered_on_tag(client, db, tag, topics_url):
     forum = ForumFactory(with_public_perms=True)
     other_topic = TopicFactory(with_post=True, forum=forum)
     tagged_topic = TopicFactory(with_post=True, forum=forum, with_tags=[tag])
 
-    response = client.get(reverse("forum_conversation_extension:topics"), data={"tag": tag})
+    response = client.get(topics_url, data={"tag": tag})
     assert response.context_data["paginator"].count == 1
     assertContains(response, tagged_topic.subject)
     assertNotContains(response, other_topic.subject)
 
 
 @pytest.mark.parametrize("num_of_tagged_topics", [1, 2])
-def test_queryset_for_tagged_topic(client, db, num_of_tagged_topics, snapshot):
+def test_queryset_for_tagged_topic(client, db, num_of_tagged_topics, topics_url, snapshot):
     tags = ["buckley", "jeff"]
     tagged_topics = TopicFactory.create_batch(num_of_tagged_topics, with_post=True, with_tags=tags)
     untagged_topic = TopicFactory(with_post=True)
 
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tag": tags[0]})
+    response = client.get(topics_url, {"tag": tags[0]})
     content = parse_response_to_soup(response, selector="#topic-list-filter-header")
     assert str(content) == snapshot(name=f"{num_of_tagged_topics}-tagged_topics")
     for tagged_topic in tagged_topics:
@@ -987,26 +992,25 @@ def fixture_public_forum_with_topic(db):
     return forum
 
 
-@pytest.fixture(name="topics_url")
-def fixture_topics_url():
-    return reverse("forum_conversation_extension:topics")
-
-
 class TestTopicListView:
-    def test_clickable_tags(self, client, db, snapshot):
+    @pytest.mark.parametrize(
+        "num_of_topics_before_tagged_topic,query_param,snapshot_name",
+        [(None, None, "clickable_tags_page1"), (10, "?page=2", "clickable_tags_page2")],
+    )
+    def test_clickable_tags(
+        self, client, db, topics_url, num_of_topics_before_tagged_topic, query_param, snapshot_name, snapshot
+    ):
         forum = ForumFactory(with_public_perms=True)
+
         TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+        if num_of_topics_before_tagged_topic:
+            # add 10 Topics before the tagged one to put it on the second page
+            TopicFactory.create_batch(num_of_topics_before_tagged_topic, with_post=True, forum=forum)
 
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        url = topics_url + query_param if query_param else topics_url
+        response = client.get(url)
         assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page1")
-
-        # add 10 Topics before the tagged one to put it on the second page
-        TopicFactory.create_batch(10, with_post=True, forum=forum)
-
-        response = client.get(reverse("forum_conversation_extension:topics") + "?page=2")
-        assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page2")
+        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name=snapshot_name)
 
     def test_filter_dropdown_with_tags(self, client, db, public_forum_with_topic, topics_url, snapshot):
         response = client.get(topics_url + "?tag=tag")
@@ -1015,15 +1019,15 @@ class TestTopicListView:
 
 
 class TestPosterTemplate:
-    def test_topic_in_topics_view(self, client, db, snapshot):
+    def test_topic_in_topics_view(self, client, db, topics_url, snapshot):
         topic = TopicFactory(with_post=True, poster=UserFactory(first_name="Jeff", last_name="Buckley"))
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        response = client.get(topics_url)
         soup = parse_response_to_soup(
             response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
         )
         assert str(soup) == snapshot(name="topic_in_topics_view")
 
-    def test_topic_from_other_public_forum_in_topics_view(self, client, db, snapshot):
+    def test_topic_from_other_public_forum_in_topics_view(self, client, db, topics_url, snapshot):
         # first_public_forum
         ForumFactory(with_public_perms=True)
 
@@ -1032,7 +1036,7 @@ class TestPosterTemplate:
             forum=ForumFactory(with_public_perms=True, name="Abby's Forum"),
             poster=UserFactory(first_name="Alan", last_name="Turing"),
         )
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        response = client.get(topics_url)
         soup = parse_response_to_soup(
             response,
             replace_in_href=[

@@ -189,6 +189,12 @@
   </div>
   '''
 # ---
+# name: TestTopicListView.test_clickable_tags[10-?page=2-clickable_tags_page2][clickable_tags_page2]
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;filter=">tag</a>'
+# ---
+# name: TestTopicListView.test_clickable_tags[None-None-clickable_tags_page1][clickable_tags_page1]
+  '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;filter=">tag</a>'
+# ---
 # name: TestTopicListView.test_clickable_tags[clickable_tags_page1]
   '<a class="tag bg-info-lighter text-info" href="/topics/?tag=tag&amp;filter=">tag</a>'
 # ---
