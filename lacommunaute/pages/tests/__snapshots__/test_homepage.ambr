@@ -158,7 +158,7 @@
                                           <input aria-label="Chercher dans la communauté" class="form-control w-300px" name="q" placeholder="Chercher dans la communauté" type="search"/>
                                           <div class="input-group-text p-0">
                                               <button class="btn btn-link btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query_header" type="submit">
-                                                  <i aria-label="Chercher dans la communauté" class="ri-search-line font-weight-bold"></i>
+                                                  <i aria-label="Chercher dans la communauté" class="ri-search-line fw-bold"></i>
                                               </button>
                                           </div>
                                       </div>
@@ -229,7 +229,7 @@
                           <input aria-label="Chercher dans la communauté" class="form-control" name="q" placeholder="Chercher dans la communauté" type="search"/>
                           <div class="input-group-text p-0">
                               <button class="btn btn-link btn-ico matomo-event" data-matomo-action="search" data-matomo-category="engagement" data-matomo-option="submit_query_header" type="submit">
-                                  <i aria-label="Chercher dans la communauté" class="ri-search-line font-weight-bold"></i>
+                                  <i aria-label="Chercher dans la communauté" class="ri-search-line fw-bold"></i>
                               </button>
                           </div>
                       </div>
