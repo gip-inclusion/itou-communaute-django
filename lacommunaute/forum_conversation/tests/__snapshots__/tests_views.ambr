@@ -189,13 +189,7 @@
   </div>
   '''
 # ---
-# name: TestTopicListView.test_clickable_tags[10-?page=2-clickable_tags_page2][clickable_tags_page2]
-  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
-# ---
 # name: TestTopicListView.test_clickable_tags[10-query_param1-clickable_tags_page2][clickable_tags_page2]
-  '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
-# ---
-# name: TestTopicListView.test_clickable_tags[None-None-clickable_tags_page1][clickable_tags_page1]
   '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
 # ---
 # name: TestTopicListView.test_clickable_tags[None-query_param0-clickable_tags_page1][clickable_tags_page1]
@@ -220,6 +214,44 @@
                               
                           </ul>
                       </div>
+  '''
+# ---
+# name: TestTopicListView.test_queryset_on_tag[-<lambda>-None][-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">2 questions</span>
+                      
+                  </div>
+  '''
+# ---
+# name: TestTopicListView.test_queryset_on_tag[buckley-<lambda>-<lambda>][buckley-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">1 question</span>
+                      
+                          <span class="fs-sm">
+                              sous l'étiquette
+                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
+                                  <i class="ri-close-fill ri-xs"></i>buckley
+                              </button>
+                          </span>
+                      
+                  </div>
+  '''
+# ---
+# name: TestTopicListView.test_queryset_on_tag[tag-<lambda>-<lambda>][tag-tagged_topics]
+  '''
+  <div class="flex-grow-1" id="topic-list-filter-header">
+                      <span class="h5 m-0">2 questions</span>
+                      
+                          <span class="fs-sm">
+                              sous l'étiquette
+                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
+                                  <i class="ri-close-fill ri-xs"></i>tag
+                              </button>
+                          </span>
+                      
+                  </div>
   '''
 # ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]
@@ -284,35 +316,5 @@
               
           </ol>
       </nav>
-  '''
-# ---
-# name: test_queryset_for_tagged_topic[1][1-tagged_topics]
-  '''
-  <div class="flex-grow-1" id="topic-list-filter-header">
-                      <span class="h5 m-0">1 question</span>
-                      
-                          <span class="fs-sm">
-                              sous l'étiquette
-                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
-                                  <i class="ri-close-fill ri-xs"></i>buckley
-                              </button>
-                          </span>
-                      
-                  </div>
-  '''
-# ---
-# name: test_queryset_for_tagged_topic[2][2-tagged_topics]
-  '''
-  <div class="flex-grow-1" id="topic-list-filter-header">
-                      <span class="h5 m-0">2 questions</span>
-                      
-                          <span class="fs-sm">
-                              sous l'étiquette
-                              <button aria-label="Supprimer ce filtre" class="tag bg-info text-white matomo-event" data-bs-placement="top" data-bs-title="Supprimer ce filtre" data-bs-toggle="tooltip" data-matomo-action="unfilter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="unfilter-ontag-button">
-                                  <i class="ri-close-fill ri-xs"></i>buckley
-                              </button>
-                          </span>
-                      
-                  </div>
   '''
 # ---
