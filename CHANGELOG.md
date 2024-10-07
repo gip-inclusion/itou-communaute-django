@@ -1,5 +1,14 @@
 # Journal des modifications
 
+## [2.15.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.14.0...v2.15.0) (2024-10-07)
+
+
+### Features
+
+* ajout d'un sondage pour mieux connaitre les utilisateurs de la communauté ([#781](https://github.com/gip-inclusion/itou-communaute-django/issues/781)) ([171bdde](https://github.com/gip-inclusion/itou-communaute-django/commit/171bddea8cef354c539eb014c30ebb1c3aa8040c))
+* page parking ([#788](https://github.com/gip-inclusion/itou-communaute-django/issues/788)) ([732bd5c](https://github.com/gip-inclusion/itou-communaute-django/commit/732bd5c214b27cdb20e4560a24e74398291fe116))
+* **partner:** ajout des pages de creation / mise à jour depuis la page "nos partenaires" ([#780](https://github.com/gip-inclusion/itou-communaute-django/issues/780)) ([4001074](https://github.com/gip-inclusion/itou-communaute-django/commit/40010747aa85d87ee8c02d35d2c4af6c1f818bb1))
+
 ## [2.14.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.13.0...v2.14.0) (2024-09-23)
 
 
