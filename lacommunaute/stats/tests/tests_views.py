@@ -167,11 +167,11 @@ class TestStatistiquesPageView:
         assert response.status_code == 200
         assert response.context["stats"] == expected
 
-    def test_link_to_weekly_lastest_stats_view(self, client, db):
+    def test_link_to_document_stats_view(self, client, db):
         url = reverse("stats:statistiques")
         response = client.get(url)
         assert response.status_code == 200
-        assertContains(response, reverse("stats:redirect_to_latest_weekly_stats"))
+        assertContains(response, reverse("stats:document_stats"))
 
 
 class TestMonthlyVisitorsView:
