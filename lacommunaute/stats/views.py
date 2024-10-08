@@ -2,16 +2,17 @@ import datetime
 import logging
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import Avg, CharField, Count, Q
+from django.db.models import Avg, CharField, Count, Q, Sum
 from django.db.models.functions import Cast
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.dateformat import format
 from django.utils.timezone import localdate
+from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.dates import WeekArchiveView
 
-from lacommunaute.forum.models import Forum
+from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.stats.models import ForumStat, Stat
 from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
@@ -162,6 +163,61 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
         context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
         return context
+
+
+class DocumentStatsView(View):
+    def get_forums_with_forumstats(self):
+        return (
+            Forum.objects.filter(parent__type=Forum.FORUM_CAT, forumstat__period="week")
+            .annotate(sum_visits=Sum("forumstat__visits"))
+            .annotate(sum_time_spent=Sum("forumstat__time_spent"))
+            .select_related("parent", "partner")
+            .order_by("id")
+        )
+
+    def get_forumrating(self, forums):
+        return (
+            ForumRating.objects.filter(forum__in=forums)
+            .values("forum")
+            .annotate(avg_rating=Avg("rating"))
+            .annotate(count_rating=Count("rating"))
+            .order_by("forum__id")
+        )
+
+    def get(self, request, *args, **kwargs):
+        forums = self.get_forums_with_forumstats()
+        forumratings = self.get_forumrating(forums)
+
+        objects = []
+
+        for forum in forums:
+            forumrating = forumratings.filter(forum=forum.id).first()
+            objects.append(
+                {
+                    "name": forum.name,
+                    "partner": forum.partner,
+                    "absolute_url": forum.get_absolute_url(),
+                    "avg_rating": forumrating["avg_rating"] if forumrating else 0,
+                    "count_rating": forumrating["count_rating"] if forumrating else 0,
+                    "sum_visits": forum.sum_visits,
+                    "sum_time_spent": forum.sum_time_spent,
+                }
+            )
+        sort_key = request.GET.get("sort", "sum_time_spent")
+        return render(
+            request,
+            "stats/documents.html",
+            {
+                "objects": sorted(objects, key=lambda x: x[sort_key], reverse=True),
+                "sort_key": sort_key,
+                "sort_fields": [
+                    {"key": "sum_time_spent", "label": "Temps de lecture"},
+                    {"key": "sum_visits", "label": "Nombre de Visites"},
+                    {"key": "count_rating", "label": "Nombres de notations"},
+                    {"key": "avg_rating", "label": "Moyenne des notations"},
+                ],
+            },
+        )
 
 
 def redirect_to_latest_weekly_stats(request):

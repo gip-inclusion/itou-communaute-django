@@ -12,7 +12,7 @@ from freezegun import freeze_time
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains, assertNotContains
 
-from lacommunaute.forum.factories import ForumFactory, ForumRatingFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
 from lacommunaute.stats.enums import Period
 from lacommunaute.stats.factories import ForumStatFactory, StatFactory
 from lacommunaute.surveys.factories import DSPFactory
@@ -252,6 +252,51 @@ class TestDailyDSPView:
         response = client.get(url)
         assert response.status_code == 200
         assert str(parse_response_to_soup(response, selector=".c-breadcrumb")) == snapshot(name="breadcrumb")
+
+
+@pytest.fixture(name="document_stats_setup")
+def document_stats_setup_fixture(db):
+    category = CategoryForumFactory()
+    fa = ForumFactory(name="A", parent=category)
+    fb = ForumFactory(name="B", parent=category)
+    fc = ForumFactory(name="C", parent=category)
+    fd = ForumFactory(name="D", parent=category)
+    ForumStatFactory(forum=fa, period="week", visits=70, time_spent=40 * 60)
+    ForumStatFactory(forum=fb, period="week", visits=100, time_spent=30 * 60)
+    ForumStatFactory(forum=fc, period="week", visits=90, time_spent=20 * 60)
+    ForumStatFactory(forum=fd, period="week", visits=80, time_spent=10 * 60)
+    ForumRatingFactory.create_batch(2, forum=fa, rating=4)
+    ForumRatingFactory.create_batch(1, forum=fb, rating=3)
+    ForumRatingFactory.create_batch(4, forum=fc, rating=2)
+    ForumRatingFactory.create_batch(3, forum=fd, rating=5)
+
+    # undesired forum
+    ForumFactory(name="Forum not in Document area")
+    ForumFactory(name="Forum wo ForumStats", parent=category)
+
+    return category
+
+
+class TestForumStatView:
+    @pytest.mark.parametrize(
+        "sort_key,snapshot_name",
+        [
+            (None, "sort_by_sum_time_spent"),
+            ("sum_time_spent", "sort_by_sum_time_spent"),
+            ("sum_visits", "sort_by_sum_visits"),
+            ("avg_rating", "sort_by_avg_rating"),
+            ("count_rating", "sort_by_count_rating"),
+        ],
+    )
+    def test_sort_key(self, client, db, document_stats_setup, sort_key, snapshot_name, snapshot):
+        url = reverse("stats:document_stats") + f"?sort={sort_key}" if sort_key else reverse("stats:document_stats")
+        response = client.get(url)
+        assert response.status_code == 200
+        assert str(
+            parse_response_to_soup(
+                response, selector="main", replace_in_href=[forum for forum in document_stats_setup.get_children()]
+            )
+        ) == snapshot(name=snapshot_name)
 
 
 class TestForumStatWeekArchiveView:

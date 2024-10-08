@@ -1,0 +1,78 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load date_filters %}
+{% load str_filters %}
+{% block title %}Statistiques des Fiches Pratiques{{ block.super }}{% endblock %}
+{% block body_class %}p-statistiques{{ block.super }}{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <nav class="c-breadcrumb" aria-label="Fil d'ariane">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">{% trans "Back to" %}</li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'stats:statistiques' %}">Statistiques</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row" id="most_rated">
+                <div class="s-section__col col-12">
+                    <div class="c-box mb-3 mb-md-5">
+                        <table class="table">
+                            <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                <br>
+                                Le nombre et la moyenne des notations sont calculés en temps réel.
+                                <br>
+                                Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                            </caption>
+                            {% with sort_fields=sort_fields %}
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Fiche Pratique</th>
+                                        {% for field in sort_fields %}
+                                            <th scope="col">
+                                                <a href="{{ request.path }}?sort={{ field.key }}">
+                                                    {{ field.label }}
+                                                    {% if sort_key == field.key %}<i class="ri-arrow-down-s-fill"></i>{% endif %}
+                                                </a>
+                                            </th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                            {% endwith %}
+                            <tbody>
+                                {% for obj in objects %}
+                                    <tr>
+                                        <th scope="row">
+                                            <a href="{{ obj.absolute_url }}">{{ obj.name }}</a>
+                                            <br>
+                                            {% if obj.partner %}<span class="text-muted">en partenariat avec {{ obj.partner.name }}</span>{% endif %}
+                                        </th>
+                                        <td>{{ obj.sum_time_spent|convert_seconds_into_hours }}</td>
+                                        <td>{{ obj.sum_visits }}</td>
+                                        <td>{{ obj.count_rating|default_if_none:"pas de notation" }}</td>
+                                        <td>{{ obj.avg_rating|floatformat:2 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

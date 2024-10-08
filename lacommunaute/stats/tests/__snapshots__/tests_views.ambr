@@ -11,6 +11,701 @@
           </nav>
   '''
 # ---
+# name: TestForumStatView.test_sort_key[None-sort_by_sum_time_spent][sort_by_sum_time_spent]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+      <div class="container">
+          <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <table class="table">
+                              <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                  <br/>
+                                  Le nombre et la moyenne des notations sont calculés en temps réel.
+                                  <br/>
+                                  Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                              </caption>
+                              
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Fiche Pratique</th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                      Temps de lecture
+                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                      Nombre de Visites
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                      Nombres de notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                      Moyenne des notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                      </tr>
+                                  </thead>
+                              
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/a-[PK of Forum]/">A</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 40min</td>
+                                          <td>70</td>
+                                          <td>2</td>
+                                          <td>4,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/b-[PK of Forum]/">B</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 30min</td>
+                                          <td>100</td>
+                                          <td>1</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/c-[PK of Forum]/">C</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 20min</td>
+                                          <td>90</td>
+                                          <td>4</td>
+                                          <td>2,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/d-[PK of Forum]/">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 10min</td>
+                                          <td>80</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestForumStatView.test_sort_key[avg_rating-sort_by_avg_rating][sort_by_avg_rating]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+      <div class="container">
+          <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <table class="table">
+                              <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                  <br/>
+                                  Le nombre et la moyenne des notations sont calculés en temps réel.
+                                  <br/>
+                                  Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                              </caption>
+                              
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Fiche Pratique</th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                      Temps de lecture
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                      Nombre de Visites
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                      Nombres de notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                      Moyenne des notations
+                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                  </a>
+                                              </th>
+                                          
+                                      </tr>
+                                  </thead>
+                              
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/d-[PK of Forum]/">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 10min</td>
+                                          <td>80</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/a-[PK of Forum]/">A</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 40min</td>
+                                          <td>70</td>
+                                          <td>2</td>
+                                          <td>4,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/b-[PK of Forum]/">B</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 30min</td>
+                                          <td>100</td>
+                                          <td>1</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/c-[PK of Forum]/">C</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 20min</td>
+                                          <td>90</td>
+                                          <td>4</td>
+                                          <td>2,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestForumStatView.test_sort_key[count_rating-sort_by_count_rating][sort_by_count_rating]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+      <div class="container">
+          <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <table class="table">
+                              <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                  <br/>
+                                  Le nombre et la moyenne des notations sont calculés en temps réel.
+                                  <br/>
+                                  Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                              </caption>
+                              
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Fiche Pratique</th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                      Temps de lecture
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                      Nombre de Visites
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                      Nombres de notations
+                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                      Moyenne des notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                      </tr>
+                                  </thead>
+                              
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/c-[PK of Forum]/">C</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 20min</td>
+                                          <td>90</td>
+                                          <td>4</td>
+                                          <td>2,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/d-[PK of Forum]/">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 10min</td>
+                                          <td>80</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/a-[PK of Forum]/">A</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 40min</td>
+                                          <td>70</td>
+                                          <td>2</td>
+                                          <td>4,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/b-[PK of Forum]/">B</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 30min</td>
+                                          <td>100</td>
+                                          <td>1</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestForumStatView.test_sort_key[sum_time_spent-sort_by_sum_time_spent][sort_by_sum_time_spent]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+      <div class="container">
+          <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <table class="table">
+                              <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                  <br/>
+                                  Le nombre et la moyenne des notations sont calculés en temps réel.
+                                  <br/>
+                                  Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                              </caption>
+                              
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Fiche Pratique</th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                      Temps de lecture
+                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                      Nombre de Visites
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                      Nombres de notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                      Moyenne des notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                      </tr>
+                                  </thead>
+                              
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/a-[PK of Forum]/">A</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 40min</td>
+                                          <td>70</td>
+                                          <td>2</td>
+                                          <td>4,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/b-[PK of Forum]/">B</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 30min</td>
+                                          <td>100</td>
+                                          <td>1</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/c-[PK of Forum]/">C</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 20min</td>
+                                          <td>90</td>
+                                          <td>4</td>
+                                          <td>2,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/d-[PK of Forum]/">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 10min</td>
+                                          <td>80</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestForumStatView.test_sort_key[sum_visits-sort_by_sum_visits][sort_by_sum_visits]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+      <div class="container">
+          <nav aria-label="Fil d'ariane" class="c-breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item">Retourner vers</li>
+                  <li class="breadcrumb-item">
+                      <a href="/statistiques/">Statistiques</a>
+                  </li>
+              </ol>
+          </nav>
+      </div>
+  
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-12">
+                      <h1 class="s-title-01__title h1">Statistiques des fiches pratiques</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row" id="most_rated">
+                  <div class="s-section__col col-12">
+                      <div class="c-box mb-3 mb-md-5">
+                          <table class="table">
+                              <caption>Sont présentes dans ce tableau, les fiches pratiques de l'espace Documents.
+                                  <br/>
+                                  Le nombre et la moyenne des notations sont calculés en temps réel.
+                                  <br/>
+                                  Le nombre de visites et le cumul du temps de lecture est calculé hebdomadairement, chaque lundi matin
+                              </caption>
+                              
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">Fiche Pratique</th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                      Temps de lecture
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                      Nombre de Visites
+                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                      Nombres de notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                              <th scope="col">
+                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                      Moyenne des notations
+                                                      
+                                                  </a>
+                                              </th>
+                                          
+                                      </tr>
+                                  </thead>
+                              
+                              <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/b-[PK of Forum]/">B</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 30min</td>
+                                          <td>100</td>
+                                          <td>1</td>
+                                          <td>3,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/c-[PK of Forum]/">C</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 20min</td>
+                                          <td>90</td>
+                                          <td>4</td>
+                                          <td>2,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/d-[PK of Forum]/">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 10min</td>
+                                          <td>80</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="/forum/a-[PK of Forum]/">A</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 40min</td>
+                                          <td>70</td>
+                                          <td>2</td>
+                                          <td>4,00</td>
+                                      </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
 # name: TestForumStatWeekArchiveView.test_header_and_breadcrumb[breadcrumb]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
