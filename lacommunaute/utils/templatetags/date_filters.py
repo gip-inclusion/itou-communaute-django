@@ -23,3 +23,12 @@ def relativetimesince_fr(d):
         return f"{date(d,'l')}, {time(d)}"
 
     return f"il y a {timesince(d)}"
+
+
+@register.filter(is_safe=True)
+def convert_seconds_into_hours(value, default=None):
+    if value is None:
+        return "0h 00min"
+    hours = value // 3600
+    minutes = (value % 3600) // 60
+    return f"{hours}h {minutes:02d}min"
