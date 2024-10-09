@@ -286,6 +286,7 @@ class TestForumStatView:
             ("sum_visits", "sort_by_sum_visits"),
             ("avg_rating", "sort_by_avg_rating"),
             ("count_rating", "sort_by_count_rating"),
+            ("unknown", "sort_by_sum_time_spent"),
         ],
     )
     def test_sort_key(self, client, db, document_stats_setup, sort_key, snapshot_name, snapshot):

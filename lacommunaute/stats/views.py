@@ -181,9 +181,21 @@ class DocumentStatsView(View):
         )
         return forums
 
+    def get_sort_fields(self):
+        return [
+            {"key": "sum_time_spent", "label": "Temps de lecture"},
+            {"key": "sum_visits", "label": "Nombre de Visites"},
+            {"key": "count_rating", "label": "Nombres de notations"},
+            {"key": "avg_rating", "label": "Moyenne des notations"},
+        ]
+
     def get(self, request, *args, **kwargs):
         forums = self.get_forums_with_forumstats_and_ratings()
-        sort_key = request.GET.get("sort", "sum_time_spent")
+        sort_key = (
+            request.GET.get("sort")
+            if request.GET.get("sort") in [field["key"] for field in self.get_sort_fields()]
+            else "sum_time_spent"
+        )
         forums = forums.order_by("-" + sort_key)
 
         return render(
@@ -192,12 +204,7 @@ class DocumentStatsView(View):
             {
                 "objects": forums,
                 "sort_key": sort_key,
-                "sort_fields": [
-                    {"key": "sum_time_spent", "label": "Temps de lecture"},
-                    {"key": "sum_visits", "label": "Nombre de Visites"},
-                    {"key": "count_rating", "label": "Nombres de notations"},
-                    {"key": "avg_rating", "label": "Moyenne des notations"},
-                ],
+                "sort_fields": self.get_sort_fields(),
             },
         )
 
