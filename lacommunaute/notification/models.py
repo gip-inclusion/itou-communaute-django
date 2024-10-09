@@ -4,9 +4,9 @@ from operator import attrgetter
 from django.db import models
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
-from machina.models.abstract_models import DatedModel
 
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
+from lacommunaute.utils.abstract_models import DatedModel
 
 
 class EmailSentTrack(DatedModel):

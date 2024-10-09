@@ -580,7 +580,7 @@ class TestDocumentationForumContent:
         assert len(content.find_all("a", href=sibling_forum.get_absolute_url())) == 1
 
     def test_documentation_forum_with_partner(self, client, db, snapshot, documentation_forum):
-        documentation_forum.partner = PartnerFactory(for_snapshot=True, with_logo=True)
+        documentation_forum.partner = PartnerFactory(for_snapshot=True, with_image=True)
         documentation_forum.save()
         response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response, replace_in_href=[documentation_forum.partner], replace_img_src=True)

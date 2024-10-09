@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.db import models
-from machina.models.abstract_models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 
 from lacommunaute.users.models import User
+from lacommunaute.utils.abstract_models import DatedModel
 from lacommunaute.utils.validators import validate_image_size
 
 

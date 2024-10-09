@@ -4,13 +4,13 @@ from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
 from machina.apps.forum.abstract_models import AbstractForum
-from machina.models import DatedModel
 from storages.backends.s3boto3 import S3Boto3Storage
 from taggit.managers import TaggableManager
 
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.partner.models import Partner
+from lacommunaute.utils.abstract_models import DatedModel
 from lacommunaute.utils.validators import validate_image_size
 
 
