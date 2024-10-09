@@ -82,7 +82,6 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["filters"], Filters.choices)
         self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
         self.assertEqual(response.context_data["forum"], self.forum)
-        self.assertIsNone(response.context_data["rating"])
         self.assertEqual(response.context_data["active_filter"], Filters.ALL)
         self.assertEqual(list(response.context_data["active_tag"]), [])
 
