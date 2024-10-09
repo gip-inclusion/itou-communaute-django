@@ -3,9 +3,12 @@ from django.db import models
 from django.utils.encoding import force_str
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+
+# TODO: define it in the project instead of importing it from machina
 from machina.models.fields import MarkupTextField
 from storages.backends.s3boto3 import S3Boto3Storage
 
+from lacommunaute.utils.html import wrap_iframe_in_div_tag
 from lacommunaute.utils.validators import validate_image_size
 
 
@@ -38,4 +41,6 @@ class Publication(DatedModel):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(force_str(self.name), allow_unicode=True)
+        if self.description:
+            self.description.raw = wrap_iframe_in_div_tag(self.description.raw)
         super().save(*args, **kwargs)
