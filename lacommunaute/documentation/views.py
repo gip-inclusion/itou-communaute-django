@@ -17,8 +17,22 @@ class CategoryListView(ListView):
 
 class CategoryDetailView(DetailView):
     model = Category
-    template_name = "documentation/category_detail.html"
     context_object_name = "category"
+
+    def get_template_names(self):
+        if self.request.META.get("HTTP_HX_REQUEST"):
+            return ["documentation/document_list.html"]
+        return ["documentation/category_detail.html"]
+
+    def get_active_tag_slug(self):
+        if not hasattr(self, "active_tag_slug"):
+            self.active_tag_slug = self.request.GET.get("tag") or None
+        return self.active_tag_slug
+
+    def get_filtered_documents(self):
+        if self.get_active_tag_slug():
+            return self.object.documents.filter(tags__slug=self.get_active_tag_slug()).prefetch_related("tags")
+        return self.object.documents.all()
 
     def get_tags_of_documents(self):
         return Tag.objects.filter(
@@ -32,7 +46,8 @@ class CategoryDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = self.get_tags_of_documents()
-        context["active_tag_slug"] = self.request.GET.get("tag") or None
+        context["active_tag_slug"] = self.get_active_tag_slug()
+        context["documents"] = self.get_filtered_documents()
         return context
 
 

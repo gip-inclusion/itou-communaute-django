@@ -23,7 +23,7 @@
         <div class="s-section__container container">
             <div class="s-section__row row">
                 {% for category in categories %}
-                    {% include 'documentation/partials/content_summary.html' with obj=category kind='category' only %}
+                    {% include 'documentation/partials/content_summary.html' with obj=category only %}
                 {% endfor %}
             </div>
         </div>
