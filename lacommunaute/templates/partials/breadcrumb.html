@@ -3,23 +3,36 @@
     <nav class="c-breadcrumb" aria-label="Fil d'ariane">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">{% trans "Back to" %}</li>
-            <li class="breadcrumb-item">
-                {% if forum.is_in_documentation_area %}
+            {% if document %}
+                <li class="breadcrumb-item">
                     <a href="{% url 'documentation:category_list' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation_breadcrumb">{% trans "Documents" %}</a>
-                {% else %}
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'documentation:category_detail' document.category.slug document.category.pk %}"
+                       class="matomo-event"
+                       data-matomo-category="engagement"
+                       data-matomo-action="view"
+                       data-matomo-option="document">{{ document.category.name }}</a>
+                </li>
+            {% elif forum %}
+                <li class="breadcrumb-item">
                     <a href="{% url 'forum_conversation_extension:topics' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="topics_breadcrumb">{% trans "Discussion area" %}</a>
-                {% endif %}
-            </li>
-            {% for ancestor in forum.get_ancestors %}
-                {% if not ancestor.is_toplevel_discussion_area %}
+                </li>
+                {% for ancestor in forum.get_ancestors %}
+                    {% if not ancestor.is_toplevel_discussion_area %}
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'forum_extension:forum' ancestor.slug ancestor.id %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">{{ ancestor.name }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if topic and not forum.is_toplevel_discussion_area %}
                     <li class="breadcrumb-item">
-                        <a href="{% url 'forum_extension:forum' ancestor.slug ancestor.id %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">{{ ancestor.name }}</a>
+                        <a href="{% url 'forum_extension:forum' forum.slug forum.id %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">{{ forum.name }}</a>
                     </li>
                 {% endif %}
-            {% endfor %}
-            {% if topic and not forum.is_toplevel_discussion_area %}
+            {% else %}
                 <li class="breadcrumb-item">
-                    <a href="{% url 'forum_extension:forum' forum.slug forum.id %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="forum">{{ forum.name }}</a>
+                    <a href="{% url 'documentation:category_list' %}" class="matomo-event" data-matomo-category="engagement" data-matomo-action="view" data-matomo-option="documentation_breadcrumb">{% trans "Documents" %}</a>
                 </li>
             {% endif %}
         </ol>

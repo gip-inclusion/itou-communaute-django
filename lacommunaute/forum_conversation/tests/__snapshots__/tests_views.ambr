@@ -289,18 +289,18 @@
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
-              
-                  
-              
               
                   <li class="breadcrumb-item">
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-b-[PK of Forum]/">Forum B</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
                   </li>
+                  
+                      
+                  
+                  
+                      <li class="breadcrumb-item">
+                          <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-b-[PK of Forum]/">Forum B</a>
+                      </li>
+                  
               
           </ol>
       </nav>
@@ -311,12 +311,12 @@
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
+                  </li>
+                  
+                  
               
           </ol>
       </nav>
@@ -327,22 +327,22 @@
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
-                  
-              </li>
-              
-                  
-                      <li class="breadcrumb-item">
-                          <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-[PK of Forum]/">D Category</a>
-                      </li>
-                  
-              
               
                   <li class="breadcrumb-item">
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-forum-[PK of Forum]/">D Category - Forum</a>
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
                   </li>
+                  
+                      
+                          <li class="breadcrumb-item">
+                              <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-[PK of Forum]/">D Category</a>
+                          </li>
+                      
+                  
+                  
+                      <li class="breadcrumb-item">
+                          <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/d-category-forum-[PK of Forum]/">D Category - Forum</a>
+                      </li>
+                  
               
           </ol>
       </nav>

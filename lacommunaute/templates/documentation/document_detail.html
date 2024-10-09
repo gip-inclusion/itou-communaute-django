@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{{ document.name }}{{ block.super }}{% endblock %}
+{% block meta_description %}
+    {{ document.short_description }}
+{% endblock meta_description %}
+{% block breadcrumb %}
+    {% include "partials/breadcrumb.html" %}
+{% endblock %}
+{% block content %}
+    {% include 'documentation/partials/title_and_shortdesc.html' with obj=document user=user only %}
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="col-12 col-lg-9">
+                    <div class="row align-items-sm-center mb-3">
+                        <div class="col-12 col-sm mb-3">{% include 'documentation/partials/certified.html' with obj=document only %}</div>
+                        {% include 'documentation/partials/image_and_desc.html' with obj=document only %}
+                        {% if document.partner %}
+                            <div class="col-12 col-sm-auto mt-3" id="partner_area">
+                                {% include "documentation/partials/partner.html" with partner=document.partner only %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3 vertical-line">
+                    <p class="h3 text-decoration-none d-inline-block">Les autres fiches du thème {{ document.category.name }}</p>
+                    <ul class="nav nav-tabs flex-column">
+                        {% for document_in_category in document.category.documents.all %}
+                            <li class="nav-item">
+                                <a href="{% url 'documentation:document_detail' document_in_category.category.id document_in_category.slug document_in_category.pk %}"
+                                   class="nav-link{% if document_in_category.id == document.id %} active{% endif %}">{{ document_in_category.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

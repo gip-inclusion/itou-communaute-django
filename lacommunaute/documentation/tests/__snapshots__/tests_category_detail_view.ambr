@@ -11,12 +11,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
@@ -30,6 +28,7 @@
           <div class="s-title-01__row row">
               <div class="s-title-01__col col-12">
                   <h1>Test Category</h1>
+                  
                   
                   <h2 class="mt-3">Test short description</h2>
               </div>
@@ -101,7 +100,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-document-[PK of Document]/">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -133,12 +132,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
@@ -152,6 +149,7 @@
           <div class="s-title-01__row row">
               <div class="s-title-01__col col-12">
                   <h1>Test Category</h1>
+                  
                   
                   <h2 class="mt-3">Test short description</h2>
               </div>
@@ -225,7 +223,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-document-[PK of Document]/">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>
@@ -257,12 +255,10 @@
       <nav aria-label="Fil d'ariane" class="c-breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item">Retourner vers</li>
-              <li class="breadcrumb-item">
-                  
-                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="topics_breadcrumb" href="/topics/">Espace d'échanges</a>
-                  
-              </li>
               
+                  <li class="breadcrumb-item">
+                      <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation_breadcrumb" href="/documentation/">Documentation</a>
+                  </li>
               
           </ol>
       </nav>
@@ -276,6 +272,7 @@
           <div class="s-title-01__row row">
               <div class="s-title-01__col col-12">
                   <h1>Test Category</h1>
+                  
                   
                   <h2 class="mt-3">Test short description</h2>
               </div>
@@ -347,7 +344,7 @@
           </div>
           <div class="card-footer text-end">
               
-                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="#">
+                  <a class="btn btn-sm btn-ico btn-link stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="document" href="/documentation/[PK of Category]/test-document-[PK of Document]/">
                       <span>Consulter la fiche</span>
                       <i class="ri-arrow-right-line ri-lg"></i>
                   </a>

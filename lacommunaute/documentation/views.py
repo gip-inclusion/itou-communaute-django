@@ -36,6 +36,12 @@ class CategoryDetailView(DetailView):
         return context
 
 
+class DocumentDetailView(DetailView):
+    model = Document
+    template_name = "documentation/document_detail.html"
+    context_object_name = "document"
+
+
 class CreateUpdateMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser

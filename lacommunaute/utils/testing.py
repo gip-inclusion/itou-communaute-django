@@ -1,4 +1,5 @@
 import importlib
+from datetime import datetime
 
 from bs4 import BeautifulSoup
 from django.db import connection
@@ -19,7 +20,14 @@ class reload_module(TestContextDecorator):
             setattr(self._module, key, value)
 
 
-def parse_response_to_soup(response, selector=None, no_html_body=False, replace_in_href=None, replace_img_src=False):
+def parse_response_to_soup(
+    response,
+    selector=None,
+    no_html_body=False,
+    replace_in_href=None,
+    replace_img_src=False,
+    replace_current_date_format=False,
+):
     soup = BeautifulSoup(response.content, "html5lib", from_encoding=response.charset or "utf-8")
     if no_html_body:
         # If the provided HTML does not contain <html><body> tags
@@ -50,6 +58,12 @@ def parse_response_to_soup(response, selector=None, no_html_body=False, replace_
         for attr in ["src"]:
             for links in soup.find_all("img", attrs={attr: True}):
                 links.attrs.update({attr: "[img src]"})
+    if replace_current_date_format:
+        current_date_str = datetime.now().strftime(replace_current_date_format)
+        for text_node in soup.find_all(string=True):
+            if current_date_str in text_node:
+                new_text = text_node.replace(current_date_str, "[CURRENT DATE]")
+                text_node.replace_with(new_text)
     return soup
 
 

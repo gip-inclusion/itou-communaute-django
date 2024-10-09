@@ -23,7 +23,12 @@ def test_category_detail_view_with_tagged_documents(client, db, category, active
     url = f"{category.get_absolute_url()}?tag={active_tag}" if active_tag else category.get_absolute_url()
     response = client.get(url)
     assert response.status_code == 200
-    content = parse_response_to_soup(response, selector="main", replace_img_src=True, replace_in_href=[category])
+    content = parse_response_to_soup(
+        response,
+        selector="main",
+        replace_img_src=True,
+        replace_in_href=[category] + [doc for doc in category.documents.all()],
+    )
     assert str(content) == snapshot(name=snapshot_name)
 
 

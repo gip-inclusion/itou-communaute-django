@@ -38,3 +38,8 @@ class Document(Publication):
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse(
+            "documentation:document_detail", kwargs={"category_pk": self.category.pk, "pk": self.pk, "slug": self.slug}
+        )
