@@ -166,20 +166,19 @@ class ForumStatWeekArchiveView(WeekArchiveView):
 
 
 class DocumentStatsView(View):
-    def get_forums_with_forumstats_and_ratings(self):
-        forums = (
+    def get_objects_with_stats_and_ratings(self):
+        objects = (
             Forum.objects.filter(parent__type=Forum.FORUM_CAT, forumstat__period="week")
             .annotate(sum_visits=Sum("forumstat__visits"))
             .annotate(sum_time_spent=Sum("forumstat__time_spent"))
             .select_related("parent", "partner")
             .order_by("id")
         )
-        forum_ratings = ForumRating.objects.filter(forum=OuterRef("pk")).values("forum")
-        forums = forums.annotate(
-            avg_rating=Subquery(forum_ratings.annotate(avg_rating=Avg("rating")).values("avg_rating")),
-            count_rating=Subquery(forum_ratings.annotate(count_rating=Count("rating")).values("count_rating")),
+        ratings = ForumRating.objects.filter(forum=OuterRef("pk")).values("forum")
+        return objects.annotate(
+            avg_rating=Subquery(ratings.annotate(avg_rating=Avg("rating")).values("avg_rating")),
+            count_rating=Subquery(ratings.annotate(count_rating=Count("rating")).values("count_rating")),
         )
-        return forums
 
     def get_sort_fields(self):
         return [
@@ -190,19 +189,19 @@ class DocumentStatsView(View):
         ]
 
     def get(self, request, *args, **kwargs):
-        forums = self.get_forums_with_forumstats_and_ratings()
+        objects = self.get_objects_with_stats_and_ratings()
         sort_key = (
             request.GET.get("sort")
             if request.GET.get("sort") in [field["key"] for field in self.get_sort_fields()]
             else "sum_time_spent"
         )
-        forums = forums.order_by("-" + sort_key)
+        objects = objects.order_by("-" + sort_key)
 
         return render(
             request,
             "stats/documents.html",
             {
-                "objects": forums,
+                "objects": objects,
                 "sort_key": sort_key,
                 "sort_fields": self.get_sort_fields(),
             },
