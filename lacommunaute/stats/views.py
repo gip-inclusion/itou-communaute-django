@@ -2,16 +2,17 @@ import datetime
 import logging
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import Avg, CharField, Count, Q
+from django.db.models import Avg, CharField, Count, OuterRef, Q, Subquery, Sum
 from django.db.models.functions import Cast
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.dateformat import format
 from django.utils.timezone import localdate
+from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.dates import WeekArchiveView
 
-from lacommunaute.forum.models import Forum
+from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.stats.models import ForumStat, Stat
 from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
@@ -162,6 +163,49 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
         context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
         return context
+
+
+class DocumentStatsView(View):
+    def get_objects_with_stats_and_ratings(self):
+        objects = (
+            Forum.objects.filter(parent__type=Forum.FORUM_CAT, forumstat__period="week")
+            .annotate(sum_visits=Sum("forumstat__visits"))
+            .annotate(sum_time_spent=Sum("forumstat__time_spent"))
+            .select_related("parent", "partner")
+            .order_by("id")
+        )
+        ratings = ForumRating.objects.filter(forum=OuterRef("pk")).values("forum")
+        return objects.annotate(
+            avg_rating=Subquery(ratings.annotate(avg_rating=Avg("rating")).values("avg_rating")),
+            count_rating=Subquery(ratings.annotate(count_rating=Count("rating")).values("count_rating")),
+        )
+
+    def get_sort_fields(self):
+        return [
+            {"key": "sum_time_spent", "label": "Temps de lecture"},
+            {"key": "sum_visits", "label": "Nombre de Visites"},
+            {"key": "count_rating", "label": "Nombres de notations"},
+            {"key": "avg_rating", "label": "Moyenne des notations"},
+        ]
+
+    def get(self, request, *args, **kwargs):
+        objects = self.get_objects_with_stats_and_ratings()
+        sort_key = (
+            request.GET.get("sort")
+            if request.GET.get("sort") in [field["key"] for field in self.get_sort_fields()]
+            else "sum_time_spent"
+        )
+        objects = objects.order_by("-" + sort_key)
+
+        return render(
+            request,
+            "stats/documents.html",
+            {
+                "objects": objects,
+                "sort_key": sort_key,
+                "sort_fields": self.get_sort_fields(),
+            },
+        )
 
 
 def redirect_to_latest_weekly_stats(request):

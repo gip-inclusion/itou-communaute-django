@@ -148,6 +148,15 @@ class UtilsUrlsTestCase(TestCase):
         self.assertEqual(urlize(img), img)
 
 
+class TestUtilsTemplateTags:
+    @pytest.mark.parametrize(
+        "value,expected_result", [(900, "0h 15min"), (3600, "1h 00min"), (7320, "2h 02min"), (None, "0h 00min")]
+    )
+    def test_convert_seconds_into_hours(self, value, expected_result):
+        template = Template("{% load date_filters %}{{ value|convert_seconds_into_hours }}")
+        assert template.render(Context({"value": value})) == expected_result
+
+
 class UtilsTemplateTagsTestCase(TestCase):
     def test_pluralizefr(self):
         """Test `pluralizefr` template tag."""
