@@ -298,6 +298,12 @@ class TestForumStatView:
             )
         ) == snapshot(name=snapshot_name)
 
+    def test_num_queries(self, client, db, document_stats_setup, django_assert_num_queries):
+        django_session_num_of_queries = 6
+        expected_queries_in_view = 1
+        with django_assert_num_queries(expected_queries_in_view + django_session_num_of_queries):
+            client.get(reverse("stats:document_stats"))
+
 
 class TestForumStatWeekArchiveView:
     def get_url_from_date(self, date):
