@@ -9,8 +9,7 @@ from django.utils.http import urlencode
 from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-
-from pytest_django.asserts import assertContains, assertNotContains
+from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
@@ -770,35 +769,6 @@ class TopicViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@pytest.mark.parametrize("tag", ["lower", "UPPER"])
-def test_queryset_filtered_on_tag(client, db, tag):
-    forum = ForumFactory(with_public_perms=True)
-    other_topic = TopicFactory(with_post=True, forum=forum)
-    tagged_topic = TopicFactory(with_post=True, forum=forum, with_tags=[tag])
-
-    response = client.get(reverse("forum_conversation_extension:topics"), data={"tags": tag})
-    assert response.context_data["paginator"].count == 1
-    assertContains(response, tagged_topic.subject)
-    assertNotContains(response, other_topic.subject)
-
-
-def test_queryset_for_tagged_topic(client, db, snapshot):
-    tags = ["buckley", "jeff"]
-    tagged_topic = TopicFactory(with_post=True, with_tags=tags)
-    untagged_topic = TopicFactory(with_post=True)
-
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
-    content = parse_response_to_soup(response, selector="#topic-list-filter-header")
-    assert str(content) == snapshot(name="tagged_topic")
-    assertContains(response, tagged_topic.subject)
-    assertNotContains(response, untagged_topic.subject)
-
-    TopicFactory(with_post=True, with_tags=tags)
-    response = client.get(reverse("forum_conversation_extension:topics"), {"tags": tags[0]})
-    content = parse_response_to_soup(response, selector="#topic-list-filter-header")
-    assert str(content) == snapshot(name="tagged_topics")
-
-
 def test_breadcrumbs_on_topic_view(client, db, snapshot):
     discussion_area_forum = ForumFactory(with_public_perms=True)
     category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="D Category")
@@ -859,165 +829,188 @@ def test_breadcrumbs_on_topic_view(client, db, snapshot):
     assert str(content) == snapshot(name="discussion_area_topic")
 
 
-class TopicListViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.url = reverse("forum_conversation_extension:topics")
-        cls.forum = ForumFactory(with_public_perms=True)
-        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
-        cls.user = cls.topic.poster
+@pytest.fixture(name="topics_url")
+def fixture_topics_url():
+    return reverse("forum_conversation_extension:topics")
 
-    def test_context(self):
-        response = self.client.get(self.url)
 
-        self.assertIsInstance(response.context_data["form"], PostForm)
-        self.assertEqual(response.context_data["filters"], Filters.choices)
-        self.assertEqual(response.context_data["loadmoretopic_url"], reverse("forum_conversation_extension:topics"))
-        self.assertEqual(response.context_data["forum"], self.forum)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-        self.assertEqual(response.context_data["active_tags"], "")
-
-        for filter, label in Filters.choices:
-            with self.subTest(filter=filter, label=label):
-                response = self.client.get(self.url + f"?filter={filter}")
-                self.assertEqual(
-                    response.context_data["loadmoretopic_url"],
-                    reverse("forum_conversation_extension:topics") + f"?filter={filter}",
-                )
-                self.assertEqual(response.context_data["active_filter_name"], label)
-
-        response = self.client.get(self.url + "?filter=FAKE")
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-
-    def test_context_with_tag(self):
-        tags = [Tag.objects.create(name=faker.sentence()) for i in range(2)]
-        response = self.client.get(self.url, {"tags": ",".join([tag.slug for tag in tags])})
-        self.assertEqual(response.context_data["active_tags"], ",".join([tag.slug for tag in tags]))
-        self.assertEqual(response.context_data["active_tags_label"], " ou ".join([tag.name for tag in tags]))
-
-    def test_queryset(self):
-        response = self.client.get(self.url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["paginator"].count, 1)
-
-        for topic in Topic.objects.exclude(id=self.topic.id):
-            with self.subTest(topic):
-                self.assertNotContains(response, topic.subject)
-
-        for topic in Topic.objects.filter(id=self.topic.id):
-            with self.subTest(topic):
-                self.assertContains(response, topic.subject)
-
-    def test_queryset_for_unanswered_topic(self):
-        # answered topic
-        PostFactory(topic=TopicFactory(with_post=True, forum=self.forum))
-        response = self.client.get(self.url + "?filter=NEW")
-        self.assertEqual(response.context_data["paginator"].count, 1)
-        self.assertContains(response, self.topic.subject, status_code=200)
-
-        for topic in Topic.objects.exclude(id=self.topic.id):
-            with self.subTest(topic):
-                self.assertNotContains(response, topic.subject)
-
-    def test_queryset_for_certified_topic(self):
-        certified_topic = TopicFactory(
-            with_post=True, with_certified_post=True, forum=ForumFactory(with_public_perms=True)
-        )
-
-        response = self.client.get(self.url + "?filter=CERTIFIED")
-        self.assertEqual(response.context_data["paginator"].count, 1)
-        self.assertContains(response, certified_topic.subject, status_code=200)
-        self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
-
-        for topic in Topic.objects.exclude(id=certified_topic.id):
-            with self.subTest(topic):
-                self.assertNotContains(response, topic.subject)
-
-    def test_pagination(self):
-        self.client.force_login(self.user)
-        TopicFactory.create_batch(9, with_post=True, forum=self.forum)
-
-        response = self.client.get(self.url)
-        self.assertNotContains(response, self.url + "?page=2", status_code=200)
-
-        TopicFactory(with_post=True, forum=self.forum)
-
-        response = self.client.get(self.url)
-        self.assertContains(response, self.url + "?page=2", status_code=200)
-
-    def test_showmoretopics_url_with_params(self):
-        tag_list = ["iae", "siae", "prescripteur"]
-        TopicFactory.create_batch(12, with_post=True, forum=self.forum, poster=self.user, with_tags=tag_list)
-        self.client.force_login(self.user)
-
-        params = [
-            {"filter": filter, "tags": tags}
-            for filter in ["ALL", "NEW", None]
-            for tags in tag_list + [",".join(tag_list), None]
-        ]
-
-        for param in params:
-            with self.subTest(param=param):
-                encoded_params = urlencode({k: v for k, v in param.items() if v})
-                url_with_params = self.url + f"?{encoded_params}" if encoded_params else self.url
-                expected_url = (
-                    url_with_params.replace("&", "&amp;") + "&amp;page=2" if encoded_params else self.url + "?page=2"
-                )
-                response = self.client.get(url_with_params)
-                self.assertContains(response, expected_url, status_code=200)
-
-    def test_filter_dropdown_visibility(self):
-        response = self.client.get(self.url)
-        self.assertContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["filter_dropdown_endpoint"], self.url)
-
-        response = self.client.get(self.url + "?page=1")
-        self.assertNotContains(response, '<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">')
-        self.assertEqual(response.context_data["filter_dropdown_endpoint"], None)
-
-    def test_filter_dropdown_with_tags(self):
-        tag = Tag.objects.create(name=faker.words(nb=3))
-        response = self.client.get(self.url + f"?tags={tag.slug}")
-        self.assertContains(response, f'hx-get="/topics/?filter=ALL&tags={tag.slug}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=NEW&tags={tag.slug}"')
-        self.assertContains(response, f'hx-get="/topics/?filter=CERTIFIED&tags={tag.slug}"')
-
-    def test_template_name(self):
-        response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "forum_conversation/topics_public.html")
-
-        response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
-        self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
+@pytest.fixture(name="public_forum_with_topic")
+def fixture_public_forum_with_topic(db):
+    forum = ForumFactory(with_public_perms=True)
+    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+    return forum
 
 
 class TestTopicListView:
-    def test_clickable_tags(self, client, db, snapshot):
+    def test_context(self, client, topics_url, public_forum_with_topic):
+        response = client.get(topics_url)
+
+        assert isinstance(response.context["form"], PostForm)
+        assert response.context["filters"] == Filters.choices
+        assert response.context["loadmoretopic_url"], topics_url
+        assert response.context["forum"] == public_forum_with_topic
+        assert response.context["active_filter"] == Filters.ALL
+        assert list(response.context["active_tag"]) == []
+
+    @pytest.mark.parametrize("filter", Filters)
+    def test_context_on_filter(self, client, db, public_forum_with_topic, topics_url, filter):
+        response = client.get(topics_url, {"filter": filter.value})
+        assert response.context_data["active_filter"] == filter
+        assert response.context_data["loadmoretopic_url"] == f"{topics_url}?filter={filter.value}"
+
+    def test_context_on_tag(self, client, db, topics_url):
+        tag = Tag.objects.create(name="Carot Cake")
+        response = client.get(topics_url, {"tag": tag.slug})
+        assert response.context_data["active_tag"] == tag
+        assert response.context_data["loadmoretopic_url"] == f"{topics_url}?tag={tag.slug}"
+
+    @pytest.mark.parametrize("more_topics,pagination_is_visible", [(10, True), (9, False)])
+    def test_pagination(self, client, db, public_forum_with_topic, more_topics, pagination_is_visible, topics_url):
+        TopicFactory.create_batch(more_topics, with_post=True, forum=public_forum_with_topic)
+        response = client.get(topics_url)
+        assert bool(f"{topics_url}?page=2" in response.content.decode()) == pagination_is_visible
+
+    @pytest.mark.parametrize(
+        "filter,expected_topic,unexpected_topic",
+        [
+            ("ALL", lambda forum: TopicFactory(forum=forum, with_post=True), None),
+            (
+                "NEW",
+                lambda forum: TopicFactory(forum=forum, with_post=True),
+                lambda forum: TopicFactory(forum=forum, with_post=True, answered=True),
+            ),
+            (
+                "CERTIFIED",
+                lambda forum: TopicFactory(with_post=True, with_certified_post=True, forum=forum),
+                lambda forum: TopicFactory(forum=forum, with_post=True),
+            ),
+        ],
+    )
+    def test_queryset_on_filter(
+        self, client, db, public_forum_with_topic, topics_url, filter, expected_topic, unexpected_topic, snapshot
+    ):
+        expected_topic = expected_topic(public_forum_with_topic)
+        if unexpected_topic:
+            unexpected_topic = unexpected_topic(public_forum_with_topic)
+
+        response = client.get(topics_url, {"filter": filter})
+        assert expected_topic in response.context["topics"]
+        if unexpected_topic:
+            assert unexpected_topic not in response.context["topics"]
+        if filter == "CERTIFIED":
+            assert expected_topic.certified_post.post.content.raw[:100] in response.content.decode()
+        content = parse_response_to_soup(response, selector="#topic-list-filter-header")
+        assert str(content) == snapshot(name=f"{filter}-tagged_topics")
+
+    @pytest.mark.parametrize(
+        "tag,expected_topic,unexpected_topic",
+        [
+            ("", lambda forum: TopicFactory(forum=forum, with_post=True), None),
+            (
+                "buckley",
+                lambda forum: TopicFactory(forum=forum, with_post=True, with_tags=["buckley"]),
+                lambda forum: TopicFactory(forum=forum, with_post=True),
+            ),
+            (
+                "tag",
+                lambda forum: TopicFactory(forum=forum, with_post=True, with_tags=["tag"]),
+                lambda forum: TopicFactory(forum=forum, with_post=True, with_tags=["other_tag"]),
+            ),
+        ],
+    )
+    def test_queryset_on_tag(
+        self, client, db, public_forum_with_topic, topics_url, tag, expected_topic, unexpected_topic, snapshot
+    ):
+        expected_topic = expected_topic(public_forum_with_topic)
+        if unexpected_topic:
+            unexpected_topic = unexpected_topic(public_forum_with_topic)
+
+        response = client.get(topics_url, {"tag": tag})
+        assert expected_topic in response.context["topics"]
+        if unexpected_topic:
+            assert unexpected_topic not in response.context["topics"]
+        content = parse_response_to_soup(response, selector="#topic-list-filter-header")
+        assert str(content) == snapshot(name=f"{tag}-tagged_topics")
+
+    @pytest.mark.parametrize(
+        "filter,tag", [("ALL", None), ("NEW", None), (None, None), ("ALL", "tag"), ("NEW", "tag"), (None, "tag")]
+    )
+    def test_showmoretopics_url_with_params(self, client, db, public_forum_with_topic, filter, tag, topics_url):
+        user = UserFactory()
+        topic_kwargs = {"with_post": True, "forum": public_forum_with_topic, "poster": user}
+        if tag:
+            topic_kwargs["with_tags"] = [tag]
+        TopicFactory.create_batch(12, **topic_kwargs)
+        client.force_login(user)
+
+        params = {"filter": filter, "tag": tag}
+        encoded_params = urlencode({k: v for k, v in params.items() if v})
+        url_with_params = f"{topics_url}?{encoded_params}" if encoded_params else topics_url
+        expected_url = (
+            f"{url_with_params.replace('&', '&amp;')}&amp;page=2" if encoded_params else f"{topics_url}?page=2"
+        )
+
+        response = client.get(url_with_params)
+        assertContains(response, expected_url, status_code=200)
+
+    @pytest.mark.parametrize("query_param,topics_url_visible", [({}, True), ({"page": 1}, False)])
+    def test_filter_dropdown_visibility(self, client, db, query_param, topics_url_visible, topics_url):
+        response = client.get(topics_url, query_param)
+        assert response.status_code == 200
+
+        content = parse_response_to_soup(response, selector="#topicsarea")
+        assert (
+            bool('<div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">' in str(content))
+            == topics_url_visible
+        )
+        assert bool(topics_url in str(content)) == topics_url_visible
+
+    @pytest.mark.parametrize(
+        "request_kwargs,template_name",
+        [
+            ({}, "forum_conversation/topics_public.html"),
+            ({"HTTP_HX_REQUEST": "true"}, "forum_conversation/topic_list.html"),
+        ],
+    )
+    def test_template_name(self, client, db, topics_url, request_kwargs, template_name):
+        response = client.get(topics_url, **request_kwargs)
+        assert response.status_code == 200
+        assert response.template_name == [template_name]
+
+    @pytest.mark.parametrize(
+        "num_of_topics_before_tagged_topic,query_param,snapshot_name",
+        [(None, {}, "clickable_tags_page1"), (10, {"page": 2}, "clickable_tags_page2")],
+    )
+    def test_clickable_tags(
+        self, client, db, topics_url, num_of_topics_before_tagged_topic, query_param, snapshot_name, snapshot
+    ):
         forum = ForumFactory(with_public_perms=True)
+
         TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+        if num_of_topics_before_tagged_topic:
+            # add 10 Topics before the tagged one to put it on the second page
+            TopicFactory.create_batch(num_of_topics_before_tagged_topic, with_post=True, forum=forum)
 
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        response = client.get(topics_url, query_param)
         assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page1")
+        assert str(parse_response_to_soup(response, selector="#filtertopics-button")) == snapshot(name=snapshot_name)
 
-        # add 10 Topics before the tagged one to put it on the second page
-        TopicFactory.create_batch(10, with_post=True, forum=forum)
-
-        response = client.get(reverse("forum_conversation_extension:topics") + "?page=2")
-        assert response.status_code == 200
-        assert str(parse_response_to_soup(response, selector="a.tag")) == snapshot(name="clickable_tags_page2")
+    def test_filter_dropdown_with_tags(self, client, db, public_forum_with_topic, topics_url, snapshot):
+        response = client.get(topics_url, {"tag": "tag"})
+        content = parse_response_to_soup(response, selector="#filterTopicsDropdown")
+        assert str(content) == snapshot(name="filter_dropdown_with_tags")
 
 
 class TestPosterTemplate:
-    def test_topic_in_topics_view(self, client, db, snapshot):
+    def test_topic_in_topics_view(self, client, db, topics_url, snapshot):
         topic = TopicFactory(with_post=True, poster=UserFactory(first_name="Jeff", last_name="Buckley"))
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        response = client.get(topics_url)
         soup = parse_response_to_soup(
             response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
         )
         assert str(soup) == snapshot(name="topic_in_topics_view")
 
-    def test_topic_from_other_public_forum_in_topics_view(self, client, db, snapshot):
+    def test_topic_from_other_public_forum_in_topics_view(self, client, db, topics_url, snapshot):
         # first_public_forum
         ForumFactory(with_public_perms=True)
 
@@ -1026,7 +1019,7 @@ class TestPosterTemplate:
             forum=ForumFactory(with_public_perms=True, name="Abby's Forum"),
             poster=UserFactory(first_name="Alan", last_name="Turing"),
         )
-        response = client.get(reverse("forum_conversation_extension:topics"))
+        response = client.get(topics_url)
         soup = parse_response_to_soup(
             response,
             replace_in_href=[

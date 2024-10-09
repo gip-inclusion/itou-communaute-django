@@ -1,5 +1,13 @@
 {% load url_add_query %}
 {% for tag in tags %}
-    {% url_add_query request.path tags=tag.slug page=1 as url_with_query_params %}
-    <a href="{{ url_with_query_params }}" class="tag bg-info-lighter text-info">{{ tag.name }}</a>
+    {% url_add_query request.path tag=tag.slug filter=active_filter.value as url_with_query_params %}
+    <button id="filtertopics-button"
+            hx-target="#topicsarea"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+            hx-get="{{ url_with_query_params }}"
+            class="tag bg-info-lighter text-info matomo-event"
+            data-matomo-category="engagement"
+            data-matomo-action="filter"
+            data-matomo-option="topics">{{ tag.name }}</button>
 {% endfor %}

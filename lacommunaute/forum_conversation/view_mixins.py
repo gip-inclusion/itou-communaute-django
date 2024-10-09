@@ -16,25 +16,21 @@ class FilteredTopicsListViewMixin:
         elif filter == Filters.CERTIFIED:
             qs = qs.filter(certified_post__isnull=False)
 
-        if self.get_tags():
-            qs = qs.filter(tags__in=self.get_tags())
+        if self.get_tag():
+            qs = qs.filter(tags=self.get_tag())
 
         return qs
 
-    def get_tags(self, flat=None):
-        if not hasattr(self, "tags"):
+    def get_tag(self):
+        if not hasattr(self, "tag"):
             try:
-                request_tags = self.request.GET["tags"]
+                request_tag = self.request.GET["tag"]
             except KeyError:
-                self.tags = Tag.objects.none()
+                self.tag = Tag.objects.none()
             else:
-                self.tags = Tag.objects.filter(slug__in=request_tags.lower().split(","))
+                self.tag = Tag.objects.filter(slug=request_tag.lower()).first()
 
-        if flat == "name":
-            return " ou ".join(tag.name for tag in self.tags)
-        if flat == "slug":
-            return ",".join(tag.slug for tag in self.tags)
-        return self.tags
+        return self.tag
 
     def get_load_more_url(self, url):
         """
@@ -50,8 +46,7 @@ class FilteredTopicsListViewMixin:
         active_filter = self.request.GET.get("filter", Filters.ALL)
 
         return {
-            "active_tags": self.get_tags(flat="slug"),
-            "active_tags_label": self.get_tags(flat="name"),
-            "active_filter_name": getattr(Filters, active_filter, Filters.ALL).label,
+            "active_tag": self.get_tag(),
+            "active_filter": getattr(Filters, active_filter, Filters.ALL),
             "filters": Filters.choices,
         }

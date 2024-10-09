@@ -4,24 +4,43 @@
         <div class="col-12 col-sm">
             <div class="d-flex align-items-center">
                 <div class="flex-grow-1" id="topic-list-filter-header">
-                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}
-                        {% if active_tags %}avec l'étiquette {{ active_tags_label }}{% endif %}
-                    </span>
+                    <span class="h5 m-0">{{ paginator.count }} question{{ paginator.count|pluralizefr }}</span>
+                    {% if active_filter.name != filters.0.1 %}{{ active_filter.label|lower }}{% endif %}
+                    {% if active_tag %}
+                        <span class="fs-sm">
+                            sous l'étiquette
+                            <button id="unfilter-ontag-button"
+                                    hx-target="#topicsarea"
+                                    hx-swap="outerHTML"
+                                    hx-push-url="true"
+                                    hx-get="{{ filter_dropdown_endpoint }}?filter={{ active_filter.name }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-title="Supprimer ce filtre"
+                                    aria-label="Supprimer ce filtre"
+                                    class="tag bg-info text-white matomo-event"
+                                    data-matomo-category="engagement"
+                                    data-matomo-action="unfilter"
+                                    data-matomo-option="topics">
+                                <i class="ri-close-fill ri-xs"></i>{{ active_tag.name|lower }}
+                            </button>
+                        </span>
+                    {% endif %}
                 </div>
                 <div>
                     <span class="fs-sm">Filtrer par :</span>
                     <button type="button" class="btn btn-sm btn-link dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-controls="filterTopicsDropdown" aria-expanded="false">
-                        {{ active_filter_name }}
+                        {{ active_filter.label }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" id="filterTopicsDropdown">
                         <ul class="list-unstyled">
                             {% for filter in filters %}
                                 <li>
-                                    <button id="filtertopics-button"
+                                    <button id="filter-ontag-button"
                                             hx-target="#topicsarea"
                                             hx-swap="outerHTML"
                                             hx-push-url="true"
-                                            hx-get="{{ filter_dropdown_endpoint }}?filter={{ filter.0 }}{% if active_tags %}&tags={{ active_tags }}{% endif %}"
+                                            hx-get="{{ filter_dropdown_endpoint }}?filter={{ filter.0 }}{% if active_tag %}&tag={{ active_tag.slug }}{% endif %}"
                                             class="dropdown-item matomo-event"
                                             data-matomo-category="engagement"
                                             data-matomo-action="filter"

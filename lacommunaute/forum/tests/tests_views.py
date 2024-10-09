@@ -83,27 +83,24 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
         self.assertEqual(response.context_data["forum"], self.forum)
         self.assertIsNone(response.context_data["rating"])
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
-        self.assertEqual(response.context_data["active_tags"], "")
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
+        self.assertEqual(list(response.context_data["active_tag"]), [])
 
-        for filter, label in Filters.choices:
-            with self.subTest(filter=filter, label=label):
-                response = self.client.get(self.url + f"?filter={filter}")
+        for filter in Filters:
+            with self.subTest(filter=filter):
+                response = self.client.get(self.url + f"?filter={filter.value}")
                 self.assertEqual(
                     response.context_data["loadmoretopic_url"],
-                    loadmoretopic_url + f"?filter={filter}",
+                    loadmoretopic_url + f"?filter={filter.value}",
                 )
-                self.assertEqual(response.context_data["active_filter_name"], label)
+                self.assertEqual(response.context_data["active_filter"], filter)
 
         response = self.client.get(self.url + "?filter=FAKE")
-        self.assertEqual(response.context_data["active_filter_name"], Filters.ALL.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.ALL)
 
         tag = Tag.objects.create(name="tag_1", slug="tag_1")
-        response = self.client.get(self.url + f"?tags=nonexistant,{tag.name}")
-        self.assertIn(tag.slug, response.context_data["active_tags"])
-        self.assertNotIn("nonexistant", response.context_data["active_tags"])
-        self.assertIn(tag.name, response.context_data["active_tags_label"])
-        self.assertNotIn("nonexistant", response.context_data["active_tags_label"])
+        response = self.client.get(self.url + f"?tag={tag.name}")
+        self.assertEqual(tag, response.context_data["active_tag"])
 
     def test_template_name(self):
         response = self.client.get(self.url)
@@ -358,7 +355,7 @@ class ForumViewTest(TestCase):
 
         with self.assertNumQueries(20):
             response = self.client.get(
-                reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tags": tag}
+                reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tag": tag}
             )
         self.assertContains(response, topic.subject)
         self.assertNotContains(response, self.topic.subject)
@@ -368,14 +365,14 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["paginator"].count, 0)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.NEW)
 
         new_topic = TopicFactory(with_post=True, forum=self.forum)
 
         response = self.client.get(self.url + f"?filter={Filters.NEW.value}")
         self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, new_topic.subject, status_code=200)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.NEW.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.NEW)
 
         for topic in Topic.objects.exclude(id=new_topic.id):
             with self.subTest(topic):
@@ -385,7 +382,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context_data["paginator"].count, 0)
-        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
 
         certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
 
@@ -393,7 +390,7 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["paginator"].count, 1)
         self.assertContains(response, certified_topic.subject, status_code=200)
         self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
-        self.assertEqual(response.context_data["active_filter_name"], Filters.CERTIFIED.label)
+        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
 
         for topic in Topic.objects.exclude(id=certified_topic.id):
             with self.subTest(topic):
@@ -608,6 +605,22 @@ class TestDocumentationForumContent:
         assert str(content.select("#partner_area")) == snapshot(name="documentation_forum_with_partner")
 
 
+@pytest.fixture(name="documentation_category_forum_with_descendants")
+def documentation_category_forum_with_descendants_fixture():
+    tags = [faker.word() for _ in range(3)]
+    category_forum = CategoryForumFactory(with_public_perms=True)
+    first_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0]])
+    second_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0], tags[1]])
+    third_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[2]])
+    # forum without tags
+    ForumFactory(parent=category_forum, with_public_perms=True)
+
+    # edge case: grand_child is filtered out. No actual use case to display them in the subforum list
+    ForumFactory(parent=third_child, with_public_perms=True, with_tags=[tags[2]])
+
+    return category_forum, tags[0], [first_child, second_child]
+
+
 class TestDocumentationCategoryForumContent:
     def test_documentation_category_subforum_list(
         self, client, db, snapshot, reset_forum_sequence, documentation_forum
@@ -636,36 +649,24 @@ class TestDocumentationCategoryForumContent:
         assert len(add_documentation_control) == 1
         assert str(add_documentation_control[0]) == snapshot(name="documentation_category_add_file_control")
 
-    def test_filter_subforums_on_tags(self, client, db):
-        tags = [faker.word() for _ in range(3)]
-        category_forum = CategoryForumFactory(with_public_perms=True)
-        first_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0]])
-        second_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0], tags[1]])
-        third_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[2]])
-        # forum without tags
-        ForumFactory(parent=category_forum, with_public_perms=True)
+    @pytest.mark.parametrize("filtered, sub_forums_count", [(False, 4), (True, 2)])
+    def test_filter_subforums_on_tags(
+        self, client, db, documentation_category_forum_with_descendants, filtered, sub_forums_count
+    ):
+        category_forum, first_tag, subforums_with_first_tag = documentation_category_forum_with_descendants
 
-        # edge case: grand_child is filtered out. No actual use case to display them in the subforum list
-        ForumFactory(parent=third_child, with_public_perms=True, with_tags=[tags[2]])
-
-        # no filter
-        response = client.get(category_forum.get_absolute_url())
-        assert response.status_code == 200
-        assert [node.obj for node in response.context_data["sub_forums"].top_nodes] == list(
-            category_forum.get_children()
+        expected = subforums_with_first_tag if filtered else list(category_forum.get_children())
+        url = (
+            category_forum.get_absolute_url() + f"?forum_tag={first_tag}"
+            if filtered
+            else category_forum.get_absolute_url()
         )
 
-        # filter on one tag
-        response = client.get(category_forum.get_absolute_url() + f"?forum_tag={tags[0]}")
+        response = client.get(url)
         assert response.status_code == 200
-        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set(
-            [first_child, second_child]
-        )
-
-        # filtering on multiple tags is not supported yet
-        response = client.get(category_forum.get_absolute_url() + f"?forum_tag={tags[1]},{tags[2]}")
-        assert response.status_code == 200
-        assert set([node.obj for node in response.context_data["sub_forums"].top_nodes]) == set([])
+        sub_forums = [node.obj for node in response.context_data["sub_forums"].top_nodes]
+        assert sub_forums == expected
+        assert len(sub_forums) == sub_forums_count
 
     def test_show_subforum_tag(self, client, db, snapshot, reset_forum_sequence):
         category_forum = CategoryForumFactory(with_public_perms=True, for_snapshot=True)
