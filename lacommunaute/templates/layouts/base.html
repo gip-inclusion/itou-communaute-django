@@ -169,26 +169,6 @@
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
             {% endif %}
             <script type="text/javascript" src="{% static 'vendor/htmx-1.9.5/htmx.min.js' %}" defer></script>
-            <script async src="https://tally.so/widgets/embed.js" defer></script>
-            <script nonce="{{ request.csp_nonce }}">
-                window.TallyConfig = {
-                  "formId": "wvL8P8",
-                  "popup": {
-                    "emoji": {
-                      "text": "👋",
-                      "animation": "head-shake"
-                    },
-                    "open": {
-                      "trigger": "scroll",
-                      "scrollPercent": 15
-                    },
-                    "hideTitle": true,
-                    "alignLeft": true,
-                    "autoClose": 15000,
-                    "doNotShowAfterSubmit": true
-                  }
-                };
-            </script>
         {% endblock %}
     </body>
 </html>
