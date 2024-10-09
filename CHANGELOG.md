@@ -1,5 +1,19 @@
 # Journal des modifications
 
+## [2.16.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.15.0...v2.16.0) (2024-10-09)
+
+
+### Features
+
+* **stats:** page de statistique des fiches pratiques ([#796](https://github.com/gip-inclusion/itou-communaute-django/issues/796)) ([41237f1](https://github.com/gip-inclusion/itou-communaute-django/commit/41237f191db3229ad01f10dd858558f0a7615647))
+* suppression du sondage pour mieux connaitre les utilisateurs de la communauté ([#797](https://github.com/gip-inclusion/itou-communaute-django/issues/797)) ([c830f0a](https://github.com/gip-inclusion/itou-communaute-django/commit/c830f0aeccc6b65eb863ea0997232824e6c94933))
+
+
+### Bug Fixes
+
+* filtrage des questions en utilisant les étiquettes ([#794](https://github.com/gip-inclusion/itou-communaute-django/issues/794)) ([d03847e](https://github.com/gip-inclusion/itou-communaute-django/commit/d03847e77ac9312aea66f64b850218f69f028f10))
+* filtrage des questions en utilisant les étiquettes (part 2) ([#799](https://github.com/gip-inclusion/itou-communaute-django/issues/799)) ([660df15](https://github.com/gip-inclusion/itou-communaute-django/commit/660df155b49626f88e69d71ee9298942b136b7db))
+
 ## [2.15.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.14.0...v2.15.0) (2024-10-07)
 
 
