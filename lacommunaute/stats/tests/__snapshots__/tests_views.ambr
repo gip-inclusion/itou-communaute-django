@@ -58,28 +58,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       
                                                   </a>
@@ -197,28 +197,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
@@ -336,28 +336,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       
                                                   </a>
@@ -475,28 +475,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       
                                                   </a>
@@ -614,28 +614,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       
                                                   </a>
@@ -753,28 +753,28 @@
                                           <th scope="col">Fiche Pratique</th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_time_spent">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
                                                       <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=sum_visits">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_visits">
                                                       Nombre de Visites
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=count_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=count_rating">
                                                       Nombres de notations
                                                       
                                                   </a>
                                               </th>
                                           
                                               <th scope="col">
-                                                  <a href="/statistiques/documents/?sort=avg_rating">
+                                                  <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
                                                       
                                                   </a>

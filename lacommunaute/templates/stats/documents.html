@@ -45,7 +45,7 @@
                                         <th scope="col">Fiche Pratique</th>
                                         {% for field in sort_fields %}
                                             <th scope="col">
-                                                <a href="{{ request.path }}?sort={{ field.key }}">
+                                                <a href="{{ request.path }}?sort={{ field.key }}" class="text-decoration-none">
                                                     {{ field.label }}
                                                     {% if sort_key == field.key %}<i class="ri-arrow-down-s-fill"></i>{% endif %}
                                                 </a>
