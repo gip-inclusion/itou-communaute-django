@@ -12,8 +12,7 @@ from freezegun import freeze_time
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains, assertNotContains
 
-from lacommunaute.documentation.factories import DocumentFactory, DocumentRatingFactory
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.documentation.factories import CategoryFactory, DocumentFactory, DocumentRatingFactory
 from lacommunaute.stats.enums import Period
 from lacommunaute.stats.factories import ForumStatFactory, StatFactory
 from lacommunaute.surveys.factories import DSPFactory
@@ -257,23 +256,23 @@ class TestDailyDSPView:
 
 @pytest.fixture(name="document_stats_setup")
 def document_stats_setup_fixture(db):
-    category = CategoryForumFactory()
-    fa = ForumFactory(name="A", parent=category)
-    fb = ForumFactory(name="B", parent=category)
-    fc = ForumFactory(name="C", parent=category)
-    fd = ForumFactory(name="D", parent=category)
-    ForumStatFactory(forum=fa, period="week", visits=70, time_spent=40 * 60)
-    ForumStatFactory(forum=fb, period="week", visits=100, time_spent=30 * 60)
-    ForumStatFactory(forum=fc, period="week", visits=90, time_spent=20 * 60)
-    ForumStatFactory(forum=fd, period="week", visits=80, time_spent=10 * 60)
-    ForumRatingFactory.create_batch(2, forum=fa, rating=4)
-    ForumRatingFactory.create_batch(1, forum=fb, rating=3)
-    ForumRatingFactory.create_batch(4, forum=fc, rating=2)
-    ForumRatingFactory.create_batch(3, forum=fd, rating=5)
+    category = CategoryFactory()
+    fa = DocumentFactory(name="A", category=category)
+    fb = DocumentFactory(name="B", category=category)
+    fc = DocumentFactory(name="C", category=category)
+    fd = DocumentFactory(name="D", category=category)
+    # ForumStatFactory(forum=fa, period="week", visits=70, time_spent=40 * 60)
+    # ForumStatFactory(forum=fb, period="week", visits=100, time_spent=30 * 60)
+    # ForumStatFactory(forum=fc, period="week", visits=90, time_spent=20 * 60)
+    # ForumStatFactory(forum=fd, period="week", visits=80, time_spent=10 * 60)
+    DocumentRatingFactory.create_batch(2, document=fa, rating=4)
+    DocumentRatingFactory.create_batch(1, document=fb, rating=3)
+    DocumentRatingFactory.create_batch(4, document=fc, rating=2)
+    DocumentRatingFactory.create_batch(3, document=fd, rating=5)
 
     # undesired forum
-    ForumFactory(name="Forum not in Document area")
-    ForumFactory(name="Forum wo ForumStats", parent=category)
+    DocumentFactory(name="Orphelin Document")
+    DocumentFactory(name="Document wo DocumentStats", category=category)
 
     return category
 
@@ -296,7 +295,9 @@ class TestForumStatView:
         assert response.status_code == 200
         assert str(
             parse_response_to_soup(
-                response, selector="main", replace_in_href=[forum for forum in document_stats_setup.get_children()]
+                response,
+                selector="main",
+                replace_in_href=[document for document in document_stats_setup.documents.all()],
             )
         ) == snapshot(name=snapshot_name)
 
