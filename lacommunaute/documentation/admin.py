@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from lacommunaute.documentation.models import Category, Document
+from lacommunaute.documentation.models import Category, Document, DocumentRating
 
 
 class DocumentInlines(admin.TabularInline):
@@ -30,3 +30,11 @@ class DocumentAdmin(admin.ModelAdmin):
     list_filter = ("category", "partner")
     search_fields = ("name",)
     fields = ("name", "short_description", "description", "image", "category", "partner", "certified", "tags")
+
+
+@admin.register(DocumentRating)
+class DocumentRatingAdmin(admin.ModelAdmin):
+    list_display = ("document", "rating", "created")
+    list_filter = ("document",)
+    list_display_links = ("rating",)
+    raw_id_fields = ("document", "user")

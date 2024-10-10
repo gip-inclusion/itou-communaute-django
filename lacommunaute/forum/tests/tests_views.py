@@ -11,7 +11,7 @@ from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
-from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum.views import ForumView
 from lacommunaute.forum_conversation.enums import Filters
@@ -82,7 +82,6 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["filters"], Filters.choices)
         self.assertEqual(response.context_data["loadmoretopic_url"], loadmoretopic_url)
         self.assertEqual(response.context_data["forum"], self.forum)
-        self.assertIsNone(response.context_data["rating"])
         self.assertEqual(response.context_data["active_filter"], Filters.ALL)
         self.assertEqual(list(response.context_data["active_tag"]), [])
 
@@ -193,7 +192,7 @@ class ForumViewTest(TestCase):
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(23):
+        with self.assertNumQueries(22):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
@@ -335,7 +334,7 @@ class ForumViewTest(TestCase):
         tag = faker.word()
         topic = TopicFactory(forum=self.forum, with_tags=[tag], with_post=True)
 
-        with self.assertNumQueries(20):
+        with self.assertNumQueries(19):
             response = self.client.get(
                 reverse("forum_extension:forum", kwargs={"pk": self.forum.pk, "slug": self.forum.slug}), {"tag": tag}
             )
@@ -389,26 +388,6 @@ reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
 
 
 class TestForumViewContent:
-    def test_not_rated_forum(self, client, db, snapshot):
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
-        forum = category_forum.get_children().first()
-
-        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area1", replace_in_href=[category_forum, forum])
-        assert str(content) == snapshot(name="not_rated_forum")
-
-    def test_rated_forum(self, client, db, snapshot):
-        client.session.save()
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
-        forum = category_forum.get_children().first()
-        ForumRatingFactory(forum=forum, rating=5, session_id=client.session.session_key)
-
-        response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#rating-area1")
-        assert str(content) == snapshot(name="rated_forum")
-
     def test_opengraph_for_forum_with_image(self, client, db):
         forum = ForumFactory(with_public_perms=True, with_image=True)
         response = client.get(forum.get_absolute_url())
@@ -673,7 +652,7 @@ class TestDocumentationCategoryForumContent:
             20, parent=category_forum, with_public_perms=True, with_tags=[f"tag{i}" for i in range(3)]
         )
         # vincentporte TOBEFIXED : DUPLICATED QUERIES
-        with django_assert_num_queries(19):
+        with django_assert_num_queries(18):
             client.get(category_forum.get_absolute_url())
 
 

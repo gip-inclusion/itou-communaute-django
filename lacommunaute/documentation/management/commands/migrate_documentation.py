@@ -4,8 +4,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from taggit.models import TaggedItem
 
-from lacommunaute.documentation.models import Category, Document
-from lacommunaute.forum.models import Forum
+from lacommunaute.documentation.models import Category, Document, DocumentRating
+from lacommunaute.forum.models import Forum, ForumRating
 
 
 def create_categories_from_catforums():
@@ -52,6 +52,22 @@ def create_document_from_forums(category_transpo_dict):
     return transpo_dict
 
 
+def migrate_ratings(document_transpo_dict):
+    document_ratings = [
+        DocumentRating(
+            document=document_transpo_dict[rating.forum],
+            session_id=rating.session_id,
+            rating=rating.rating,
+            user=rating.user,
+            created=rating.created,
+            updated=rating.updated,
+        )
+        for rating in ForumRating.objects.all()
+    ]
+    DocumentRating.objects.bulk_create(document_ratings)
+    ForumRating.objects.all().delete()
+
+
 def del_forums(category_transpo_dict, document_transpo_dict):
     forums_to_delete = list(category_transpo_dict.keys()) + list(document_transpo_dict.keys())
     return Forum.objects.filter(pk__in=[forum.pk for forum in forums_to_delete]).delete()
@@ -69,7 +85,10 @@ class Command(BaseCommand):
         document_transpo_dict = create_document_from_forums(category_transpo_dict)
         sys.stdout.write("Documents created\n")
 
-        ## TODO next : migrate Ratings, Topics and Stats
+        migrate_ratings(document_transpo_dict)
+        sys.stdout.write("Ratings migrated\n")
+
+        ## TODO next : Topics and Stats
 
         deleted_forums = del_forums(category_transpo_dict, document_transpo_dict)
         sys.stdout.write(f"{deleted_forums} forums deleted\n")

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
@@ -43,3 +44,18 @@ class Document(Publication):
         return reverse(
             "documentation:document_detail", kwargs={"category_pk": self.category.pk, "pk": self.pk, "slug": self.slug}
         )
+
+
+# TODO : use AbstractDatedModel after ForumRating migration
+class DocumentRating(models.Model):
+    created = models.DateTimeField(null=True, blank=True)
+    updated = models.DateTimeField(null=True, blank=True)
+    session_id = models.CharField(max_length=40)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Notation d'un document"
+        verbose_name_plural = "Notations des documents"
+        ordering = ("-created",)

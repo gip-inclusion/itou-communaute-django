@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import Avg, CharField, Count, OuterRef, Q, Subquery, Sum
+from django.db.models import Avg, CharField, Count, OuterRef, Q, Subquery, Value
 from django.db.models.functions import Cast
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -12,7 +12,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.dates import WeekArchiveView
 
-from lacommunaute.forum.models import Forum, ForumRating
+from lacommunaute.documentation.models import Document, DocumentRating
 from lacommunaute.stats.models import ForumStat, Stat
 from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
@@ -140,15 +140,16 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         start_date = datetime.date(self.get_year(), 1, 1) + datetime.timedelta(weeks=self.get_week() - 1)
         return start_date, start_date + datetime.timedelta(days=6)
 
-    def get_most_rated_forums(self, start_date, end_date):
+    def get_most_rated_documents(self, start_date, end_date):
         return (
-            Forum.objects.annotate(avg_rating=Avg("forumrating__rating"))
+            Document.objects.annotate(avg_rating=Avg("documentrating__rating"))
             .filter(avg_rating__isnull=False)
             .annotate(
                 rating_count=Count(
-                    "forumrating",
+                    "documentrating",
                     filter=Q(
-                        forumrating__created__gte=start_date, forumrating__created__lt=end_date + relativedelta(days=1)
+                        documentrating__created__gte=start_date,
+                        documentrating__created__lt=end_date + relativedelta(days=1),
                     ),
                 )
             )
@@ -161,20 +162,25 @@ class ForumStatWeekArchiveView(WeekArchiveView):
         start_date, end_date = self.get_dates_of_the_week()
         context["end_date"] = end_date
         context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
-        context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
+        context["rated_documents"] = self.get_most_rated_documents(start_date, end_date)
         return context
 
 
 class DocumentStatsView(View):
+    # MIGRATION :
+    # deactivate lines regarding ForumStat until this model is migrated into DocumentStat in later PR
     def get_objects_with_stats_and_ratings(self):
         objects = (
-            Forum.objects.filter(parent__type=Forum.FORUM_CAT, forumstat__period="week")
-            .annotate(sum_visits=Sum("forumstat__visits"))
-            .annotate(sum_time_spent=Sum("forumstat__time_spent"))
-            .select_related("parent", "partner")
+            Document.objects.all()
+            # .filter(forumstat__period="week")
+            # .annotate(sum_visits=Sum("forumstat__visits"))
+            # .annotate(sum_time_spent=Sum("forumstat__time_spent"))
+            .annotate(sum_visits=Value(0))
+            .annotate(sum_time_spent=Value(0))
+            .select_related("category", "partner")
             .order_by("id")
         )
-        ratings = ForumRating.objects.filter(forum=OuterRef("pk")).values("forum")
+        ratings = DocumentRating.objects.filter(document=OuterRef("pk")).values("document")
         return objects.annotate(
             avg_rating=Subquery(ratings.annotate(avg_rating=Avg("rating")).values("avg_rating")),
             count_rating=Subquery(ratings.annotate(count_rating=Count("rating")).values("count_rating")),

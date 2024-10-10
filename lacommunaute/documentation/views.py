@@ -1,11 +1,14 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Avg, Count
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from taggit.models import Tag
 
-from lacommunaute.documentation.models import Category, Document
+from lacommunaute.documentation.models import Category, Document, DocumentRating
 
 
 class CategoryListView(ListView):
@@ -51,10 +54,49 @@ class CategoryDetailView(DetailView):
         return context
 
 
-class DocumentDetailView(DetailView):
+class RatingMixin:
+    def get_sum_and_mean_of_ratings(self, document):
+        return DocumentRating.objects.filter(document=document).aggregate(count=Count("rating"), average=Avg("rating"))
+
+    def get_session_rating(self, document):
+        return getattr(
+            DocumentRating.objects.filter(document=document, session_id=self.request.session.session_key).first(),
+            "rating",
+            None,
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = context | {
+            "rating": self.get_session_rating(self.object),
+            **self.get_sum_and_mean_of_ratings(self.object),
+        }
+        return context
+
+
+class DocumentDetailView(RatingMixin, DetailView):
     model = Document
     template_name = "documentation/document_detail.html"
     context_object_name = "document"
+
+
+class DocumentRatingView(RatingMixin, View):
+    def post(self, request, *args, **kwargs):
+        document_rating = DocumentRating.objects.create(
+            document=get_object_or_404(Document, pk=self.kwargs["pk"]),
+            user=request.user if request.user.is_authenticated else None,
+            rating=int(request.POST["rating"]),
+            session_id=request.session.session_key,
+        )
+
+        return render(
+            request,
+            "documentation/partials/rating.html",
+            context={"rating": document_rating.rating, **self.get_sum_and_mean_of_ratings(document_rating.document)},
+        )
+
+
+# CREATE AND UPDATE VIEWS
 
 
 class CreateUpdateMixin(UserPassesTestMixin):
