@@ -1,4 +1,49 @@
 # serializer version: 1
+# name: TestPosterTemplate.test_standalone_topic[False-without_document][without_document]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Jeff B.
+                  </a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
+# name: TestPosterTemplate.test_standalone_topic[True-with_document][with_document]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Jeff B.
+                  </a>,
+              
+              
+                  dans <a href="[Document absolute URL]">Test Document</a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
+# name: TestPosterTemplate.test_standalone_topic[standalone_topic]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Jeff B.
+                  </a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
 # name: TestPosterTemplate.test_topic_from_other_public_forum_in_topics_view[topic_from_other_public_forum_in_topics_view]
   '''
   <small class="text-muted poster-infos">
@@ -39,6 +84,23 @@
                   <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
                       Jeff B.
                   </a>,
+      il y a 0 minute
+      
+  </small>
+  '''
+# ---
+# name: TestPosterTemplate.test_topic_with_document[topic_with_document]
+  '''
+  <small class="text-muted poster-infos">
+      Par :
+              
+                  
+                  <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
+                      Jeff B.
+                  </a>,
+              
+              
+                  dans <a href="[Document absolute URL]">Test Document</a>,
       il y a 0 minute
       
   </small>

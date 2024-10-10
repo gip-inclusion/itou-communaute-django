@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from machina.apps.forum_conversation.abstract_models import AbstractPost, AbstractTopic
 from taggit.managers import TaggableManager
 
+from lacommunaute.documentation.models import Document
 from lacommunaute.forum_conversation.signals import post_create
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.models import UpVote
@@ -37,6 +38,7 @@ class TopicQuerySet(models.QuerySet):
                 "certified_post",
                 "certified_post__post",
                 "certified_post__post__poster",
+                "document",
             )
             .prefetch_related(
                 "poll",
@@ -52,6 +54,7 @@ class TopicQuerySet(models.QuerySet):
 
 class Topic(AbstractTopic):
     tags = TaggableManager()
+    document = models.ForeignKey(Document, on_delete=models.SET_NULL, null=True, blank=True, related_name="topics")
 
     def get_absolute_url(self, with_fqdn=False):
         absolute_url = reverse(

@@ -6,6 +6,7 @@ from taggit.models import TaggedItem
 
 from lacommunaute.documentation.models import Category, Document, DocumentRating
 from lacommunaute.forum.models import Forum, ForumRating
+from lacommunaute.forum_conversation.models import Topic
 
 
 def create_categories_from_catforums():
@@ -68,6 +69,20 @@ def migrate_ratings(document_transpo_dict):
     ForumRating.objects.all().delete()
 
 
+def migrate_topics(document_transpo_dict):
+    main_forum = Forum.objects.get_main_forum()
+
+    for forum, document in document_transpo_dict.items():
+        topics = Topic.objects.filter(forum=forum)
+        sys.stdout.write(f"*** {len(topics)} topics to migrate from {forum} ({forum.id}) to {main_forum}\n")
+
+        for topic in topics:
+            topic.document = document
+            topic.forum = main_forum
+            topic.save()
+        forum.save()
+
+
 def del_forums(category_transpo_dict, document_transpo_dict):
     forums_to_delete = list(category_transpo_dict.keys()) + list(document_transpo_dict.keys())
     return Forum.objects.filter(pk__in=[forum.pk for forum in forums_to_delete]).delete()
@@ -88,7 +103,10 @@ class Command(BaseCommand):
         migrate_ratings(document_transpo_dict)
         sys.stdout.write("Ratings migrated\n")
 
-        ## TODO next : Topics and Stats
+        migrate_topics(document_transpo_dict)
+        sys.stdout.write("Topics migrated\n")
+
+        ## TODO next : Stats
 
         deleted_forums = del_forums(category_transpo_dict, document_transpo_dict)
         sys.stdout.write(f"{deleted_forums} forums deleted\n")
