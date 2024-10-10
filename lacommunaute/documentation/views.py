@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Avg, Count
@@ -8,7 +9,12 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from taggit.models import Tag
 
+from lacommunaute import documentation
 from lacommunaute.documentation.models import Category, Document, DocumentRating
+from lacommunaute.forum.models import Forum
+from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 
 
 class CategoryListView(ListView):
@@ -74,10 +80,28 @@ class RatingMixin:
         return context
 
 
-class DocumentDetailView(RatingMixin, DetailView):
+class DocumentDetailView(FilteredTopicsListViewMixin, RatingMixin, DetailView):
     model = Document
     template_name = "documentation/document_detail.html"
     context_object_name = "document"
+
+    def get_topics(self):
+        # needs pagination
+        return self.filter_queryset(Topic.objects.filter(document=self.object).optimized_for_topics_list(self.request.user.id))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["topics"] = self.get_topics()
+        context["form"] = PostForm(user=self.request.user)
+
+        context["loadmoretopic_url"] = self.get_load_more_url(self.object.get_absolute_url())
+        context["filter_dropdown_endpoint"] = (
+            None if self.request.GET.get("page") else self.object.get_absolute_url())
+
+        context["loadmoretopic_suffix"] = "topics"
+        context["forum"] = Forum.objects.get_main_forum()
+        context = context | self.get_topic_filter_context()
+        return context
 
 
 class DocumentRatingView(RatingMixin, View):

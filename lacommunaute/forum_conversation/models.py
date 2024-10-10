@@ -38,6 +38,7 @@ class TopicQuerySet(models.QuerySet):
                 "certified_post",
                 "certified_post__post",
                 "certified_post__post__poster",
+                "document",
             )
             .prefetch_related(
                 "poll",
