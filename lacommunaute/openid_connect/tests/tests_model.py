@@ -123,7 +123,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
 
     def test_get_existing_unmigrated_user_with_existing_email(self):
         """
-        If there already is an existing django user with email sent us,
+        If there already is an existing user with email sent us,
         but with another identity provider, we do not create it again,
         we use it and we update it with the data form. Identity_provider is set to PRO_CONNECT
         """
