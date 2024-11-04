@@ -7,6 +7,7 @@ from django.utils import crypto, timezone
 
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.openid_connect.constants import OIDC_STATE_EXPIRATION
+from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.models import User
 
 
@@ -70,6 +71,7 @@ class OIDConnectUserData:
     first_name: str
     last_name: str
     username: str
+    identity_provider: str = IdentityProvider.PRO_CONNECT
 
     def create_or_update_user(self):
         """
@@ -82,7 +84,7 @@ class OIDConnectUserData:
         user_data_dict = dataclasses.asdict(self)
         user_data_dict = {key: value for key, value in user_data_dict.items() if value}
         try:
-            user = User.objects.get(username=self.username)
+            user = User.objects.get(username=self.username, identity_provider=self.identity_provider)
             created = False
         except User.DoesNotExist:
             # User.objects.create_user does the following:
@@ -92,9 +94,14 @@ class OIDConnectUserData:
             # NB: if we already have a user with the same username but with a different email and a different
             # provider the code will break here. We know it but since it's highly unlikely we just added a test
             # on this behaviour. No need to do a fancy bypass if it's never used.
-            user = User.objects.create_user(**user_data_dict)
-            ForumProfile.objects.create(user=user)
-            created = True
+            try:
+                # look for a user with the same email but not yet migrated from Inclusion Connect to Pro Connect
+                user = User.objects.get(email=self.email, identity_provider=IdentityProvider.INCLUSION_CONNECT)
+                created = False
+            except User.DoesNotExist:
+                user = User.objects.create_user(**user_data_dict)
+                ForumProfile.objects.create(user=user)
+                created = True
 
         if not created:
             for key, value in user_data_dict.items():

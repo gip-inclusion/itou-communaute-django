@@ -6,6 +6,7 @@ from django.utils import timezone
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.openid_connect import constants
 from lacommunaute.openid_connect.models import OIDConnectUserData, OpenID_State
+from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.utils.testing import reload_module
@@ -69,6 +70,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
         self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
+        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
 
         self.assertEqual(ForumProfile.objects.get(user=user).user, user)
 
@@ -95,6 +97,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
         self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.email, OIDC_USERINFO["email"])
         self.assertNotEqual(user.email, USERINFO["email"])
+        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
 
         self.assertEqual(1, User.objects.count())
         self.assertTrue(ForumProfile.objects.get(user=user))
@@ -102,7 +105,7 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
     def test_get_existing_user_with_existing_email(self):
         """
         If there already is an existing django user with email OpenID_ sent us, we do not create it again,
-        We user it and we update it with the data form the identity_provider.
+        We use it and we update it with the data form
         """
         proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
         UserFactory(
@@ -116,3 +119,25 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
         self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
         self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
         self.assertEqual(user.username, OIDC_USERINFO["sub"])
+        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
+
+    def test_get_existing_unmigrated_user_with_existing_email(self):
+        """
+        If there already is an existing django user with email sent us,
+        but with another identity provider, we do not create it again,
+        we use it and we update it with the data form. Identity_provider is set to PRO_CONNECT
+        """
+        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+        UserFactory(
+            first_name=proc_user_data.first_name,
+            last_name=proc_user_data.last_name,
+            email=proc_user_data.email,
+            username="another_username",
+            identity_provider=IdentityProvider.INCLUSION_CONNECT,
+        )
+        user, created = proc_user_data.create_or_update_user()
+        self.assertFalse(created)
+        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
+        self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
+        self.assertEqual(user.username, OIDC_USERINFO["sub"])
+        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
