@@ -87,13 +87,6 @@ class OIDConnectUserData:
             user = User.objects.get(username=self.username, identity_provider=self.identity_provider)
             created = False
         except User.DoesNotExist:
-            # User.objects.create_user does the following:
-            # - set User.is_active to true,
-            # - call User.set_unusable_password() if no password is given.
-            # https://docs.djangoproject.com/fr/4.0/ref/contrib/auth/#django.contrib.auth.models.UserManager.create_user
-            # NB: if we already have a user with the same username but with a different email and a different
-            # provider the code will break here. We know it but since it's highly unlikely we just added a test
-            # on this behaviour. No need to do a fancy bypass if it's never used.
             try:
                 # look for a user with the same email but not yet migrated from Inclusion Connect to Pro Connect
                 user = User.objects.get(email=self.email, identity_provider=IdentityProvider.INCLUSION_CONNECT)
