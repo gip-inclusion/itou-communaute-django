@@ -2,7 +2,6 @@
 {% load i18n %}
 {% load forum_conversation_tags %}
 {% load forum_permission_tags %}
-{% load str_filters %}
 {% block title %}{{ topic.subject }} ({{ topic.forum.name }}){% endblock %}
 {% block meta_description %}
     {{ topic.first_post.content.raw }}
@@ -36,7 +35,7 @@
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col-12 post-content mb-3">
-                                {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid }}
+                                {% include 'partials/rendered_md.html' with content=post.content only %}
                                 {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                             </div>
                             <div class="col-12 post-content-wrapper">

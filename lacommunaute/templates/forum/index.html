@@ -2,7 +2,6 @@
 {% load i18n %}
 {% load mptt_tags %}
 {% load forum_tags %}
-{% load str_filters %}
 {% block title %}
     {% trans "Index" %}{{ block.super }}
 {% endblock %}
@@ -27,7 +26,9 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0">
-                                {% if node.obj.description.rendered %}{{ node.obj.description.rendered|urlizetrunc_target_blank:30 }}{% endif %}
+                                {% if node.obj.description.rendered %}
+                                    {% include 'partials/rendered_md.html' with content=node.obj.description only %}
+                                {% endif %}
                                 {% if node.children %}
                                     <a data-bs-toggle="collapse" href="#collapse{{ node.obj.id }}" role="button" aria-expanded="false" aria-controls="collapse{{ node.obj.id }}" class="btn btn-link pt-0 ps-0">
                                         {% if node.obj.is_forum %}

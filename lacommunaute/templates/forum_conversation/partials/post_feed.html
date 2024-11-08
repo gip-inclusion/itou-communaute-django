@@ -1,7 +1,6 @@
 {% load i18n %}
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
-{% load str_filters %}
 {% get_permission 'can_download_files' topic.forum request.user as user_can_download_files %}
 <div class="card post my-3 bg-light has-links-inside ms-3">
     <div class="card-body">
@@ -14,7 +13,7 @@
                     {% include "partials/upvotes.html" with obj=post kind="post" %}
                 </div>
                 <div class="post-content">
-                    {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid }}
+                    {% include 'partials/rendered_md.html' with content=post.content only %}
                     {% include "forum_conversation/forum_attachments/attachments_images.html" %}
                 </div>
                 {% include "forum_conversation/forum_attachments/attachments_detail.html" with post=post user_can_download_files=user_can_download_files %}

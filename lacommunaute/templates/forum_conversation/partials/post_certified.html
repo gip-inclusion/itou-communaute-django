@@ -1,7 +1,6 @@
 {% load i18n %}
 {% load forum_member_tags %}
 {% load forum_permission_tags %}
-{% load str_filters %}
 {% if post %}
     <div class="card post my-3 bg-communaute-lighter border-communaute has-links-inside ms-3">
         <div class="card-body">
@@ -12,7 +11,7 @@
                         <div>{% include "forum_conversation/partials/post_certified_badge.html" %}</div>
                     </div>
                     <div class="post-content" id="showmorecertifiedpostsarea{{ topic.pk }}">
-                        {{ post.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}
+                        {% include 'partials/rendered_md.html' with content=post.content truncatechars=1 only %}
                         {% if post.content.rendered|length > 200 %}
                             <a hx-get="{% url 'forum_conversation_extension:showmore_certified' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
                                id="showmorecertified-button{{ topic.pk }}"
