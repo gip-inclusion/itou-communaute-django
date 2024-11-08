@@ -17,4 +17,8 @@ def is_image(object):
 
 @register.filter
 def is_available(object):
-    return object.file.field.storage.exists(object.file.name)
+    try:
+        object.file.size
+    except FileNotFoundError:
+        return False
+    return True
