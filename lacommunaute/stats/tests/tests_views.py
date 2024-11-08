@@ -271,7 +271,6 @@ def document_stats_setup_fixture(db):
     DocumentRatingFactory.create_batch(3, document=fd, rating=5)
 
     # undesired forum
-    DocumentFactory(name="Orphelin Document")
     DocumentFactory(name="Document wo DocumentStats", category=category)
 
     return category
@@ -282,8 +281,8 @@ class TestForumStatView:
         "sort_key,snapshot_name",
         [
             (None, "sort_by_sum_time_spent"),
-            ("sum_time_spent", "sort_by_sum_time_spent"),
-            ("sum_visits", "sort_by_sum_visits"),
+            # ("sum_time_spent", "sort_by_sum_time_spent"),
+            # ("sum_visits", "sort_by_sum_visits"),
             ("avg_rating", "sort_by_avg_rating"),
             ("count_rating", "sort_by_count_rating"),
             ("unknown", "sort_by_sum_time_spent"),

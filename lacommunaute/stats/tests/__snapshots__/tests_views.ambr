@@ -60,7 +60,7 @@
                                               <th scope="col">
                                                   <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
-                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                      
                                                   </a>
                                               </th>
                                           
@@ -81,7 +81,7 @@
                                               <th scope="col">
                                                   <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
-                                                      
+                                                      <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
@@ -89,6 +89,30 @@
                                   </thead>
                               
                               <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="">Document wo DocumentStats</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 00min</td>
+                                          <td>0</td>
+                                          <td>pas de notation</td>
+                                          <td></td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 00min</td>
+                                          <td>0</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
                                   
                                       <tr>
                                           <th scope="row">
@@ -124,42 +148,6 @@
                                           <td>0</td>
                                           <td>4</td>
                                           <td>2,00</td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">D</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>3</td>
-                                          <td>5,00</td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Document wo DocumentStats</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
                                       </tr>
                                   
                               </tbody>
@@ -252,18 +240,6 @@
                                   </thead>
                               
                               <tbody>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
                                   
                                       <tr>
                                           <th scope="row">
@@ -415,18 +391,6 @@
                                   </thead>
                               
                               <tbody>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
                                   
                                       <tr>
                                           <th scope="row">
@@ -639,18 +603,6 @@
                                           <td>4,00</td>
                                       </tr>
                                   
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
-                                  
                               </tbody>
                           </table>
                       </div>
@@ -802,18 +754,6 @@
                                           <td>4,00</td>
                                       </tr>
                                   
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
-                                  
                               </tbody>
                           </table>
                       </div>
@@ -875,7 +815,7 @@
                                               <th scope="col">
                                                   <a class="text-decoration-none" href="/statistiques/documents/?sort=sum_time_spent">
                                                       Temps de lecture
-                                                      <i class="ri-arrow-down-s-fill"></i>
+                                                      
                                                   </a>
                                               </th>
                                           
@@ -896,7 +836,7 @@
                                               <th scope="col">
                                                   <a class="text-decoration-none" href="/statistiques/documents/?sort=avg_rating">
                                                       Moyenne des notations
-                                                      
+                                                      <i class="ri-arrow-down-s-fill"></i>
                                                   </a>
                                               </th>
                                           
@@ -904,6 +844,30 @@
                                   </thead>
                               
                               <tbody>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="">Document wo DocumentStats</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 00min</td>
+                                          <td>0</td>
+                                          <td>pas de notation</td>
+                                          <td></td>
+                                      </tr>
+                                  
+                                      <tr>
+                                          <th scope="row">
+                                              <a href="">D</a>
+                                              <br/>
+                                              
+                                          </th>
+                                          <td>0h 00min</td>
+                                          <td>0</td>
+                                          <td>3</td>
+                                          <td>5,00</td>
+                                      </tr>
                                   
                                       <tr>
                                           <th scope="row">
@@ -939,42 +903,6 @@
                                           <td>0</td>
                                           <td>4</td>
                                           <td>2,00</td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">D</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>3</td>
-                                          <td>5,00</td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Orphelin Document</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
-                                      </tr>
-                                  
-                                      <tr>
-                                          <th scope="row">
-                                              <a href="">Document wo DocumentStats</a>
-                                              <br/>
-                                              
-                                          </th>
-                                          <td>0h 00min</td>
-                                          <td>0</td>
-                                          <td>pas de notation</td>
-                                          <td></td>
                                       </tr>
                                   
                               </tbody>

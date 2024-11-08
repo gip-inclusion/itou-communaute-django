@@ -168,7 +168,8 @@ class ForumStatWeekArchiveView(WeekArchiveView):
 
 class DocumentStatsView(View):
     # MIGRATION :
-    # deactivate lines regarding ForumStat until this model is migrated into DocumentStat in later PR
+    # deactivate lines regarding ForumStat (sum_visits, sum_time_spent)
+    # until this model is migrated into DocumentStat in later PR
     def get_objects_with_stats_and_ratings(self):
         objects = (
             Document.objects.all()
@@ -199,7 +200,7 @@ class DocumentStatsView(View):
         sort_key = (
             request.GET.get("sort")
             if request.GET.get("sort") in [field["key"] for field in self.get_sort_fields()]
-            else "sum_time_spent"
+            else "avg_rating"
         )
         objects = objects.order_by("-" + sort_key)
 
