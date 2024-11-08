@@ -67,6 +67,9 @@ jobs:
         run: |
           python manage.py collectstatic
           python manage.py compress
+      - name: 🚧 compile translations
+        run: |
+          python manage.py compilemessages
       - name: 🚧 Check pending migrations
         run: python manage.py makemigrations --check --dry-run --noinput
       - name: 🚧 Configure bucket
