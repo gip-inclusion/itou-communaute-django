@@ -1,5 +1,4 @@
 [
-    "0 3 * * 0 $ROOT/clevercloud/extract_tables.sh",
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
     "0 6 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
     "5 6 * * * $ROOT/clevercloud/collect_daily_django_stats.sh",
