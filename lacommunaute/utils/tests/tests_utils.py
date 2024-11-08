@@ -155,6 +155,29 @@ class TestUtilsTemplateTags:
         template = Template("{% load date_filters %}{{ value|convert_seconds_into_hours }}")
         assert template.render(Context({"value": value})) == expected_result
 
+    @pytest.mark.parametrize(
+        "text,expected",
+        [
+            (
+                "[youtube:123456abc]",
+                (
+                    "&lt;div&gt;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;"
+                    "https://www.youtube.com/embed/123456abc&quot; frameborder=&quot;0&quot; allow=&quot;"
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; "
+                    "web-share&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&gt; "
+                    "&lt;/iframe&gt;&lt;/div&gt;"
+                ),
+            ),
+            ("[ youtube:123456abc]", "[ youtube:123456abc]"),
+            ("[youtube:123456abc ]", "[youtube:123456abc ]"),
+            ("[youtube:123456abc youtube:123456abc]", "[youtube:123456abc youtube:123456abc]"),
+        ],
+    )
+    def test_youtube_embed(self, text, expected):
+        template = Template("{% load str_filters %}{{ text|youtube_embed }}")
+        out = template.render(Context({"text": text}))
+        assert out == expected
+
 
 class UtilsTemplateTagsTestCase(TestCase):
     def test_pluralizefr(self):
