@@ -256,11 +256,12 @@ class TestDailyDSPView:
 
 @pytest.fixture(name="document_stats_setup")
 def document_stats_setup_fixture(db):
-    category = CategoryForumFactory()
-    fa = ForumFactory(name="A", parent=category)
-    fb = ForumFactory(name="B", parent=category)
-    fc = ForumFactory(name="C", parent=category)
-    fd = ForumFactory(name="D", parent=category)
+    category_A = CategoryForumFactory(name="category A")
+    category_B = CategoryForumFactory(name="category B")
+    fa = ForumFactory(name="A", parent=category_A)
+    fb = ForumFactory(name="B", parent=category_A)
+    fc = ForumFactory(name="C", parent=category_B)
+    fd = ForumFactory(name="D", parent=category_B)
     ForumStatFactory(forum=fa, period="week", visits=70, time_spent=40 * 60)
     ForumStatFactory(forum=fb, period="week", visits=100, time_spent=30 * 60)
     ForumStatFactory(forum=fc, period="week", visits=90, time_spent=20 * 60)
@@ -272,9 +273,9 @@ def document_stats_setup_fixture(db):
 
     # undesired forum
     ForumFactory(name="Forum not in Document area")
-    ForumFactory(name="Forum wo ForumStats", parent=category)
+    ForumFactory(name="Forum wo ForumStats", parent=category_A)
 
-    return category
+    return list(category_A.get_children()) + list(category_B.get_children())
 
 
 class TestForumStatView:
@@ -282,6 +283,7 @@ class TestForumStatView:
         "sort_key,snapshot_name",
         [
             (None, "sort_by_sum_time_spent"),
+            ("parent", "sort_by_parent"),
             ("sum_time_spent", "sort_by_sum_time_spent"),
             ("sum_visits", "sort_by_sum_visits"),
             ("avg_rating", "sort_by_avg_rating"),
@@ -295,7 +297,7 @@ class TestForumStatView:
         assert response.status_code == 200
         assert str(
             parse_response_to_soup(
-                response, selector="main", replace_in_href=[forum for forum in document_stats_setup.get_children()]
+                response, selector="main", replace_in_href=[forum for forum in document_stats_setup]
             )
         ) == snapshot(name=snapshot_name)
 

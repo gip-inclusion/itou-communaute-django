@@ -182,6 +182,7 @@ class DocumentStatsView(View):
 
     def get_sort_fields(self):
         return [
+            {"key": "parent", "label": "Catégorie"},
             {"key": "sum_time_spent", "label": "Temps de lecture"},
             {"key": "sum_visits", "label": "Nombre de Visites"},
             {"key": "count_rating", "label": "Nombres de notations"},
