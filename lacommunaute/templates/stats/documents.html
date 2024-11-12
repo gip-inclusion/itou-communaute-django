@@ -62,6 +62,7 @@
                                             <br>
                                             {% if obj.partner %}<span class="text-muted">en partenariat avec {{ obj.partner.name }}</span>{% endif %}
                                         </th>
+                                        <td>{{ obj.parent }}</td>
                                         <td>{{ obj.sum_time_spent|convert_seconds_into_hours }}</td>
                                         <td>{{ obj.sum_visits }}</td>
                                         <td>{{ obj.count_rating|default_if_none:"pas de notation" }}</td>
