@@ -102,8 +102,11 @@ class CollectUsersFromListTestCase(TestCase):
             return_value=httpx.Response(200, json=cls.contact_list_response)
         )
 
+    @respx.mock
     def test_collect_users_from_list_bad_status_code(self):
-        self.assertIsNone(collect_users_from_list(faker.random_int()))
+        list_id = faker.random_int()
+        respx.get(SIB_CONTACT_LIST_URL + f"/{list_id}/contacts").mock(return_value=httpx.Response(500))
+        self.assertIsNone(collect_users_from_list(list_id))
 
     @respx.mock
     def test_collect_users_from_list(self):

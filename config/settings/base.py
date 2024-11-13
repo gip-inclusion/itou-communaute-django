@@ -353,7 +353,7 @@ MATOMO_AUTH_TOKEN = os.getenv("MATOMO_AUTH_TOKEN", None)
 
 # SENDINBLUE
 # ---------------------------------------
-SIB_URL = "https://api.brevo.com/v3/"
+SIB_URL = os.getenv("SIB_URL", "http://test.com")
 SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
 SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
 SIB_CONTACT_LIST_URL = os.path.join(SIB_URL, "contacts/lists")
