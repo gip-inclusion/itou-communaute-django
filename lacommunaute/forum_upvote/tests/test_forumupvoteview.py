@@ -1,4 +1,3 @@
-import pytest  # noqa
 from django.urls import reverse
 from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains

@@ -1,13 +1,11 @@
-import pytest  # noqa
-
 from django.urls import reverse
 
-from lacommunaute.forum_conversation.factories import TopicFactory, AnonymousPostFactory
+from lacommunaute.forum_conversation.factories import AnonymousPostFactory, TopicFactory
 from lacommunaute.forum_conversation.models import Post
-from lacommunaute.forum_moderation.models import BlockedEmail, BlockedPost
-from lacommunaute.users.factories import UserFactory
 from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.factories import BlockedEmailFactory
+from lacommunaute.forum_moderation.models import BlockedEmail, BlockedPost
+from lacommunaute.users.factories import UserFactory
 
 
 def test_post_disapprove_view(client, db):

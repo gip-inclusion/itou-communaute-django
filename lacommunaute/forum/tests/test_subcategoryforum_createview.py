@@ -1,11 +1,10 @@
-import pytest  # noqa
 from django.urls import reverse
 from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
+from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.forum.factories import CategoryForumFactory
 
 
 UserForumPermission = get_model("forum_permission", "UserForumPermission")

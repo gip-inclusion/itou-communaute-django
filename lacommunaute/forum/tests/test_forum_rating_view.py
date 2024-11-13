@@ -1,4 +1,4 @@
-import pytest  # noqa
+import pytest
 from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory

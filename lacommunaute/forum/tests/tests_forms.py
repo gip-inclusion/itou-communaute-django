@@ -1,6 +1,3 @@
-import pytest  # noqa
-
-
 from lacommunaute.forum.forms import ForumForm
 from lacommunaute.forum.models import Forum
 

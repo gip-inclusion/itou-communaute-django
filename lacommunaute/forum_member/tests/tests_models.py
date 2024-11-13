@@ -1,11 +1,3 @@
-import pytest  # noqa
-
-from lacommunaute.forum_conversation.factories import (  # noqa
-    AnonymousPostFactory,
-    AnonymousTopicFactory,
-    PostFactory,
-    TopicFactory,
-)
 from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 

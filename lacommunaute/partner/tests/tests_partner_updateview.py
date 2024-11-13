@@ -1,5 +1,4 @@
-import pytest  # noqa
-
+import pytest
 from django.urls import reverse
 
 from lacommunaute.partner.factories import PartnerFactory

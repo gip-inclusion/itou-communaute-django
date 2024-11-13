@@ -1,9 +1,10 @@
-import pytest  # noqa
+import pytest
 from django.conf import settings
 from django.forms import HiddenInput
 from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
+from taggit.models import Tag
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import (
@@ -15,7 +16,6 @@ from lacommunaute.forum_conversation.factories import (
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.users.factories import UserFactory
-from taggit.models import Tag
 
 
 faker = Faker(settings.LANGUAGE_CODE)

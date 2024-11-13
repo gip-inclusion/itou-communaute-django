@@ -1,6 +1,5 @@
 import re
 
-import pytest  # noqa
 from dateutil.relativedelta import relativedelta
 from django.urls import reverse
 from django.utils import timezone

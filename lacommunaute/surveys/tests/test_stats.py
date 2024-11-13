@@ -1,6 +1,7 @@
-import pytest  # noqa
-from datetime import datetime, date
+from datetime import date, datetime
+
 from dateutil.relativedelta import relativedelta
+
 from lacommunaute.stats.models import Stat
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.surveys.stats import collect_dsp_stats
