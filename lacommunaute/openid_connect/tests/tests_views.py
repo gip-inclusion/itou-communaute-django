@@ -167,7 +167,7 @@ class OpenID_LoginTest(OpenID_BaseTestCase):
     @respx.mock
     def test_normal_signin(self):
         """
-        A user has created an account with Inclusion Connect.
+        A user has created an account with Pro Connect.
         He logs out.
         He can log in again later.
         """
