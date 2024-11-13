@@ -21,7 +21,11 @@ def send_email(to, params, template_id, kind, bcc=None):
     if bcc:
         payload["bcc"] = bcc
 
-    response = httpx.post(settings.SIB_SMTP_URL, headers=headers, json=payload)
+    if settings.DEBUG:
+        # We don't want to send emails in debug mode, payload is saved in the database
+        response = httpx.Response(200, json={"message": "OK"})
+    else:
+        response = httpx.post(settings.SIB_SMTP_URL, headers=headers, json=payload)
 
     EmailSentTrack.objects.create(
         status_code=response.status_code,
