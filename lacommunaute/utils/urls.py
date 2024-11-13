@@ -62,3 +62,9 @@ def get_safe_url(request, param_name=None, fallback_url=None, url=None):
                 return url
 
     return fallback_url
+
+
+def clean_next_url(url):
+    if not url_has_allowed_host_and_scheme(url, allowed_hosts=settings.ALLOWED_HOSTS):
+        return "/"
+    return url
