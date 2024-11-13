@@ -106,7 +106,7 @@ class AttachmentsTemplateTagTests(TestCase):
         f = SimpleUploadedFile("test.png", force_bytes("file_content"))
         attachment = AttachmentFactory(post=self.post, file=f)
 
-        with patch.object(default_storage, "exists", return_value=False):
+        with patch.object(default_storage, "size", side_effect=FileNotFoundError):
             out = Template("{% load attachments_tags %}" "{{ attachment|is_available }}").render(
                 Context(
                     {
