@@ -55,14 +55,6 @@ services:
       - "127.0.0.1:${DJANGO_PORT_ON_DOCKER_HOST:-8000}:8000"
       - "127.0.0.1:${DJANGO_DEBUGPY_PORT:-5678}:5678"
 
-  mailhog:
-    profiles: [ "mailhog" ]
-    image: mailhog/mailhog:latest
-    restart: always
-    ports:
-      - 127.0.0.1:1025:1025
-      - 127.0.0.1:8025:8025
-
 volumes:
   postgres_data:
   postgres_data_backups:
