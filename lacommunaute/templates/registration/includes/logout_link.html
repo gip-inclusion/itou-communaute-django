@@ -1,0 +1,6 @@
+{% if request.session.MAGIC_LINK %}
+    {% url 'users:logout' as logout_url %}
+{% else %}
+    {% url 'openid_connect:logout' as logout_url %}
+{% endif %}
+<a class="dropdown-item text-danger" id="js-logout" href="{{ logout_url }}"">Déconnexion</a>

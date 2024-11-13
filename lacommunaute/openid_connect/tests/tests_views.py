@@ -179,7 +179,7 @@ class OpenID_LoginTest(OpenID_BaseTestCase):
 
         # Then log in again.
         response = self.client.get(reverse("pages:home"))
-        self.assertContains(response, reverse("openid_connect:authorize"))
+        self.assertContains(response, reverse("users:login"))
 
         response = mock_oauth_dance(self, assert_redirects=False)
         expected_redirection = reverse("pages:home")

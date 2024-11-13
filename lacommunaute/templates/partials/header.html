@@ -103,16 +103,12 @@
                                             <li>
                                                 <div class="dropdown-divider"></div>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item text-danger" id="js-logout" href="{% url 'openid_connect:logout' %}">Déconnexion</a>
-                                            </li>
+                                            <li>{% include "registration/includes/logout_link.html" %}</li>
                                         </ul>
                                     </div>
                                 </li>
                             {% else %}
-                                <li>
-                                    <a href="{% url 'openid_connect:authorize' %}" rel="nofollow" class="btn">Se connecter | S'inscrire</a>
-                                </li>
+                                <li>{% include "registration/includes/login_link.html" %}</li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -277,16 +273,12 @@
                                 <li>
                                     <div class="dropdown-divider"></div>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item text-danger" id="js-logout" href="{% url 'openid_connect:logout' %}">Déconnexion</a>
-                                </li>
+                                <li>{% include "registration/includes/logout_link.html" %}</li>
                             </ul>
                         </div>
                     </div>
                 {% else %}
-                    <div>
-                        <a href="{% url 'openid_connect:authorize' %}" rel="nofollow" class="btn">Se connecter | S'inscrire</a>
-                    </div>
+                    <div>{% include "registration/includes/login_link.html" %}</div>
                 {% endif %}
             </nav>
         </div>
