@@ -164,11 +164,11 @@
                                       </div>
                                   </form>
                               </li>
-
+                              
                                   <li>
   <a class="btn btn-outline-primary btn-ico btn-block" href="/users/login/?next=/" rel="nofollow">Se connecter | S'inscrire</a>
   </li>
-
+                              
                           </ul>
                       </nav>
                   </div>
@@ -255,11 +255,11 @@
           </div>
           <div class="offcanvas-footer flex-column align-items-stretch">
               <nav aria-label="Menu de navigation principale pour mobile" role="navigation">
-
+                  
                       <div>
-  <a class="btn btn-outline-primary btn-ico btn-block" href="/members/login/?next=/" rel="nofollow">Se connecter | S'inscrire</a>
+  <a class="btn btn-outline-primary btn-ico btn-block" href="/users/login/?next=/" rel="nofollow">Se connecter | S'inscrire</a>
   </div>
-
+                  
               </nav>
           </div>
       </div>
