@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load theme_inclusion %}
+{% block title %}Connexion {{ block.super }}{% endblock %}
+{% block meta_description %}
+    {% trans "Login | Sign in" %}
+{% endblock meta_description %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-lg-8 col-12">
+                    <h1 class="s-title-01__title h1">{% trans "Login | Sign in" %}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-7">
+                    Un lien de connexion vous a été envoyé à l'adresse {{ email }}. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

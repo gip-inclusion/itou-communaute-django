@@ -18,6 +18,7 @@ from lacommunaute.partner import urls as partner_urls
 from lacommunaute.search import urls as search_urls
 from lacommunaute.stats import urls as stats_urls
 from lacommunaute.surveys import urls as surveys_urls
+from lacommunaute.users import urls as users_urls
 
 
 conversation_urlpatterns_factory = get_class("forum_conversation.urls", "urlpatterns_factory")
@@ -31,6 +32,7 @@ urlpatterns = [
     # www.
     path("", include(pages_urls)),
     path("members/", include(forum_member_urls)),
+    path("users/", include(users_urls)),
     path("", include(forum_conversation_extension_urls)),
     path("", include(forum_extension_urls)),
     path("", include(forum_polls_extension_urls)),

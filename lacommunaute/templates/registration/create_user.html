@@ -1,0 +1,51 @@
+{% extends "board_base.html" %}
+{% load i18n %}
+{% block sub_title %}
+    {% trans "Sign in" %}
+{% endblock sub_title %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-12">
+                    <h1 class="s-title-01__title h1">
+                        <strong>{% trans "Sign in" %}</strong>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-7">
+                    <div class="card">
+                        <div class="card-body">
+                            Bonjour {{ email }} et bienvenue dans la communauté de l'inclusion, encore quelques informations avant de vous envoyer le lien.
+                        </div>
+                        <div class="c-form">
+                            <form method="post" action="." enctype="multipart/form-data" novalidate>
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <i class="icon-exclamation-sign"></i>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% include "partials/form_field.html" with field=form.email %}
+                                {% include "partials/form_field.html" with field=form.first_name %}
+                                {% include "partials/form_field.html" with field=form.last_name %}
+                                <div class="form-actions">
+                                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                                    <input type="submit" class="btn btn-large btn-primary" value="{% trans "Login with your email" %}" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
