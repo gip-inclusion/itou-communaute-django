@@ -2,9 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views import View
 from django.views.generic import ListView
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
@@ -31,25 +29,8 @@ class FormValidMixin:
         return valid
 
 
-class TopicCreateCheckView(View):
-    def get(self, request, *args, **kwargs):
-        forum = get_object_or_404(Forum, pk=kwargs["forum_pk"])
-        return render(request, "forum_conversation/topic_create_check.html", {"forum": forum})
-
-
 class TopicCreateView(FormValidMixin, views.TopicCreateView):
     post_form_class = TopicForm
-
-    def get(self, request, *args, **kwargs):
-        forum = self.get_forum()
-        if forum.is_in_documentation_area or "checked" in self.request.GET:
-            return super().get(request, *args, **kwargs)
-        return redirect(
-            reverse(
-                "forum_conversation_extension:topic_create_check",
-                kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug},
-            )
-        )
 
     def get_success_url(self):
         if not self.forum_post.approved:

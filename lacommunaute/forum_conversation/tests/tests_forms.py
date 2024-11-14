@@ -56,10 +56,7 @@ def fixture_public_forum():
 
 
 def get_create_topic_url(forum):
-    return (
-        reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
-        + "?checked"
-    )
+    return reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug})
 
 
 def get_update_topic_url(topic):
