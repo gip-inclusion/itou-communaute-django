@@ -64,7 +64,6 @@ def img_fluid(value):
 @register.filter(is_safe=True)
 def youtube_embed(text):
     pattern = re.compile(r"\[youtube:(\S+?)\]")
-    print(pattern.findall(text), text)
     for match in pattern.findall(text):
         text = text.replace(
             f"[youtube:{match}]",
