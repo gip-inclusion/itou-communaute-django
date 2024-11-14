@@ -6,7 +6,8 @@ from django.db import models
 from django.utils import crypto, timezone
 
 from lacommunaute.forum_member.models import ForumProfile
-from lacommunaute.inclusion_connect.constants import OIDC_STATE_EXPIRATION
+from lacommunaute.openid_connect.constants import OIDC_STATE_EXPIRATION
+from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.models import User
 
 
@@ -16,7 +17,7 @@ class OIDConnectQuerySet(models.QuerySet):
         return self.filter(created_at__lte=at).delete()
 
 
-class InclusionConnectState(models.Model):
+class OpenID_State(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Length used in call to get_random_string()
     csrf = models.CharField(max_length=12, unique=True)
@@ -70,6 +71,7 @@ class OIDConnectUserData:
     first_name: str
     last_name: str
     username: str
+    identity_provider: str = IdentityProvider.PRO_CONNECT
 
     def create_or_update_user(self):
         """
@@ -82,19 +84,17 @@ class OIDConnectUserData:
         user_data_dict = dataclasses.asdict(self)
         user_data_dict = {key: value for key, value in user_data_dict.items() if value}
         try:
-            user = User.objects.get(username=self.username)
+            user = User.objects.get(username=self.username, identity_provider=self.identity_provider)
             created = False
         except User.DoesNotExist:
-            # User.objects.create_user does the following:
-            # - set User.is_active to true,
-            # - call User.set_unusable_password() if no password is given.
-            # https://docs.djangoproject.com/fr/4.0/ref/contrib/auth/#django.contrib.auth.models.UserManager.create_user
-            # NB: if we already have a user with the same username but with a different email and a different
-            # provider the code will break here. We know it but since it's highly unlikely we just added a test
-            # on this behaviour. No need to do a fancy bypass if it's never used.
-            user = User.objects.create_user(**user_data_dict)
-            ForumProfile.objects.create(user=user)
-            created = True
+            try:
+                # look for a user with the same email but not yet migrated from Inclusion Connect to Pro Connect
+                user = User.objects.get(email=self.email, identity_provider=IdentityProvider.INCLUSION_CONNECT)
+                created = False
+            except User.DoesNotExist:
+                user = User.objects.create_user(**user_data_dict)
+                ForumProfile.objects.create(user=user)
+                created = True
 
         if not created:
             for key, value in user_data_dict.items():
@@ -113,7 +113,7 @@ class OIDConnectUserData:
         return {
             "username": user_info["sub"],
             "first_name": user_info["given_name"],
-            "last_name": user_info["family_name"],
+            "last_name": user_info["usual_name"],
             "email": user_info["email"],
         }
 

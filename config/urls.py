@@ -12,7 +12,7 @@ from lacommunaute.forum_conversation.forum_polls import urls as forum_polls_exte
 from lacommunaute.forum_member import urls as forum_member_urls
 from lacommunaute.forum_moderation import urls as forum_moderation_urls
 from lacommunaute.forum_upvote import urls as forum_upvote_urls
-from lacommunaute.inclusion_connect import urls as inclusion_connect_urls
+from lacommunaute.openid_connect import urls as openid_connect_urls
 from lacommunaute.pages import urls as pages_urls
 from lacommunaute.partner import urls as partner_urls
 from lacommunaute.search import urls as search_urls
@@ -26,8 +26,8 @@ tracking_urlpatterns_factory = get_class("forum_tracking.urls", "urlpatterns_fac
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # Inclusion Connect URLs.
-    path("inclusion_connect/", include(inclusion_connect_urls)),
+    # Pro Connect URLs.
+    path("pro_connect/", include(openid_connect_urls)),
     # www.
     path("", include(pages_urls)),
     path("members/", include(forum_member_urls)),

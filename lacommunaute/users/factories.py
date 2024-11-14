@@ -4,6 +4,7 @@ import factory
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 
+from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.models import User
 
 
@@ -27,6 +28,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker("last_name")
     email = factory.Faker("email")
     password = factory.Transformer(DEFAULT_PASSWORD, transform=make_password)
+    identity_provider = IdentityProvider.PRO_CONNECT
 
     @factory.post_generation
     def with_perm(obj, create, extracted, **kwargs):
