@@ -54,3 +54,6 @@ MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"  # noqa: F405
 
 CSP_DEFAULT_SRC = ("*",)
 CSP_IMG_SRC += ("localhost:9000",)  # noqa: F405
+
+COMMU_PROTOCOL = "http"
+COMMU_FQDN = "127.0.0.1:8000"

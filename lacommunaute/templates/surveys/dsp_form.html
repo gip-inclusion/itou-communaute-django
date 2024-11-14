@@ -66,9 +66,7 @@
                         <div class="c-box mb-5">
                             <div class="row">
                                 <div class="col-lg col-12 mb-3">Je me connecte pour accéder à l'aide au diagnostic pour le parcours IAE</div>
-                                <div class="col-lg-auto col-12">
-                                    <a href="{% url 'openid_connect:authorize' %}?next={% url 'surveys:dsp_create' %}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">Me connecter</a>
-                                </div>
+                                <div class="col-lg-auto col-12">{% include "registration/includes/login_link.html" %}</div>
                             </div>
                         </div>
                     </div>

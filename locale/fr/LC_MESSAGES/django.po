@@ -884,6 +884,12 @@ msgstr "S'inscrire"
 msgid "Login"
 msgstr "Se connecter"
 
+msgid "Login | Sign in"
+msgstr "Se connecter | S'inscrire"
+
+msgid "Login with your email"
+msgstr "Se connecter avec votre email"
+
 #: lacommunaute/templates/pages/home.html:84
 msgid "Go to this forum"
 msgstr "Accéder à cette thématique"

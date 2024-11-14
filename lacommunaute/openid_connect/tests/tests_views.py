@@ -167,7 +167,7 @@ class OpenID_LoginTest(OpenID_BaseTestCase):
     @respx.mock
     def test_normal_signin(self):
         """
-        A user has created an account with Inclusion Connect.
+        A user has created an account with Pro Connect.
         He logs out.
         He can log in again later.
         """
@@ -179,7 +179,7 @@ class OpenID_LoginTest(OpenID_BaseTestCase):
 
         # Then log in again.
         response = self.client.get(reverse("pages:home"))
-        self.assertContains(response, reverse("openid_connect:authorize"))
+        self.assertContains(response, reverse("users:login"))
 
         response = mock_oauth_dance(self, assert_redirects=False)
         expected_redirection = reverse("pages:home")

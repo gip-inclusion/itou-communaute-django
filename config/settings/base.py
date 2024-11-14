@@ -353,7 +353,7 @@ MATOMO_AUTH_TOKEN = os.getenv("MATOMO_AUTH_TOKEN", None)
 
 # SENDINBLUE
 # ---------------------------------------
-SIB_URL = "https://api.brevo.com/v3/"
+SIB_URL = os.getenv("SIB_URL", "http://test.com")
 SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
 SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
 SIB_CONTACT_LIST_URL = os.path.join(SIB_URL, "contacts/lists")
@@ -361,6 +361,7 @@ SIB_CONTACT_LIST_URL = os.path.join(SIB_URL, "contacts/lists")
 SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.beta.gouv.fr")
 
+SIB_MAGIC_LINK_TEMPLATE = 31
 SIB_UNANSWERED_QUESTION_TEMPLATE = 10
 SIB_ONBOARDING_LIST = 5
 SIB_NEW_MESSAGES_TEMPLATE = 28

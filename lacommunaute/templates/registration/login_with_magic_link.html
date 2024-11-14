@@ -1,0 +1,49 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load theme_inclusion %}
+{% block title %}Connexion {{ block.super }}{% endblock %}
+{% block meta_description %}
+    {% trans "Login | Sign in" %}
+{% endblock meta_description %}
+{% block content %}
+    <section class="s-title-01 mt-lg-5">
+        <div class="s-title-01__container container">
+            <div class="s-title-01__row row">
+                <div class="s-title-01__col col-lg-8 col-12">
+                    <h1 class="s-title-01__title h1">{% trans "Login | Sign in" %}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="s-section">
+        <div class="s-section__container container">
+            <div class="s-section__row row">
+                <div class="s-section__col col-12 col-lg-7">
+                    <div class="card">
+                        <div class="c-form">
+                            <a href="{% url 'openid_connect:authorize' %}?next={{ next }}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">Se connecter avec Pro Connect</a>
+                            <hr class="my-5" data-it-text="ou">
+                            <form method="post" action="." enctype="multipart/form-data" novalidate>
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                        <div class="alert alert-danger">
+                                            <i class="icon-exclamation-sign"></i>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% include "partials/form_field.html" with field=form.email %}
+                                <div class="form-actions">
+                                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                                    <input type="submit" class="btn btn-large btn-primary" value="{% trans "Login with your email" %}" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

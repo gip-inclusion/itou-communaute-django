@@ -1,0 +1,469 @@
+# serializer version: 1
+# name: TestCreateUserView.test_post_existing_email[/-/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestCreateUserView.test_post_existing_email[/topics/-/topics/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestCreateUserView.test_post_existing_email[http://www.unallowed_host.com-/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestCreateUserView.test_post_new_email[/-/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse john@travolta.lt. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestCreateUserView.test_post_new_email[/topics/-/topics/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse john@travolta.lt. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestCreateUserView.test_post_new_email[http://www.unallowed_host.com-/][create_user_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse john@travolta.lt. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_content[/][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      <div class="card">
+                          <div class="c-form">
+                              <a class="btn btn-outline-primary btn-ico btn-block" href="/pro_connect/authorize?next=" rel="nofollow">Se connecter avec Pro Connect</a>
+                              <hr class="my-5" data-it-text="ou"/>
+                              <form action="." enctype="multipart/form-data" method="post" novalidate="">
+                                  <input name="csrfmiddlewaretoken" type="hidden" value="NORMALIZED_CSRF_TOKEN"/>
+                                  
+                                  
+  
+  <div class="form-group" id="div_id_email">
+      
+          
+          
+              <input class="form-control" id="id_email" maxlength="320" name="email" placeholder="Votre adresse email" required="" type="email"/>
+          
+      
+      
+      
+      
+  </div>
+  
+                                  <div class="form-actions">
+                                      <input name="next" type="hidden" value="/"/>
+                                      <input class="btn btn-large btn-primary" type="submit" value="Se connecter avec votre email"/>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_content[/topics/][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      <div class="card">
+                          <div class="c-form">
+                              <a class="btn btn-outline-primary btn-ico btn-block" href="/pro_connect/authorize?next=" rel="nofollow">Se connecter avec Pro Connect</a>
+                              <hr class="my-5" data-it-text="ou"/>
+                              <form action="." enctype="multipart/form-data" method="post" novalidate="">
+                                  <input name="csrfmiddlewaretoken" type="hidden" value="NORMALIZED_CSRF_TOKEN"/>
+                                  
+                                  
+  
+  <div class="form-group" id="div_id_email">
+      
+          
+          
+              <input class="form-control" id="id_email" maxlength="320" name="email" placeholder="Votre adresse email" required="" type="email"/>
+          
+      
+      
+      
+      
+  </div>
+  
+                                  <div class="form-actions">
+                                      <input name="next" type="hidden" value="/topics/"/>
+                                      <input class="btn btn-large btn-primary" type="submit" value="Se connecter avec votre email"/>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_content[None][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      <div class="card">
+                          <div class="c-form">
+                              <a class="btn btn-outline-primary btn-ico btn-block" href="/pro_connect/authorize?next=" rel="nofollow">Se connecter avec Pro Connect</a>
+                              <hr class="my-5" data-it-text="ou"/>
+                              <form action="." enctype="multipart/form-data" method="post" novalidate="">
+                                  <input name="csrfmiddlewaretoken" type="hidden" value="NORMALIZED_CSRF_TOKEN"/>
+                                  
+                                  
+  
+  <div class="form-group" id="div_id_email">
+      
+          
+          
+              <input class="form-control" id="id_email" maxlength="320" name="email" placeholder="Votre adresse email" required="" type="email"/>
+          
+      
+      
+      
+      
+  </div>
+  
+                                  <div class="form-actions">
+                                      <input name="next" type="hidden" value=""/>
+                                      <input class="btn btn-large btn-primary" type="submit" value="Se connecter avec votre email"/>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_post[/-/][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_post[/topics/-/topics/][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestLoginView.test_post[http://www.unallowed_host.com-/][login_view_content]
+  '''
+  <main class="s-main" id="main" role="main">
+              
+                  
+              
+              
+              
+                  
+      <section class="s-title-01 mt-lg-5">
+          <div class="s-title-01__container container">
+              <div class="s-title-01__row row">
+                  <div class="s-title-01__col col-lg-8 col-12">
+                      <h1 class="s-title-01__title h1">Se connecter | S'inscrire</h1>
+                  </div>
+              </div>
+          </div>
+      </section>
+      <section class="s-section">
+          <div class="s-section__container container">
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12 col-lg-7">
+                      Un lien de connexion vous a été envoyé à l'adresse samuel@jackson.com. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour vous connecter.
+                  </div>
+              </div>
+          </div>
+      </section>
+  
+              
+          </main>
+  '''
+# ---
+# name: TestSendMagicLink.test_send_magic_link[send_magic_link_payload]
+  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.beta.gouv.fr"}, "to": [{"email": "edith@martin.co"}], "params": {"display_name": "Edith M.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
+# ---

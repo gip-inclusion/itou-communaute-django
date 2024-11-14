@@ -1,0 +1,2 @@
+{% load i18n %}
+<a href="{% url 'users:login' %}?next={{ request.path }}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">{% trans "Login | Sign in" %}</a>

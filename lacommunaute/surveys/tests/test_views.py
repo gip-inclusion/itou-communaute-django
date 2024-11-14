@@ -22,7 +22,7 @@ dsp_choices_list = [
 location_field_list = ["location", "city_code"]
 
 form_html = '<form method="post">'
-login_with_next_url = reverse("openid_connect:authorize") + "?next=" + reverse("surveys:dsp_create")
+login_with_next_url = reverse("users:login") + "?next=" + reverse("surveys:dsp_create")
 
 
 class TestDSPCreateView:
