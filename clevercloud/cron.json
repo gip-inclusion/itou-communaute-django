@@ -1,9 +1,9 @@
 [
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
-    "0 6 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
-    "5 6 * * * $ROOT/clevercloud/collect_daily_django_stats.sh",
-    "10 6 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
-    "15 6 * * 1 $ROOT/clevercloud/collect_weekly_matomo_forum_stats.sh",
+    "0 2 * * * $ROOT/clevercloud/collect_daily_matomo_stats.sh",
+    "5 2 * * * $ROOT/clevercloud/collect_daily_django_stats.sh",
+    "10 2 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
+    "15 2 * * 1 $ROOT/clevercloud/collect_weekly_matomo_forum_stats.sh",
     "*/15 7-21 * * * $ROOT/clevercloud/send_notifications_regular.sh",
     "20 6 * * * $ROOT/clevercloud/send_notifications_daily.sh",
     "10 6-22 * * * $ROOT/clevercloud/add_user_to_list_when_register.sh",
