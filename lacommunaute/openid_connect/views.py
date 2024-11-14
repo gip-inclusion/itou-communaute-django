@@ -65,7 +65,6 @@ def pro_connect_authorize(request):
         "scope": constants.OPENID_CONNECT_SCOPES,
         "state": signed_csrf,
         "nonce": crypto.get_random_string(length=12),
-        "from": "communaute",  # Display a "La communauté" logo on the connection page.
         "acr_values": "eidas1",  # Force the eIDAS authentication.
     }
     redirect_url = (
