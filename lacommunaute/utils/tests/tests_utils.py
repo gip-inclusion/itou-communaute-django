@@ -24,7 +24,6 @@ from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.date import get_last_sunday
-from lacommunaute.utils.html import wrap_iframe_in_div_tag
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import (
     collect_forum_stats_from_matomo_api,
@@ -155,6 +154,29 @@ class TestUtilsTemplateTags:
     def test_convert_seconds_into_hours(self, value, expected_result):
         template = Template("{% load date_filters %}{{ value|convert_seconds_into_hours }}")
         assert template.render(Context({"value": value})) == expected_result
+
+    @pytest.mark.parametrize(
+        "text,expected",
+        [
+            (
+                "[youtube:123456abc]",
+                (
+                    "&lt;div&gt;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;"
+                    "https://www.youtube.com/embed/123456abc&quot; frameborder=&quot;0&quot; allow=&quot;"
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; "
+                    "web-share&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&gt; "
+                    "&lt;/iframe&gt;&lt;/div&gt;"
+                ),
+            ),
+            ("[ youtube:123456abc]", "[ youtube:123456abc]"),
+            ("[youtube:123456abc ]", "[youtube:123456abc ]"),
+            ("[youtube:123456abc youtube:123456abc]", "[youtube:123456abc youtube:123456abc]"),
+        ],
+    )
+    def test_youtube_embed(self, text, expected):
+        template = Template("{% load str_filters %}{{ text|youtube_embed }}")
+        out = template.render(Context({"text": text}))
+        assert out == expected
 
 
 class UtilsTemplateTagsTestCase(TestCase):
@@ -717,29 +739,3 @@ class TestTheLastSunday:
     )
     def test_the_last_sunday(self, day, expected_sunday):
         assert get_last_sunday(datetime(2024, 5, day)) == expected_sunday
-
-
-class TestWrapIframeInDiv:
-    @pytest.mark.parametrize(
-        "input,output",
-        [
-            ("<iframe src='xxx'></iframe>", "<div><iframe src='xxx'></iframe></div>"),
-            (
-                "markdown text <iframe src='xxx'></iframe> markdown text",
-                "markdown text <div><iframe src='xxx'></iframe></div> markdown text",
-            ),
-            ("<div><iframe src='xxx'></iframe></div>", "<div><iframe src='xxx'></iframe></div>"),
-            ("<div><iframe src='xxx'></iframe> text", "<div><iframe src='xxx'></iframe></div> text"),
-            ("<iframe src='xxx'></iframe></div>", "<div><iframe src='xxx'></iframe></div>"),
-            (
-                "<iframe src='xxx'></iframe><iframe src='yyy'></iframe>",
-                "<div><iframe src='xxx'></iframe></div><div><iframe src='yyy'></iframe></div>",
-            ),
-            (
-                "<div><iframe src='xxx'></iframe><iframe src='yyy'></iframe></div>",
-                "<div><iframe src='xxx'></iframe></div><div><iframe src='yyy'></iframe></div>",
-            ),
-        ],
-    )
-    def test_wrap_iframe_in_div_tag(self, input, output):
-        assert wrap_iframe_in_div_tag(input) == output

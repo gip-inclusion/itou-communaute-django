@@ -2,6 +2,8 @@
 https://docs.djangoproject.com/en/dev/howto/custom-template-tags/
 """
 
+import re
+
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.urls import reverse
@@ -57,3 +59,22 @@ def urlizetrunc_target_blank(value, limit, autoescape=True):
 @stringfilter
 def img_fluid(value):
     return mark_safe(value.replace("<img ", '<img class="img-fluid" '))
+
+
+@register.filter(is_safe=True)
+def youtube_embed(text):
+    pattern = re.compile(r"\[youtube:(\S+?)\]")
+    print(pattern.findall(text), text)
+    for match in pattern.findall(text):
+        text = text.replace(
+            f"[youtube:{match}]",
+            (
+                '<div><iframe width="560" height="315" '
+                f'src="https://www.youtube.com/embed/{match}" '
+                'frameborder="0" allow="accelerometer; autoplay; clipboard-write; '
+                'encrypted-media; gyroscope; picture-in-picture; web-share" '
+                'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen> </iframe></div>'
+            ),
+        )
+
+    return text

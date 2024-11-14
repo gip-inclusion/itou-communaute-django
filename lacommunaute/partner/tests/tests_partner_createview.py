@@ -39,7 +39,7 @@ def test_post_partner(client, db, url, superuser):
     data = {
         "name": "Test",
         "short_description": "Short description",
-        "description": "# Titre\n<iframe src='https://www.example.com'></iframe>",
+        "description": "# Titre\ntext",
         "url": "https://www.example.com",
     }
     response = client.post(url, data)
@@ -47,4 +47,4 @@ def test_post_partner(client, db, url, superuser):
 
     partner = Partner.objects.get()
     assert response.url == reverse("partner:detail", kwargs={"pk": partner.pk, "slug": partner.slug})
-    assert partner.description.raw == "# Titre\n<div><iframe src='https://www.example.com'></iframe></div>"
+    assert partner.description.raw == "# Titre\ntext"

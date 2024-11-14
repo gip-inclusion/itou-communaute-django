@@ -5,7 +5,6 @@ from taggit.models import Tag
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.partner.models import Partner
-from lacommunaute.utils.html import wrap_iframe_in_div_tag
 
 
 class ForumForm(forms.ModelForm):
@@ -45,7 +44,6 @@ class ForumForm(forms.ModelForm):
 
     def save(self, commit=True):
         forum = super().save(commit=False)
-        forum.description = wrap_iframe_in_div_tag(self.cleaned_data.get("description"))
 
         if commit:
             forum.save()

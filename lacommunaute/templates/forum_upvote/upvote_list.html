@@ -1,7 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load i18n %}
 {% load date_filters %}
-{% load str_filters %}
 {% block title %}
     {% trans "My UpVotes" %}{{ block.super }}
 {% endblock %}
@@ -56,7 +55,7 @@
                                                         </a>
                                                         <br>
                                                         {% include "forum_conversation/partials/poster.html" with post=upvote.content_object topic=upvote.content_object.topic %}
-                                                        <div>{{ upvote.content_object.content.rendered|urlizetrunc_target_blank:30|img_fluid|truncatechars_html:200 }}</div>
+                                                        <div>{% include 'partials/rendered_md.html' with content=upvote.content_object.content truncatechars=1 only %}</div>
                                                     {% endif %}
                                                 </td>
                                             </tr>

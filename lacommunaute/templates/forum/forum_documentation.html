@@ -1,6 +1,5 @@
 {% extends "forum/forum_detail.html" %}
 {% load i18n %}
-{% load str_filters %}
 {% block forum_head_content %}
     <div class="s-section__row row">
         <div class="col-12 col-lg-9">
@@ -27,7 +26,9 @@
                     </div>
                 {% endif %}
                 <div class="col-12 col-sm-auto mt-3">
-                    <article class="textarea_cms_md">{{ forum.description.rendered|urlizetrunc_target_blank:30|img_fluid }}</article>
+                    <article class="textarea_cms_md">
+                        {% include 'partials/rendered_md.html' with content=forum.description only %}
+                    </article>
                 </div>
                 {% if forum.partner %}
                     <div class="col-12 col-sm-auto mt-3" id="partner_area">

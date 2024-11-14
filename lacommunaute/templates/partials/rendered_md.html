@@ -1,0 +1,6 @@
+{% load str_filters %}
+{% if truncatechars %}
+    {{ content.rendered|urlizetrunc_target_blank:30|img_fluid|youtube_embed|truncatechars_html:200 }}
+{% else %}
+    {{ content.rendered|urlizetrunc_target_blank:30|img_fluid|youtube_embed }}
+{% endif %}

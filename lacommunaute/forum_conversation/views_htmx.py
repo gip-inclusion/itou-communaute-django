@@ -19,7 +19,7 @@ track_handler = TrackingHandler()
 
 
 class TopicContentView(PermissionRequiredMixin, View):
-    template = "forum_conversation/partials/topic_content.html"
+    template = "partials/rendered_md.html"
     permission_required = [
         "can_read_forum",
     ]
@@ -32,6 +32,9 @@ class TopicContentView(PermissionRequiredMixin, View):
             )
         return self.topic
 
+    def get_content(self):
+        return self.get_topic().first_post.content
+
     def get(self, request, **kwargs):
         topic = self.get_topic()
 
@@ -40,7 +43,7 @@ class TopicContentView(PermissionRequiredMixin, View):
         return render(
             request,
             self.template,
-            context={"topic": topic},
+            context={"content": self.get_content()},
         )
 
     def get_controlled_object(self):
@@ -48,7 +51,8 @@ class TopicContentView(PermissionRequiredMixin, View):
 
 
 class TopicCertifiedPostView(TopicContentView):
-    template = "forum_conversation/partials/topic_certified_post.html"
+    def get_content(self):
+        return self.get_topic().certified_post.post.content
 
 
 class PostListView(PermissionRequiredMixin, View):
