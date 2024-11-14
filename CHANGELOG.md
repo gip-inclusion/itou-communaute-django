@@ -1,5 +1,22 @@
 # Journal des modifications
 
+## [2.17.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.16.0...v2.17.0) (2024-11-14)
+
+
+### Features
+
+* ajout d'une balise youtube dans le markdown ([#810](https://github.com/gip-inclusion/itou-communaute-django/issues/810)) ([adbff17](https://github.com/gip-inclusion/itou-communaute-django/commit/adbff17e176a1c750d3ac354a8f9f94c129a7ebc))
+* **forum_conversation:** suppression du triage avant de pouvoir poser une question ([#818](https://github.com/gip-inclusion/itou-communaute-django/issues/818)) ([f1b64c6](https://github.com/gip-inclusion/itou-communaute-django/commit/f1b64c695c62de0cfd150868f4eee09dc061ae8a))
+* **stats:** ajout de la colonne categorie dans les stats des fiches pratiques ([#812](https://github.com/gip-inclusion/itou-communaute-django/issues/812)) ([c072b5f](https://github.com/gip-inclusion/itou-communaute-django/commit/c072b5fe831ed4634b1ee350c8d75d717244a482))
+* **user:** authentification via un lien magique envoyé par email ([#804](https://github.com/gip-inclusion/itou-communaute-django/issues/804)) ([64e04a3](https://github.com/gip-inclusion/itou-communaute-django/commit/64e04a3486a3b31a2885090e2120c2a9f3e128a1))
+* **user:** basculer l'authentification vers ProConnect ([#731](https://github.com/gip-inclusion/itou-communaute-django/issues/731)) ([5429fce](https://github.com/gip-inclusion/itou-communaute-django/commit/5429fce488095dda582d954427285a6f11850991))
+
+
+### Bug Fixes
+
+* **attachment:** affichage des liens vers les fichiers des messages ([#806](https://github.com/gip-inclusion/itou-communaute-django/issues/806)) ([7c34605](https://github.com/gip-inclusion/itou-communaute-django/commit/7c3460554f799af337c3d25ad76e9d403366a55c))
+* **metabase:** deplanification d'une tâche résiduelle ([#808](https://github.com/gip-inclusion/itou-communaute-django/issues/808)) ([692a274](https://github.com/gip-inclusion/itou-communaute-django/commit/692a274e9968539ed3d791d18ca4f53949245556))
+
 ## [2.16.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.15.0...v2.16.0) (2024-10-09)
 
 
