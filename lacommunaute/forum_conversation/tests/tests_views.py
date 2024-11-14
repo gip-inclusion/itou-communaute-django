@@ -1,4 +1,4 @@
-import pytest  # noqa
+import pytest
 from django.conf import settings
 from django.contrib.messages.api import get_messages
 from django.contrib.messages.middleware import MessageMiddleware

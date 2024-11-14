@@ -1,4 +1,3 @@
-import pytest  # noqa
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from machina.core.db.models import get_model

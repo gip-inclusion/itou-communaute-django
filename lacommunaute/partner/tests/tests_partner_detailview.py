@@ -1,4 +1,4 @@
-import pytest  # noqa
+import pytest
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.partner.factories import PartnerFactory

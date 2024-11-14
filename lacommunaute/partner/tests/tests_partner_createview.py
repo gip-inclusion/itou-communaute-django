@@ -1,9 +1,8 @@
-import pytest  # noqa
-
+import pytest
 from django.urls import reverse
 
-from lacommunaute.users.factories import UserFactory
 from lacommunaute.partner.models import Partner
+from lacommunaute.users.factories import UserFactory
 
 
 @pytest.fixture(name="url")

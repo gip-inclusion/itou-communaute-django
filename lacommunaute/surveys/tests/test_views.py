@@ -1,4 +1,3 @@
-import pytest  # noqa
 from django.test import override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertNotContains

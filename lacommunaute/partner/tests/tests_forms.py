@@ -1,5 +1,3 @@
-import pytest  # noqa
-
 from lacommunaute.partner.forms import PartnerForm
 from lacommunaute.partner.models import Partner
 

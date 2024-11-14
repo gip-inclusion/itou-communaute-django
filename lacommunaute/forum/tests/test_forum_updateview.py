@@ -1,6 +1,6 @@
 from io import BytesIO
 
-import pytest  # noqa
+import pytest
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse

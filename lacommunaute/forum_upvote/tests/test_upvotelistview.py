@@ -1,4 +1,3 @@
-import pytest  # noqa
 from django.urls import reverse
 from pytest_django.asserts import assertContains, assertTemplateUsed
 

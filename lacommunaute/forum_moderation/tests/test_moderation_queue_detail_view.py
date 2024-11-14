@@ -1,10 +1,8 @@
-import pytest  # noqa
-
-from lacommunaute.forum_conversation.factories import TopicFactory, AnonymousPostFactory
-from lacommunaute.users.factories import UserFactory
-
 from django.urls import reverse
 from pytest_django.asserts import assertContains
+
+from lacommunaute.forum_conversation.factories import AnonymousPostFactory, TopicFactory
+from lacommunaute.users.factories import UserFactory
 
 
 def test_detail_view_for_anonymous_post(client, db):

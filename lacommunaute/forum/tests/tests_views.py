@@ -1,6 +1,6 @@
 import re
 
-import pytest  # noqa
+import pytest
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import truncatechars_html

@@ -1,8 +1,9 @@
-import pytest  # noqa
-from lacommunaute.stats.management.commands.collect_matomo_stats import get_initial_from_date
+import pytest
 from django.core.management import call_command
-from lacommunaute.surveys.factories import DSPFactory
+
 from lacommunaute.stats.factories import StatFactory
+from lacommunaute.stats.management.commands.collect_matomo_stats import get_initial_from_date
+from lacommunaute.surveys.factories import DSPFactory
 
 
 def test_collect_django_stats(db, capsys):
