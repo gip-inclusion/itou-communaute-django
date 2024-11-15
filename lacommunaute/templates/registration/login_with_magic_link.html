@@ -30,37 +30,31 @@
                             </p>
                         </div>
                         <hr class="my-5" data-it-text="ou">
-                        <div class="text-center">
-                            <button class="btn btn-link collapseConnectionForm mb-3 show has-no-transition" type="button" data-bs-toggle="collapse" data-bs-target=".collapseConnectionForm" aria-expanded="false" aria-controls="collapseConnectionForm">Utiliser mon email</button>
-                        </div>
-                        <div class="collapse collapseConnectionForm" id="collapseConnectionForm">
-                            <form method="post" action="." enctype="multipart/form-data" novalidate>
-                                {% csrf_token %}
-                                {% if form.non_field_errors %}
-                                    {% for error in form.non_field_errors %}
-                                        <div class="alert alert-danger">
-                                            <i class="icon-exclamation-sign"></i>
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                <fieldset>
-                                    <p class="h4">Se connecter avec votre email</p>
-                                    {% include "partials/form_field.html" with field=form.email %}
-                                </fieldset>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <hr class="mb-3">
-                                        <div class="form-row align-items-center justify-content-end gx-3">
-                                            <div class="form-group col col-lg-auto order-2 order-lg-3">
-                                                <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-                                                <input type="submit" class="btn btn-block btn-primary" value="{% trans "Login" %}" />
-                                            </div>
+                        <form method="post" action="." enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <i class="icon-exclamation-sign"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <fieldset>
+                                <p class="h4">Se connecter avec votre email</p>
+                                {% include "partials/form_field.html" with field=form.email %}
+                            </fieldset>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-row align-items-center justify-content-end gx-3">
+                                        <div class="form-group col col-lg-auto order-2 order-lg-3">
+                                            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                                            <input type="submit" class="btn btn-block btn-primary" value="{% trans "Login" %}" />
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
