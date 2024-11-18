@@ -67,6 +67,10 @@ jobs:
         run: |
           python manage.py collectstatic
           python manage.py compress
+      - name: 🚧 compile translations
+        run: |
+          sudo apt-get install -y gettext
+          python manage.py compilemessages
       - name: 🚧 Check pending migrations
         run: python manage.py makemigrations --check --dry-run --noinput
       - name: 🚧 Configure bucket
