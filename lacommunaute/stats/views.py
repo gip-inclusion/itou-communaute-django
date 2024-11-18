@@ -1,19 +1,16 @@
-import datetime
 import logging
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import Avg, CharField, Count, OuterRef, Q, Subquery, Sum
+from django.db.models import Avg, CharField, Count, OuterRef, Subquery, Sum
 from django.db.models.functions import Cast
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.shortcuts import render
 from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from django.views import View
 from django.views.generic.base import TemplateView
-from django.views.generic.dates import WeekArchiveView
 
 from lacommunaute.forum.models import Forum, ForumRating
-from lacommunaute.stats.models import ForumStat, Stat
+from lacommunaute.stats.models import Stat
 from lacommunaute.surveys.models import DSP
 from lacommunaute.utils.json import extract_values_in_list
 from lacommunaute.utils.math import percent
@@ -126,45 +123,6 @@ class DailyDSPView(BaseDetailStatsView):
     months = 3
 
 
-class ForumStatWeekArchiveView(WeekArchiveView):
-    template_name = "stats/forum_stat_week_archive.html"
-    date_field = "date"
-    queryset = ForumStat.objects.filter(period="week").select_related("forum")
-    week_format = "%W"
-    make_object_list = True
-    context_object_name = "forum_stats"
-    ordering = ["date", "-visits"]
-    paginate_by = 15
-
-    def get_dates_of_the_week(self):
-        start_date = datetime.date(self.get_year(), 1, 1) + datetime.timedelta(weeks=self.get_week() - 1)
-        return start_date, start_date + datetime.timedelta(days=6)
-
-    def get_most_rated_forums(self, start_date, end_date):
-        return (
-            Forum.objects.annotate(avg_rating=Avg("forumrating__rating"))
-            .filter(avg_rating__isnull=False)
-            .annotate(
-                rating_count=Count(
-                    "forumrating",
-                    filter=Q(
-                        forumrating__created__gte=start_date, forumrating__created__lt=end_date + relativedelta(days=1)
-                    ),
-                )
-            )
-            .filter(rating_count__gt=1)
-            .order_by("-rating_count", "avg_rating", "id")
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        start_date, end_date = self.get_dates_of_the_week()
-        context["end_date"] = end_date
-        context["stats"] = get_daily_visits_stats(from_date=end_date - relativedelta(days=89), to_date=end_date)
-        context["rated_forums"] = self.get_most_rated_forums(start_date, end_date)
-        return context
-
-
 class DocumentStatsView(View):
     def get_objects_with_stats_and_ratings(self):
         objects = (
@@ -207,17 +165,3 @@ class DocumentStatsView(View):
                 "sort_fields": self.get_sort_fields(),
             },
         )
-
-
-def redirect_to_latest_weekly_stats(request):
-    latest_weekly_stat = ForumStat.objects.filter(period="week").order_by("-date").first()
-
-    if latest_weekly_stat:
-        return redirect(
-            reverse(
-                "stats:forum_stat_week_archive",
-                kwargs={"year": latest_weekly_stat.date.year, "week": latest_weekly_stat.date.strftime("%W")},
-            )
-        )
-
-    return render(request, "404.html", status=404)
