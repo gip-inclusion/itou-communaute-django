@@ -58,7 +58,7 @@
                                 {% for obj in objects %}
                                     <tr>
                                         <th scope="row">
-                                            <a href="{{ obj.absolute_url }}">{{ obj.name }}</a>
+                                            <a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
                                             <br>
                                             {% if obj.partner %}<span class="text-muted">en partenariat avec {{ obj.partner.name }}</span>{% endif %}
                                         </th>
