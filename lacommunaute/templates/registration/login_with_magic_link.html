@@ -42,14 +42,15 @@
                             {% endif %}
                             <fieldset>
                                 <p class="h4">Se connecter avec votre email</p>
+                                <p class="text-muted">✨ Nous allons vous envoyer un code magique pour vous connecter sans mot de passe.</p>
                                 {% include "partials/form_field.html" with field=form.email %}
                             </fieldset>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-row align-items-center justify-content-end gx-3">
                                         <div class="form-group col col-lg-auto order-2 order-lg-3">
-                                            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-                                            <input type="submit" class="btn btn-block btn-primary" value="{% trans "Login" %}" />
+                                            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                                            <input type="submit" class="btn btn-block btn-primary" value="Recevoir le lien de connexion" />
                                         </div>
                                     </div>
                                 </div>
