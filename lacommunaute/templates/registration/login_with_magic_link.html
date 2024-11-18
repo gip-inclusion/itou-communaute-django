@@ -20,27 +20,42 @@
         <div class="s-section__container container">
             <div class="s-section__row row">
                 <div class="s-section__col col-12 col-lg-7">
-                    <div class="card">
-                        <div class="c-form">
-                            <a href="{% url 'openid_connect:authorize' %}?next={{ next }}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">Se connecter avec Pro Connect</a>
-                            <hr class="my-5" data-it-text="ou">
-                            <form method="post" action="." enctype="multipart/form-data" novalidate>
-                                {% csrf_token %}
-                                {% if form.non_field_errors %}
-                                    {% for error in form.non_field_errors %}
-                                        <div class="alert alert-danger">
-                                            <i class="icon-exclamation-sign"></i>
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                {% include "partials/form_field.html" with field=form.email %}
-                                <div class="form-actions">
-                                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
-                                    <input type="submit" class="btn btn-large btn-primary" value="{% trans "Login with your email" %}" />
-                                </div>
-                            </form>
+                    <div class="c-form">
+                        <div class="text-center">
+                            <a href="{% url 'openid_connect:authorize' %}?next={{ next }}" class="proconnect-button"></a>
+                            <p>
+                                <a href="https://proconnect.gouv.fr/" target="_blank" rel="noopener noreferrer" title="Qu’est-ce que AgentConnect ? - nouvelle fenêtre">
+                                    Qu’est-ce que ProConnect ?
+                                </a>
+                            </p>
                         </div>
+                        <hr class="my-5" data-it-text="ou">
+                        <form method="post" action="." enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <i class="icon-exclamation-sign"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <fieldset>
+                                <p class="h4">Se connecter avec votre email</p>
+                                <p class="text-muted">✨ Nous allons vous envoyer un code magique pour vous connecter sans mot de passe.</p>
+                                {% include "partials/form_field.html" with field=form.email %}
+                            </fieldset>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-row align-items-center justify-content-end gx-3">
+                                        <div class="form-group col col-lg-auto order-2 order-lg-3">
+                                            <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                                            <input type="submit" class="btn btn-block btn-primary" value="Recevoir le lien de connexion" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
