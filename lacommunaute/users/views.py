@@ -2,12 +2,14 @@ import logging
 from urllib.parse import urlencode
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
+from django.utils.html import format_html
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.generic import FormView
 
@@ -24,7 +26,7 @@ from lacommunaute.utils.urls import clean_next_url
 logger = logging.getLogger(__name__)
 
 
-def send_magic_link(user, next_url):
+def send_magic_link(request, user, next_url):
     token = default_token_generator.make_token(user)
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     url = reverse("users:login_with_link", kwargs={"uidb64": uidb64, "token": token})
@@ -37,6 +39,10 @@ def send_magic_link(user, next_url):
         kind=EmailSentTrackKind.MAGIC_LINK,
         template_id=settings.SIB_MAGIC_LINK_TEMPLATE,
     )
+
+    if settings.ENVIRONMENT == "DEV":
+        message = format_html('<a href="{0}">{0}</a> sent to {1}', login_link, user.email)
+        messages.success(request, message)
 
 
 class LoginView(FormView):
@@ -62,7 +68,7 @@ class LoginView(FormView):
             query_params = {"email": email, "next": clean_next_url(next_url)}
             return HttpResponseRedirect(f"{base_url}?{urlencode(query_params)}")
 
-        send_magic_link(user, next_url)
+        send_magic_link(self.request, user, next_url)
         return render(self.request, "registration/login_link_sent.html", {"email": email})
 
 
@@ -91,7 +97,7 @@ class CreateUserView(FormView):
             )
             ForumProfile.objects.create(user=user)
 
-        send_magic_link(user, next_url)
+        send_magic_link(self.request, user, next_url)
         return render(self.request, "registration/login_link_sent.html", {"email": email})
 
 
