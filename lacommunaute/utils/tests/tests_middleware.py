@@ -1,4 +1,7 @@
+import pytest
 from django.test import TestCase, override_settings
+
+from lacommunaute.utils.enums import Environment
 
 
 class ParkingMiddlewareTest(TestCase):
@@ -13,3 +16,17 @@ class ParkingMiddlewareTest(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/home.html")
+
+
+class TestEnvironmentSettingsMiddleware:
+    @pytest.mark.parametrize(
+        "env,expected",
+        [
+            (Environment.PROD, False),
+            (Environment.DEV, True),
+        ],
+    )
+    def test_prod_environment(self, client, db, env, expected):
+        with override_settings(ENVIRONMENT=env):
+            response = client.get("/")
+        assert ('id="debug-mode-banner"' in response.content.decode()) == expected

@@ -1,6 +1,8 @@
 # Enable django-debug-toolbar with Docker.
 import socket
 
+from lacommunaute.utils.enums import Environment
+
 from .base import *  # pylint: disable=wildcard-import,unused-wildcard-import # noqa: F403 F401
 
 
@@ -10,6 +12,7 @@ SECRET_KEY = "foobar"
 
 
 DEBUG = True
+ENVIRONMENT = Environment.DEV
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "192.168.0.1"]
 

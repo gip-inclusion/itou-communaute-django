@@ -12,4 +12,5 @@ def expose_settings(request):
         "BASE_TEMPLATE": base_template,
         "MATOMO_SITE_ID": settings.MATOMO_SITE_ID,
         "MATOMO_BASE_URL": settings.MATOMO_BASE_URL,
+        "ENVIRONMENT": settings.ENVIRONMENT,
     }

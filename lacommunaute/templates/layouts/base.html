@@ -69,6 +69,7 @@
             {% include "partials/header.html" %}
         {% endblock %}
         {% block sub_header %}{% endblock %}
+        {% if ENVIRONMENT != "PROD" %}<div id="debug-mode-banner" class="bg-danger text-white mt-3">DEV MODE</div>{% endif %}
         <main id="main" role="main" class="s-main">
             {% block messages %}
                 {% if messages %}
