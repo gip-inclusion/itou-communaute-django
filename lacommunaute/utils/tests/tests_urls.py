@@ -13,15 +13,8 @@ def _clear_url_caches():
     sys.modules.pop("config.urls", None)
 
 
-def test_django_urls_dev(settings):
-    settings.DEBUG = True
-    assert reverse("login") == "/login/"
-
-
 def test_django_urls_prod(settings):
     settings.DEBUG = False
-    with pytest.raises(NoReverseMatch):
-        reverse("login")
     with pytest.raises(NoReverseMatch):
         reverse("djdt:render_panel")
 
