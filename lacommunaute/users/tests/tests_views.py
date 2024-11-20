@@ -7,6 +7,10 @@ import pytest
 import respx
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.messages.api import get_messages
+from django.contrib.messages.middleware import MessageMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import RequestFactory, override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -17,6 +21,7 @@ from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
 from lacommunaute.users.views import send_magic_link
+from lacommunaute.utils.enums import Environment
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import clean_next_url
 
@@ -79,21 +84,31 @@ def validate_magiclink_payload(payload_as_str, uidb64, token, expected):
 
 
 class TestSendMagicLink:
-    def test_send_magic_link(self, db, snapshot, mock_respx_post_to_sib_smtp_url):
-        user = UserFactory(first_name="Edith", last_name="Martin", email="edith@martin.co")
-        next_url = "/topics/"
-        send_magic_link(user, next_url)
+    @pytest.mark.parametrize("env,count_msg", [(Environment.PROD, 0), (Environment.DEV, 1)])
+    def test_send_magic_link(self, db, user, snapshot, mock_respx_post_to_sib_smtp_url, env, count_msg):
+        with override_settings(ENVIRONMENT=env):
+            next_url = "/topics/"
+            request = RequestFactory().get("/")
+            SessionMiddleware(lambda request: None).process_request(request)
+            MessageMiddleware(lambda request: None).process_request(request)
+            send_magic_link(request, user, next_url)
 
-        token = default_token_generator.make_token(user)
-        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-        url = reverse("users:login_with_link", kwargs={"uidb64": uidb64, "token": token})
-        query_params = urlencode({"next": clean_next_url(next_url)})
-        login_link = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{url}?{query_params}"
+            token = default_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            url = reverse("users:login_with_link", kwargs={"uidb64": uidb64, "token": token})
+            query_params = urlencode({"next": clean_next_url(next_url)})
+            login_link = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{url}?{query_params}"
 
-        payload_as_str = respx.calls[0].request.content.decode()
-        payload = json.loads(payload_as_str)
-        assert payload["params"]["login_link"] == login_link
-        assert payload_as_str.replace(login_link, "LOGIN_LINK") == snapshot(name="send_magic_link_payload")
+            payload_as_str = respx.calls[0].request.content.decode()
+            payload = json.loads(payload_as_str)
+            assert payload["params"]["login_link"] == login_link
+            assert payload_as_str.replace(login_link, "LOGIN_LINK") == snapshot(name="send_magic_link_payload")
+
+            # we want messages do not appear in the productive environment
+            msgs = get_messages(request)
+            assert len(msgs._queued_messages) == count_msg
+            if msgs._queued_messages:
+                assert str(msgs._queued_messages[0]) == f'<a href="{login_link}">{login_link}</a> sent to {user.email}'
 
 
 class TestLoginView:
@@ -105,6 +120,7 @@ class TestLoginView:
         content = parse_response_to_soup(response, selector="main")
         assert str(content) == snapshot(name="login_view_content")
 
+    @override_settings(ENVIRONMENT=Environment.PROD)
     @pytest.mark.parametrize("next_url,expected", next_url_tuples)
     def test_post(
         self,
@@ -152,6 +168,7 @@ class TestLoginView:
 
 
 class TestCreateUserView:
+    @override_settings(ENVIRONMENT=Environment.PROD)
     @pytest.mark.parametrize("next_url,expected", next_url_tuples)
     def test_post_new_email(
         self, client, db, next_url, expected, snapshot, mock_token_generator, mock_respx_post_to_sib_smtp_url
@@ -178,6 +195,7 @@ class TestCreateUserView:
         payload_as_str = respx.calls[0].request.content.decode()
         assert validate_magiclink_payload(payload_as_str, uidb64, token, expected)
 
+    @override_settings(ENVIRONMENT=Environment.PROD)
     @pytest.mark.parametrize("next_url,expected", next_url_tuples)
     def test_post_existing_email(
         self, client, db, user, next_url, expected, snapshot, mock_token_generator, mock_respx_post_to_sib_smtp_url

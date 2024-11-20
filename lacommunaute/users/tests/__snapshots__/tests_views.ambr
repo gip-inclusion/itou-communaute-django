@@ -527,6 +527,9 @@
           </main>
   '''
 # ---
-# name: TestSendMagicLink.test_send_magic_link[send_magic_link_payload]
-  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.beta.gouv.fr"}, "to": [{"email": "edith@martin.co"}], "params": {"display_name": "Edith M.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
+# name: TestSendMagicLink.test_send_magic_link[DEV-1][send_magic_link_payload]
+  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.beta.gouv.fr"}, "to": [{"email": "samuel@jackson.com"}], "params": {"display_name": "Samuel J.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
+# ---
+# name: TestSendMagicLink.test_send_magic_link[PROD-0][send_magic_link_payload]
+  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.beta.gouv.fr"}, "to": [{"email": "samuel@jackson.com"}], "params": {"display_name": "Samuel J.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
 # ---
