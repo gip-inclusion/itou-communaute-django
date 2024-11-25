@@ -1,5 +1,6 @@
 from unittest import mock
 
+import pytest
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
@@ -102,42 +103,36 @@ class OpenID_ModelTest(OpenID_BaseTestCase):
         self.assertEqual(1, User.objects.count())
         self.assertTrue(ForumProfile.objects.get(user=user))
 
-    def test_get_existing_user_with_existing_email(self):
-        """
-        If there already is an existing django user with email OpenID_ sent us, we do not create it again,
-        We use it and we update it with the data form
-        """
-        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
-        UserFactory(
-            first_name=proc_user_data.first_name,
-            last_name=proc_user_data.last_name,
-            email=proc_user_data.email,
-            username=proc_user_data.username,
-        )
-        user, created = proc_user_data.create_or_update_user()
-        self.assertFalse(created)
-        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
-        self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
-        self.assertEqual(user.username, OIDC_USERINFO["sub"])
-        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
 
-    def test_get_existing_unmigrated_user_with_existing_email(self):
-        """
-        If there already is an existing user with email sent us,
-        but with another identity provider, we do not create it again,
-        we use it and we update it with the data form. Identity_provider is set to PRO_CONNECT
-        """
-        proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
-        UserFactory(
-            first_name=proc_user_data.first_name,
-            last_name=proc_user_data.last_name,
-            email=proc_user_data.email,
-            username="another_username",
-            identity_provider=IdentityProvider.INCLUSION_CONNECT,
-        )
-        user, created = proc_user_data.create_or_update_user()
-        self.assertFalse(created)
-        self.assertEqual(user.last_name, OIDC_USERINFO["usual_name"])
-        self.assertEqual(user.first_name, OIDC_USERINFO["given_name"])
-        self.assertEqual(user.username, OIDC_USERINFO["sub"])
-        self.assertEqual(user.identity_provider, IdentityProvider.PRO_CONNECT)
+@pytest.fixture(autouse=True)
+def setup_proconnect():
+    constants.OPENID_CONNECT_BASE_URL = "https://openid.connect.fake"
+    constants.OPENID_CONNECT_REALM = "foobar"
+    constants.OPENID_CONNECT_CLIENT_ID = "OID_CLIENT_ID_123"
+    constants.OPENID_CONNECT_CLIENT_SECRET = "OID_CLIENT_SECRET_123"
+    yield
+
+
+@pytest.mark.parametrize(
+    "username,identity_provider",
+    [
+        ("af6b26f9-85cd-484e-beb9-bea5be13e30f", IdentityProvider.PRO_CONNECT),
+        ("another_username", IdentityProvider.INCLUSION_CONNECT),
+        ("random_username", IdentityProvider.MAGIC_LINK),
+    ],
+)
+def test_get_existing_email(db, username, identity_provider):
+    proc_user_data = OIDConnectUserData.from_user_info(OIDC_USERINFO)
+    UserFactory(
+        first_name=proc_user_data.first_name,
+        last_name=proc_user_data.last_name,
+        email=proc_user_data.email,
+        username=username,
+        identity_provider=identity_provider,
+    )
+    user, created = proc_user_data.create_or_update_user()
+    assert not created
+    assert user.last_name == OIDC_USERINFO["usual_name"]
+    assert user.first_name == OIDC_USERINFO["given_name"]
+    assert user.username == OIDC_USERINFO["sub"]
+    assert user.identity_provider == IdentityProvider.PRO_CONNECT
