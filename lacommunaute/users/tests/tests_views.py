@@ -1,4 +1,5 @@
 import json
+import re
 from unittest import mock
 from urllib.parse import urlencode
 
@@ -184,6 +185,8 @@ class TestCreateUserView:
         assert str(content) == snapshot(name="create_user_view_content")
 
         created_user = User.objects.get(email=email)
+        pattern = r"^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$"
+        assert re.match(pattern, created_user.username)
         assert created_user.email == email
         assert created_user.first_name == "John"
         assert created_user.last_name == "Travolta"
