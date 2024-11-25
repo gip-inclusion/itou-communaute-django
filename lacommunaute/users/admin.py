@@ -5,6 +5,11 @@ from django.contrib.auth.models import Group
 from .models import User
 
 
+class UserAdmin(UserAdmin):
+    list_display = ("username", "email", "first_name", "last_name", "identity_provider", "is_staff")
+    list_filter = ("is_staff", "is_superuser", "is_active", "identity_provider", "groups")
+
+
 admin.site.register(User, UserAdmin)
 
 
