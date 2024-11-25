@@ -22,6 +22,14 @@ class TopicQuerySet(models.QuerySet):
             .exclude(status=Topic.TOPIC_LOCKED)
             .exclude(type=Topic.TOPIC_ANNOUNCE)
             .filter(posts_count=1)
+            .select_related(
+                "forum",
+                "poster",
+                "poster__forum_profile",
+                "first_post",
+                "first_post__poster",
+            )
+            .order_by("-last_post_on")
         )
 
     def optimized_for_topics_list(self, user_id):
