@@ -1,5 +1,6 @@
 import re
 
+import pytest
 from dateutil.relativedelta import relativedelta
 from django.urls import reverse
 from django.utils import timezone
@@ -7,6 +8,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -49,3 +51,25 @@ def test_events(db, client):
         assertContains(response, reverse("event:detail", kwargs={"pk": future_event.pk}))
     assertNotContains(response, unvisible_future_event.name)
     assertContains(response, reverse("event:current"))
+
+
+@pytest.mark.parametrize("nb_topics,nb_expected", [(i, i) for i in range(5)] + [(i, 4) for i in range(5, 7)])
+def test_unsanswered_topics(db, client, nb_topics, nb_expected, snapshot):
+    TopicFactory.create_batch(nb_topics, with_post=True, with_tags=["Pirmadienis", "Poniedziałek", "Lundi", "Montag"])
+    response = client.get(reverse("pages:home"))
+    assert len(response.context_data["unanswered_topics"]) == nb_expected
+    assert ('id="unanswered_topics"' in str(response.content)) == (nb_expected > 0)
+
+
+def test_numqueries(db, client, django_assert_num_queries):
+    savepoint_queries = 4
+    session_queries = 2
+    with django_assert_num_queries(
+        savepoint_queries
+        + session_queries
+        + 1  # get first public forum
+        + 1  # get most recent updated forums in documentation
+        + 1  # get unanswered topics
+        + 1  # get upcoming events
+    ):
+        client.get(reverse("pages:home"))
