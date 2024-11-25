@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from factory import Iterator
 
 from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.users.factories import UserFactory
@@ -21,7 +22,8 @@ def test_listview(client, db, snapshot, url):
 
 
 def test_pagination(client, db, snapshot, url):
-    PartnerFactory.create_batch(8 * 3 + 1)
+    num_of_partners = 8 * 3 + 1
+    PartnerFactory.create_batch(num_of_partners, name=Iterator([f"Partner {i}" for i in range(num_of_partners)]))
     response = client.get(url)
     assert response.status_code == 200
     assert str(parse_response_to_soup(response, selector="ul.pagination")) == snapshot(name="partner_pagination")
