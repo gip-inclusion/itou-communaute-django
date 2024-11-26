@@ -23,5 +23,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(cleanup_email_in_username),
+        migrations.RunPython(cleanup_email_in_username, migrations.RunPython.noop),
     ]
+
+    elidable = True
