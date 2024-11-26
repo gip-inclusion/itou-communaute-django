@@ -90,7 +90,6 @@ class CreateUserView(FormView):
         except User.DoesNotExist:
             user = User.objects.create_user(
                 email=email,
-                username=email,
                 first_name=first_name,
                 last_name=last_name,
                 identity_provider=IdentityProvider.MAGIC_LINK,
