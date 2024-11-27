@@ -11,7 +11,6 @@ from faker import Faker
 from config.settings.base import (
     DEFAULT_FROM_EMAIL,
     NEW_MESSAGES_EMAIL_MAX_PREVIEW,
-    SIB_CONTACT_LIST_URL,
     SIB_CONTACTS_URL,
     SIB_NEW_MESSAGES_TEMPLATE,
     SIB_ONBOARDING_LIST,
@@ -20,6 +19,7 @@ from config.settings.base import (
 )
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
@@ -176,29 +176,16 @@ class AddUserToListWhenRegister(TestCase):
 class SendNotifsOnUnansweredTopics(TestCase):
     def setUp(self):
         super().setUp()
-        self.list_id = faker.random_int()
-        self.contact_list_response = {
-            "contacts": [
-                {
-                    "email": faker.email(),
-                    "emailBlacklisted": False,
-                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
-                },
-            ]
-        }
-        respx.get(SIB_CONTACT_LIST_URL + f"/{self.list_id}/contacts").mock(
-            return_value=httpx.Response(200, json=self.contact_list_response)
-        )
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_send_notifs_on_unanswered_topics(self):
+        staff_user = UserFactory(is_staff=True, for_snapshot=True)
         TopicFactory(with_post=True, forum=ForumFactory())
-        expected_contact = self.contact_list_response["contacts"][0]
         to = [
             {
-                "email": expected_contact["email"],
-                "name": f'{expected_contact["attributes"]["PRENOM"]} {expected_contact["attributes"]["NOM"]}',
+                "email": staff_user.email,
+                "name": get_forum_member_display_name(staff_user),
             }
         ]
 
@@ -216,7 +203,7 @@ class SendNotifsOnUnansweredTopics(TestCase):
             "templateId": SIB_UNANSWERED_QUESTION_TEMPLATE,
         }
 
-        send_notifs_on_unanswered_topics(self.list_id)
+        send_notifs_on_unanswered_topics()
 
         self.assertEqual(EmailSentTrack.objects.count(), 1)
         email_sent_track = EmailSentTrack.objects.first()
@@ -226,6 +213,12 @@ class SendNotifsOnUnansweredTopics(TestCase):
 
     @respx.mock
     def test_send_notifs_on_unanswered_topics_with_no_topic(self):
-        send_notifs_on_unanswered_topics(self.list_id)
+        UserFactory(is_staff=True)
+        send_notifs_on_unanswered_topics()
+        self.assertEqual(EmailSentTrack.objects.count(), 0)
 
+    @respx.mock
+    def test_send_notifs_on_unanswered_topics_with_no_staff_user(self):
+        TopicFactory(with_post=True, forum=ForumFactory())
+        send_notifs_on_unanswered_topics()
         self.assertEqual(EmailSentTrack.objects.count(), 0)

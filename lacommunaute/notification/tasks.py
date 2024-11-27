@@ -5,10 +5,12 @@ from django.utils import timezone
 
 from config.settings.base import DEFAULT_FROM_EMAIL, NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.notification.emails import bulk_send_user_to_list, collect_users_from_list, send_email
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.models import Notification
 from lacommunaute.notification.utils import collect_new_users_for_onboarding, get_serialized_messages
+from lacommunaute.users.models import User
 
 
 def send_messages_notifications(delay: NotificationDelay):
@@ -49,23 +51,24 @@ def add_user_to_list_when_register():
         bulk_send_user_to_list(new_users, settings.SIB_ONBOARDING_LIST)
 
 
-def send_notifs_on_unanswered_topics(list_id: int) -> None:
-    contacts = collect_users_from_list(list_id)
+def send_notifs_on_unanswered_topics() -> None:
+    contacts = User.objects.filter(is_staff=True)
+    count = Topic.objects.unanswered().count()
 
-    if contacts:
-        count = Topic.objects.unanswered().count()
-        link = (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
-            reverse("forum_conversation_extension:topics"),
-            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
-        )
+    if not contacts.exists() or count == 0:
+        return None
 
-        params = {"count": count, "link": "".join(link)}
+    contacts_list = [{"email": contact.email, "name": get_forum_member_display_name(contact)} for contact in contacts]
+    link = (
+        f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
+        reverse("forum_conversation_extension:topics"),
+        "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
+    )
+    params = {"count": count, "link": "".join(link)}
 
-        if count > 0:
-            send_email(
-                to=contacts,
-                params=params,
-                template_id=settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
-                kind=EmailSentTrackKind.PENDING_TOPIC,
-            )
+    send_email(
+        to=contacts_list,
+        params=params,
+        template_id=settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
+        kind=EmailSentTrackKind.PENDING_TOPIC,
+    )
