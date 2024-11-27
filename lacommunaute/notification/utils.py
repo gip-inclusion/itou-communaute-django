@@ -21,7 +21,9 @@ def get_serialized_messages(notifications):
     return [
         {
             "poster": n.post.poster_display_name,
-            "action": f"a répondu à '{n.post.subject}'",
+            "action": (
+                "a posé une nouvelle question" if n.post.is_topic_head else f"a répondu à '{n.post.topic.subject}'"
+            ),
             "forum": n.post.topic.forum.name,
             "url": n.post.topic.get_absolute_url(with_fqdn=True),
         }

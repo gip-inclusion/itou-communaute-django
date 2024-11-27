@@ -1,7 +1,7 @@
 from django.test import TestCase
 from faker import Faker
 
-from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.notification.factories import EmailSentTrackFactory, NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.utils import (
@@ -51,14 +51,25 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
 
 
 class TestGetSerializedMessages:
-    def test_post_is_not_topic_head(self, db):
-        post = PostFactory(topic=TopicFactory(with_post=True))
-        notifications = [NotificationFactory(post=post)]
-        assert get_serialized_messages(notifications) == [
+    def test_post_is_topic_head(self, db):
+        notification = NotificationFactory(set_post=True)
+        assert get_serialized_messages([notification]) == [
             {
-                "poster": post.poster_display_name,
-                "action": f"a répondu à '{post.subject}'",
-                "forum": post.topic.forum.name,
-                "url": post.topic.get_absolute_url(with_fqdn=True),
+                "poster": notification.post.poster_display_name,
+                "action": "a posé une nouvelle question",
+                "forum": notification.post.topic.forum.name,
+                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+            }
+        ]
+
+    def test_post_is_not_topic_head(self, db):
+        topic = TopicFactory(with_post=True, answered=True)
+        notification = NotificationFactory(post=topic.last_post)
+        assert get_serialized_messages([notification]) == [
+            {
+                "poster": notification.post.poster_display_name,
+                "action": f"a répondu à '{notification.post.topic.subject}'",
+                "forum": notification.post.topic.forum.name,
+                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
             }
         ]
