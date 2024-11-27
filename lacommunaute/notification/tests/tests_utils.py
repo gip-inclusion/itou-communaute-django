@@ -51,6 +51,18 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
 
 
 class TestGetSerializedMessages:
+    def test_post_is_topic_head(self, db):
+        topic = TopicFactory(with_post=True)
+        notifications = [NotificationFactory(post=topic.first_post)]
+        assert get_serialized_messages(notifications) == [
+            {
+                "poster": topic.first_post.poster_display_name,
+                "action": "a posé une nouvelle question",
+                "forum": topic.forum.name,
+                "url": topic.get_absolute_url(with_fqdn=True),
+            }
+        ]
+
     def test_post_is_not_topic_head(self, db):
         post = PostFactory(topic=TopicFactory(with_post=True))
         notifications = [NotificationFactory(post=post)]
