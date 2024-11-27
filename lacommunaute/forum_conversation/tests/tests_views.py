@@ -976,7 +976,7 @@ class TestTopicListView:
 
 class TestPosterTemplate:
     def test_topic_in_topics_view(self, client, db, topics_url, snapshot):
-        topic = TopicFactory(with_post=True, poster=UserFactory(first_name="Jeff", last_name="Buckley"))
+        topic = TopicFactory(with_post=True, poster=UserFactory(for_snapshot=True))
         response = client.get(topics_url)
         soup = parse_response_to_soup(
             response, replace_in_href=[(topic.poster.username, "poster_username")], selector=".poster-infos"
@@ -990,7 +990,7 @@ class TestPosterTemplate:
         topic = TopicFactory(
             with_post=True,
             forum=ForumFactory(with_public_perms=True, name="Abby's Forum"),
-            poster=UserFactory(first_name="Alan", last_name="Turing"),
+            poster=UserFactory(for_snapshot=True),
         )
         response = client.get(topics_url)
         soup = parse_response_to_soup(
@@ -1013,7 +1013,7 @@ class TestPosterTemplate:
         topic = TopicFactory(
             with_post=True,
             forum=ForumFactory(with_public_perms=True, name="Joe's Forum"),
-            poster=UserFactory(first_name="Dermot", last_name="Turing"),
+            poster=UserFactory(for_snapshot=True),
         )
         response = client.get(
             reverse("forum_extension:forum", kwargs={"slug": topic.forum.slug, "pk": topic.forum.pk})
