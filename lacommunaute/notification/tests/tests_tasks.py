@@ -1,6 +1,7 @@
 import json
 
 import httpx
+import pytest
 import respx
 from django.conf import settings
 from django.template.defaultfilters import pluralize
@@ -11,15 +12,14 @@ from faker import Faker
 from config.settings.base import (
     DEFAULT_FROM_EMAIL,
     NEW_MESSAGES_EMAIL_MAX_PREVIEW,
-    SIB_CONTACT_LIST_URL,
     SIB_CONTACTS_URL,
     SIB_NEW_MESSAGES_TEMPLATE,
     SIB_ONBOARDING_LIST,
     SIB_SMTP_URL,
     SIB_UNANSWERED_QUESTION_TEMPLATE,
 )
-from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
+from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
@@ -173,59 +173,52 @@ class AddUserToListWhenRegister(TestCase):
         self.assertEqual(EmailSentTrack.objects.count(), 0)
 
 
-class SendNotifsOnUnansweredTopics(TestCase):
-    def setUp(self):
-        super().setUp()
-        self.list_id = faker.random_int()
-        self.contact_list_response = {
-            "contacts": [
-                {
-                    "email": faker.email(),
-                    "emailBlacklisted": False,
-                    "attributes": {"PRENOM": faker.first_name(), "NOM": faker.name()},
-                },
-            ]
-        }
-        respx.get(SIB_CONTACT_LIST_URL + f"/{self.list_id}/contacts").mock(
-            return_value=httpx.Response(200, json=self.contact_list_response)
-        )
+@pytest.fixture(name="mock_respx_post_to_sib_smtp_url")
+def mock_respx_post_to_sib_smtp_url_fixture():
+    with respx.mock:
         respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        yield
 
-    @respx.mock
-    def test_send_notifs_on_unanswered_topics(self):
-        TopicFactory(with_post=True, forum=ForumFactory())
-        expected_contact = self.contact_list_response["contacts"][0]
-        to = [
-            {
-                "email": expected_contact["email"],
-                "name": f'{expected_contact["attributes"]["PRENOM"]} {expected_contact["attributes"]["NOM"]}',
-            }
-        ]
 
-        url = (
-            f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
-            reverse("forum_conversation_extension:topics"),
-            "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
-        )
-
-        params = {"count": 1, "link": "".join(url)}
-        payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
-            "to": to,
-            "params": params,
-            "templateId": SIB_UNANSWERED_QUESTION_TEMPLATE,
+@pytest.fixture(name="payload_for_staff_user_to_notify_on_unanswered_topics")
+def payload_for_staff_user_to_notify_on_unanswered_topics_fixture():
+    staff_user = UserFactory(is_staff=True, for_snapshot=True)
+    TopicFactory(with_post=True)
+    to = [
+        {
+            "email": staff_user.email,
+            "name": get_forum_member_display_name(staff_user),
         }
+    ]
+    url = (
+        f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}",
+        reverse("forum_conversation_extension:topics"),
+        "?filter=NEW&mtm_campaign=unsanswered&mtm_medium=email#community",
+    )
+    params = {"count": 1, "link": "".join(url)}
+    payload = {
+        "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+        "to": to,
+        "params": params,
+        "templateId": SIB_UNANSWERED_QUESTION_TEMPLATE,
+    }
+    yield payload
 
-        send_notifs_on_unanswered_topics(self.list_id)
 
-        self.assertEqual(EmailSentTrack.objects.count(), 1)
+class TestSendNotifsOnUnansweredTopics:
+    def test_send_notifs_on_unanswered_topics(
+        self, db, payload_for_staff_user_to_notify_on_unanswered_topics, mock_respx_post_to_sib_smtp_url
+    ):
+        send_notifs_on_unanswered_topics()
+
+        assert EmailSentTrack.objects.count() == 1
         email_sent_track = EmailSentTrack.objects.first()
-        self.assertEqual(email_sent_track.status_code, 200)
-        self.assertEqual(email_sent_track.response, json.dumps({"message": "OK"}))
-        self.assertEqual(email_sent_track.datas, payload)
+        assert email_sent_track.status_code == 200
+        assert email_sent_track.response == json.dumps({"message": "OK"})
+        assert email_sent_track.datas == payload_for_staff_user_to_notify_on_unanswered_topics
 
-    @respx.mock
-    def test_send_notifs_on_unanswered_topics_with_no_topic(self):
-        send_notifs_on_unanswered_topics(self.list_id)
-
-        self.assertEqual(EmailSentTrack.objects.count(), 0)
+    @pytest.mark.parametrize("data", [lambda: UserFactory(is_staff=True), lambda: TopicFactory(with_post=True)])
+    def test_send_notifs_on_unanswered_topics_with_no_topic(self, db, data, mock_respx_post_to_sib_smtp_url):
+        data = data()
+        send_notifs_on_unanswered_topics()
+        assert EmailSentTrack.objects.count() == 0

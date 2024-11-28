@@ -6,7 +6,7 @@
               
                   
                   <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
-                      Alan T.
+                      Adam O.
                   </a>,
               
               
@@ -23,7 +23,7 @@
               
                   
                   <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
-                      Dermot T.
+                      Adam O.
                   </a>,
       il y a 0 minute
       
@@ -37,156 +37,11 @@
               
                   
                   <a class="matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="member" href="/members/profile/poster_username/">
-                      Jeff B.
+                      Adam O.
                   </a>,
       il y a 0 minute
       
   </small>
-  '''
-# ---
-# name: TestTopicCreateCheckView.test_get_method[topic_create_check]
-  '''
-  <main class="s-main" id="main" role="main">
-              
-                  
-              
-              
-              
-      <section class="s-section" id="main_container">
-          <div class="s-section__container container">
-              
-      <div class="row">
-          <div class="col-12">
-              <h1>forum</h1>
-          </div>
-      </div>
-      <div class="row c-box">
-          <div class="col-12 mb-5">
-              <p class="h2">Quelle est ma situation ?</p>
-          </div>
-          <div class="col-12 col-md-4 mb-3">
-              <div class="card c-card h-100">
-                  <div class="card-header">
-                      <h3 class="h4">J'utilise le site des emplois de l'inclusion</h3>
-                  </div>
-                  <div class="card-body pb-0">
-                      <p>
-                          J'ai des questions sur les PASS IAE, leur suspension ou prolongation, le fonctionnement du site des emplois de l'inclusion ou les relations avec l'ASP
-                      </p>
-                  </div>
-                  <div class="card-footer text-center mt-3">
-                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="itou-helpdesk" href="https://aide.emplois.inclusion.beta.gouv.fr/hc/fr">J'accède à la documentation des emplois de l'inclusion</a>
-                  </div>
-              </div>
-          </div>
-          <div class="col-12 col-md-4 mb-3">
-              <div class="card c-card h-100">
-                  <div class="card-header">
-                      <h3 class="h4">J'accueille des personnes en PMSMP</h3>
-                  </div>
-                  <div class="card-body pb-0">
-                      <p>
-                          J'ai une question Période de Mise en Situation en Milieu Professionnel, le conventionnement, la déclaration des heures ou le fonctionnement du site Immersion Facilitée
-                      </p>
-                  </div>
-                  <div class="card-footer text-center">
-                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="pmsmp" href="https://aide.immersion-facile.beta.gouv.fr/fr/">
-                          J'accède au centre d'aide Immersion Facilitée
-                      </a>
-                  </div>
-              </div>
-          </div>
-          <div class="col-12 col-md-4 mb-3">
-              <div class="card c-card h-100">
-                  <div class="card-header">
-                      <h3 class="h4">Je suis un/une professionnel/le de l'insertion, en formation ou en activité</h3>
-                  </div>
-                  <div class="card-body pb-0">
-                      <p>
-                          J'ai une question sur l'accompagnement d'une personne éloignée de l'emploi, sur mon parcours de formation ou sur une des fiches pratiques de la communauté
-                      </p>
-                  </div>
-                  <div class="card-footer text-center">
-                      <a class="btn btn-primary matomo-event" data-matomo-action="topic-create-check" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/forum-[PK of Forum]/topic/create/?checked">Je pose ma question à la communauté</a>
-                  </div>
-              </div>
-          </div>
-      </div>
-  
-          </div>
-      </section>
-  
-          </main>
-  '''
-# ---
-# name: TestTopicCreateView.test_redirections_on_documentation_forum[topic_create]
-  '''
-  <div class="form-group" id="div_id_content">
-      
-          
-              <label class="control-label" for="id_content">
-                  Message
-                  
-              </label>
-          
-          
-              <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
-          
-      
-      
-      
-      
-          
-              <small class="form-text text-muted">
-      <a aria-controls="collapseMentionsHelp" aria-expanded="false" data-bs-toggle="collapse" href="#collapseMentionsHelp" role="button">mention d'informations</a>
-      sur les champs libres
-  </small>
-  <div class="collapse" id="collapseMentionsHelp">
-      <div class="mb-3">
-          <p>
-              Nous vous demandons de ne pas nous transmettre d’informations sensibles. Notamment, ne communiquez pas vos opinions philosophiques, syndicales, politiques ou sur votre vie sexuelle. Ces données sont trop personnelles !
-          </p>
-      </div>
-  </div>
-  
-          
-      
-  </div>
-  '''
-# ---
-# name: TestTopicCreateView.test_redirections_on_forum[topic_create]
-  '''
-  <div class="form-group" id="div_id_content">
-      
-          
-              <label class="control-label" for="id_content">
-                  Message
-                  
-              </label>
-          
-          
-              <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="Entrez votre message" required="" rows="10"></textarea>
-          
-      
-      
-      
-      
-          
-              <small class="form-text text-muted">
-      <a aria-controls="collapseMentionsHelp" aria-expanded="false" data-bs-toggle="collapse" href="#collapseMentionsHelp" role="button">mention d'informations</a>
-      sur les champs libres
-  </small>
-  <div class="collapse" id="collapseMentionsHelp">
-      <div class="mb-3">
-          <p>
-              Nous vous demandons de ne pas nous transmettre d’informations sensibles. Notamment, ne communiquez pas vos opinions philosophiques, syndicales, politiques ou sur votre vie sexuelle. Ces données sont trop personnelles !
-          </p>
-      </div>
-  </div>
-  
-          
-      
-  </div>
   '''
 # ---
 # name: TestTopicListView.test_clickable_tags[10-query_param1-clickable_tags_page2][clickable_tags_page2]

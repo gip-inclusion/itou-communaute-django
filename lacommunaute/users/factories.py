@@ -30,6 +30,11 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.Transformer(DEFAULT_PASSWORD, transform=make_password)
     identity_provider = IdentityProvider.PRO_CONNECT
 
+    class Params:
+        for_snapshot = factory.Trait(
+            first_name="Adam", last_name="Ondra", email="adam@ondra.com", identity_provider=IdentityProvider.MAGIC_LINK
+        )
+
     @factory.post_generation
     def with_perm(obj, create, extracted, **kwargs):
         if not create or not extracted:
