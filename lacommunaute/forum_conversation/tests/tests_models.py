@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+import pytest
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -10,13 +11,13 @@ from factory import Iterator
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import (
     AnonymousPostFactory,
+    AnonymousTopicFactory,
     CertifiedPostFactory,
     PostFactory,
     TopicFactory,
 )
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
-from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.factories import UserFactory
 
 
@@ -139,36 +140,40 @@ class TopicModelTest(TestCase):
         self.assertEqual(1, Topic.TOPIC_STICKY)
         self.assertEqual(2, Topic.TOPIC_ANNOUNCE)
 
-    def test_mails_to_notify_sorted_authenticated_posters(self):
+
+@pytest.fixture(name="upvoters")
+def upvoters_fixture():
+    return UserFactory.create_batch(3)
+
+
+class TestModelMethods:
+    def test_forum_upvoters_are_notified_for_new_topic(self, db, upvoters):
+        topic = TopicFactory(forum=ForumFactory(upvoted_by=upvoters), with_post=True)
+        assert topic.mails_to_notify() == [upvoter.email for upvoter in upvoters]
+
+    def test_forum_upvoters_are_not_notified_on_replies(self, db, upvoters):
+        topic = TopicFactory(forum=ForumFactory(upvoted_by=upvoters), with_post=True, answered=True)
+        assert not set([upvoter.email for upvoter in upvoters]).intersection(set(topic.mails_to_notify()))
+
+    def test_posts_upvoters_are_notified_on_replies(self, db, upvoters):
         topic = TopicFactory(with_post=True)
-        self.assertEqual(topic.mails_to_notify(), [])
+        PostFactory(topic=topic, upvoted_by=upvoters)
+        assert set([upvoter.email for upvoter in upvoters]).issubset(set(topic.mails_to_notify()))
 
-        post = PostFactory(topic=topic)
-        self.assertEqual(topic.mails_to_notify(), [topic.poster.email])
-
+    def test_authenticated_posters_are_notified_on_replies_except_last_one(self, db):
+        topic = TopicFactory(with_post=True)
         PostFactory(topic=topic)
-        self.assertEqual(topic.mails_to_notify(), sorted([topic.poster.email, post.poster.email]))
+        assert topic.mails_to_notify() == [topic.first_post.poster.email]
 
-    def test_mails_to_notify_authenticated_upvoters(self):
-        upvoter = UserFactory()
+    def test_anonymous_posters_are_notified_on_replies_except_last_one(self, db):
+        topic = AnonymousTopicFactory(with_post=True)
+        AnonymousPostFactory(topic=topic)
+        assert topic.mails_to_notify() == [topic.first_post.username]
+
+    def test_notify_replies_deduplication(self, db):
         topic = TopicFactory(with_post=True)
-        UpVote.objects.create(content_object=topic.first_post, voter=upvoter)
-
-        self.assertEqual(topic.mails_to_notify(), [upvoter.email])
-
-    def test_mails_to_notify_anonymous_poster(self):
-        topic = TopicFactory(with_post=True)
-        anonymous_post = AnonymousPostFactory(topic=topic)
-        PostFactory(topic=topic)
-
-        self.assertEqual(topic.mails_to_notify(), sorted([topic.poster.email, anonymous_post.username]))
-
-    def test_mails_to_notify_deduplication(self):
-        topic = TopicFactory(with_post=True)
-        UpVote.objects.create(content_object=topic.first_post, voter=topic.poster)
-
-        PostFactory(topic=topic)
-        self.assertEqual(topic.mails_to_notify(), [topic.poster.email])
+        PostFactory(topic=topic, upvoted_by=[topic.first_post.poster])
+        assert topic.mails_to_notify() == [topic.first_post.poster.email]
 
 
 class CertifiedPostModelTest(TestCase):
