@@ -6,7 +6,7 @@
                 <li class="list-group-item list-group-item-action">
                     <div id="{{ topic.pk }}" class="post">
                         <a href="{% url 'forum_conversation:topic' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"
-                           class="h4 text-tertiary d-block mb-1 matom-event"
+                           class="h4 text-tertiary d-block mb-1 matomo-event"
                            data-matomo-category="engagement"
                            data-matomo-action="view"
                            data-matomo-option="topic">{{ topic.subject }}</a>
