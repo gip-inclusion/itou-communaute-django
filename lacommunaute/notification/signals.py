@@ -1,4 +1,4 @@
-from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
+from lacommunaute.notification.enums import EmailSentTrackKind, delay_of_notifications
 from lacommunaute.notification.models import Notification
 
 
@@ -11,8 +11,14 @@ def create_post_notifications(sender, instance, **kwargs):
     if not instance.approved:
         return
 
-    delay = NotificationDelay.ASAP if instance.is_first_reply else NotificationDelay.DAY
-    kind = EmailSentTrackKind.FIRST_REPLY if instance.is_first_reply else EmailSentTrackKind.FOLLOWING_REPLIES
+    if instance.is_topic_head:
+        kind = EmailSentTrackKind.PENDING_TOPIC
+    elif instance.is_first_reply:
+        kind = EmailSentTrackKind.FIRST_REPLY
+    else:
+        kind = EmailSentTrackKind.FOLLOWING_REPLIES
+
+    delay = delay_of_notifications[kind]
 
     notifications = [
         Notification(recipient=email_address, post=instance, kind=kind, delay=delay)

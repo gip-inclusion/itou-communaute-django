@@ -13,3 +13,10 @@ class EmailSentTrackKind(models.TextChoices):
 class NotificationDelay(models.TextChoices):
     ASAP = "asap", _("As soon as possible")
     DAY = "day", _("The following day")
+
+
+delay_of_notifications = {
+    EmailSentTrackKind.PENDING_TOPIC: NotificationDelay.DAY,
+    EmailSentTrackKind.FIRST_REPLY: NotificationDelay.ASAP,
+    EmailSentTrackKind.FOLLOWING_REPLIES: NotificationDelay.DAY,
+}
