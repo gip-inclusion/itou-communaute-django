@@ -8,6 +8,7 @@ class EmailSentTrackKind(models.TextChoices):
     ONBOARDING = "onboarding", "Onboarding d'un nouvel utilisateur"
     PENDING_TOPIC = "pending_topic", "Question sans réponse"
     MAGIC_LINK = "magic_link", "Lien de connexion magique"
+    BULK_NOTIFS = "bulk_notifs", "Notifications groupées"
 
 
 class NotificationDelay(models.TextChoices):
