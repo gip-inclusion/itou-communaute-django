@@ -65,11 +65,19 @@
                 </li>
             </ul>
         </nav>
+        {% if ENVIRONMENT != "PROD" %}
+            <div class="global-messages-container" id="debug-mode-banner">
+                <div class="alert alert-danger fade show" role="status">
+                    <p class="mb-0">
+                        <strong class="text-uppercase">DEV MODE</strong>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% block header %}
             {% include "partials/header.html" %}
         {% endblock %}
         {% block sub_header %}{% endblock %}
-        {% if ENVIRONMENT != "PROD" %}<div id="debug-mode-banner" class="bg-danger text-white mt-3">DEV MODE</div>{% endif %}
         <main id="main" role="main" class="s-main">
             {% block messages %}
                 {% if messages %}
