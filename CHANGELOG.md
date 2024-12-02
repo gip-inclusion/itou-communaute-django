@@ -1,5 +1,23 @@
 # Journal des modifications
 
+## [2.18.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.17.0...v2.18.0) (2024-12-02)
+
+
+### Features
+
+* mise à jour de la politique de confidentialité ([#824](https://github.com/gip-inclusion/itou-communaute-django/issues/824)) ([6cfed1a](https://github.com/gip-inclusion/itou-communaute-django/commit/6cfed1af26b5d5a9a9b7fb4f5e5a5855b9c985dc))
+* mise à jour UI des ecrans de connexion ([#825](https://github.com/gip-inclusion/itou-communaute-django/issues/825)) ([8f1e4f8](https://github.com/gip-inclusion/itou-communaute-django/commit/8f1e4f82bc31527e2be8bfb94c4b5d4c2c1c0f36))
+* simplifier la collecte des destinataires des questions en attente ([#833](https://github.com/gip-inclusion/itou-communaute-django/issues/833)) ([22eb8ca](https://github.com/gip-inclusion/itou-communaute-django/commit/22eb8caf6694b385cec5161683b2cf218681e524))
+* **stats:** suppression de la page cachée ([#828](https://github.com/gip-inclusion/itou-communaute-django/issues/828)) ([92bf7d8](https://github.com/gip-inclusion/itou-communaute-django/commit/92bf7d8ecad6e275137ed5d1bac7a8af2e870594))
+
+
+### Bug Fixes
+
+* anonymiser les urls de profil des utilisateurs ([#832](https://github.com/gip-inclusion/itou-communaute-django/issues/832)) ([6f03e8f](https://github.com/gip-inclusion/itou-communaute-django/commit/6f03e8f663f9a79fbac8a0858bb0ed0f6ddc0e01))
+* **log:** patch [#810](https://github.com/gip-inclusion/itou-communaute-django/issues/810) ([#822](https://github.com/gip-inclusion/itou-communaute-django/issues/822)) ([436c6a4](https://github.com/gip-inclusion/itou-communaute-django/commit/436c6a4b633120cb43fc2094f384caa4edb59e7b))
+* retarder la collecte des statistiques matomo ([#826](https://github.com/gip-inclusion/itou-communaute-django/issues/826)) ([dfca7e8](https://github.com/gip-inclusion/itou-communaute-django/commit/dfca7e850e242652179e84f84fdbace2fcb7d4fc))
+* **stats:** ajout des liens vers les forums dans la page de statistique des fiches pratiques ([#827](https://github.com/gip-inclusion/itou-communaute-django/issues/827)) ([63e2220](https://github.com/gip-inclusion/itou-communaute-django/commit/63e2220d0374eed6c1d6d515c51cc3293ee7f83e))
+
 ## [2.17.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.16.0...v2.17.0) (2024-11-14)
 
 
