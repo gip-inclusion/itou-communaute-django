@@ -30,7 +30,6 @@ def send_messages_notifications(delay: NotificationDelay):
         message_count_text = f"{message_count} message{pluralize(message_count, 's')}"
 
         params = {
-            "email_object": "Bonne nouvelle, ça bouge pour vous dans la communauté !",
             "email_thumbnail": (f"Vous avez {message_count_text} à découvrir sur la communauté de l'inclusion"),
             "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
         }
