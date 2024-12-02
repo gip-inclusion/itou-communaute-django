@@ -362,7 +362,7 @@ SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
 SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
 
 SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.beta.gouv.fr")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.gouv.fr")
 
 SIB_MAGIC_LINK_TEMPLATE = 31
 SIB_UNANSWERED_QUESTION_TEMPLATE = 10
