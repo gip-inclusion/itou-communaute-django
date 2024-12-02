@@ -1,8 +1,11 @@
+from datetime import datetime, timezone
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
+from factory import Iterator
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import (
@@ -46,6 +49,15 @@ class TopicManagerTest(TestCase):
         TopicFactory(forum=forum, posts_count=1, approved=False)
 
         self.assertEqual(Topic.objects.unanswered().get(), topic)
+
+    def test_unanswered_order(self):
+        forum = ForumFactory()
+        last_post_dates = [datetime(2025, 5, i, tzinfo=timezone.utc) for i in range(20, 24)]
+
+        TopicFactory.create_batch(
+            size=len(last_post_dates), forum=forum, posts_count=1, last_post_on=Iterator(last_post_dates)
+        )
+        assert list(Topic.objects.unanswered().values_list("last_post_on", flat=True)) == last_post_dates[::-1]
 
     def test_optimized_for_topics_list_disapproved(self):
         TopicFactory(approved=False)

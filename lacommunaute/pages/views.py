@@ -8,6 +8,8 @@ from django.views.generic.base import TemplateView
 
 from lacommunaute.event.models import Event
 from lacommunaute.forum.models import Forum
+from lacommunaute.forum_conversation.forms import PostForm
+from lacommunaute.forum_conversation.models import Topic
 
 
 logger = logging.getLogger(__name__)
@@ -28,6 +30,8 @@ class HomeView(TemplateView):
         context["forums_category"] = Forum.objects.filter(parent__type=1).order_by("-updated")[:4]
         context["forum"] = Forum.objects.get_main_forum()
         context["upcoming_events"] = Event.objects.filter(date__gte=timezone.now()).order_by("date")[:4]
+        context["unanswered_topics"] = Topic.objects.unanswered()[:4]
+        context["form"] = PostForm(user=self.request.user)
         return context
 
 
