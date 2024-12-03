@@ -3,7 +3,7 @@ from django.template.defaultfilters import pluralize
 from django.urls import reverse
 from django.utils import timezone
 
-from config.settings.base import DEFAULT_FROM_EMAIL, NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
+from config.settings.base import NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
@@ -17,7 +17,7 @@ def send_messages_notifications(delay: NotificationDelay):
     """Notifications are scheduled in the application and then processed later by this task"""
 
     notifications = Notification.objects.filter(delay=delay, sent_at__isnull=True, post__isnull=False).select_related(
-        "post", "post__topic", "post__poster"
+        "post", "post__topic", "post__poster", "post__topic__forum", "post__topic__first_post"
     )
 
     def get_grouped_notifications():
@@ -34,10 +34,9 @@ def send_messages_notifications(delay: NotificationDelay):
             "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
         }
         send_email(
-            to=[{"email": DEFAULT_FROM_EMAIL}],
+            to=[{"email": recipient}],
             params=params,
-            bcc=[{"email": recipient}],
-            kind=EmailSentTrackKind.FOLLOWING_REPLIES,
+            kind=EmailSentTrackKind.BULK_NOTIFS,
             template_id=SIB_NEW_MESSAGES_TEMPLATE,
         )
 

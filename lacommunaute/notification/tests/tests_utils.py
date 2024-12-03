@@ -50,24 +50,26 @@ class CollectNewUsersForOnBoardingTestCase(TestCase):
         self.assertEqual(list(collect_new_users_for_onboarding()), list(User.objects.all().order_by("date_joined")))
 
 
-class GetSeriaizedMessagesTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.topic = TopicFactory(with_post=True)
+class TestGetSerializedMessages:
+    def test_post_is_topic_head(self, db):
+        notification = NotificationFactory(set_post=True)
+        assert get_serialized_messages([notification]) == [
+            {
+                "poster": notification.post.poster_display_name,
+                "action": "a posé une nouvelle question",
+                "forum": notification.post.topic.forum.name,
+                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+            }
+        ]
 
-    def test_get_serialized_messages(self):
-        post = self.topic.first_post
-        notifications = [NotificationFactory(post=post)]
-
-        serialized_content = get_serialized_messages(notifications)
-        self.assertEqual(
-            serialized_content,
-            [
-                {
-                    "poster": post.poster_display_name,
-                    "action": f"a répondu à '{post.subject}'",
-                    "forum": self.topic.forum.name,
-                    "url": self.topic.get_absolute_url(with_fqdn=True),
-                }
-            ],
-        )
+    def test_post_is_not_topic_head(self, db):
+        topic = TopicFactory(with_post=True, answered=True)
+        notification = NotificationFactory(post=topic.last_post)
+        assert get_serialized_messages([notification]) == [
+            {
+                "poster": notification.post.poster_display_name,
+                "action": f"a répondu à '{notification.post.topic.subject}'",
+                "forum": notification.post.topic.forum.name,
+                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+            }
+        ]

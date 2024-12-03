@@ -78,7 +78,13 @@ class Topic(AbstractTopic):
 
         return absolute_url
 
-    def mails_to_notify(self):
+    def mails_to_notify_topic_head(self):
+        forum_upvoters_qs = User.objects.filter(id__in=self.forum.upvotes.all().values("voter_id")).values_list(
+            "email", flat=True
+        )
+        return [email for email in forum_upvoters_qs]
+
+    def mails_to_notify_replies(self):
         # we want to notify stakeholders of the topic, except the last poster.
         # stakeholders are:
         # - authenticated users who upvoted one of the posts of the topic
@@ -108,6 +114,11 @@ class Topic(AbstractTopic):
         last_poster_email = self.last_post.username or self.last_post.poster.email
 
         return [email for email in stakeholders_qs if email != last_poster_email]
+
+    def mails_to_notify(self):
+        if self.last_post.is_topic_head:
+            return self.mails_to_notify_topic_head()
+        return self.mails_to_notify_replies()
 
     @property
     def poster_email(self):
@@ -143,7 +154,7 @@ class Post(AbstractPost):
     def save(self, *args, **kwargs):
         created = not self.pk
         super().save(*args, **kwargs)
-        if created and (self.is_topic_tail and not self.is_topic_head):
+        if created:
             post_create.send(sender=self.__class__, instance=self)
 
 
