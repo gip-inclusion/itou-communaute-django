@@ -1,6 +1,6 @@
 from django.test import override_settings
 from django.urls import reverse
-from pytest_django.asserts import assertContains, assertNotContains
+from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.surveys.factories import DSPFactory
@@ -21,22 +21,13 @@ dsp_choices_list = [
 ]
 location_field_list = ["location", "city_code"]
 
-form_html = '<form method="post">'
-login_with_next_url = reverse("users:login") + "?next=" + reverse("surveys:dsp_create")
-
 
 class TestDSPCreateView:
-    def test_user_is_not_authenticated(self, db, client):
+    def test_action_box(self, db, client, snapshot):
         url = reverse("surveys:dsp_create")
         response = client.get(url)
-        assertContains(response, login_with_next_url)
-        assertNotContains(response, form_html)
-
-    def test_user_is_authenticated(self, db, client):
-        client.force_login(UserFactory())
-        response = client.get(reverse("surveys:dsp_create"))
-        assertContains(response, form_html)
-        assertNotContains(response, login_with_next_url)
+        content = parse_response_to_soup(response, selector="#action-box")
+        assert str(content) == snapshot(name="action_box")
 
     def test_form_fields(self, db, client):
         url = reverse("surveys:dsp_create")
