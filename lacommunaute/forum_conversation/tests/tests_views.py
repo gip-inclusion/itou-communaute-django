@@ -663,7 +663,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
+            response, '<i class="ri-notification-2-line me-1" aria-hidden="true"></i><span>0</span>', status_code=200
         )
 
     def test_post_has_upvote_by_user(self):
@@ -673,7 +673,7 @@ class TopicViewTest(TestCase):
 
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<i class="ri-bookmark-fill me-1" aria-hidden="true"></i><span>1</span>', status_code=200
+            response, '<i class="ri-notification-2-fill me-1" aria-hidden="true"></i><span>1</span>', status_code=200
         )
 
     def test_certified_post_is_highlighted(self):
