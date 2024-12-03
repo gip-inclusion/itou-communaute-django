@@ -44,6 +44,29 @@
   </small>
   '''
 # ---
+# name: TestTopicListView.test_anonymous_content[anonymous_action_box]
+  '''
+  <section class="s-section" id="action-box">
+              <div class="s-section__container container">
+                  <div class="s-section__row row">
+                      <div class="s-section__col col-12">
+                          <div class="c-box mb-5">
+                              <div class="row">
+                                  <div class="col-lg col-12 mb-3">Je me connecte pour accéder à toutes mes thématiques</div>
+                                  <div class="col-lg-auto col-12">
+  
+  
+      <a class="btn btn-outline-primary btn-ico btn-block" href="/users/login/?next=%2Ftopics%2F">Se connecter | S'inscrire</a>
+  
+  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+  '''
+# ---
 # name: TestTopicListView.test_clickable_tags[10-query_param1-clickable_tags_page2][clickable_tags_page2]
   '<button class="tag bg-info-lighter text-info matomo-event" data-matomo-action="filter" data-matomo-category="engagement" data-matomo-option="topics" hx-get="/topics/?tag=tag&amp;filter=ALL" hx-push-url="true" hx-swap="outerHTML" hx-target="#topicsarea" id="filtertopics-button">tag</button>'
 # ---
