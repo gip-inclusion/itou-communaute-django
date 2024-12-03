@@ -7,6 +7,7 @@
     CIP en recherche active de stage ou d'alternance. La communauté expérimente la mise en relation de CIPs en formation avec des structures de l'insertion désireuses de les accueillir.
 {% endblock meta_description %}
 {% block content %}
+    {% url 'members:profile_update' as update_url %}
     <section class="s-title-01 mt-lg-5">
         <div class="s-title-01__container container">
             <div class="s-title-01__row row">
@@ -21,18 +22,18 @@
             </div>
         </div>
     </section>
-    <section class="s-section">
+    <section id="action-box" class="s-section">
         <div class="s-section__container container">
             {% if user.is_authenticated %}
                 <div class="s-section__row row">
                     <div class="s-section__col col-12">
                         <div class="c-box mb-5">
                             <div class="row">
-                                <div class="col-lg-9 col-12 mb-3">
+                                <div class="col-lg col-12 mb-3">
                                     <p>Je suis CIP en recherche d'un stage ou d'une alternance ? Je complète mon profil pour me faire connaitre.</p>
                                 </div>
-                                <div class="col-lg-auto col-12 mb-3 justify-content-end">
-                                    <a href="{% url 'members:profile_update' %}" class="btn btn-primary">Mettre à jour mon profil</a>
+                                <div class="col-lg-auto col-12">
+                                    <a href="{{ update_url }}" class="btn btn-primary">Mettre à jour mon profil</a>
                                 </div>
                             </div>
                         </div>
@@ -44,9 +45,7 @@
                         <div class="c-box mb-5">
                             <div class="row">
                                 <div class="col-lg col-12 mb-3">Je me connecte pour mettre à jour mon profil</div>
-                                <div class="col-lg-auto col-12">
-                                    <a href="{% url 'openid_connect:authorize' %}?next={% url 'members:profile_update' %}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">Me connecter</a>
-                                </div>
+                                <div class="col-lg-auto col-12">{% include "registration/includes/login_link.html" with next=update_url %}</div>
                             </div>
                         </div>
                     </div>

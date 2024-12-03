@@ -1,3 +1,4 @@
+import pytest
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from machina.core.loading import get_class
@@ -7,6 +8,8 @@ from lacommunaute.forum_member.factories import ForumProfileFactory
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_member.views import ForumProfileUpdateView
+from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
@@ -54,6 +57,14 @@ class TestSeekersListView:
         # test queryset is ordered by updated_at
         assert response.context_data["forum_profiles"][0] == ForumProfile.objects.last()
         assert response.context_data["forum_profiles"][1] == ForumProfile.objects.first()
+
+    @pytest.mark.parametrize("authenticated,snapshot_name", [(True, "authenticated_user"), (False, "anonymous_user")])
+    def test_update_profil_link(self, client, db, authenticated, snapshot_name, snapshot):
+        if authenticated:
+            client.force_login(UserFactory())
+        response = client.get(reverse("members:seekers"))
+        content = parse_response_to_soup(response, selector="#action-box")
+        assert str(content) == snapshot(name=snapshot_name)
 
 
 class TestForumProfileDetailView:
