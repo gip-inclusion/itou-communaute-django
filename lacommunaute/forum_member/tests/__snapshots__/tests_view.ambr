@@ -1,0 +1,74 @@
+# serializer version: 1
+# name: TestSeekersListView.test_update_profil_link[False-anonymous_user][anonymous_user]
+  '''
+  <section class="s-section" id="action-box">
+          <div class="s-section__container container">
+              
+                  <div class="s-section__row row">
+                      <div class="s-section__col col-12">
+                          <div class="c-box mb-5">
+                              <div class="row">
+                                  <div class="col-lg col-12 mb-3">Je me connecte pour mettre à jour mon profil</div>
+                                  <div class="col-lg-auto col-12">
+  
+  
+      <a class="btn btn-outline-primary btn-ico btn-block" href="/users/login/?next=%2Fmembers%2Fprofile%2Fedit%2F">Se connecter | S'inscrire</a>
+  
+  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12">
+                      <div class="row row-cols-1 row-cols-md-2 g-4">
+                          
+                              <div class="col">
+                                  <p>No body yet…</p>
+                              </div>
+                          
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      </section>
+  '''
+# ---
+# name: TestSeekersListView.test_update_profil_link[True-authenticated_user][authenticated_user]
+  '''
+  <section class="s-section" id="action-box">
+          <div class="s-section__container container">
+              
+                  <div class="s-section__row row">
+                      <div class="s-section__col col-12">
+                          <div class="c-box mb-5">
+                              <div class="row">
+                                  <div class="col-lg col-12 mb-3">
+                                      <p>Je suis CIP en recherche d'un stage ou d'une alternance ? Je complète mon profil pour me faire connaitre.</p>
+                                  </div>
+                                  <div class="col-lg-auto col-12">
+                                      <a class="btn btn-primary" href="/members/profile/edit/">Mettre à jour mon profil</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+              <div class="s-section__row row">
+                  <div class="s-section__col col-12">
+                      <div class="row row-cols-1 row-cols-md-2 g-4">
+                          
+                              <div class="col">
+                                  <p>No body yet…</p>
+                              </div>
+                          
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      </section>
+  '''
+# ---

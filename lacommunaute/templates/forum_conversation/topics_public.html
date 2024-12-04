@@ -43,14 +43,16 @@
         </div>
     </section>
     {% if not user.is_authenticated %}
-        <section class="s-section">
+        <section id="action-box" class="s-section">
             <div class="s-section__container container">
-                <div class="s-section__row row mb-1 mb-md-3 justify-content-center">
-                    <div class="s-section__col col-12 col-lg-auto">
-                        <a href="{% url 'openid_connect:authorize' %}" class="btn btn-block btn-ico btn-primary">
-                            <i class="ri-login-box-line ri-lg" aria-hidden="true"></i>
-                            <span>Je me connecte pour accéder à toutes mes thématiques</span>
-                        </a>
+                <div class="s-section__row row">
+                    <div class="s-section__col col-12">
+                        <div class="c-box mb-5">
+                            <div class="row">
+                                <div class="col-lg col-12 mb-3">Je me connecte pour accéder à toutes mes thématiques</div>
+                                <div class="col-lg-auto col-12">{% include "registration/includes/login_link.html" %}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

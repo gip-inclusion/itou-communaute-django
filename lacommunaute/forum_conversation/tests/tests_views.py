@@ -973,6 +973,11 @@ class TestTopicListView:
         content = parse_response_to_soup(response, selector="#filterTopicsDropdown")
         assert str(content) == snapshot(name="filter_dropdown_with_tags")
 
+    def test_anonymous_content(self, client, db, topics_url, snapshot):
+        response = client.get(topics_url)
+        content = parse_response_to_soup(response, selector="#action-box")
+        assert str(content) == snapshot(name="anonymous_action_box")
+
 
 class TestPosterTemplate:
     def test_topic_in_topics_view(self, client, db, topics_url, snapshot):

@@ -1,2 +1,7 @@
 {% load i18n %}
-<a href="{% url 'users:login' %}?next={{ request.path }}" rel="nofollow" class="btn btn-outline-primary btn-ico btn-block">{% trans "Login | Sign in" %}</a>
+{% load str_filters %}
+{% if next %}
+    <a href="{% login_url next %}" class="btn btn-outline-primary btn-ico btn-block">{% trans "Login | Sign in" %}</a>
+{% else %}
+    <a href="{% login_url request.path %}" class="btn btn-outline-primary btn-ico btn-block">{% trans "Login | Sign in" %}</a>
+{% endif %}

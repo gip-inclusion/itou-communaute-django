@@ -35,11 +35,11 @@ def pluralizefr(value, arg="s"):
 
 
 @register.simple_tag
-def openid_connect_url(next_url, anchor=None):
+def login_url(next_url, anchor=None):
     if anchor:
         next_url = f"{next_url}#{anchor}"
     params = {"next": next_url}
-    return f"{reverse('openid_connect:authorize')}?{urlencode(params)}"
+    return f"{reverse('users:login')}?{urlencode(params)}"
 
 
 @register.filter(is_safe=True, needs_autoescape=True)

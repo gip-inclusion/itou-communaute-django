@@ -1,0 +1,56 @@
+# serializer version: 1
+# name: TestEventMonthArchiveView.test_action_box[False-anonymous][anonymous]
+  '''
+  <section class="s-section" id="action-box">
+          <div class="s-section__container container">
+              
+                  <div class="s-section__row row">
+                      <div class="s-section__col col-12">
+                          <div class="c-box mb-5">
+                              <div class="row">
+                                  <div class="col-lg col-12 mb-3">
+                                      Je suis l'organisateur d'un évènement à destination des CIP pour les aider à améliorer leur pratique professionnelle ?
+                                      <br/>
+                                      Je me connecte pour ajouter un évènement public dans le calendrier de la communauté
+                                  </div>
+                                  <div class="col-lg-auto col-12">
+  
+  
+      <a class="btn btn-outline-primary btn-ico btn-block" href="/users/login/?next=%2Fcalendar%2Fcreate%2F">Se connecter | S'inscrire</a>
+  
+  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+          </div>
+      </section>
+  '''
+# ---
+# name: TestEventMonthArchiveView.test_action_box[True-authenticated][authenticated]
+  '''
+  <section class="s-section" id="action-box">
+          <div class="s-section__container container">
+              
+                  <div class="s-section__row row">
+                      <div class="s-section__col col-12">
+                          <div class="c-box mb-5">
+                              <div class="row">
+                                  <div class="col-lg col-12 mb-3">
+                                      Je suis l'organisateur d'un évènement à destination des CIP pour les aider à améliorer leur pratique professionnelle ?
+                                      <br/>
+                                      J'ajoute un évènement public dans le calendrier de la communauté
+                                  </div>
+                                  <div class="col-lg-auto col-12">
+                                      <a class="btn btn-primary" href="/calendar/create/">Ajouter un évènement public</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+          </div>
+      </section>
+  '''
+# ---

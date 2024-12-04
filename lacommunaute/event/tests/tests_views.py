@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+import pytest
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.test import TestCase
@@ -12,6 +13,7 @@ from lacommunaute.event.factories import EventFactory
 from lacommunaute.event.forms import EventModelForm
 from lacommunaute.event.models import Event
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
@@ -75,7 +77,7 @@ class EventCreateViewTest(TestCase):
     def test_login_is_required(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("openid_connect:authorize") + "?next=" + self.url)
+        self.assertEqual(response.url, reverse("users:login") + "?next=" + self.url)
 
     def test_event_is_created(self):
         self.client.force_login(self.user)
@@ -191,7 +193,7 @@ class EventListViewTest(TestCase):
     def test_login_is_required(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("openid_connect:authorize") + "?next=" + self.url)
+        self.assertEqual(response.url, reverse("users:login") + "?next=" + self.url)
 
         self.client.force_login(self.user)
         response = self.client.get(self.url)
@@ -221,7 +223,6 @@ class EventMonthArchiveViewTest(TestCase):
         response = self.client.get(reverse("event:current"))
         self.assertContains(response, event.name, status_code=200)
         self.assertContains(response, reverse("event:detail", kwargs={"pk": event.pk}))
-        self.assertContains(response, reverse("event:create"))
 
     def test_view_with_args(self):
         event = EventFactory(date=timezone.now())
@@ -272,3 +273,19 @@ class EventMonthArchiveViewTest(TestCase):
             ),
             status_code=200,
         )
+
+
+class TestEventMonthArchiveView:
+    @pytest.mark.parametrize(
+        "authenticated,snapshot_name",
+        [
+            (False, "anonymous"),
+            (True, "authenticated"),
+        ],
+    )
+    def test_action_box(self, client, db, authenticated, snapshot_name, snapshot):
+        if authenticated:
+            client.force_login(UserFactory())
+        response = client.get(reverse("event:current"))
+        content = parse_response_to_soup(response, selector="#action-box")
+        assert str(content) == snapshot(name=snapshot_name)

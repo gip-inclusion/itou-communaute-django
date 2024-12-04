@@ -190,19 +190,19 @@ class UtilsTemplateTagsTestCase(TestCase):
         out = template.render(Context({"counter": 10}))
         self.assertEqual(out, "Résultats")
 
-    def test_openid_connect_url(self):
+    def test_login_url(self):
         next_url = faker.uri()
         anchor = faker.random_int()
-        openid_connect_url = reverse("openid_connect:authorize")
+        login_url = reverse("users:login")
         context = Context({"next_url": next_url, "anchor": anchor})
 
-        out = Template("{% load str_filters %}{% openid_connect_url next_url%}").render(context)
+        out = Template("{% load str_filters %}{% login_url next_url%}").render(context)
         params = {"next": next_url}
-        self.assertEqual(out, f"{openid_connect_url}?{urlencode(params)}")
+        self.assertEqual(out, f"{login_url}?{urlencode(params)}")
 
-        out = Template("{% load str_filters %}{% openid_connect_url next_url anchor %}").render(context)
+        out = Template("{% load str_filters %}{% login_url next_url anchor %}").render(context)
         params = {"next": f"{next_url}#{anchor}"}
-        self.assertEqual(out, f"{openid_connect_url}?{urlencode(params)}")
+        self.assertEqual(out, f"{login_url}?{urlencode(params)}")
 
     def test_relativetimesince_fr(self):
         template = Template("{% load date_filters %}{{ date|relativetimesince_fr }}")
