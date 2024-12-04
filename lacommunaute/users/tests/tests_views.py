@@ -86,7 +86,9 @@ def validate_magiclink_payload(payload_as_str, uidb64, token, expected):
 
 class TestSendMagicLink:
     @pytest.mark.parametrize("env,count_msg", [(Environment.PROD, 0), (Environment.DEV, 1)])
-    def test_send_magic_link(self, db, user, snapshot, mock_respx_post_to_sib_smtp_url, env, count_msg):
+    def test_send_magic_link(
+        self, db, user, snapshot, mock_token_generator, mock_respx_post_to_sib_smtp_url, env, count_msg
+    ):
         with override_settings(ENVIRONMENT=env):
             next_url = "/topics/"
             request = RequestFactory().get("/")
