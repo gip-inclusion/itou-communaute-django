@@ -514,7 +514,7 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
                       <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>1</span>
                   </button>
               </form>
@@ -556,7 +556,7 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
                       <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>2</span>
                   </button>
               </form>
@@ -598,7 +598,7 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
                       <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>3</span>
                   </button>
               </form>
