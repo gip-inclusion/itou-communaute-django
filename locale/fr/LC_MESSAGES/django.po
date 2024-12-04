@@ -914,10 +914,13 @@ msgid "Topics Engagement"
 msgstr "Engagement par sujet"
 
 msgid "UpVotes"
-msgstr "Sauvegarder"
+msgstr "S'abonner"
 
 msgid "My UpVotes"
-msgstr "Mes sauvegardes"
+msgstr "Mes abonnements"
+
+msgid "Go to my UpVotes"
+msgstr "Voir mes abonnements"
 
 msgid "Likes"
 msgstr "Ce sujet m'intéresse"
@@ -1036,3 +1039,9 @@ msgstr "Partenaire"
 
 msgid "Partners"
 msgstr "Nos partenaires"
+
+msgid "Go to my profile"
+msgstr "Voir mon profil"
+
+msgid "Go to my events"
+msgstr "Voir mes évènements"

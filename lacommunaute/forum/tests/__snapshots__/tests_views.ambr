@@ -328,7 +328,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-10000%2F%2310000" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>0</span>
               </a>
           
       
@@ -487,7 +487,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>0</span>
               </a>
           
       
@@ -500,7 +500,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>0</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>0</span>
               </a>
           
       
@@ -514,8 +514,8 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>1</span>
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
+                      <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>1</span>
                   </button>
               </form>
           
@@ -529,7 +529,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>1</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>1</span>
               </a>
           
       
@@ -542,7 +542,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>1</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>1</span>
               </a>
           
       
@@ -556,8 +556,8 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>2</span>
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
+                      <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>2</span>
                   </button>
               </form>
           
@@ -571,7 +571,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>2</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>2</span>
               </a>
           
       
@@ -584,7 +584,7 @@
       
           
               <a class="btn btn-sm btn-ico btn-link btn-secondary px-2" data-bs-placement="top" data-bs-toggle="tooltip" href="/users/login/?next=%2Fforum%2Ftest-forum-forum-[PK of Forum]%2F%23[PK of Forum]" title="Connectez-vous pour sauvegarder">
-                  <i aria-hidden="true" class="ri-bookmark-line me-1"></i><span>2</span>
+                  <i aria-hidden="true" class="ri-notification-2-line me-1"></i><span>2</span>
               </a>
           
       
@@ -598,8 +598,8 @@
           
               <form hx-post="/upvote/forum/" hx-swap="outerHTML" hx-target="#upvotesarea10000" id="upvote-button10000">
                   <input name="pk" type="hidden" value="10000"/>
-                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="Sauvegarder" type="submit">
-                      <i aria-hidden="true" class="ri-bookmark-fill me-1"></i><span>3</span>
+                  <button class="btn btn-sm btn-ico btn-secondary matomo-event px-2" data-matomo-action="upvote" data-matomo-category="engagement" data-matomo-option="post" title="S'abonner" type="submit">
+                      <i aria-hidden="true" class="ri-notification-2-fill me-1"></i><span>3</span>
                   </button>
               </form>
           
