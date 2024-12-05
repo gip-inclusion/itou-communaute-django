@@ -115,7 +115,7 @@ class TestSendMagicLink:
 
 
 class TestLoginView:
-    @pytest.mark.parametrize("next_url", [None, "/", "/topics/"])
+    @pytest.mark.parametrize("next_url", [None, "/", "/topics/", "http://www.unallowed_host.com"])
     def test_content(self, client, db, next_url, snapshot):
         url = reverse("users:login") + f"?next={next_url}" if next_url else reverse("users:login")
         response = client.get(url)
