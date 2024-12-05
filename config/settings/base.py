@@ -102,6 +102,7 @@ DJANGO_MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "lacommunaute.utils.middleware.ParkingPageMiddleware",
+    "lacommunaute.openid_connect.middleware.ProConnectLoginMiddleware",
 ]
 
 THIRD_PARTIES_MIDDLEWARE = [
