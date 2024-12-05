@@ -25,7 +25,7 @@
                             <p>
                                 ProConnect vous permet d'accéder à de nombreux services en ligne en utilisant l'un de vos comptes professionnels existants.
                             </p>
-                            <a href="{% url 'openid_connect:authorize' %}?next={{ next }}" rel="nofollow" class="proconnect-button"></a>
+                            <a href="{% url 'openid_connect:authorize' %}?next={{ request.GET.next }}" rel="nofollow" class="proconnect-button"></a>
                             <p>
                                 <a href="https://proconnect.gouv.fr/" target="_blank" rel="noopener noreferrer" title="Qu’est-ce que AgentConnect ? - nouvelle fenêtre">
                                     Qu’est-ce que ProConnect ?
