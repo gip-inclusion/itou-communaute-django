@@ -8,11 +8,17 @@ class ProConnectLoginMiddleware(MiddlewareMixin):
     def process_request(self, request):
         query_params = request.GET.copy()
 
-        if "proconnect_login" in query_params:
-            query_params.pop("proconnect_login")
-            new_url = f"{request.path}?{urlencode(query_params)}" if query_params else request.path
+        if "proconnect_login" not in query_params:
+            return
 
-            if not request.user.is_authenticated:
-                return HttpResponseRedirect(reverse("openid_connect:authorize") + f"?next={new_url}")
+        query_params.pop("proconnect_login")
+        new_url = (
+            f"{request.path}?{urlencode({k: v for k, v in query_params.items() if v})}"
+            if query_params
+            else request.path
+        )
 
-            return HttpResponseRedirect(new_url)
+        if not request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("openid_connect:authorize") + f"?next={new_url}")
+
+        return HttpResponseRedirect(new_url)
