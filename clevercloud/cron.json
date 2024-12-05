@@ -1,5 +1,6 @@
 [
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
+    "0 3 * * * $ROOT/clevercloud/run_management_command.sh clearsessions",
     "0 7 * * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats",
     "5 7 * * * $ROOT/clevercloud/run_management_command.sh collect_django_stats",
     "10 7 1 * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats --period month",
