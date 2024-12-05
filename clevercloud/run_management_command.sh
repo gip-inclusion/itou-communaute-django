@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-
+set -ue
 
 #
 # About clever cloud cronjobs:
