@@ -4,7 +4,7 @@
     "5 7 * * * $ROOT/clevercloud/collect_daily_django_stats.sh",
     "10 7 1 * * $ROOT/clevercloud/collect_monthly_matomo_stats.sh",
     "15 7 * * 1 $ROOT/clevercloud/collect_weekly_matomo_forum_stats.sh",
-    "*/15 7-21 * * * $ROOT/clevercloud/send_notifications_regular.sh",
+    "*/15 7-21 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications asap",
     "20 6 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications day",
     "10 6-22 * * * $ROOT/clevercloud/run_management_command.sh add_user_to_list_when_register",
     "30 13 * * 1-5 $ROOT/clevercloud/run_management_command.sh send_notifs_on_unanswered_topics"
