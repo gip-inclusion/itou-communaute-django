@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from pytest_django.asserts import assertRedirects, assertTemplateUsed
 
 from lacommunaute.users.factories import UserFactory
 
@@ -15,8 +16,7 @@ from lacommunaute.users.factories import UserFactory
 def test_redirect_for_authenticated_user(client, db, params, expected):
     client.force_login(UserFactory())
     response = client.get(f"/{params}")
-    assert response.url == f"/{expected}"
-    assert response.status_code == 302
+    assertRedirects(response, f"/{expected}")
 
 
 @pytest.mark.parametrize(
@@ -29,8 +29,7 @@ def test_redirect_for_authenticated_user(client, db, params, expected):
 )
 def test_redirect_for_anonymous_user(client, db, params, expected):
     response = client.get(f"/{params}")
-    assert response.url == f"{reverse('openid_connect:authorize')}?next={expected}"
-    assert response.status_code == 302
+    assertRedirects(response, f"{reverse('openid_connect:authorize')}?next={expected}", fetch_redirect_response=False)
 
 
 @pytest.mark.parametrize(
@@ -48,4 +47,4 @@ def test_wo_proconnect_login_param(client, db, logged, params):
     if logged:
         client.force_login(UserFactory())
     response = client.get(f"/{params}")
-    assert response.status_code == 200
+    assertTemplateUsed(response, "pages/home.html")
