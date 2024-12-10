@@ -253,7 +253,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/4.1/topics/cache/
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
     },
     "machina_attachments": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
