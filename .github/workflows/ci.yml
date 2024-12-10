@@ -63,6 +63,8 @@ jobs:
           pip install -r requirements/dev.txt
       - name: ✨ Black, ruff & djlint
         run: make quality
+      - name: 🚧 create cache table
+        run: python manage.py createcachetable
       - name: 🚧 collect static for testing purposes
         run: |
           python manage.py collectstatic
