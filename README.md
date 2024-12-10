@@ -43,6 +43,7 @@ $ docker-compose --profile django up
 ## Préparer l'environnement de données
 
 ```bash
+$ python manage.py createcachetable
 $ python manage.py migrate
 $ python manage.py populate
 $ python manage.py configure_bucket

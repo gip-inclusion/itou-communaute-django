@@ -6,6 +6,7 @@
         "module": "config.wsgi:application",
         "managetasks": [
             "migrate --no-input",
+            "createcachetable",
             "collectstatic --no-input",
             "compilemessages",
             "compress"
