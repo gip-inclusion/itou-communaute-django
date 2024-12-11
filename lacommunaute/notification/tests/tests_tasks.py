@@ -8,13 +8,6 @@ from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
 
-from config.settings.base import (
-    DEFAULT_FROM_EMAIL,
-    SIB_CONTACTS_URL,
-    SIB_ONBOARDING_LIST,
-    SIB_SMTP_URL,
-    SIB_UNANSWERED_QUESTION_TEMPLATE,
-)
 from lacommunaute.forum_conversation.factories import (
     TopicFactory,
 )
@@ -37,7 +30,7 @@ faker = Faker()
 @pytest.fixture(name="mock_respx_post_to_sib_smtp_url")
 def mock_respx_post_to_sib_smtp_url_fixture():
     with respx.mock:
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(settings.SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
         yield
 
 
@@ -115,7 +108,7 @@ class TestSendMessagesNotifications:
 class AddUserToListWhenRegister(TestCase):
     def setUp(self):
         super().setUp()
-        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(settings.SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_add_user_to_list_when_register(self):
@@ -128,7 +121,7 @@ class AddUserToListWhenRegister(TestCase):
             ],
             "emailBlacklist": False,
             "smsBlacklist": False,
-            "listIds": [SIB_ONBOARDING_LIST],
+            "listIds": [settings.SIB_ONBOARDING_LIST],
             "updateExistingContacts": True,
             "emptyContactsAttributes": True,
         }
@@ -163,10 +156,10 @@ def payload_for_staff_user_to_notify_on_unanswered_topics_fixture():
     )
     params = {"count": 1, "link": "".join(url)}
     payload = {
-        "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+        "sender": {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL},
         "to": to,
         "params": params,
-        "templateId": SIB_UNANSWERED_QUESTION_TEMPLATE,
+        "templateId": settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
     }
     yield payload
 
