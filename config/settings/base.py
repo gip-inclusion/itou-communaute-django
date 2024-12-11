@@ -391,7 +391,7 @@ CSP_SCRIPT_SRC = (
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js",
     # https://docs.sentry.io/platforms/javascript/install/loader/#content-security-policy
     "https://browser.sentry-cdn.com",
-    "https://js.sentry-cdn.com",
+    "https://js-de.sentry-cdn.com",
     "https://tally.so",
     "https://www.youtube.com/iframe_api",
     "https://www.youtube.com/s/player/",
