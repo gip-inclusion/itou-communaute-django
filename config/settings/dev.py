@@ -1,4 +1,5 @@
 # Enable django-debug-toolbar with Docker.
+import os
 import socket
 
 from lacommunaute.utils.enums import Environment
@@ -15,6 +16,12 @@ DEBUG = True
 ENVIRONMENT = Environment.DEV
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "192.168.0.1"]
+# SENDINBLUE / BREVO
+# ---------------------------------------
+SIB_URL = os.getenv("SIB_URL", "https://test.com")
+SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
+SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
+SIB_API_KEY = os.getenv("SIB_API_KEY", "key_to_be_set")
 
 # Security.
 # ------------------------------------------------------------------------------

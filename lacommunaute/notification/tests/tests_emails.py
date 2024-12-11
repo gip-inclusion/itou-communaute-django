@@ -2,10 +2,10 @@ import json
 
 import httpx
 import respx
+from django.conf import settings
 from django.test import TestCase
 from faker import Faker
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
 from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.users.factories import UserFactory
@@ -17,13 +17,13 @@ faker = Faker()
 class SendEmailTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(settings.SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
         cls.to = [{"email": faker.email()}]
         cls.params = faker.text()
         cls.template_id = faker.random_int()
         cls.kind = "first_reply"
         cls.payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+            "sender": {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL},
             "to": cls.to,
             "params": cls.params,
             "templateId": cls.template_id,
@@ -52,7 +52,7 @@ class SendEmailTestCase(TestCase):
 class BulkSendUserToListTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(settings.SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
 
     @respx.mock
     def test_bulk_send_user_to_list(self):
