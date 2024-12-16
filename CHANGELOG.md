@@ -1,5 +1,24 @@
 # Journal des modifications
 
+## [2.19.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.18.0...v2.19.0) (2024-12-16)
+
+
+### Features
+
+* amélioration bouton pro_connect ([#847](https://github.com/gip-inclusion/itou-communaute-django/issues/847)) ([09397af](https://github.com/gip-inclusion/itou-communaute-django/commit/09397afbb5064420bc67ac5f403b3619e73ee752))
+* harmonisation des liens de connexion ([#844](https://github.com/gip-inclusion/itou-communaute-django/issues/844)) ([fb50472](https://github.com/gip-inclusion/itou-communaute-django/commit/fb504725a2136baeae01b704f3490c777c76b4c3))
+* **home:** afficher les questions en attente de réponse sur la page d'accueil ([#830](https://github.com/gip-inclusion/itou-communaute-django/issues/830)) ([300a7bd](https://github.com/gip-inclusion/itou-communaute-django/commit/300a7bd6fc288c13e293eddba562489c2e8c6ce7))
+* mise à jour de la politique de confidentialité ([#845](https://github.com/gip-inclusion/itou-communaute-django/issues/845)) ([fa5d0d4](https://github.com/gip-inclusion/itou-communaute-django/commit/fa5d0d4a63fc41a758013369f1e411a1c9a1818a))
+* **notification:** informer les abonnés des nouvelles questions dans un forum ([#835](https://github.com/gip-inclusion/itou-communaute-django/issues/835)) ([432fec2](https://github.com/gip-inclusion/itou-communaute-django/commit/432fec2a4ed49855c89f1c9af08ca65798f8e236))
+* POC, autoconnection les emplois vers la commu via Pro Connect ([#851](https://github.com/gip-inclusion/itou-communaute-django/issues/851)) ([56e3163](https://github.com/gip-inclusion/itou-communaute-django/commit/56e31638f024664cb568ae9fdf6e3825bd2f5599))
+* renommage des upvotes ([#842](https://github.com/gip-inclusion/itou-communaute-django/issues/842)) ([4491d8d](https://github.com/gip-inclusion/itou-communaute-django/commit/4491d8d61ff41670b8e7887c53b5ed325604746a))
+
+
+### Bug Fixes
+
+* hydratation du parametre `next` dans l'url proconnect:authorize ([#850](https://github.com/gip-inclusion/itou-communaute-django/issues/850)) ([3486f6e](https://github.com/gip-inclusion/itou-communaute-django/commit/3486f6e55fabc4248cbf559eb87e80173535f457))
+* **stats:** desactivation de la collecte des stats automatique ([#859](https://github.com/gip-inclusion/itou-communaute-django/issues/859)) ([5bf3aea](https://github.com/gip-inclusion/itou-communaute-django/commit/5bf3aea0c50d50d9e8300d08e0e0e4b691f2a3bf))
+
 ## [2.18.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.17.0...v2.18.0) (2024-12-02)
 
 
