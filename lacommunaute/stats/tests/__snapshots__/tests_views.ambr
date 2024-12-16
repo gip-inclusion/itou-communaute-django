@@ -16,6 +16,24 @@
   <main class="s-main" id="main" role="main">
               
                   
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
+                  
               
               
       <div class="container">
@@ -165,6 +183,24 @@
   '''
   <main class="s-main" id="main" role="main">
               
+                  
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
                   
               
               
@@ -316,6 +352,24 @@
   <main class="s-main" id="main" role="main">
               
                   
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
+                  
               
               
       <div class="container">
@@ -465,6 +519,24 @@
   '''
   <main class="s-main" id="main" role="main">
               
+                  
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
                   
               
               
@@ -616,6 +688,24 @@
   <main class="s-main" id="main" role="main">
               
                   
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
+                  
               
               
       <div class="container">
@@ -766,6 +856,24 @@
   <main class="s-main" id="main" role="main">
               
                   
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
+                  
               
               
       <div class="container">
@@ -915,6 +1023,24 @@
   '''
   <main class="s-main" id="main" role="main">
               
+                  
+                      <section class="s-section m-0">
+                          <div class="s-section__container container">
+                              <div class="s-section__row row">
+                                  <div class="s-section__col col-12"><div id="messages">
+      
+          
+              <div class="alert alert-warning alert-dismissible fade show mt-3" role="status">
+                  <button aria-label="Fermer" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                  La collecte des statistiques est desactivée pour le moment.
+              </div>
+          
+      
+  </div>
+  </div>
+                              </div>
+                          </div>
+                      </section>
                   
               
               
