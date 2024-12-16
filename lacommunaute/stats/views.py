@@ -1,6 +1,7 @@
 import logging
 
 from dateutil.relativedelta import relativedelta
+from django.contrib import messages
 from django.db.models import Avg, CharField, Count, OuterRef, Subquery, Sum
 from django.db.models.functions import Cast
 from django.shortcuts import render
@@ -79,6 +80,8 @@ class StatistiquesPageView(TemplateView):
         context["dsp_count"] = self.get_dsp_count()
         context = {**context, **self.get_funnel_data()}
 
+        messages.warning(self.request, "La collecte des statistiques est desactivée pour le moment.")
+
         return context
 
 
@@ -99,6 +102,9 @@ class BaseDetailStatsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["stats"] = self.get_detailled_stats()
         context["box_title"] = self.box_title
+
+        messages.warning(self.request, "La collecte des statistiques est desactivée pour le moment.")
+
         return context
 
 
@@ -155,6 +161,8 @@ class DocumentStatsView(View):
             else "sum_time_spent"
         )
         objects = objects.order_by("-" + sort_key)
+
+        messages.warning(self.request, "La collecte des statistiques est desactivée pour le moment.")
 
         return render(
             request,
