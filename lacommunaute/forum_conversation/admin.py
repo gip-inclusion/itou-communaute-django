@@ -1,7 +1,15 @@
 from django.contrib import admin
-from machina.apps.forum_conversation.admin import TopicAdmin as BaseTopicAdmin
+from machina.apps.forum_conversation.admin import PostAdmin as BasePostAdmin, TopicAdmin as BaseTopicAdmin
 
 from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
+
+
+class PostAdmin(BasePostAdmin):
+    def get_actions(self, request):
+        # delete_selected action does not call delete method of the model
+        # related topic is not update (last_post, posts_count) making
+        # the website inconsistent
+        return []
 
 
 class PostInline(admin.StackedInline):
@@ -34,6 +42,8 @@ class CertifiedPostAdmin(admin.ModelAdmin):
     )
 
 
+admin.site.unregister(Post)
+admin.site.register(Post, PostAdmin)
 admin.site.unregister(Topic)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(CertifiedPost, CertifiedPostAdmin)
