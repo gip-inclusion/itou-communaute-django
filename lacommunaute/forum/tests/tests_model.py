@@ -1,3 +1,4 @@
+import pytest
 from django.conf import settings
 from django.test import TestCase
 
@@ -7,22 +8,29 @@ from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.users.factories import UserFactory
 
 
+@pytest.fixture(name="forum")
+def fixture_forum(db):
+    return ForumFactory()
+
+
+@pytest.fixture(name="unanswered_topics_on_forum")
+def fixture_unanswered_topics_on_forum(db, forum):
+    # unanswered topic from outer forum (undesired)
+    TopicFactory(forum=ForumFactory(), with_post=True)
+
+    return [TopicFactory(forum=forum, with_post=True), TopicFactory(forum=ForumFactory(parent=forum), with_post=True)]
+
+
+class TestForumModel:
+    def test_get_unanswered_topics(self, db, forum, unanswered_topics_on_forum):
+        for topic in forum.get_unanswered_topics():
+            assert topic in unanswered_topics_on_forum
+
+    def test_count_unanswered_topics(self, db, forum, unanswered_topics_on_forum):
+        assert forum.count_unanswered_topics == len(unanswered_topics_on_forum)
+
+
 class ForumModelTest(TestCase):
-    def test_get_unanswered_topics(self):
-        topic1 = TopicFactory(forum=ForumFactory(), posts_count=1)
-        topic2 = TopicFactory(forum=ForumFactory(parent=topic1.forum), posts_count=1)
-        TopicFactory(forum=ForumFactory(), posts_count=1)
-
-        unanswered_topics = topic1.forum.get_unanswered_topics()
-        self.assertEqual(unanswered_topics.count(), 2)
-        self.assertIn(topic1, unanswered_topics)
-        self.assertIn(topic2, unanswered_topics)
-
-    def test_count_unanswered_topics(self):
-        topic = TopicFactory(forum=ForumFactory(), posts_count=1)
-        TopicFactory(forum=ForumFactory(parent=topic.forum), posts_count=1)
-        self.assertEqual(topic.forum.count_unanswered_topics, 2)
-
     def test_get_absolute_url(self):
         forum = ForumFactory()
         self.assertEqual(
