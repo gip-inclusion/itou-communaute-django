@@ -11,6 +11,8 @@ class PostAdmin(BasePostAdmin):
         # the website inconsistent
         return []
 
+    list_filter = BasePostAdmin.list_filter + ("approved",)
+
 
 class PostInline(admin.StackedInline):
     model = Post
@@ -30,7 +32,7 @@ class TopicAdmin(BaseTopicAdmin):
     inlines = [
         PostInline,
     ]
-    list_filter = BaseTopicAdmin.list_filter + ("type",)
+    list_filter = BaseTopicAdmin.list_filter + ("type", "approved")
 
 
 class CertifiedPostAdmin(admin.ModelAdmin):
