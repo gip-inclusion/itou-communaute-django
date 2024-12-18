@@ -1,12 +1,9 @@
-from datetime import datetime, timezone
-
 import pytest
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
-from factory import Iterator
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import (
@@ -19,6 +16,11 @@ from lacommunaute.forum_conversation.factories import (
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.users.factories import UserFactory
+
+
+@pytest.fixture(name="forum")
+def fixture_forum(db):
+    return ForumFactory()
 
 
 class PostModelTest(TestCase):
@@ -37,10 +39,8 @@ class PostModelTest(TestCase):
         self.assertTrue(topic.last_post.is_certified)
 
 
-class TopicManagerTest(TestCase):
-    def test_unanswered(self):
-        forum = ForumFactory()
-
+class TestTopicManager:
+    def test_unanswered(self, db, forum):
         TopicFactory(forum=forum, posts_count=0)
         topic = TopicFactory(forum=forum, posts_count=1)
         TopicFactory(forum=forum, posts_count=2)
@@ -49,17 +49,17 @@ class TopicManagerTest(TestCase):
         TopicFactory(forum=forum, posts_count=1, type=Topic.TOPIC_ANNOUNCE)
         TopicFactory(forum=forum, posts_count=1, approved=False)
 
-        self.assertEqual(Topic.objects.unanswered().get(), topic)
+        assert Topic.objects.unanswered().get() == topic
 
-    def test_unanswered_order(self):
-        forum = ForumFactory()
-        last_post_dates = [datetime(2025, 5, i, tzinfo=timezone.utc) for i in range(20, 24)]
+    def test_unanswered_order(self, db, forum):
+        topics = TopicFactory.create_batch(size=3, forum=forum, with_post=True)
+        expected_date_list = [topic.last_post_on for topic in reversed(topics)]
+        extracted_date_list = list(Topic.objects.unanswered().values_list("last_post_on", flat=True))
 
-        TopicFactory.create_batch(
-            size=len(last_post_dates), forum=forum, posts_count=1, last_post_on=Iterator(last_post_dates)
-        )
-        assert list(Topic.objects.unanswered().values_list("last_post_on", flat=True)) == last_post_dates[::-1]
+        assert extracted_date_list == expected_date_list
 
+
+class TopicManagerTest(TestCase):
     def test_optimized_for_topics_list_disapproved(self):
         TopicFactory(approved=False)
         self.assertEqual(Topic.objects.optimized_for_topics_list(1).count(), 0)
