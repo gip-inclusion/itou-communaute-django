@@ -1,0 +1,31 @@
+import os
+
+from lacommunaute.utils.enums import Environment
+
+from .base import *  # pylint: disable=wildcard-import,unused-wildcard-import # noqa: F403 F401
+
+
+# Django settings
+# ---------------
+SECRET_KEY = "v3ry_s3cr3t_k3y"
+
+ENVIRONMENT = Environment.TEST
+
+# S3 uploads
+# ------------------------------------------------------------------------------
+
+AWS_S3_ACCESS_KEY_ID = os.getenv("CELLAR_ADDON_KEY_ID", "minioadmin")
+AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET", "minioadmin")
+AWS_S3_ENDPOINT_URL = (
+    f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'http')}://{os.getenv('CELLAR_ADDON_HOST', 'localhost:9000')}"
+)
+AWS_STORAGE_BUCKET_NAME = "private-bucket"
+AWS_STORAGE_BUCKET_NAME_PUBLIC = "public-bucket"
+AWS_S3_STORAGE_BUCKET_REGION = "eu-west-3"
+
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"
+
+# SENDINBLUE
+# ---------------------------------------
+SIB_URL = "http://test.com"
+SIB_API_KEY = "dummy-sib-api-key"

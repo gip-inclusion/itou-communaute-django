@@ -2,6 +2,7 @@
 
 import machina.models.fields
 import storages.backends.s3
+from django.conf import settings
 from django.db import migrations, models
 
 import lacommunaute.utils.validators
@@ -35,7 +36,9 @@ class Migration(migrations.Migration):
                     "logo",
                     models.ImageField(
                         help_text="1200x600 recommandé",
-                        storage=storages.backends.s3.S3Storage(bucket_name="private-bucket", file_overwrite=False),
+                        storage=storages.backends.s3.S3Storage(
+                            bucket_name=settings.AWS_STORAGE_BUCKET_NAME, file_overwrite=False
+                        ),
                         upload_to="logos/",
                         validators=[lacommunaute.utils.validators.validate_image_size],
                     ),
