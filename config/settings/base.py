@@ -19,7 +19,7 @@ APPS_DIR = os.path.abspath(os.path.join(ROOT_DIR, "lacommunaute"))
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
-ENVIRONMENT = Environment.PROD
+ENVIRONMENT = os.getenv("ENVIRONMENT", Environment.PROD)
 
 PARKING_PAGE = os.getenv("PARKING_PAGE", "False") == "True"
 
