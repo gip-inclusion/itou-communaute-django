@@ -13,9 +13,7 @@ jobs:
       PGPASSWORD: password
       PGHOST: localhost
       PGUSER: postgres
-      POSTGRESQL_ADDON_DB: communaute
-      POSTGRESQL_ADDON_USER: postgres
-      POSTGRESQL_ADDON_PASSWORD: password
+
     services:
       minio:
         image: bitnami/minio

@@ -11,6 +11,14 @@ SECRET_KEY = "v3ry_s3cr3t_k3y"
 
 ENVIRONMENT = Environment.TEST
 
+# Database
+# ------------------------------------------------------------------------------
+DATABASES["default"]["HOST"] = os.getenv("PGHOST", "localhost")  # noqa: F405
+DATABASES["default"]["PORT"] = os.getenv("PGPORT", "5432")  # noqa: F405
+DATABASES["default"]["NAME"] = os.getenv("PGDATABASE", "communaute")  # noqa: F405
+DATABASES["default"]["USER"] = os.getenv("PGUSER", "postgres")  # noqa: F405
+DATABASES["default"]["PASSWORD"] = os.getenv("PGPASSWORD", "password")  # noqa: F405
+
 # S3 uploads
 # ------------------------------------------------------------------------------
 
