@@ -2,11 +2,11 @@ import json
 
 import httpx
 import respx
+from django.conf import settings
 from django.test import TestCase
 from faker import Faker
 
-from config.settings.base import DEFAULT_FROM_EMAIL, SIB_CONTACTS_URL, SIB_SMTP_URL
-from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
+from lacommunaute.notification.emails import SIB_CONTACTS_URL, SIB_SMTP_URL, bulk_send_user_to_list, send_email
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.users.factories import UserFactory
 
@@ -23,7 +23,7 @@ class SendEmailTestCase(TestCase):
         cls.template_id = faker.random_int()
         cls.kind = "first_reply"
         cls.payload = {
-            "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+            "sender": {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL},
             "to": cls.to,
             "params": cls.params,
             "templateId": cls.template_id,
