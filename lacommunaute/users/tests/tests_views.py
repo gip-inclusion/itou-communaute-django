@@ -86,9 +86,12 @@ def validate_magiclink_payload(payload_as_str, uidb64, token, expected):
 
 
 class TestSendMagicLink:
-    @pytest.mark.parametrize("env,count_msg", [(Environment.PROD, 0), (Environment.DEV, 1)])
-    def test_send_magic_link(
-        self, db, user, snapshot, mock_token_generator, mock_respx_post_to_sib_smtp_url, env, count_msg
+    @pytest.mark.parametrize(
+        "env,sent_mail,count_msg",
+        [(Environment.PROD, True, 0), (Environment.TEST, True, 0), (Environment.DEV, False, 1)],
+    )
+    def test_send_magic(
+        self, db, user, snapshot, mock_token_generator, mock_respx_post_to_sib_smtp_url, env, sent_mail, count_msg
     ):
         with override_settings(ENVIRONMENT=env):
             next_url = "/topics/"
@@ -103,13 +106,18 @@ class TestSendMagicLink:
             query_params = urlencode({"next": clean_next_url(next_url)})
             login_link = f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{url}?{query_params}"
 
-            payload_as_str = respx.calls[0].request.content.decode()
-            payload = json.loads(payload_as_str)
-            assert payload["params"]["login_link"] == login_link
-            assert payload_as_str.replace(login_link, "LOGIN_LINK") == snapshot(name="send_magic_link_payload")
+            # testing email
+            assert (len(respx.calls) == 1) == sent_mail
 
-            # we want messages do not appear in the productive environment
+            if sent_mail:
+                payload_as_str = respx.calls[0].request.content.decode()
+                payload = json.loads(payload_as_str)
+                assert payload["params"]["login_link"] == login_link
+                assert payload_as_str.replace(login_link, "LOGIN_LINK") == snapshot(name="send_magic_link_payload")
+
+            # testing django message
             msgs = get_messages(request)
+
             assert len(msgs._queued_messages) == count_msg
             if msgs._queued_messages:
                 assert str(msgs._queued_messages[0]) == f'<a href="{login_link}">{login_link}</a> sent to {user.email}'

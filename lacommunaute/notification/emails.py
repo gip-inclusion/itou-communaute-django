@@ -6,6 +6,7 @@ from django.conf import settings
 
 from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.utils.enums import Environment
 
 
 logger = logging.getLogger(__name__)
@@ -25,8 +26,8 @@ def send_email(to, params, template_id, kind, bcc=None):
     if bcc:
         payload["bcc"] = bcc
 
-    if settings.DEBUG:
-        # We don't want to send emails in debug mode, payload is saved in the database
+    if settings.ENVIRONMENT == Environment.DEV:
+        # We don't want to send emails in DEV mode, payload is saved in the database
         response = httpx.Response(200, json={"message": "OK"})
     else:
         response = httpx.post(SIB_SMTP_URL, headers=headers, json=payload)

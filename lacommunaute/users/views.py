@@ -20,6 +20,7 @@ from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.forms import CreateUserForm, LoginForm
 from lacommunaute.users.models import User
+from lacommunaute.utils.enums import Environment
 from lacommunaute.utils.urls import clean_next_url
 
 
@@ -40,7 +41,7 @@ def send_magic_link(request, user, next_url):
         template_id=settings.SIB_MAGIC_LINK_TEMPLATE,
     )
 
-    if settings.ENVIRONMENT == "DEV":
+    if settings.ENVIRONMENT == Environment.DEV:
         message = format_html('<a href="{0}">{0}</a> sent to {1}', login_link, user.email)
         messages.success(request, message)
 
