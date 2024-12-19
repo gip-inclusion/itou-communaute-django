@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_encode
 from pytest_django.asserts import assertContains
 
 from lacommunaute.forum_member.models import ForumProfile
+from lacommunaute.notification.emails import SIB_SMTP_URL
 from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.users.models import User
@@ -33,7 +34,7 @@ next_url_tuples = [("/", "/"), ("/topics/", "/topics/"), ("http://www.unallowed_
 @pytest.fixture(name="mock_respx_post_to_sib_smtp_url")
 def mock_respx_post_to_sib_smtp_url_fixture():
     with respx.mock:
-        respx.post(settings.SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
         yield
 
 

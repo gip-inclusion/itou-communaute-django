@@ -8,17 +8,11 @@ from django.test import TestCase
 from django.urls import reverse
 from faker import Faker
 
-from config.settings.base import (
-    DEFAULT_FROM_EMAIL,
-    SIB_CONTACTS_URL,
-    SIB_ONBOARDING_LIST,
-    SIB_SMTP_URL,
-    SIB_UNANSWERED_QUESTION_TEMPLATE,
-)
 from lacommunaute.forum_conversation.factories import (
     TopicFactory,
 )
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.notification.emails import SIB_CONTACTS_URL, SIB_SMTP_URL
 from lacommunaute.notification.enums import NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack
@@ -128,7 +122,7 @@ class AddUserToListWhenRegister(TestCase):
             ],
             "emailBlacklist": False,
             "smsBlacklist": False,
-            "listIds": [SIB_ONBOARDING_LIST],
+            "listIds": [settings.SIB_ONBOARDING_LIST],
             "updateExistingContacts": True,
             "emptyContactsAttributes": True,
         }
@@ -163,10 +157,10 @@ def payload_for_staff_user_to_notify_on_unanswered_topics_fixture():
     )
     params = {"count": 1, "link": "".join(url)}
     payload = {
-        "sender": {"name": "La Communauté", "email": DEFAULT_FROM_EMAIL},
+        "sender": {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL},
         "to": to,
         "params": params,
-        "templateId": SIB_UNANSWERED_QUESTION_TEMPLATE,
+        "templateId": settings.SIB_UNANSWERED_QUESTION_TEMPLATE,
     }
     yield payload
 
