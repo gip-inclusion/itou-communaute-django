@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## [2.19.1](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.19.0...v2.19.1) (2024-12-19)
+
+
+### Bug Fixes
+
+* 🦇 désactiver la suppression en masse des `Post` depuis l'admin django ([#861](https://github.com/gip-inclusion/itou-communaute-django/issues/861)) ([e094434](https://github.com/gip-inclusion/itou-communaute-django/commit/e094434de685e0fc6e59a81aef6b54110cdd1cbd))
+
 ## [2.19.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.18.0...v2.19.0) (2024-12-16)
 
 
