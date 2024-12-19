@@ -58,6 +58,11 @@ class TopicFactory(BaseTopicFactory):
                 poster=factory.SelfAttribute("topic.poster"),
             )
         )
+        with_disapproved_post = factory.Trait(
+            post=factory.RelatedFactory(
+                PostFactory, factory_related_name="topic", poster=factory.SelfAttribute("topic.poster"), approved=False
+            )
+        )
 
     @factory.post_generation
     def with_poll_vote(self, create, extracted, **kwargs):

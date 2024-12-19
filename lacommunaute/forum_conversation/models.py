@@ -16,12 +16,9 @@ from lacommunaute.users.models import User
 
 
 class TopicQuerySet(models.QuerySet):
-    def unanswered(self):
+    def _for_topics_list(self):
         return (
             self.exclude(approved=False)
-            .exclude(status=Topic.TOPIC_LOCKED)
-            .exclude(type=Topic.TOPIC_ANNOUNCE)
-            .filter(posts_count=1)
             .select_related(
                 "forum",
                 "poster",
@@ -32,16 +29,19 @@ class TopicQuerySet(models.QuerySet):
             .order_by("-last_post_on")
         )
 
+    def unanswered(self):
+        return (
+            self._for_topics_list()
+            .exclude(status=Topic.TOPIC_LOCKED)
+            .exclude(type=Topic.TOPIC_ANNOUNCE)
+            .filter(posts_count=1)
+        )
+
     def optimized_for_topics_list(self, user_id):
         return (
-            self.exclude(approved=False)
+            self._for_topics_list()
             .filter(type__in=[Topic.TOPIC_POST, Topic.TOPIC_STICKY, Topic.TOPIC_ANNOUNCE])
             .select_related(
-                "forum",
-                "poster",
-                "poster__forum_profile",
-                "first_post",
-                "first_post__poster",
                 "certified_post",
                 "certified_post__post",
                 "certified_post__post__poster",
@@ -54,7 +54,6 @@ class TopicQuerySet(models.QuerySet):
                 "certified_post__post__attachments",
                 "tags",
             )
-            .order_by("-last_post_on")
         )
 
 
