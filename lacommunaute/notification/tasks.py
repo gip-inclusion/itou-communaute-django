@@ -3,7 +3,6 @@ from django.template.defaultfilters import pluralize
 from django.urls import reverse
 from django.utils import timezone
 
-from config.settings.base import NEW_MESSAGES_EMAIL_MAX_PREVIEW, SIB_NEW_MESSAGES_TEMPLATE
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.notification.emails import bulk_send_user_to_list, send_email
@@ -31,13 +30,13 @@ def send_messages_notifications(delay: NotificationDelay):
 
         params = {
             "email_thumbnail": (f"Vous avez {message_count_text} à découvrir sur la communauté de l'inclusion"),
-            "messages": get_serialized_messages(recipient_notifications[:NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
+            "messages": get_serialized_messages(recipient_notifications[: settings.NEW_MESSAGES_EMAIL_MAX_PREVIEW]),
         }
         send_email(
             to=[{"email": recipient}],
             params=params,
             kind=EmailSentTrackKind.BULK_NOTIFS,
-            template_id=SIB_NEW_MESSAGES_TEMPLATE,
+            template_id=settings.SIB_NEW_MESSAGES_TEMPLATE,
         )
 
     notifications.update(sent_at=timezone.now())

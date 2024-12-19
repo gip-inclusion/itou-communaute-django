@@ -268,14 +268,12 @@ COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.beta.gouv.fr")
 # S3 uploads
 # ------------------------------------------------------------------------------
 
-AWS_S3_ACCESS_KEY_ID = os.getenv("CELLAR_ADDON_KEY_ID", "123")
-AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET", "secret")
-AWS_S3_ENDPOINT_URL = (
-    f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.getenv('CELLAR_ADDON_HOST', 'set-var-env.com')}"
-)
-AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME", "private-bucket")
-AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC", "public-bucket")
-AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION", "eu-west-3")
+AWS_S3_ACCESS_KEY_ID = os.getenv("CELLAR_ADDON_KEY_ID")
+AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET")
+AWS_S3_ENDPOINT_URL = f"{os.getenv('CELLAR_ADDON_PROTOCOL')}://{os.getenv('CELLAR_ADDON_HOST')}"
+AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME")
+AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC")
+AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION")
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -359,11 +357,11 @@ MATOMO_AUTH_TOKEN = os.getenv("MATOMO_AUTH_TOKEN", None)
 
 # SENDINBLUE
 # ---------------------------------------
-SIB_URL = os.getenv("SIB_URL", "http://test.com")
-SIB_SMTP_URL = os.path.join(SIB_URL, "smtp/email")
-SIB_CONTACTS_URL = os.path.join(SIB_URL, "contacts/import")
+SIB_URL = os.getenv("SIB_URL")
+SIB_SMTP_ROUTE = "smtp/email"
+SIB_CONTACTS_ROUTE = "contacts/import"
 
-SIB_API_KEY = os.getenv("SIB_API_KEY", "set-sib-api-key")
+SIB_API_KEY = os.getenv("SIB_API_KEY")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@inclusion.gouv.fr")
 
 SIB_MAGIC_LINK_TEMPLATE = 31

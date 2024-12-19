@@ -23,13 +23,13 @@ echo "Going to inject DB_BACKUP_PATH=$DB_BACKUP_PATH"
 docker cp $DB_BACKUP_PATH commu_postgres:/backups
 
 echo "dropping current db"
-dropdb $POSTGRESQL_ADDON_DB -U $POSTGRESQL_ADDON_USER --if-exists --echo
+dropdb $PGDATABASE -U $PGUSER --if-exists --echo
 
 echo "creating new db"
-createdb $POSTGRESQL_ADDON_DB -O $POSTGRESQL_ADDON_USER -U $POSTGRESQL_ADDON_USER --echo
+createdb $PGDATABASE -O $PGUSER -U $PGUSER --echo
 
 echo "restoring db"
-pg_restore -U $POSTGRESQL_ADDON_USER --dbname=$POSTGRESQL_ADDON_DB --format=c --clean --no-owner $DB_BACKUP_PATH
+pg_restore -U $PGUSER --dbname=$PGDATABASE --format=c --clean --no-owner $DB_BACKUP_PATH
 
 echo "applying new migrations"
 python manage.py migrate
