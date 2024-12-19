@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: .
-      DJANGO_SETTINGS_MODULE: config.settings.base
-      DJANGO_SECRET_KEY: ministryofsillywalks
+      DJANGO_SETTINGS_MODULE: config.settings.test
       CPUCOUNT: 1
       PGPASSWORD: password
       PGHOST: localhost
@@ -17,10 +16,6 @@ jobs:
       POSTGRESQL_ADDON_DB: communaute
       POSTGRESQL_ADDON_USER: postgres
       POSTGRESQL_ADDON_PASSWORD: password
-      CELLAR_ADDON_KEY_ID: minioadmin
-      CELLAR_ADDON_KEY_SECRET: minioadmin
-      CELLAR_ADDON_PROTOCOL: http
-      CELLAR_ADDON_HOST: localhost:9000
     services:
       minio:
         image: bitnami/minio
