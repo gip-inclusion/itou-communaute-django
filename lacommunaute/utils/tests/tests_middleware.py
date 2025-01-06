@@ -23,6 +23,7 @@ class TestEnvironmentSettingsMiddleware:
         "env,expected",
         [
             (Environment.PROD, False),
+            (Environment.TEST, False),
             (Environment.DEV, True),
         ],
     )
