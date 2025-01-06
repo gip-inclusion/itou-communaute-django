@@ -91,7 +91,11 @@ format_js = false
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["tests*.py", "test_*.py"]
-addopts = "--reuse-db --strict-markers"
+addopts = [
+    "--reuse-db",
+    "--strict-markers",
+]
+
 
 [tool.pytest.ini_options.markers]
 no_django_db = "mark tests that should not be marked with django_db."
