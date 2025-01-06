@@ -87,3 +87,15 @@ ignore="T002,T003,T027,H006,H023,D018"
 max_attribute_length=200
 format_css = true
 format_js = false
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["tests*.py", "test_*.py"]
+addopts = [
+    "--reuse-db",
+    "--strict-markers",
+]
+
+
+[tool.pytest.ini_options.markers]
+no_django_db = "mark tests that should not be marked with django_db."

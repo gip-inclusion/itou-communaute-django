@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-while ! pg_isready -h $POSTGRESQL_ADDON_HOST -p 5432; do
+while ! pg_isready -h $PGHOST -p 5432; do
     >&2 echo "Postgres is unavailable - sleeping"
     sleep 1
 done

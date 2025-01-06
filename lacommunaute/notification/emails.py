@@ -1,13 +1,18 @@
 import logging
+from urllib.parse import urljoin
 
 import httpx
 from django.conf import settings
 
 from lacommunaute.notification.enums import EmailSentTrackKind
 from lacommunaute.notification.models import EmailSentTrack
+from lacommunaute.utils.enums import Environment
 
 
 logger = logging.getLogger(__name__)
+
+SIB_SMTP_URL = urljoin(settings.SIB_URL, settings.SIB_SMTP_ROUTE)
+SIB_CONTACTS_URL = urljoin(settings.SIB_URL, settings.SIB_CONTACTS_ROUTE)
 
 
 def send_email(to, params, template_id, kind, bcc=None):
@@ -21,11 +26,11 @@ def send_email(to, params, template_id, kind, bcc=None):
     if bcc:
         payload["bcc"] = bcc
 
-    if settings.DEBUG:
-        # We don't want to send emails in debug mode, payload is saved in the database
+    if settings.ENVIRONMENT == Environment.DEV:
+        # We don't want to send emails in DEV mode, payload is saved in the database
         response = httpx.Response(200, json={"message": "OK"})
     else:
-        response = httpx.post(settings.SIB_SMTP_URL, headers=headers, json=payload)
+        response = httpx.post(SIB_SMTP_URL, headers=headers, json=payload)
 
     EmailSentTrack.objects.create(
         status_code=response.status_code,
@@ -47,7 +52,7 @@ def bulk_send_user_to_list(users, list_id):
         "emptyContactsAttributes": True,
     }
     headers = {"accept": "application/json", "content-type": "application/json", "api-key": settings.SIB_API_KEY}
-    response = httpx.post(settings.SIB_CONTACTS_URL, headers=headers, json=payload)
+    response = httpx.post(SIB_CONTACTS_URL, headers=headers, json=payload)
 
     EmailSentTrack.objects.create(
         status_code=response.status_code, response=response.text, datas=payload, kind=EmailSentTrackKind.ONBOARDING
