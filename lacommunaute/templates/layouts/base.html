@@ -65,7 +65,7 @@
                 </li>
             </ul>
         </nav>
-        {% if ENVIRONMENT != "PROD" %}
+        {% if ENVIRONMENT == "DEV" %}
             <div class="global-messages-container" id="debug-mode-banner">
                 <div class="alert alert-danger fade show" role="status">
                     <p class="mb-0">
