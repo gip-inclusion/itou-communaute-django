@@ -1,6 +1,6 @@
+import tomllib
 from pathlib import Path
 
-import tomllib
 from django.apps import AppConfig
 from django.db import models
 
