@@ -38,29 +38,30 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 💾 Create a database to check migrations
         run: |
           psql <<SQL
               CREATE DATABASE communaute;
           SQL
-      - name: 💂 Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-          cache: pip
-          cache-dependency-path: requirements/dev.txt
-      - name: 📥 Install dependencies
+      - name: 💂 Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: 💂 Set up Python
+        run: uv python install
+      - name: 💂 Install the project
+        run: uv sync --dev
+      # export venv path to $GITHUB_ENV to make it avail at each step
+      - name: Activate virtualenv
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/dev.txt
-      - name: ✨ Black, ruff & djlint
+          source .venv/bin/activate
+          echo PATH=$PATH >> $GITHUB_ENV
+      - name: ✨ Ruff & djlint
         run: make quality
       - name: 🚧 create cache table
         run: python manage.py createcachetable
       - name: 🚧 collect static for testing purposes
         run: |
-          python manage.py collectstatic
+          python manage.py collectstatic --no-input
           python manage.py compress
       - name: 🚧 compile translations
         run: |
