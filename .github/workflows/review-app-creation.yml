@@ -69,6 +69,7 @@ jobs:
       run: |
         $CLEVER_CLI link $REVIEW_APP_NAME --org $REVIEW_APPS_ORGANIZATION_NAME
         $CLEVER_CLI env set COMMU_FQDN "${{ env.DEPLOY_URL }}"
+        $CLEVER_CLI env set ENVIRONMENT "REVIEW-APP"
         $CLEVER_CLI service link-addon $S3_ADDON
         $CLEVER_CLI service link-addon $CONFIGURATION_ADDON
 
