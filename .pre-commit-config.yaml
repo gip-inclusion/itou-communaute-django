@@ -9,11 +9,6 @@ repos:
         args: ["-f", "requirements.txt", "-o", "requirements/base.txt"]
   - repo: local
     hooks:
-      - id: black
-        name: Black
-        entry: black
-        types: [python]
-        language: system
       - id: ruff-format
         name: Ruff format
         entry: ruff format
