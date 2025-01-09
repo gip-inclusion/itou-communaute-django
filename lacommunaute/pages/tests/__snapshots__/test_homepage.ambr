@@ -45,7 +45,7 @@
                               <a aria-label="glossaire des mots de l'inclusion" class="matomo-event" data-matomo-action="glossaire" data-matomo-category="landing" data-matomo-option="footer" href="/glossaire/" target="_blank">Glossaire de l'inclusion</a>
                           </li>
                           <li>
-                              <a aria-label="Posez votre question sur la page du support des emplois de l'inclusion (lien externe)" class="matomo-event" data-matomo-action="site_emplois" data-matomo-category="support" data-matomo-option="footer" href="https://documentation.inclusion.beta.gouv.fr/aide/emplois/" target="_blank">Support des emplois de l'inclusion</a>
+                              <a aria-label="Posez votre question sur la page du support des emplois de l'inclusion (lien externe)" class="matomo-event" data-matomo-action="site_emplois" data-matomo-category="support" data-matomo-option="footer" href="https://aide.emplois.inclusion.beta.gouv.fr/" target="_blank">Support des emplois de l'inclusion</a>
                           </li>
                           <li>
                               <a aria-label="Github (lien externe)" href="https://github.com/betagouv/itou-communaute-django" target="_blank">Github</a>
@@ -73,7 +73,7 @@
           <div class="s-footer-gip__container container">
               <div class="s-footer-gip__row row">
                   <div class="s-footer-gip__col s-footer-gip__col--logo col-12 col-md-6 col-lg-auto">
-                      <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" href="https://inclusion.beta.gouv.fr/" target="_blank">
+                      <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" href="https://inclusion.gouv.fr/" target="_blank">
                           <img alt="Logo de la Plateforme de l'inclusion" height="80" src="/static/vendor/theme-inclusion/images/logo-plateforme-inclusion.svg"/>
                       </a>
                   </div>
@@ -86,7 +86,7 @@
                           <br class="d-none d-md-inline"/>
                           coeur de leur service. A chaque service, son objectif.
                           <br/>
-                          <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" class="has-external-link" href="https://inclusion.beta.gouv.fr/" target="_blank">Découvrez nos services</a>
+                          <a aria-label="Découvrez les services de la plateforme de l'inclusion (lien externe)" class="has-external-link" href="https://inclusion.gouv.fr/" target="_blank">Découvrez nos services</a>
                       </p>
                   </div>
                   <div class="s-footer-gip__col s-footer-gip__col--links col-12 col-lg-auto">
