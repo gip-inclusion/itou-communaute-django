@@ -5,7 +5,7 @@
 Installer l'environnement virtuel et les dépendances :
 
 ```bash
-$ poetry install
+$ uv sync
 ```
 
 Copier le fichier `.env.template` en `.env` et le modifier en fonction de vos besoins.
@@ -17,7 +17,7 @@ $ cp .env.template .env
 Accéder à l'environnement virtuel :
 
 ```bash
-$ poetry shell
+$ source .venv/bin/activate
 ```
 
 ## Démarrer les instances
@@ -66,25 +66,25 @@ $ docker exec -it commu_django bash
 Ajouter d'une dépendance :
 
 ```bash
-$ poetry add django-anymail
+$ uv add django-anymail
 ```
 
 Ajouter d'une dépendance de développement :
 
 ```bash
-$ poetry add --group dev poethepoet
+$ uv add --dev beautifulsoup4
 ```
 
-Mettre à jour des dépendances :
+Mettre à jour les dépendances :
 
 ```bash
-$ poetry update;poetry lock
+$ uv lock
 ```
 
-Générer les fichiers `requirements`
+Mettre à jour son environnement virtuel :
 
 ```bash
-$ poetry run poe export;poetry run poe export_dev
+$ uv sync
 ```
 
 ## Développement
@@ -151,6 +151,7 @@ Créer les variables d'environnement suivantes dans le configuration provider
 - PYTHONPATH
 - STATIC_FILES_PATH
 - STATIC_URL_PREFIX
+- UV_PROJECT_ENVIRONMENT
 
 ### pour le déploiment des recettes jetables
 
