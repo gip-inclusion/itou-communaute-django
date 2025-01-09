@@ -126,7 +126,7 @@ class TopicModelTest(TestCase):
             self.topic.first_post.poster_display_name, get_forum_member_display_name(self.topic.first_post.poster)
         )
 
-        post = PostFactory(topic=self.topic, username="user@beta.gouv.fr")
+        post = PostFactory(topic=self.topic, username="user@inclusion.gouv.fr")
         self.assertEqual(post.poster_display_name, "user")
 
     def test_is_certified(self):

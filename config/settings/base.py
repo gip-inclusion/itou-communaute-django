@@ -21,7 +21,7 @@ ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 PARKING_PAGE = os.getenv("PARKING_PAGE", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "communaute.inclusion.beta.gouv.fr,").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "communaute.inclusion.gouv.fr,").split(",")
 
 # Application definition
 DJANGO_APPS = [
@@ -261,7 +261,7 @@ CACHES = {
 }
 
 COMMU_PROTOCOL = "https"
-COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.beta.gouv.fr")
+COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.gouv.fr")
 
 # S3 uploads
 # ------------------------------------------------------------------------------

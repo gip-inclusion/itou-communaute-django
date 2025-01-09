@@ -3,4 +3,4 @@ Disallow: /static/javascripts/
 Disallow: /static/stylesheets/
 Disallow: /static/machina/
 
-Sitemap: https://communaute.inclusion.beta.gouv.fr/sitemap.xml
+Sitemap: https://communaute.inclusion.gouv.fr/sitemap.xml
