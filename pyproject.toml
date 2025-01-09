@@ -3,7 +3,7 @@ name = "lacommunaute"
 version = "2.19.0"
 description = "La communauté de l'inclusion"
 authors = []
-requires-python = "~=3.11"
+requires-python = "~=3.12"
 readme = "README.md"
 dependencies = [
     "Django>=5.0",
