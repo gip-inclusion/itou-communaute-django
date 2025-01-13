@@ -16,7 +16,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         tags = ["Pirmadienis", "Poniedziałek", "Lundi", "Montag"]
 
-        UserFactory(username="communaute", password="password", is_superuser=True, is_staff=True)
+        UserFactory(
+            email="communaute@inclusion.gouv.fr",
+            is_superuser=True,
+            is_staff=True,
+        )
         sys.stdout.write("superuser created\n")
 
         partners = PartnerFactory.create_batch(5, with_logo=True)
