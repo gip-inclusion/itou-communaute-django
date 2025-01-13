@@ -62,7 +62,7 @@ class BlockedPost(DatedModel):
         """
         Creates a BlockedPost object from parameterised Post (machina)
         """
-        if type(reason) != BlockedPostReason:
+        if not isinstance(reason, BlockedPostReason):
             raise TypeError("Reason must be a BlockedPostReason")
 
         return cls.objects.create(

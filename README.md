@@ -5,7 +5,7 @@
 Installer l'environnement virtuel et les dépendances :
 
 ```bash
-$ poetry install
+$ uv sync
 ```
 
 Copier le fichier `.env.template` en `.env` et le modifier en fonction de vos besoins.
@@ -17,7 +17,7 @@ $ cp .env.template .env
 Accéder à l'environnement virtuel :
 
 ```bash
-$ poetry shell
+$ source .venv/bin/activate
 ```
 
 ## Démarrer les instances
@@ -66,25 +66,25 @@ $ docker exec -it commu_django bash
 Ajouter d'une dépendance :
 
 ```bash
-$ poetry add django-anymail
+$ uv add django-anymail
 ```
 
 Ajouter d'une dépendance de développement :
 
 ```bash
-$ poetry add --group dev poethepoet
+$ uv add --dev beautifulsoup4
 ```
 
-Mettre à jour des dépendances :
+Mettre à jour les dépendances :
 
 ```bash
-$ poetry update;poetry lock
+$ uv lock
 ```
 
-Générer les fichiers `requirements`
+Mettre à jour son environnement virtuel :
 
 ```bash
-$ poetry run poe export;poetry run poe export_dev
+$ uv sync
 ```
 
 ## Développement
@@ -138,25 +138,20 @@ Créer et lier les addons
 
 Créer les variables d'environnement suivantes dans le configuration provider
 
-- ALLOWED_HOSTS
 - CC_PIP_REQUIREMENTS_FILE
+- CC_PRE_BUILD_HOOK
+- CC_PRE_RUN_HOOK
 - CC_PYTHON_BACKEND
+- CC_PYTHON_MANAGE_TASKS
 - CC_PYTHON_MODULE
 - CC_PYTHON_VERSION
 - CC_UWSGI_DISABLE_FILE_WRAPPER
-- DJANGO_DEBUG
-- DJANGO_SECRET_KEY
 - DJANGO_SETTINGS_MODULE
-- OPENID_CONNECT_BASE_URL
-- OPENID_CONNECT_CLIENT_ID
-- OPENID_CONNECT_CLIENT_SECRET
-- OPENID_CONNECT_REALM
 - PORT
 - PYTHONPATH
-- SENTRY_DSN
-- SIB_API_KEY
 - STATIC_FILES_PATH
 - STATIC_URL_PREFIX
+- UV_PROJECT_ENVIRONMENT
 
 ### pour le déploiment des recettes jetables
 
