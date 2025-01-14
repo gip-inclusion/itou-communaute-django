@@ -1,5 +1,18 @@
 # Journal des modifications
 
+## [2.20.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.19.0...v2.20.0) (2025-01-13)
+
+
+### Features
+
+* mise en place du nom de domaine communaute.inclusion.gouv.fr ([#876](https://github.com/gip-inclusion/itou-communaute-django/issues/876)) ([6cc5958](https://github.com/gip-inclusion/itou-communaute-django/commit/6cc59587241fa03fff2626dc9ee39c5a028ec64a))
+* **stats:** reactivation de la collecte automatique des stats ([#871](https://github.com/gip-inclusion/itou-communaute-django/issues/871)) ([65dc548](https://github.com/gip-inclusion/itou-communaute-django/commit/65dc548097b94e19435d811b27ff542362c21ff3))
+
+
+### Bug Fixes
+
+* 🦇 désactiver la suppression en masse des `Post` depuis l'admin django ([#861](https://github.com/gip-inclusion/itou-communaute-django/issues/861)) ([e094434](https://github.com/gip-inclusion/itou-communaute-django/commit/e094434de685e0fc6e59a81aef6b54110cdd1cbd))
+
 ## [2.19.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.18.0...v2.19.0) (2024-12-16)
 
 
