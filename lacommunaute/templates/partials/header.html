@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load theme_inclusion %}
 {% load forum_member_tags %}
+{% load url_query_tags %}
 {% url 'pages:home' as home_url %}
 {% url 'forum_conversation_extension:topics' as publicforum_url %}
 {% url 'forum_extension:documentation' as documentation_url %}
@@ -97,6 +98,26 @@
                                                     <a class="dropdown-item text-primary" href="{% url 'admin:index' %}">Accéder à l'admin</a>
                                                 </li>
                                             {% endif %}
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-primary" href="{% url 'search:index' %}">Rechercher dans la documentation</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-primary matomo-event"
+                                                   data-matomo-category="engagement"
+                                                   data-matomo-action="emplois"
+                                                   data-matomo-option="search-company-header"
+                                                   href="{% autologin_proconnect EMPLOIS_COMPANY_SEARCH user %}">Rechercher un emploi inclusif</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-primary matomo-event"
+                                                   data-matomo-category="engagement"
+                                                   data-matomo-action="emplois"
+                                                   data-matomo-option="search-prescriber-header"
+                                                   href="{% autologin_proconnect EMPLOIS_PRESCRIBER_SEARCH user %}">Rechercher un prescripteur habilité</a>
+                                            </li>
                                             <li>
                                                 <div class="dropdown-divider"></div>
                                             </li>
