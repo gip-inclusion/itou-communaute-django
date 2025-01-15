@@ -1,4 +1,4 @@
-{% load url_add_query %}
+{% load url_query_tags %}
 {% for tag in tags %}
     {% url_add_query request.path tag=tag.slug filter=active_filter.value as url_with_query_params %}
     <button id="filtertopics-button"

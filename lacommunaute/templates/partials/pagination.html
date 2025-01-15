@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load url_add_query %}
+{% load url_query_tags %}
 {% if is_paginated %}
     <ul class="m-0 pagination {{ pagination_size|default:"" }}">
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
