@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load date_filters %}
 {% load str_filters %}
+{% load url_query_tags %}
 {% block title %}
     {% trans "Search" %}{{ block.super }}
 {% endblock %}
@@ -111,6 +112,40 @@
                                     {% include "partials/pagination.html" %}
                                 {% endwith %}
                             {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="c-box">
+                            <div class="row align-items-center mb-3">
+                                <div class="col">Je recherche un emploi inclusif ?</div>
+                                <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                    <a href="{% autologin_proconnect EMPLOIS_COMPANY_SEARCH user %}"
+                                       rel="nofollow"
+                                       class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                                       data-matomo-category="engagement"
+                                       data-matomo-action="emplois"
+                                       data-matomo-option="search-prescriber">
+                                        <i class="ri-chat-new-line ri-lg"></i>
+                                        <span>Trouver une offre d'emploi</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col">Je recherche un prescripteur habilité ?</div>
+                                <div class="col-12 col-md-auto mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+                                    <a href="{% autologin_proconnect EMPLOIS_PRESCRIBER_SEARCH user %}"
+                                       rel="nofollow"
+                                       class="btn btn-outline-primary btn-ico btn-block matomo-event"
+                                       data-matomo-category="engagement"
+                                       data-matomo-action="emplois"
+                                       data-matomo-option="search-company">
+                                        <i class="ri-chat-new-line ri-lg"></i>
+                                        <span>Trouver un prescripteur habilité</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
