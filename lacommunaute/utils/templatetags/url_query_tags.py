@@ -25,3 +25,10 @@ def url_add_query(url, **kwargs):
             querystring.pop(item)
     querystring.update(kwargs)
     return urlunsplit(parsed._replace(query=querystring.urlencode()))
+
+
+@register.simple_tag
+def autologin_proconnect(url, user):
+    if user.is_authenticated and user.is_proconnect():
+        return url_add_query(url, proconnect="true", username=user.username)
+    return url
