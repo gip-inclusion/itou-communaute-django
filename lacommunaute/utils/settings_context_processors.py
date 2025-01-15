@@ -13,4 +13,6 @@ def expose_settings(request):
         "MATOMO_SITE_ID": settings.MATOMO_SITE_ID,
         "MATOMO_BASE_URL": settings.MATOMO_BASE_URL,
         "ENVIRONMENT": settings.ENVIRONMENT,
+        "EMPLOIS_PRESCRIBER_SEARCH": settings.EMPLOIS_PRESCRIBER_SEARCH,
+        "EMPLOIS_COMPANY_SEARCH": settings.EMPLOIS_COMPANY_SEARCH,
     }
