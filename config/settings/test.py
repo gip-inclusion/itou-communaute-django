@@ -37,3 +37,8 @@ MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"
 # ---------------------------------------
 SIB_URL = "http://test.com"
 SIB_API_KEY = "dummy-sib-api-key"
+
+# EMPLOIS
+# ---------------------------------------
+EMPLOIS_PRESCRIBER_SEARCH = "http://test.com/prescriber/search"
+EMPLOIS_COMPANY_SEARCH = "http://test.com/company/search"

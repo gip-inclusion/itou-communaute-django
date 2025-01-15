@@ -347,6 +347,12 @@ DSP_FORUM_RELATED_ID = 108
 
 API_BAN_BASE_URL = "https://api-adresse.data.gouv.fr"
 
+# EMPLOI
+# ------------------------------------------------------------------------------
+EMPLOI_BASE_URL = os.getenv("EMPLOI_BASE_URL", "https://emplois.inclusion.beta.gouv.fr")
+EMPLOIS_PRESCRIBER_SEARCH = f"{EMPLOI_BASE_URL}/search/prescribers"
+EMPLOIS_COMPANY_SEARCH = f"{EMPLOI_BASE_URL}/search/employers"
+
 # MATOMO
 # ---------------------------------------
 MATOMO_BASE_URL = os.getenv("MATOMO_BASE_URL", None)
