@@ -25,3 +25,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def is_proconnect(self):
+        return self.identity_provider == IdentityProvider.PRO_CONNECT
