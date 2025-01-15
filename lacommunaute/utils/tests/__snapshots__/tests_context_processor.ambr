@@ -1,0 +1,23 @@
+# serializer version: 1
+# name: test_prod_environment[DEV-True][Dev]
+  '''
+  <div class="global-messages-container" id="debug-mode-banner">
+                      <div class="alert alert-danger fade show" role="status">
+                          <p class="mb-0">
+                              <strong class="text-uppercase">DEV MODE</strong>
+                          </p>
+                      </div>
+                  </div>
+  '''
+# ---
+# name: test_prod_environment[TEST-True][Test]
+  '''
+  <div class="global-messages-container" id="debug-mode-banner">
+                      <div class="alert alert-danger fade show" role="status">
+                          <p class="mb-0">
+                              <strong class="text-uppercase">TEST MODE</strong>
+                          </p>
+                      </div>
+                  </div>
+  '''
+# ---
