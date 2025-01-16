@@ -23,13 +23,11 @@ dependencies = [
     "django-csp~=3.7",
     "django-permissions-policy>=4.15.0",
     "langdetect>=1.0.9",
-    "freezegun>=1.5.1",
     "pyjwt>=2.9.03",
 ]
 
 [dependency-groups]
 dev = [
-    "black>=24.3.0",
     "pylint>=3.3",
     "pylint-django>=2.6",
     "pre-commit>=4.0",
@@ -41,16 +39,15 @@ dev = [
     "debugpy>=1.8",
     "factory-boy>=3.3",
     "respx>=0.22",
-    "pygithub~=1.57",
     "pytest-xdist>=3.6",
     "pillow>=11.1.0",
     "moto==4.2.14",
-    "virtualenv>=20.24.6",
     "ruff>=0.9",
     "djlint>=1.36",
     "syrupy>=4.8",
     "beautifulsoup4>=4.12",
     "html5lib~=1.1",
+    "freezegun>=1.5.1",
 ]
 
 [tool.ruff]
