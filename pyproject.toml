@@ -8,22 +8,22 @@ requires-python = ">=3.13"
 readme = "README.md"
 dependencies = [
     "Django>=5.1",
-    "python-dotenv>=0.21.0",
+    "python-dotenv>=1.0",
     "psycopg2-binary>=2.9.3",
     "django-machina>=1.2.0",
-    "boto3>=1.24.91",
-    "django-storages>=1.13.1",
+    "boto3>=1.36",
+    "django-storages>=1.14",
     "httpx>=0.28",
-    "django-compressor~=4.1",
+    "django-compressor>=4.5",
     "django-libsass>=0.9",
-    "sentry-sdk~=2.8",
+    "sentry-sdk>=2.20",
     "django-social-share>=2.3.0",
-    "django-htmx>=1.12.2",
-    "django-taggit>=5.0.1",
-    "django-csp~=3.7",
-    "django-permissions-policy>=4.15.0",
+    "django-htmx>=1.21",
+    "django-taggit>=6.1",
+    "django-csp>=3.8",
+    "django-permissions-policy>=4.24",
     "langdetect>=1.0.9",
-    "pyjwt>=2.9.03",
+    "pyjwt>=2.10",
 ]
 
 [dependency-groups]
