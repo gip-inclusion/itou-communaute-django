@@ -305,16 +305,16 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "5.0.10"
+version = "5.1.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/52/06fedfe94a2610e2ea94ba3786c5475088e1e422b31c0ecd5b4c2ae6a561/Django-5.0.10.tar.gz", hash = "sha256:0f6cbc56cc298b0451d20a5120c6a8731e9073330fb5d84295c23c151a1eb300", size = 10651802 }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/17/834e3e08d590dcc27d4cc3c5cd4e2fb757b7a92bab9de8ee402455732952/Django-5.1.5.tar.gz", hash = "sha256:19bbca786df50b9eca23cee79d495facf55c8f5c54c529d9bf1fe7b5ea086af3", size = 10700031 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/25/d4a4f553f90db268eeb414c79a1c7cb6f92d0933312dc8f9e1811c483aa4/Django-5.0.10-py3-none-any.whl", hash = "sha256:c8fab2c553750933c8e7f5f95e5507e138e6acf6c2b4581cb691e70fe3ed747b", size = 8185598 },
+    { url = "https://files.pythonhosted.org/packages/11/e6/e92c8c788b83d109f34d933c5e817095d85722719cb4483472abc135f44e/Django-5.1.5-py3-none-any.whl", hash = "sha256:c46eb936111fffe6ec4bc9930035524a8be98ec2f74d8a0ff351226a3e52f459", size = 8276957 },
 ]
 
 [[package]]
@@ -735,7 +735,7 @@ wheels = [
 
 [[package]]
 name = "lacommunaute"
-version = "2.19.0"
+version = "2.20.0"
 source = { virtual = "." }
 dependencies = [
     { name = "boto3" },
@@ -787,7 +787,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "boto3", specifier = ">=1.24.91" },
-    { name = "django", specifier = ">=5.0" },
+    { name = "django", specifier = ">=5.1" },
     { name = "django-compressor", specifier = "~=4.1" },
     { name = "django-csp", specifier = "~=3.7" },
     { name = "django-htmx", specifier = ">=1.12.2" },
