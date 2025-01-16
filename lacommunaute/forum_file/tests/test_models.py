@@ -13,7 +13,7 @@ fake = faker.Faker()
 
 @pytest.fixture(name="s3_bucket")
 def s3_bucket_fixture():
-    with moto.mock_s3():
+    with moto.mock_aws():
         yield settings.AWS_STORAGE_BUCKET_NAME_PUBLIC
 
 
