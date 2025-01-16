@@ -7,6 +7,7 @@ from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -189,8 +190,17 @@ def test_unapproved_post_is_exclude(client, db, search_url):
     assertContains(response, "Aucun résultat")
 
 
-def test_extra_context(client, db, search_url, snapshot):
+@pytest.mark.parametrize(
+    "user,snapshot_name",
+    [
+        (None, "anonymous"),
+        (lambda: UserFactory(username="123"), "proconnected"),
+    ],
+)
+def test_extra_context(client, db, user, snapshot_name, search_url, snapshot):
     forum = ForumFactory()
+    if user:
+        client.force_login(user())
 
     response = client.get(search_url)
     content = parse_response_to_soup(response, selector="main")
@@ -201,7 +211,7 @@ def test_extra_context(client, db, search_url, snapshot):
     content = parse_response_to_soup(
         response, selector="main", replace_in_href=[(forum.slug, "forrest-gump"), (str(forum.pk), "42")]
     )
-    assert str(content) == snapshot(name="no_results")
+    assert str(content) == snapshot(name=snapshot_name)
 
 
 def test_search_all_site_is_checked(client, db, search_url):

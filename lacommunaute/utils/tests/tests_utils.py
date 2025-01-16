@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from bs4 import BeautifulSoup
+from django.contrib.auth.models import AnonymousUser
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
@@ -22,6 +23,7 @@ from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_conversation.forum_attachments.factories import AttachmentFactory
 from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
+from lacommunaute.users.enums import IdentityProvider
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.date import get_last_sunday
 from lacommunaute.utils.math import percent
@@ -178,6 +180,23 @@ class TestUtilsTemplateTags:
         out = template.render(Context({"text": text}))
         assert out == expected
 
+    @pytest.mark.parametrize(
+        "user,expected_query_params",
+        [
+            (lambda: AnonymousUser(), ""),
+            (lambda: UserFactory(identity_provider=IdentityProvider.MAGIC_LINK), ""),
+            (lambda: UserFactory(identity_provider=IdentityProvider.INCLUSION_CONNECT), ""),
+            (
+                lambda: UserFactory(username="abcd1234", identity_provider=IdentityProvider.PRO_CONNECT),
+                "?proconnect_login=true&amp;username=abcd1234",
+            ),
+        ],
+    )
+    def test_autologin_proconnect(self, db, user, expected_query_params):
+        template = Template("{% load url_query_tags %}{% autologin_proconnect url user %}")
+        out = template.render(Context({"url": "/test/", "user": user()}))
+        assert out == f"/test/{expected_query_params}"
+
 
 class UtilsTemplateTagsTestCase(TestCase):
     def test_pluralizefr(self):
@@ -238,21 +257,21 @@ class UtilsTemplateTagsTestCase(TestCase):
         base_url = faker.url()
         # Full URL.
         context = {"url": f"{base_url}/?status=new&page=4&page=1"}
-        template = Template("{% load url_add_query %}{% url_add_query url page=2 %}")
+        template = Template("{% load url_query_tags %}{% url_add_query url page=2 %}")
         out = template.render(Context(context))
         expected = f"{base_url}/?status=new&amp;page=2"
         assert out == expected
 
         # Relative URL.
         context = {"url": "/?status=new&page=1"}
-        template = Template("{% load url_add_query %}{% url_add_query url page=22 %}")
+        template = Template("{% load url_query_tags %}{% url_add_query url page=22 %}")
         out = template.render(Context(context))
         expected = "/?status=new&amp;page=22"
         assert out == expected
 
         # Empty URL.
         context = {"url": ""}
-        template = Template("{% load url_add_query %}{% url_add_query url page=1 %}")
+        template = Template("{% load url_query_tags %}{% url_add_query url page=1 %}")
         out = template.render(Context(context))
         expected = "?page=1"
         assert out == expected

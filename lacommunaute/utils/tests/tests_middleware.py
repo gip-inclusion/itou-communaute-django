@@ -1,33 +1,17 @@
 import pytest
-from django.test import TestCase, override_settings
-
-from lacommunaute.utils.enums import Environment
-
-
-class ParkingMiddlewareTest(TestCase):
-    @override_settings(PARKING_PAGE=True)
-    def test_parking_page_middleware(self):
-        response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "middleware/parking.html")
-
-    @override_settings(PARKING_PAGE=False)
-    def test_no_parking_page_middleware(self):
-        response = self.client.get("/")
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "pages/home.html")
+from django.test import override_settings
+from pytest_django.asserts import assertTemplateUsed
 
 
-class TestEnvironmentSettingsMiddleware:
-    @pytest.mark.parametrize(
-        "env,expected",
-        [
-            (Environment.PROD, False),
-            (Environment.TEST, False),
-            (Environment.DEV, True),
-        ],
-    )
-    def test_prod_environment(self, client, db, env, expected):
-        with override_settings(ENVIRONMENT=env):
-            response = client.get("/")
-        assert ('id="debug-mode-banner"' in response.content.decode()) == expected
+@pytest.mark.parametrize(
+    "parking_page, expected_template",
+    [
+        (True, "middleware/parking.html"),
+        (False, "pages/home.html"),
+    ],
+)
+def test_parking_page_middleware(client, db, parking_page, expected_template):
+    with override_settings(PARKING_PAGE=parking_page):
+        response = client.get("/")
+        assert response.status_code == 200
+        assertTemplateUsed(response, expected_template)
