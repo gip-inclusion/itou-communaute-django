@@ -614,8 +614,8 @@
   '''
 # ---
 # name: TestSendMagicLink.test_send_magic[PROD-True-0][send_magic_link_payload]
-  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.gouv.fr"}, "to": [{"email": "samuel@jackson.com"}], "params": {"display_name": "Samuel J.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
+  '{"sender":{"name":"La Communauté","email":"noreply@inclusion.gouv.fr"},"to":[{"email":"samuel@jackson.com"}],"params":{"display_name":"Samuel J.","login_link":"LOGIN_LINK"},"templateId":31}'
 # ---
 # name: TestSendMagicLink.test_send_magic[TEST-True-0][send_magic_link_payload]
-  '{"sender": {"name": "La Communaut\\u00e9", "email": "noreply@inclusion.gouv.fr"}, "to": [{"email": "samuel@jackson.com"}], "params": {"display_name": "Samuel J.", "login_link": "LOGIN_LINK"}, "templateId": 31}'
+  '{"sender":{"name":"La Communauté","email":"noreply@inclusion.gouv.fr"},"to":[{"email":"samuel@jackson.com"}],"params":{"display_name":"Samuel J.","login_link":"LOGIN_LINK"},"templateId":31}'
 # ---
