@@ -25,7 +25,7 @@ def get_serialized_messages(notifications):
                 "a posé une nouvelle question" if n.post.is_topic_head else f"a répondu à '{n.post.topic.subject}'"
             ),
             "forum": n.post.topic.forum.name,
-            "url": n.post.topic.get_absolute_url(with_fqdn=True),
+            "url": f"{n.post.topic.get_absolute_url(with_fqdn=True)}?notif={n.uuid}",
         }
         for n in notifications
     ]

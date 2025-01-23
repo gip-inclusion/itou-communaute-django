@@ -58,7 +58,7 @@ class TestGetSerializedMessages:
                 "poster": notification.post.poster_display_name,
                 "action": "a posé une nouvelle question",
                 "forum": notification.post.topic.forum.name,
-                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+                "url": f"{notification.post.topic.get_absolute_url(with_fqdn=True)}?notif={notification.uuid}",
             }
         ]
 
@@ -70,6 +70,6 @@ class TestGetSerializedMessages:
                 "poster": notification.post.poster_display_name,
                 "action": f"a répondu à '{notification.post.topic.subject}'",
                 "forum": notification.post.topic.forum.name,
-                "url": notification.post.topic.get_absolute_url(with_fqdn=True),
+                "url": f"{notification.post.topic.get_absolute_url(with_fqdn=True)}?notif={notification.uuid}",
             }
         ]
