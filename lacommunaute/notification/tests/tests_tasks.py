@@ -31,7 +31,7 @@ faker = Faker()
 @pytest.fixture(name="mock_respx_post_to_sib_smtp_url")
 def mock_respx_post_to_sib_smtp_url_fixture():
     with respx.mock:
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, text='{"message": "OK"}'))
         yield
 
 
@@ -109,7 +109,7 @@ class TestSendMessagesNotifications:
 class AddUserToListWhenRegister(TestCase):
     def setUp(self):
         super().setUp()
-        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, text='{"message": "OK"}'))
 
     @respx.mock
     def test_add_user_to_list_when_register(self):

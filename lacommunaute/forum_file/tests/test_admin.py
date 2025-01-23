@@ -7,7 +7,7 @@ import pytest
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
-from moto import mock_s3
+from moto import mock_aws
 from PIL import Image
 
 from lacommunaute.forum_file.models import PublicFile
@@ -34,7 +34,7 @@ def image_content_fixture():
     return buffer.getvalue()
 
 
-@mock_s3
+@mock_aws
 def test_file_is_saved_with_logged_user(client, db, superuser, image_content):
     conn = boto3.client("s3", endpoint_url=settings.AWS_S3_ENDPOINT_URL, region_name="us-east-1")
     conn.create_bucket(Bucket=settings.AWS_STORAGE_BUCKET_NAME_PUBLIC)

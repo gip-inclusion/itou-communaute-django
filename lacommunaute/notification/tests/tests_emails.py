@@ -17,7 +17,7 @@ faker = Faker()
 class SendEmailTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_SMTP_URL).mock(return_value=httpx.Response(200, text='{"message": "OK"}'))
         cls.to = [{"email": faker.email()}]
         cls.params = faker.text()
         cls.template_id = faker.random_int()
@@ -52,7 +52,7 @@ class SendEmailTestCase(TestCase):
 class BulkSendUserToListTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, json={"message": "OK"}))
+        respx.post(SIB_CONTACTS_URL).mock(return_value=httpx.Response(200, text='{"message": "OK"}'))
 
     @respx.mock
     def test_bulk_send_user_to_list(self):
