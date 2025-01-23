@@ -1,4 +1,6 @@
+import pytest
 from django.contrib.auth.models import AnonymousUser
+from django.db import IntegrityError
 from django.db.models import F
 from django.test import TestCase
 
@@ -89,3 +91,11 @@ class NotificationQuerySetTest(TestCase):
 
         with self.assertRaises(ValueError):
             Notification.objects.mark_topic_posts_read(topic, None)
+
+
+class TestNotificationModel:
+    def test_uuid_uniqueness(self, db):
+        notification = NotificationFactory()
+
+        with pytest.raises(IntegrityError):
+            NotificationFactory(uuid=notification.uuid)

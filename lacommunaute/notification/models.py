@@ -1,3 +1,4 @@
+import uuid
 from itertools import groupby
 from operator import attrgetter
 
@@ -66,6 +67,8 @@ class Notification(DatedModel):
         default=NotificationDelay.ASAP,
     )
     sent_at = models.DateTimeField(verbose_name=_("sent at"), null=True, blank=True)
+    visited_at = models.DateTimeField(verbose_name=_("clicked at"), null=True, blank=True)
+    uuid = models.UUIDField(verbose_name=_("uuid"), null=True, blank=True, unique=True, default=uuid.uuid4)
 
     class Meta:
         verbose_name = _("Notification")
