@@ -18,9 +18,10 @@ class NotificationMiddleware(MiddlewareMixin):
 
         try:
             uuid.UUID(notif_uuid, version=4)
-            Notification.objects.filter(uuid=notif_uuid).update(visited_at=timezone.now())
         except ValueError:
             pass
+        else:
+            Notification.objects.filter(uuid=notif_uuid).update(visited_at=timezone.now())
 
         new_url = (
             f"{request.path}?{urlencode({k: v for k, v in query_params.items() if v})}"
