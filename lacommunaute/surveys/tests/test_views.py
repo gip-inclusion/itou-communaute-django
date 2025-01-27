@@ -1,3 +1,4 @@
+import pytest
 from django.test import override_settings
 from django.urls import reverse
 from pytest_django.asserts import assertContains
@@ -22,46 +23,51 @@ dsp_choices_list = [
 location_field_list = ["location", "city_code"]
 
 
+@pytest.fixture(name="dsp_create_url")
+def fixture_dsp_create_url():
+    return reverse("surveys:dsp_create")
+
+
+@pytest.fixture(name="choices")
+def fixture_choices():
+    choices = {key: "0" for key in dsp_choices_list}
+    choices.update({"location": "Le Mans", "city_code": "72000"})
+    return choices
+
+
 class TestDSPCreateView:
-    def test_action_box(self, db, client, snapshot):
-        url = reverse("surveys:dsp_create")
-        response = client.get(url)
+    def test_action_box(self, db, client, dsp_create_url, snapshot):
+        response = client.get(dsp_create_url)
         content = parse_response_to_soup(response, selector="#action-box")
         assert str(content) == snapshot(name="action_box")
 
-    def test_form_fields(self, db, client):
-        url = reverse("surveys:dsp_create")
+    def test_form_fields(self, db, client, dsp_create_url):
         client.force_login(UserFactory())
-        response = client.get(url)
+        response = client.get(dsp_create_url)
         assert response.status_code == 200
         assert "form" in response.context
         for field in dsp_choices_list + location_field_list:
             assert field in response.context["form"].fields
 
-    def test_related_forums(self, db, client):
+    def test_related_forums(self, db, client, dsp_create_url):
         forum = CategoryForumFactory(with_child=True)
-        url = reverse("surveys:dsp_create")
         with override_settings(DSP_FORUM_RELATED_ID=forum.id):
-            response = client.get(url)
+            response = client.get(dsp_create_url)
         for related_forum in forum.get_children():
             assertContains(response, related_forum.name)
 
-    def test_form_valid(self, db, client):
-        url = reverse("surveys:dsp_create")
+    def test_form_valid(self, db, client, choices, dsp_create_url):
         client.force_login(UserFactory())
-        choices = {key: "0" for key in dsp_choices_list}
-        choices.update({"location": "Le Mans", "city_code": "72000"})
-        response = client.post(url, choices)
+        response = client.post(dsp_create_url, choices)
         assert response.status_code == 302
 
         dsp = DSP.objects.get()
         assert response.url == reverse("surveys:dsp_detail", kwargs={"pk": dsp.pk})
         assert dsp.recommendations is not None
 
-    def test_form_invalid(self, db, client):
-        url = reverse("surveys:dsp_create")
+    def test_form_invalid(self, db, client, dsp_create_url):
         client.force_login(UserFactory())
-        response = client.post(url, {})
+        response = client.post(dsp_create_url, {})
 
         assert response.status_code == 200
         assert response.context["form"].is_valid() is False
