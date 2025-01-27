@@ -1,17 +1,15 @@
+import pytest
 from django.db import IntegrityError
-from django.test import TestCase
 
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.users.models import EmailLastSeen
 
 
-class EventModelTest(TestCase):
-    def test_user_is_mandatory(self):
-        with self.assertRaises(IntegrityError):
+class TestEventModel:
+    def test_user_is_mandatory(self, db):
+        with pytest.raises(IntegrityError):
             EventFactory(poster=None)
 
-
-class TestEventModel:
     def test_email_last_seen_updated_on_save(self, db):
         EventFactory()
 
