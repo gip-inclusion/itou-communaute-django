@@ -10,6 +10,12 @@ from lacommunaute.users.models import User
 
 email = "alex@honnold.com"
 
+
+@pytest.fixture(name="email_last_seen")
+def fixture_email_last_seen(db):
+    return EmailLastSeenFactory(email=email)
+
+
 # User model tests
 
 
@@ -22,33 +28,24 @@ def test_create_user_without_username(db):
 # EmailLastSeen model tests
 
 
-def test_email_uniqueness(db):
-    EmailLastSeenFactory(email=email)
-
+def test_email_uniqueness(db, email_last_seen):
     with pytest.raises(IntegrityError):
         EmailLastSeenFactory(email=email)
 
 
-def test_compute_hash_on_save(db):
-    email_last_seen = EmailLastSeenFactory(email=email)
+def test_compute_hash_on_save(db, email_last_seen):
     assert email_last_seen.email_hash == hashlib.sha256(email.encode("utf-8")).hexdigest()
 
 
-@pytest.mark.parametrize(
-    "email_last_seen,updated_email",
-    [(lambda: EmailLastSeenFactory(email=email), None), (lambda: EmailLastSeenFactory(email=email), email)],
-)
+@pytest.mark.parametrize("updated_email", [None, email])
 def test_hash_remains_unchanged_on_update(db, email_last_seen, updated_email):
-    email_last_seen = email_last_seen()
-
     email_last_seen.email = updated_email
     email_last_seen.save()
     email_last_seen.refresh_from_db()
     assert email_last_seen.email_hash == hashlib.sha256(email.encode("utf-8")).hexdigest()
 
 
-def test_soft_delete(db):
-    email_last_seen = EmailLastSeenFactory(email=email)
+def test_soft_delete(db, email_last_seen):
     email_last_seen.soft_delete()
     email_last_seen.refresh_from_db()
     assert email_last_seen.deleted_at is not None
