@@ -19,9 +19,9 @@ from pytest_django.asserts import assertContains
 
 from lacommunaute.forum_member.models import ForumProfile
 from lacommunaute.notification.emails import SIB_SMTP_URL
-from lacommunaute.users.enums import IdentityProvider
+from lacommunaute.users.enums import EmailLastSeenKind, IdentityProvider
 from lacommunaute.users.factories import UserFactory
-from lacommunaute.users.models import User
+from lacommunaute.users.models import EmailLastSeen, User
 from lacommunaute.users.views import send_magic_link
 from lacommunaute.utils.enums import Environment
 from lacommunaute.utils.testing import parse_response_to_soup
@@ -177,6 +177,15 @@ class TestLoginView:
         response = client.get(url)
         assert response.status_code == 302
         assert response.url == expected
+
+    def test_email_last_seen_is_updated_on_login_signal(self, client, db):
+        user = UserFactory()
+        client.force_login(user)
+
+        email_last_seen = EmailLastSeen.objects.get()
+        assert email_last_seen.email == user.email
+        assert email_last_seen.last_seen_at is not None
+        assert email_last_seen.last_seen_kind == EmailLastSeenKind.LOGGED
 
 
 class TestCreateUserView:
