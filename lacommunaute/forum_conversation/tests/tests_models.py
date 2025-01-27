@@ -15,7 +15,9 @@ from lacommunaute.forum_conversation.factories import (
 )
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 
 
 @pytest.fixture(name="forum")
@@ -37,6 +39,25 @@ class TestPostModel:
 
         topic = TopicFactory(with_certified_post=True)
         assert topic.last_post.is_certified is True
+
+    @pytest.mark.parametrize(
+        "user,username", [(None, "adam@ondra.com"), (lambda: UserFactory(email="yvon@chouinard.com"), None)]
+    )
+    def test_email_last_seen_is_update_on_save(self, db, user, username):
+        if user:
+            user = user()
+            PostFactory(topic=TopicFactory(), poster=user)
+        else:
+            PostFactory(topic=TopicFactory(), username=username)
+
+        email_last_seen = EmailLastSeen.objects.get()
+
+        assert email_last_seen.last_seen_kind == EmailLastSeenKind.POST
+        assert email_last_seen.last_seen_at is not None
+        if user:
+            assert email_last_seen.email == user.email
+        else:
+            assert email_last_seen.email == username
 
 
 class TestTopicManager:
