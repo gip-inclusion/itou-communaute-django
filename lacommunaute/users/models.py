@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
+from django.utils import timezone
 
 from lacommunaute.users.enums import EmailLastSeenKind, IdentityProvider
 
@@ -44,3 +45,8 @@ class EmailLastSeen(models.Model):
         if self.email:
             self.email_hash = hashlib.sha256(self.email.encode("utf-8")).hexdigest()
         super().save(*args, **kwargs)
+
+    def soft_delete(self):
+        self.deleted_at = timezone.now()
+        self.email = None
+        self.save()

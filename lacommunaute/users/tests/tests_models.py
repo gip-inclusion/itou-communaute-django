@@ -45,3 +45,12 @@ def test_hash_remains_unchanged_on_update(db, email_last_seen, updated_email):
     email_last_seen.save()
     email_last_seen.refresh_from_db()
     assert email_last_seen.email_hash == hashlib.sha256(email.encode("utf-8")).hexdigest()
+
+
+def test_soft_delete(db):
+    email_last_seen = EmailLastSeenFactory(email=email)
+    email_last_seen.soft_delete()
+    email_last_seen.refresh_from_db()
+    assert email_last_seen.deleted_at is not None
+    assert email_last_seen.email is None
+    assert email_last_seen.email_hash not in [None, ""]
