@@ -7,6 +7,7 @@ from lacommunaute.forum.factories import CategoryForumFactory
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.surveys.models import DSP
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -74,6 +75,17 @@ class TestDSPCreateView:
         errors = response.context["form"].errors
         for field in dsp_choices_list + ["location"]:
             assert errors[field] == ["Ce champ est obligatoire."]
+
+    def test_email_last_seen_is_updated_on_save(self, client, db, choices, dsp_create_url):
+        user = UserFactory()
+        client.force_login(user)
+        response = client.post(dsp_create_url, choices)
+        assert response.status_code == 302
+
+        email_last_seen = EmailLastSeen.objects.get()
+        assert email_last_seen.email == user.email
+        assert email_last_seen.last_seen_kind == "DSP"
+        assert email_last_seen.last_seen_at is not None
 
 
 class TestDSPDetailView:
