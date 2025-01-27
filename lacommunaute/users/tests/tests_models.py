@@ -32,6 +32,11 @@ class TestEmailLastSeenModel:
     def test_compute_hash_on_save(self, db, email_last_seen):
         assert email_last_seen.email_hash == hashlib.sha256(email.encode("utf-8")).hexdigest()
 
+    def test_email_hash(self, db):
+        email = "janja@garnbret.com"
+        hashed_email = "bb247dfe5de638e67be1f4d5414ffbef8d3c93b6dd0513598b013e59640f584b"
+        assert hashlib.sha256(email.encode("utf-8")).hexdigest() == hashed_email
+
     @pytest.mark.parametrize("updated_email", [None, email])
     def test_hash_remains_unchanged_on_update(self, db, email_last_seen, updated_email):
         email_last_seen.email = updated_email
