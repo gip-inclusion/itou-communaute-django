@@ -79,3 +79,9 @@ class Notification(DatedModel):
         return self.sent_at is not None
 
     objects = NotificationQuerySet().as_manager()
+
+    # TODO: vincentporte, en attente de la PR#891
+    # def update(self, *args, **kwargs):
+    #    super().update(*args, **kwargs)
+    #    if visited_at:
+    #        EmailLastSeen.objects.seen(self.recipient, EmailLastSeenKind.NOTIFICATION)
