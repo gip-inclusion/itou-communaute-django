@@ -3,7 +3,9 @@ from django.urls import reverse
 
 from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum.models import ForumRating
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -47,3 +49,32 @@ def test_post_forum_rating_view(client, db, public_forum, user, rating, snapshot
         assert forum_rating.user == user
     else:
         assert forum_rating.user is None
+
+
+@pytest.mark.parametrize(
+    "user",
+    [
+        None,
+        lambda: UserFactory(),
+    ],
+)
+def test_email_last_seen_is_updated_on_save(client, db, public_forum, user):
+    if user:
+        user = user()
+        client.force_login(user)
+    else:
+        client.session.save()
+
+    response = client.post(
+        reverse("forum_extension:rate", kwargs={"pk": public_forum.pk, "slug": public_forum.slug}),
+        data={"rating": 5},
+    )
+    assert response.status_code == 200
+
+    if user:
+        email_last_seen = EmailLastSeen.objects.get()
+        assert email_last_seen.email == user.email
+        assert email_last_seen.last_seen_kind == EmailLastSeenKind.FORUM_RATING
+        assert email_last_seen.last_seen_at is not None
+    else:
+        assert not EmailLastSeen.objects.exists()

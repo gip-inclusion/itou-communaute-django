@@ -11,6 +11,8 @@ from taggit.managers import TaggableManager
 from lacommunaute.forum_conversation.models import Topic
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.partner.models import Partner
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
 from lacommunaute.utils.validators import validate_image_size
 
 
@@ -82,3 +84,8 @@ class ForumRating(DatedModel):
         verbose_name = "Notation Forum"
         verbose_name_plural = "Notations Forum"
         ordering = ("-created",)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.user:
+            EmailLastSeen.objects.seen(self.user.email, EmailLastSeenKind.FORUM_RATING)
