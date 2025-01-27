@@ -3,6 +3,9 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
+
 
 class UpVote(models.Model):
     voter = models.ForeignKey(
@@ -27,3 +30,7 @@ class UpVote(models.Model):
         ordering = [
             "-created_at",
         ]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        EmailLastSeen.objects.seen(self.voter.email, EmailLastSeenKind.UPVOTE)

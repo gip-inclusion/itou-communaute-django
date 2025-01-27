@@ -3,6 +3,8 @@ from django.db import IntegrityError
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_upvote.models import UpVote
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
 
 
 class TestUpVoteModel:
@@ -26,3 +28,10 @@ class TestUpVoteModel:
 
         with pytest.raises(IntegrityError):
             UpVote.objects.create(content_object=topic.forum, voter=topic.first_post.poster)
+
+    def test_email_last_seen_is_updated_on_save(self, db):
+        topic = TopicFactory(with_post=True)
+        UpVote.objects.create(content_object=topic.first_post, voter=topic.first_post.poster)
+
+        email_last_seen = EmailLastSeen.objects.get()
+        assert email_last_seen.last_seen_kind == EmailLastSeenKind.UPVOTE
