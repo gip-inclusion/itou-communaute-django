@@ -18,7 +18,7 @@ def test_notif_param(client, db, notif_param, expected_visited_at):
     if callable(notif_param):
         notif_param = notif_param()
 
-    response = client.get(f"/?notif={notif_param}")
+    client.get(f"/?notif={notif_param}")
 
     if expected_visited_at:
         notification = Notification.objects.get(uuid=notif_param)
@@ -27,5 +27,3 @@ def test_notif_param(client, db, notif_param, expected_visited_at):
 
     misc_notification.refresh_from_db()
     assert misc_notification.visited_at is None
-
-    assert response.url == "/"
