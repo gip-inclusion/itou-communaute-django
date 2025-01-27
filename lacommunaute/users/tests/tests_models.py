@@ -4,8 +4,9 @@ import re
 import pytest
 from django.db import IntegrityError
 
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import EmailLastSeenFactory
-from lacommunaute.users.models import User
+from lacommunaute.users.models import EmailLastSeen, User
 
 
 email = "alex@honnold.com"
@@ -51,3 +52,29 @@ def test_soft_delete(db, email_last_seen):
     assert email_last_seen.deleted_at is not None
     assert email_last_seen.email is None
     assert email_last_seen.email_hash not in [None, ""]
+
+
+# EmailLastSeenQuerySet tests
+
+
+@pytest.mark.parametrize("kind", [kind for kind, _ in EmailLastSeenKind.choices])
+def test_seen(db, email_last_seen, kind):
+    EmailLastSeen.objects.seen(email, kind)
+
+    email_last_seen.refresh_from_db()
+    assert email_last_seen.last_seen_kind == kind
+    assert email_last_seen.last_seen_at is not None
+
+
+def test_seen_invalid_kind(db, email_last_seen):
+    with pytest.raises(ValueError):
+        EmailLastSeen.objects.seen(email, "invalid_kind")
+
+
+@pytest.mark.parametrize("kind", [kind for kind, _ in EmailLastSeenKind.choices])
+def test_seen_unknown_email(db, kind):
+    EmailLastSeen.objects.seen(email, kind)
+
+    email_last_seen = EmailLastSeen.objects.get(email=email)
+    assert email_last_seen.last_seen_kind == kind
+    assert email_last_seen.last_seen_at is not None

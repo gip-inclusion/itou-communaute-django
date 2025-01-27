@@ -29,6 +29,14 @@ class User(AbstractUser):
         return self.email
 
 
+class EmailLastSeenQuerySet(models.QuerySet):
+    def seen(self, email, kind):
+        if kind not in [kind for kind, _ in EmailLastSeenKind.choices]:
+            raise ValueError(f"Invalid kind: {kind}")
+
+        return self.update_or_create(email=email, defaults={"last_seen_at": timezone.now(), "last_seen_kind": kind})
+
+
 class EmailLastSeen(models.Model):
     email = models.EmailField(verbose_name="email", null=True, blank=True, unique=True)
     email_hash = models.CharField(max_length=255, verbose_name="email hash", null=False)
@@ -37,6 +45,8 @@ class EmailLastSeen(models.Model):
         max_length=12, verbose_name="last seen kind", choices=EmailLastSeenKind.choices, null=False
     )
     deleted_at = models.DateTimeField(verbose_name="deleted at", null=True, blank=True)
+
+    objects = EmailLastSeenQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.email} - {self.last_seen_at}"
