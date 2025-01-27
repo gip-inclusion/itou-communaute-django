@@ -23,20 +23,20 @@ def fixture_forum(db):
     return ForumFactory()
 
 
-class PostModelTest(TestCase):
-    def test_username_is_emailfield(self):
+class TestPostModel:
+    def test_username_is_emailfield(self, db):
         topic = TopicFactory()
         post = Post(username="not an email", subject="xxx", content="xxx", topic=topic)
 
-        with self.assertRaisesMessage(ValidationError, "Saisissez une adresse de courriel valide."):
+        with pytest.raises(ValidationError):
             post.full_clean()
 
-    def test_is_certified(self):
+    def test_is_certified(self, db):
         topic = TopicFactory(with_post=True)
-        self.assertFalse(topic.last_post.is_certified)
+        assert topic.last_post.is_certified is False
 
         topic = TopicFactory(with_certified_post=True)
-        self.assertTrue(topic.last_post.is_certified)
+        assert topic.last_post.is_certified is True
 
 
 class TestTopicManager:
