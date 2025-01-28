@@ -1005,6 +1005,12 @@ msgstr "envoyée"
 msgid "not sent"
 msgstr "en attente"
 
+msgid "visited"
+msgstr "visité"
+
+msgid "not visited"
+msgstr "non visité"
+
 #: lacommunaute/notification/models.py
 msgid "Notification"
 msgstr "Notification"
@@ -1023,6 +1029,9 @@ msgstr "délai"
 
 msgid "sent at"
 msgstr "envoyée le"
+
+msgid "clicked at"
+msgstr "lien visité le"
 
 #: lacommunaute/notification/enums.py
 msgid "New messages"

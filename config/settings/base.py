@@ -101,6 +101,7 @@ DJANGO_MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "lacommunaute.utils.middleware.ParkingPageMiddleware",
     "lacommunaute.openid_connect.middleware.ProConnectLoginMiddleware",
+    "lacommunaute.notification.middleware.NotificationMiddleware",
 ]
 
 THIRD_PARTIES_MIDDLEWARE = [
@@ -268,7 +269,7 @@ COMMU_FQDN = os.getenv("COMMU_FQDN", "communaute.inclusion.gouv.fr")
 
 AWS_S3_ACCESS_KEY_ID = os.getenv("CELLAR_ADDON_KEY_ID")
 AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET")
-AWS_S3_ENDPOINT_URL = f"{os.getenv('CELLAR_ADDON_PROTOCOL','https')}://{os.getenv('CELLAR_ADDON_HOST')}"
+AWS_S3_ENDPOINT_URL = f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.getenv('CELLAR_ADDON_HOST')}"
 AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME")
 AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC")
 AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION")
