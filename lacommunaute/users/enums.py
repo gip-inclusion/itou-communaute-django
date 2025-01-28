@@ -14,3 +14,4 @@ class EmailLastSeenKind(models.TextChoices):
     UPVOTE = "UPVOTE", "abonnement"
     FORUM_RATING = "FORUM_RATING", "notation de forum"
     LOGGED = "LOGGED", "connexion"
+    VISITED = "VISITED", "notification cliquée"

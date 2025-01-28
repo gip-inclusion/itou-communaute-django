@@ -46,6 +46,7 @@ class Migration(migrations.Migration):
                             ("UPVOTE", "abonnement"),
                             ("FORUM_RATING", "notation de forum"),
                             ("LOGGED", "connexion"),
+                            ("VISITED", "notification cliquée"),
                         ],
                         max_length=12,
                         verbose_name="last seen kind",
