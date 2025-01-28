@@ -15,7 +15,9 @@ from lacommunaute.forum_conversation.factories import (
 )
 from lacommunaute.forum_conversation.models import Post, Topic
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 
 
 @pytest.fixture(name="forum")
@@ -23,20 +25,39 @@ def fixture_forum(db):
     return ForumFactory()
 
 
-class PostModelTest(TestCase):
-    def test_username_is_emailfield(self):
+class TestPostModel:
+    def test_username_is_emailfield(self, db):
         topic = TopicFactory()
         post = Post(username="not an email", subject="xxx", content="xxx", topic=topic)
 
-        with self.assertRaisesMessage(ValidationError, "Saisissez une adresse de courriel valide."):
+        with pytest.raises(ValidationError):
             post.full_clean()
 
-    def test_is_certified(self):
+    def test_is_certified(self, db):
         topic = TopicFactory(with_post=True)
-        self.assertFalse(topic.last_post.is_certified)
+        assert topic.last_post.is_certified is False
 
         topic = TopicFactory(with_certified_post=True)
-        self.assertTrue(topic.last_post.is_certified)
+        assert topic.last_post.is_certified is True
+
+    @pytest.mark.parametrize(
+        "user,username", [(None, "adam@ondra.com"), (lambda: UserFactory(email="yvon@chouinard.com"), None)]
+    )
+    def test_email_last_seen_is_update_on_save(self, db, user, username):
+        if user:
+            user = user()
+            PostFactory(topic=TopicFactory(), poster=user)
+        else:
+            PostFactory(topic=TopicFactory(), username=username)
+
+        email_last_seen = EmailLastSeen.objects.get()
+
+        assert email_last_seen.last_seen_kind == EmailLastSeenKind.POST
+        assert email_last_seen.last_seen_at is not None
+        if user:
+            assert email_last_seen.email == user.email
+        else:
+            assert email_last_seen.email == username
 
 
 class TestTopicManager:

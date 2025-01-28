@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_anonymous_post_forum_rating_view[anonymous_post_forum_rating_view]
+# name: test_post_forum_rating_view[<lambda>-1-authenticated_post_forum_rating_view][authenticated_post_forum_rating_view]
   '''
   <html><head></head><body><div class="mb-5 rating" id="rating-area">
           <hr/>
@@ -15,25 +15,25 @@
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
                           
                       </div>
                   
@@ -44,7 +44,7 @@
   </body></html>
   '''
 # ---
-# name: test_authenticated_post_forum_rating_view[authenticated_post_forum_rating_view]
+# name: test_post_forum_rating_view[None-5-anonymous_post_forum_rating_view][anonymous_post_forum_rating_view]
   '''
   <html><head></head><body><div class="mb-5 rating" id="rating-area">
           <hr/>
@@ -60,25 +60,25 @@
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   
                       <div class="btn btn-ico-only">
                           
-                              <i aria-hidden="true" class="ri-star-line fw-medium"></i>
+                              <i aria-hidden="true" class="ri-star-fill fw-medium"></i>
                           
                       </div>
                   

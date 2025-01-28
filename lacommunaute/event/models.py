@@ -2,6 +2,9 @@ from django.conf import settings
 from django.db import models
 from machina.models.abstract_models import DatedModel
 
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
+
 
 class Event(DatedModel):
     name = models.CharField(max_length=100, verbose_name="Nom")
@@ -28,3 +31,7 @@ class Event(DatedModel):
 
     def __str__(self):
         return f"{self.name} - {self.date}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        EmailLastSeen.objects.seen(self.poster.email, EmailLastSeenKind.EVENT)

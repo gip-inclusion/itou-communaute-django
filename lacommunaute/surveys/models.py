@@ -2,7 +2,8 @@ from django.db import models
 from machina.models.abstract_models import DatedModel
 
 from lacommunaute.surveys import enums
-from lacommunaute.users.models import User
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen, User
 
 
 class Recommendation(models.Model):
@@ -69,3 +70,7 @@ class DSP(DatedModel):
     class Meta:
         verbose_name = "diagnostic parcours IAE"
         verbose_name_plural = "diagnostics parcours IAE"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        EmailLastSeen.objects.seen(self.user.email, EmailLastSeenKind.DSP)

@@ -2,6 +2,7 @@ import hashlib
 from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
+from django.contrib.auth.signals import user_logged_in
 from django.db import models
 from django.utils import timezone
 
@@ -60,3 +61,10 @@ class EmailLastSeen(models.Model):
         self.deleted_at = timezone.now()
         self.email = None
         self.save()
+
+
+def update_email_last_seen(sender, user, request, **kwargs):
+    EmailLastSeen.objects.seen(email=user.email, kind=EmailLastSeenKind.LOGGED)
+
+
+user_logged_in.connect(update_email_last_seen, dispatch_uid="update_email_last_seen")
