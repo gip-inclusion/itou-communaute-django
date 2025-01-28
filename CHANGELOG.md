@@ -1,5 +1,13 @@
 # Journal des modifications
 
+## [2.21.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.20.0...v2.21.0) (2025-01-28)
+
+
+### Features
+
+* **notification:** enregistrer les retours sur les notifs mails ([#891](https://github.com/gip-inclusion/itou-communaute-django/issues/891)) ([ec67205](https://github.com/gip-inclusion/itou-communaute-django/commit/ec672052e0aec008ca3edee65942aaf3d62d2555))
+* **search:** ajout de liens de recherche vers le site des emplois ([#879](https://github.com/gip-inclusion/itou-communaute-django/issues/879)) ([c6ac2a3](https://github.com/gip-inclusion/itou-communaute-django/commit/c6ac2a370288d9f19a04ae809167c84ea9c162e5))
+
 ## [2.20.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.19.0...v2.20.0) (2025-01-13)
 
 
