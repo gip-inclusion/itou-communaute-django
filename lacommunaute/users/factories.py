@@ -1,4 +1,5 @@
 import random
+from datetime import UTC
 
 import factory
 from django.contrib.auth.hashers import make_password
@@ -47,5 +48,5 @@ class EmailLastSeenFactory(factory.django.DjangoModelFactory):
         model = EmailLastSeen
 
     email = factory.Faker("email")
-    last_seen_at = factory.Faker("date_time_this_month")
-    last_seen_kind = factory.Faker("random_element", elements=[kind for kind, _ in EmailLastSeenKind.choices])
+    last_seen_at = factory.Faker("date_time", tzinfo=UTC)
+    last_seen_kind = factory.Iterator(EmailLastSeenKind.choices, getter=lambda c: c[0])
