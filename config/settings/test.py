@@ -27,8 +27,8 @@ AWS_S3_SECRET_ACCESS_KEY = os.getenv("CELLAR_ADDON_KEY_SECRET", "minioadmin")
 AWS_S3_ENDPOINT_URL = (
     f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'http')}://{os.getenv('CELLAR_ADDON_HOST', 'localhost:9000')}"
 )
-AWS_STORAGE_BUCKET_NAME = "private-bucket"
-AWS_STORAGE_BUCKET_NAME_PUBLIC = "public-bucket"
+AWS_STORAGE_BUCKET_NAME = "c3-django-review-bucket"
+AWS_STORAGE_BUCKET_NAME_PUBLIC = "c3-django-review-bucket-public"
 AWS_S3_STORAGE_BUCKET_REGION = "eu-west-3"
 
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/"
