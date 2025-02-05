@@ -1,14 +1,26 @@
 import pytest
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AnonymousUser
 from django.db import IntegrityError
 from django.db.models import F
 from django.test import TestCase
+from django.utils import timezone
 
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.notification.enums import EmailSentTrackKind
-from lacommunaute.notification.factories import NotificationFactory
+from lacommunaute.notification.factories import EmailSentTrackFactory, NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack, Notification
 from lacommunaute.users.factories import UserFactory
+
+
+class TestEmailSentTrackQuerySet:
+    def test_delete_old_records(self, db):
+        _ = [EmailSentTrackFactory(created=timezone.now() - relativedelta(days=nb_days)) for nb_days in range(89, 92)]
+
+        EmailSentTrack.objects.delete_old_records()
+
+        email_sent_track = EmailSentTrack.objects.get()
+        assert email_sent_track.created >= timezone.now() - relativedelta(days=90)
 
 
 class EmailSentTrackModelTest(TestCase):
