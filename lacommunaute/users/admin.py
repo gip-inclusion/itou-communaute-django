@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from lacommunaute.users.models import User
+from lacommunaute.users.models import EmailLastSeen, User
 
 
 class UserAdmin(UserAdmin):
@@ -26,3 +26,12 @@ class GroupAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
+
+
+@admin.register(EmailLastSeen)
+class EmailLastSeenAdmin(admin.ModelAdmin):
+    list_display = ("email", "last_seen_at", "last_seen_kind", "deleted_at")
+    search_fields = ("email",)
+    list_filter = ("last_seen_kind", "deleted_at")
+    date_hierarchy = "last_seen_at"
+    readonly_fields = ("email", "email_hash", "deleted_at")
