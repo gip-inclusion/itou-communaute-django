@@ -42,3 +42,5 @@ SIB_API_KEY = "dummy-sib-api-key"
 # ---------------------------------------
 EMPLOIS_PRESCRIBER_SEARCH = "http://test.com/prescriber/search"
 EMPLOIS_COMPANY_SEARCH = "http://test.com/company/search"
+
+EMAIL_LAST_SEEN_HASH_SALT = "bobby"
