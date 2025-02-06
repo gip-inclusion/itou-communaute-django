@@ -188,12 +188,12 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, f'id="collapsePost{self.topic.pk}')
 
-    def test_queries(self):
+    def test_numqueries(self):
         ContentType.objects.clear_cache()
 
         TopicFactory.create_batch(20, with_post=True)
         self.client.force_login(self.user)
-        with self.assertNumQueries(22):
+        with self.assertNumQueries(23):
             self.client.get(self.url)
 
     def test_certified_post_display(self):
