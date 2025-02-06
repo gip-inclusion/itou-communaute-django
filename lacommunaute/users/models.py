@@ -1,9 +1,12 @@
+import hashlib
 from uuid import uuid4
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
+from django.utils import timezone
 
-from lacommunaute.users.enums import IdentityProvider
+from lacommunaute.users.enums import EmailLastSeenKind, IdentityProvider
 
 
 class UserManager(BaseUserManager):
@@ -25,3 +28,30 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class EmailLastSeenQuerySet(models.QuerySet):
+    def seen(self, email, kind):
+        if kind not in [kind for kind, _ in EmailLastSeenKind.choices]:
+            raise ValueError(f"Invalid kind: {kind}")
+
+        return self.update_or_create(email=email, defaults={"last_seen_at": timezone.now(), "last_seen_kind": kind})
+
+
+class EmailLastSeen(models.Model):
+    email = models.EmailField(verbose_name="email", null=False, unique=True)
+    email_hash = models.CharField(max_length=255, verbose_name="email hash", null=True)
+    last_seen_at = models.DateTimeField(verbose_name="last seen at", null=False)
+    last_seen_kind = models.CharField(
+        max_length=12, verbose_name="last seen kind", choices=EmailLastSeenKind.choices, null=False
+    )
+    deleted_at = models.DateTimeField(verbose_name="deleted at", null=True, blank=True)
+
+    objects = EmailLastSeenQuerySet.as_manager()
+
+    def soft_delete(self):
+        self.deleted_at = timezone.now()
+        salted_email = f"{self.email}-{settings.EMAIL_LAST_SEEN_HASH_SALT}"
+        self.email_hash = hashlib.sha256(salted_email.encode("utf-8")).hexdigest()
+        self.email = f"email-anonymisé-{self.pk}"
+        self.save()

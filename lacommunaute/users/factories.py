@@ -1,11 +1,12 @@
 import random
+from datetime import UTC
 
 import factory
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 
-from lacommunaute.users.enums import IdentityProvider
-from lacommunaute.users.models import User
+from lacommunaute.users.enums import EmailLastSeenKind, IdentityProvider
+from lacommunaute.users.models import EmailLastSeen, User
 
 
 DEFAULT_PASSWORD = "supercalifragilisticexpialidocious"
@@ -40,3 +41,17 @@ class UserFactory(factory.django.DjangoModelFactory):
         if not create or not extracted:
             return
         obj.user_permissions.add(*extracted)
+
+
+class EmailLastSeenFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = EmailLastSeen
+
+    email = factory.Faker("email")
+    last_seen_at = factory.Faker("date_time", tzinfo=UTC)
+    last_seen_kind = factory.Iterator(EmailLastSeenKind.choices, getter=lambda c: c[0])
+
+    class Params:
+        soft_deleted = factory.Trait(
+            deleted_at=factory.Faker("date_time", tzinfo=UTC), email=None, email_hash=factory.Faker("sha256")
+        )

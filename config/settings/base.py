@@ -462,3 +462,7 @@ PERMISSIONS_POLICY = {
     "sync-xhr": [],
     "usb": [],
 }
+
+# Email Last Seen Hash
+# ---------------------------------------
+EMAIL_LAST_SEEN_HASH_SALT = os.getenv("EMAIL_LAST_SEEN_HASH_SALT")
