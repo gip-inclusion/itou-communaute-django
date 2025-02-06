@@ -2,12 +2,20 @@ import uuid
 from itertools import groupby
 from operator import attrgetter
 
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models import F
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from machina.models.abstract_models import DatedModel
 
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
+
+
+class EmailSentTrackQuerySet(models.QuerySet):
+    def delete_old_records(self):
+        nb, _ = self.filter(created__lt=timezone.now() - relativedelta(days=90)).delete()
+        return nb
 
 
 class EmailSentTrack(DatedModel):
@@ -17,6 +25,8 @@ class EmailSentTrack(DatedModel):
     kind = models.CharField(
         verbose_name="type", choices=EmailSentTrackKind.choices, max_length=20, null=False, blank=False
     )
+
+    objects = EmailSentTrackQuerySet().as_manager()
 
     class Meta:
         verbose_name = "trace des emails envoyés"
