@@ -621,6 +621,26 @@ class PostUpdateViewTest(TestCase):
         self.assertEqual(post.username, "john@doe.com")
 
 
+class TestPostUpdateView:
+    def test_form_used(self, db, client):
+        post = TopicFactory(forum=ForumFactory(with_public_perms=True), with_post=True).posts.first()
+        client.force_login(post.poster)
+        response = client.get(
+            reverse(
+                "forum_conversation:post_update",
+                kwargs={
+                    "forum_slug": post.topic.forum.slug,
+                    "forum_pk": post.topic.forum.pk,
+                    "topic_slug": post.topic.slug,
+                    "topic_pk": post.topic.pk,
+                    "pk": post.pk,
+                },
+            )
+        )
+        assert response.status_code == 200
+        assert isinstance(response.context_data["post_form"], PostForm)
+
+
 class PostDeleteViewTest(TestCase):
     def test_redirection(self):
         topic = TopicFactory(with_post=True)
