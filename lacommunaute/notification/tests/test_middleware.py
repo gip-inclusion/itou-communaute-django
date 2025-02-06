@@ -2,6 +2,7 @@ import pytest
 
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import Notification
+from lacommunaute.users.models import EmailLastSeen
 
 
 @pytest.mark.parametrize(
@@ -24,6 +25,9 @@ def test_notif_param(client, db, notif_param, expected_visited_at):
         notification = Notification.objects.get(uuid=notif_param)
         notification.refresh_from_db()
         assert notification.visited_at is not None
+
+        email_last_seen = EmailLastSeen.objects.get()
+        assert email_last_seen.email == notification.recipient
 
     misc_notification.refresh_from_db()
     assert misc_notification.visited_at is None
