@@ -7,6 +7,8 @@ from lacommunaute.forum_conversation.models import Post
 from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_moderation.utils import check_post_approbation
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
 
 
 class CreateUpdatePostMixin:
@@ -34,6 +36,12 @@ class CreateUpdatePostMixin:
             post.updated_by = self.user
 
         post.updates_count = F("updates_count") + 1
+
+    def save(self):
+        post = super().save()
+        email = post.username if self.user.is_anonymous else self.user.email
+        EmailLastSeen.objects.seen(email=email, kind=EmailLastSeenKind.POST)
+        return post
 
 
 class PostForm(CreateUpdatePostMixin, AbstractPostForm):
