@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.utils.deprecation import MiddlewareMixin
 
 from lacommunaute.notification.models import Notification
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen
 
 
 class NotificationMiddleware(MiddlewareMixin):
@@ -18,4 +20,6 @@ class NotificationMiddleware(MiddlewareMixin):
         except ValueError:
             pass
         else:
-            Notification.objects.filter(uuid=notif_uuid).update(visited_at=timezone.now())
+            notifs = Notification.objects.filter(uuid=notif_uuid)
+            notifs.update(visited_at=timezone.now())
+            [EmailLastSeen.objects.seen(email=notif.recipient, kind=EmailLastSeenKind.VISITED) for notif in notifs]
