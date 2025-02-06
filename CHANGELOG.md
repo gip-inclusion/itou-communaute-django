@@ -1,5 +1,19 @@
 # Journal des modifications
 
+## [2.21.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.20.0...v2.21.0) (2025-02-06)
+
+
+### Features
+
+* creation de la table de suivi RGPD ([#892](https://github.com/gip-inclusion/itou-communaute-django/issues/892)) ([dfc378a](https://github.com/gip-inclusion/itou-communaute-django/commit/dfc378aabedc284b79e4167004cb0edef37afdfa))
+* **notification:** enregistrer les retours sur les notifs mails ([#891](https://github.com/gip-inclusion/itou-communaute-django/issues/891)) ([ec67205](https://github.com/gip-inclusion/itou-communaute-django/commit/ec672052e0aec008ca3edee65942aaf3d62d2555))
+* **search:** ajout de liens de recherche vers le site des emplois ([#879](https://github.com/gip-inclusion/itou-communaute-django/issues/879)) ([c6ac2a3](https://github.com/gip-inclusion/itou-communaute-django/commit/c6ac2a370288d9f19a04ae809167c84ea9c162e5))
+
+
+### Bug Fixes
+
+* televersement des fichiers en erreur ([#899](https://github.com/gip-inclusion/itou-communaute-django/issues/899)) ([d9951e1](https://github.com/gip-inclusion/itou-communaute-django/commit/d9951e1d1b0b3abb432607c593c95447bf03fa4c))
+
 ## [2.20.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.19.0...v2.20.0) (2025-01-13)
 
 
