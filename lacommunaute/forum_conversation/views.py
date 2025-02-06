@@ -62,7 +62,7 @@ class PostCreateView(views.PostCreateView):
 
 
 class PostUpdateView(FormValidMixin, views.PostUpdateView):
-    pass
+    post_form_class = PostForm
 
 
 class PostDeleteView(views.PostDeleteView):

@@ -15,7 +15,9 @@ from lacommunaute.forum_conversation.factories import (
 )
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 
 
 faker = Faker(settings.LANGUAGE_CODE)
@@ -86,6 +88,10 @@ def get_post_update_url(post):
     )
 
 
+def check_email_last_seen(email):
+    assert EmailLastSeen.objects.filter(email=email, last_seen_kind=EmailLastSeenKind.POST).exists()
+
+
 superuser_hidden_fields = {
     "poll-TOTAL_FORMS": 2,
     "poll-INITIAL_FORMS": 0,
@@ -111,6 +117,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 0
         assert topic.first_post.updated_by is None
 
+        check_email_last_seen(username)
+
     def test_update_anonymous_topic_as_self(self, db, client, public_forum):
         topic = AnonymousTopicFactory(forum=public_forum, with_post=True)
         username = topic.first_post.username
@@ -127,6 +135,9 @@ class TestTopicForm:
         assert topic.first_post.poster is None
         assert topic.first_post.updates_count == 0  # surprisingly, this is not incremented
         assert topic.first_post.updated_by is None  # updated_by is a FK on User
+
+        # vincentporte TODO: assert UpdateTopicView override has to be fix up
+        # check_email_last_seen(username)
 
     def test_update_anonymous_topic_as_superuser(self, db, client, public_forum):
         topic = AnonymousTopicFactory(forum=public_forum, with_post=True)
@@ -149,6 +160,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == superuser
 
+        check_email_last_seen(superuser.email)
+
     def test_create_topic_as_authenticated(self, db, client, public_forum):
         user = UserFactory()
         client.force_login(user)
@@ -165,6 +178,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 0
         assert topic.first_post.updated_by is None
 
+        check_email_last_seen(user.email)
+
     def test_update_authenticated_topic_as_self(self, db, client, public_forum):
         topic = TopicFactory(forum=public_forum, with_post=True)
         user = topic.poster
@@ -180,6 +195,8 @@ class TestTopicForm:
         assert topic.first_post.poster == user
         assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == user
+
+        check_email_last_seen(user.email)
 
     def test_update_authenticated_topic_as_superuser(self, db, client, public_forum):
         topic = TopicFactory(forum=public_forum, with_post=True)
@@ -201,6 +218,8 @@ class TestTopicForm:
         assert topic.first_post.poster == user
         assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == superuser
+
+        check_email_last_seen(superuser.email)
 
     def test_init_tags_when_creating_topic(self, db, client, public_forum):
         response = client.get(get_create_topic_url(public_forum))
@@ -240,6 +259,8 @@ class TestPostForm:
         assert post.updates_count == 0
         assert post.updated_by is None
 
+        check_email_last_seen(username)
+
     def test_update_anonymous_reply_as_self(self, db, client, public_forum):
         post = AnonymousPostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
         username = post.username
@@ -256,6 +277,9 @@ class TestPostForm:
         assert post.updates_count == 0  # surprisingly, this is not incremented
         assert post.updated_by is None
 
+        # vincentporte TODO: assert UpdatePostView override has to be fix up
+        # check_email_last_seen(username)
+
     def test_update_anonymous_reply_as_superuser(self, db, client, public_forum):
         post = AnonymousPostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
         username = post.username
@@ -271,6 +295,8 @@ class TestPostForm:
         assert post.poster is None
         assert post.updates_count == 1
         assert post.updated_by == superuser
+
+        check_email_last_seen(superuser.email)
 
     def test_reply_as_authenticated(self, db, client, public_forum):
         topic = TopicFactory(forum=public_forum, with_post=True)
@@ -289,6 +315,8 @@ class TestPostForm:
         assert post.updates_count == 0
         assert post.updated_by is None
 
+        check_email_last_seen(user.email)
+
     def test_update_authenticated_reply_as_self(self, db, client, public_forum):
         post = PostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
         user = post.poster
@@ -303,6 +331,8 @@ class TestPostForm:
         assert post.poster == user
         assert post.updates_count == 1
         assert post.updated_by == user
+
+        check_email_last_seen(user.email)
 
     def test_update_authenticated_reply_as_superuser(self, db, client, public_forum):
         post = PostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
@@ -319,3 +349,5 @@ class TestPostForm:
         assert post.poster == user
         assert post.updates_count == 1
         assert post.updated_by == superuser
+
+        check_email_last_seen(superuser.email)
