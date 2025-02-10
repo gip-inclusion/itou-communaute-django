@@ -9,14 +9,17 @@ from faker import Faker
 from lacommunaute.forum_conversation.factories import AnonymousPostFactory, TopicFactory
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.models import EmailSentTrack, Notification
+from lacommunaute.utils.factory_boy import AutoNowAddOverrideMixin
 
 
 faker = Faker()
 
 
-class EmailSentTrackFactory(factory.django.DjangoModelFactory):
-    status_code = faker.pyint()
-    response = faker.text()
+class EmailSentTrackFactory(AutoNowAddOverrideMixin, factory.django.DjangoModelFactory):
+    created = factory.LazyFunction(timezone.now)
+    updated = factory.LazyFunction(timezone.now)
+    status_code = factory.Faker("random_int", min=200, max=500)
+    response = factory.Faker("text")
     datas = {"text": faker.text()}
     kind = EmailSentTrackKind.FIRST_REPLY
 
