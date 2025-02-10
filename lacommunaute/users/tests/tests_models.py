@@ -68,3 +68,14 @@ class TestEmailLastSeenQueryset:
         email_last_seen = EmailLastSeen.objects.get()
         assert email_last_seen.last_seen_kind == kind
         assert email_last_seen.last_seen_at is not None
+
+    @pytest.mark.parametrize("email_last_seen", [None, lambda: EmailLastSeenFactory()])
+    def test_numqueries(self, db, django_assert_num_queries, email_last_seen):
+        if email_last_seen:
+            email_last_seen = email_last_seen()
+
+        email = email_last_seen.email if email_last_seen else EMAIL
+        kind = email_last_seen.last_seen_kind if email_last_seen else EmailLastSeenKind.POST
+
+        with django_assert_num_queries(1):
+            EmailLastSeen.objects.seen(email=email, kind=kind)

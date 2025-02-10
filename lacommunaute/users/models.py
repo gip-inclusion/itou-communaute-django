@@ -35,7 +35,12 @@ class EmailLastSeenQuerySet(models.QuerySet):
         if kind not in [kind for kind, _ in EmailLastSeenKind.choices]:
             raise ValueError(f"Invalid kind: {kind}")
 
-        return self.update_or_create(email=email, defaults={"last_seen_at": timezone.now(), "last_seen_kind": kind})
+        return EmailLastSeen.objects.bulk_create(
+            [EmailLastSeen(email=email, last_seen_at=timezone.now(), last_seen_kind=kind)],
+            update_fields=["last_seen_at", "last_seen_kind"],
+            update_conflicts=True,
+            unique_fields=["email"],
+        )
 
 
 class EmailLastSeen(models.Model):
