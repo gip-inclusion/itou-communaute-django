@@ -378,24 +378,6 @@ class ForumViewTest(TestCase):
             with self.subTest(topic):
                 self.assertNotContains(response, topic.subject)
 
-    def test_queryset_for_certified_topics(self):
-        response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context_data["paginator"].count, 0)
-        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
-
-        certified_topic = TopicFactory(with_post=True, with_certified_post=True, forum=self.forum)
-
-        response = self.client.get(self.url + f"?filter={Filters.CERTIFIED.value}")
-        self.assertEqual(response.context_data["paginator"].count, 1)
-        self.assertContains(response, certified_topic.subject, status_code=200)
-        self.assertContains(response, certified_topic.certified_post.post.content.raw[:100])
-        self.assertEqual(response.context_data["active_filter"], Filters.CERTIFIED)
-
-        for topic in Topic.objects.exclude(id=certified_topic.id):
-            with self.subTest(topic):
-                self.assertNotContains(response, topic.subject)
-
     def test_banner_display_on_subcategory_forum(self):
         category_forum = CategoryForumFactory(with_child=True, with_public_perms=True)
         forum = category_forum.get_children().first()

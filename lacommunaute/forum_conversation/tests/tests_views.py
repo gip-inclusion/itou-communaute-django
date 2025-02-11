@@ -852,11 +852,6 @@ class TestTopicListView:
                 lambda forum: TopicFactory(forum=forum, with_post=True),
                 lambda forum: TopicFactory(forum=forum, with_post=True, answered=True),
             ),
-            (
-                "CERTIFIED",
-                lambda forum: TopicFactory(with_post=True, with_certified_post=True, forum=forum),
-                lambda forum: TopicFactory(forum=forum, with_post=True),
-            ),
         ],
     )
     def test_queryset_on_filter(
@@ -870,8 +865,6 @@ class TestTopicListView:
         assert expected_topic in response.context["topics"]
         if unexpected_topic:
             assert unexpected_topic not in response.context["topics"]
-        if filter == "CERTIFIED":
-            assert expected_topic.certified_post.post.content.raw[:100] in response.content.decode()
         content = parse_response_to_soup(response, selector="#topic-list-filter-header")
         assert str(content) == snapshot(name=f"{filter}-tagged_topics")
 

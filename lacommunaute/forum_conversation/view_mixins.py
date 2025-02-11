@@ -13,8 +13,6 @@ class FilteredTopicsListViewMixin:
 
         if filter == Filters.NEW:
             qs = qs.unanswered()
-        elif filter == Filters.CERTIFIED:
-            qs = qs.filter(certified_post__isnull=False)
 
         if self.get_tag():
             qs = qs.filter(tags=self.get_tag())
