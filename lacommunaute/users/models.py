@@ -36,8 +36,8 @@ class EmailLastSeenQuerySet(models.QuerySet):
             raise ValueError(f"Invalid kind: {kind}")
 
         return EmailLastSeen.objects.bulk_create(
-            [EmailLastSeen(email=email, last_seen_at=timezone.now(), last_seen_kind=kind)],
-            update_fields=["last_seen_at", "last_seen_kind"],
+            [EmailLastSeen(email=email, last_seen_at=timezone.now(), last_seen_kind=kind, missyou_send_at=None)],
+            update_fields=["last_seen_at", "last_seen_kind", "missyou_send_at"],
             update_conflicts=True,
             unique_fields=["email"],
         )
