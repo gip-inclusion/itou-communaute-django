@@ -27,7 +27,9 @@ from lacommunaute.forum_conversation.views import PostDeleteView, TopicCreateVie
 from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, BlockedEmailFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import NotificationFactory
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 from lacommunaute.utils.testing import parse_response_to_soup
 
 
@@ -37,6 +39,12 @@ PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
+
+
+def check_email_last_seen(email):
+    return EmailLastSeen.objects.filter(
+        email=email, last_seen_kind__in=[EmailLastSeenKind.POST, EmailLastSeenKind.LOGGED]
+    ).exists()
 
 
 class TopicCreateViewTest(TestCase):
@@ -116,6 +124,8 @@ class TopicCreateViewTest(TestCase):
         self.assertTrue(topic.approved)
         self.assertTrue(topic.first_post.approved)
 
+        self.assertTrue(check_email_last_seen(self.post_data["username"]))
+
     def test_topic_create_as_unapproved_anonymous_user(self, *args):
         self.post_data["username"] = faker.email()
         BlockedEmailFactory(email=self.post_data["username"])
@@ -132,6 +142,8 @@ class TopicCreateViewTest(TestCase):
             status_code=200,
         )
         self.assertEqual(Topic.objects.count(), 0)
+
+        self.assertFalse(check_email_last_seen(self.post_data["username"]))
 
     def test_topic_create_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
@@ -183,6 +195,8 @@ class TopicCreateViewTest(TestCase):
         )
         self.assertEqual(Topic.objects.count(), 0)
 
+        self.assertFalse(check_email_last_seen(self.post_data["username"]))
+
     def test_topic_create_as_authenticated_user(self, *args):
         self.client.force_login(self.poster)
 
@@ -195,6 +209,8 @@ class TopicCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Topic.objects.first().approved)
         self.assertTrue(Topic.objects.first().posts.first().approved)
+
+        self.assertTrue(check_email_last_seen(self.poster.email))
 
     def test_tags_checkbox_are_displayed(self, *args):
         Tag.objects.bulk_create([Tag(name=f"tag_x{i}", slug=f"tag_x{i}") for i in range(2)])
@@ -329,6 +345,7 @@ class TopicUpdateViewTest(TestCase):
 
     def test_update_by_anonymous_user(self):
         topic = AnonymousTopicFactory(with_post=True, forum=self.forum)
+        EmailLastSeen.objects.all().delete()
         session = self.client.session
         session["_anonymous_forum_key"] = topic.first_post.anonymous_key
         session.save()
@@ -358,6 +375,9 @@ class TopicUpdateViewTest(TestCase):
                 },
             ),
         )
+
+        self.assertFalse(check_email_last_seen("foo@email.com"))
+        self.assertFalse(check_email_last_seen(topic.first_post.username))
 
     def test_topic_update_with_nonfr_content(self, *args):
         self.client.force_login(self.poster)
