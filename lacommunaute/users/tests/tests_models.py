@@ -4,6 +4,7 @@ import re
 import pytest
 from django.conf import settings
 from django.db import IntegrityError
+from django.utils import timezone
 
 from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import EmailLastSeenFactory
@@ -56,6 +57,7 @@ class TestEmailLastSeenQueryset:
         email_last_seen.refresh_from_db()
         assert email_last_seen.last_seen_kind == kind
         assert email_last_seen.last_seen_at is not None
+        assert email_last_seen.missyou_send_at is None
 
     def test_seen_invalid_kind(self, db, email_last_seen):
         with pytest.raises(ValueError):
@@ -79,3 +81,10 @@ class TestEmailLastSeenQueryset:
 
         with django_assert_num_queries(1):
             EmailLastSeen.objects.seen(email=email, kind=kind)
+
+    def test_missyou_send_at_is_reset(self, db):
+        email_last_seen = EmailLastSeenFactory(missyou_send_at=timezone.now())
+        EmailLastSeen.objects.seen(email_last_seen.email, EmailLastSeenKind.POST)
+
+        email_last_seen.refresh_from_db()
+        assert email_last_seen.missyou_send_at is None
