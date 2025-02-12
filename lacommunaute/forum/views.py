@@ -125,7 +125,7 @@ class ForumUpdateView(UserPassesTestMixin, UpdateView):
     model = Forum
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -147,7 +147,7 @@ class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
     form_class = ForumForm
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.is_staff
 
     def form_valid(self, form):
         response = super().form_valid(form)

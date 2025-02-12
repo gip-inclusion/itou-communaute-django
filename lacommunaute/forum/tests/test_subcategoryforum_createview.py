@@ -24,16 +24,11 @@ def test_user_access(client, db):
     user.is_staff = True
     user.save()
     response = client.get(url)
-    assert response.status_code == 403
-
-    user.is_superuser = True
-    user.save()
-    response = client.get(url)
     assert response.status_code == 200
 
 
 def test_form_title_and_context_datas(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     category_forum = CategoryForumFactory()
     url = reverse("forum_extension:create_subcategory", kwargs={"pk": category_forum.pk})
     response = client.get(url)
@@ -44,7 +39,7 @@ def test_form_title_and_context_datas(client, db):
 
 
 def test_success_url(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     category_forum = CategoryForumFactory()
     url = reverse("forum_extension:create_subcategory", kwargs={"pk": category_forum.pk})
     response = client.post(url, data={"name": "Test", "description": "Test", "short_description": "Test"})
@@ -55,7 +50,7 @@ def test_success_url(client, db):
 
 
 def test_create_subcategory_with_perms(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     category_forum = CategoryForumFactory()
     url = reverse("forum_extension:create_subcategory", kwargs={"pk": category_forum.pk})
     response = client.post(url, data={"name": "Test", "description": "Test", "short_description": "Test"})

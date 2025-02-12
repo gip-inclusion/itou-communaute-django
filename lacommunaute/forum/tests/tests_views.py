@@ -282,7 +282,7 @@ class ForumViewTest(TestCase):
             response, reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
         )
 
-    def test_show_add_forum_button_for_superuser_if_forum_is_category_type(self):
+    def test_show_add_forum_button_for_staff_if_forum_is_category_type(self):
         forum = CategoryForumFactory(with_public_perms=True, with_child=True)
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
@@ -293,7 +293,7 @@ class ForumViewTest(TestCase):
             response, reverse("forum_extension:create_subcategory", kwargs={"pk": forum.pk}), status_code=200
         )
 
-        user.is_superuser = True
+        user.is_staff = True
         user.save()
         response = self.client.get(url)
         self.assertContains(
@@ -340,11 +340,7 @@ class ForumViewTest(TestCase):
         self.assertNotContains(response, url)
 
         self.user.is_staff = True
-        self.user.save()
-        response = self.client.get(self.url)
-        self.assertNotContains(response, url)
 
-        self.user.is_superuser = True
         self.user.save()
         response = self.client.get(self.url)
         self.assertContains(response, url)
@@ -623,7 +619,7 @@ class TestDocumentationCategoryForumContent:
         # require superuser permission
         assert len(content.select("#add-documentation-to-category-control")) == 0
 
-        client.force_login(UserFactory(is_superuser=True))
+        client.force_login(UserFactory(is_staff=True))
         response = client.get(documentation_forum.parent.get_absolute_url())
         content = parse_response_to_soup(response)
 

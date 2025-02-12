@@ -22,16 +22,11 @@ def test_user_access(client, db):
     user.is_staff = True
     user.save()
     response = client.get(url)
-    assert response.status_code == 403
-
-    user.is_superuser = True
-    user.save()
-    response = client.get(url)
     assert response.status_code == 200
 
 
 def test_form_title_and_context_data(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     url = reverse("forum_extension:create_category")
     response = client.get(url)
     assertContains(response, "Créer une nouvelle catégorie documentaire")
@@ -39,7 +34,7 @@ def test_form_title_and_context_data(client, db):
 
 
 def test_success_url(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     url = reverse("forum_extension:create_category")
     response = client.post(url, data={"name": "Test", "description": "Test", "short_description": "Test"})
     assert response.status_code == 302
@@ -47,7 +42,7 @@ def test_success_url(client, db):
 
 
 def test_create_category_with_perms(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     url = reverse("forum_extension:create_category")
     response = client.post(url, data={"name": "Test", "description": "Test", "short_description": "Test"})
     assert response.status_code == 302
