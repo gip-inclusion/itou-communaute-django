@@ -19,7 +19,7 @@ class LandingPagesListView(UserPassesTestMixin, TemplateView):
     template_name = "pages/landing_pages.html"
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.is_staff
 
 
 class HomeView(TemplateView):
