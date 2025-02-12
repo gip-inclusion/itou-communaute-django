@@ -35,14 +35,15 @@ def mock_respx_post_to_sib_smtp_url_fixture():
         yield
 
 
-class TestSendMessagesNotifications:
-    def check_generic_payload(self, email, payload):
-        return (
-            payload["to"] == [{"email": email}]
-            and payload["sender"] == {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL}
-            and payload["templateId"] == settings.SIB_NEW_MESSAGES_TEMPLATE
-        )
+def check_generic_payload(email, templateId, payload):
+    return (
+        payload["to"] == [{"email": email}]
+        and payload["sender"] == {"name": "La Communauté", "email": settings.DEFAULT_FROM_EMAIL}
+        and payload["templateId"] == templateId
+    )
 
+
+class TestSendMessagesNotifications:
     def test_grouped_asap_notifications(self, db, mock_respx_post_to_sib_smtp_url):
         user = UserFactory()
         notifications = [
@@ -54,7 +55,7 @@ class TestSendMessagesNotifications:
         send_messages_notifications(NotificationDelay.ASAP)
         email_sent_track = EmailSentTrack.objects.get()
 
-        assert self.check_generic_payload(user.email, email_sent_track.datas)
+        assert check_generic_payload(user.email, settings.SIB_NEW_MESSAGES_TEMPLATE, email_sent_track.datas)
 
         for attr, expected in [
             ("messages", get_serialized_messages(notifications)),
@@ -73,7 +74,7 @@ class TestSendMessagesNotifications:
         send_messages_notifications(NotificationDelay.DAY)
         email_sent_track = EmailSentTrack.objects.get()
 
-        assert self.check_generic_payload(user.email, email_sent_track.datas)
+        assert check_generic_payload(user.email, settings.SIB_NEW_MESSAGES_TEMPLATE, email_sent_track.datas)
 
         for attr, expected in [
             ("messages", get_serialized_messages(notifications)),
