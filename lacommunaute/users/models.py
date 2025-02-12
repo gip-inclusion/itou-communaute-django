@@ -50,6 +50,7 @@ class EmailLastSeen(models.Model):
     last_seen_kind = models.CharField(
         max_length=12, verbose_name="last seen kind", choices=EmailLastSeenKind.choices, null=False
     )
+    missyou_send_at = models.DateTimeField(verbose_name="miss you sent at", null=True, blank=True)
     deleted_at = models.DateTimeField(verbose_name="deleted at", null=True, blank=True)
 
     objects = EmailLastSeenQuerySet.as_manager()
