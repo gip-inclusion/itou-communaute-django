@@ -13,12 +13,13 @@ from lacommunaute.forum_conversation.factories import (
 )
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.notification.emails import SIB_CONTACTS_URL, SIB_SMTP_URL
-from lacommunaute.notification.enums import NotificationDelay
+from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
 from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.notification.tasks import (
     add_user_to_list_when_register,
     send_messages_notifications,
+    send_missyou_notifications,
     send_notifs_on_unanswered_topics,
 )
 from lacommunaute.notification.utils import get_serialized_messages
@@ -105,6 +106,38 @@ class TestSendMessagesNotifications:
 
         with django_assert_num_queries(3):
             send_messages_notifications(NotificationDelay.DAY)
+
+
+class TestSendMissyouNotifications:
+    def test_send_missyou_notifications(self, db, mock_respx_post_to_sib_smtp_url):
+        user = UserFactory()
+        notification = NotificationFactory(
+            recipient=user.email,
+            delay=NotificationDelay.ASAP,
+            kind=EmailSentTrackKind.MISSYOU,
+        )
+
+        send_missyou_notifications(NotificationDelay.ASAP)
+        email_sent_track = EmailSentTrack.objects.get()
+
+        assert check_generic_payload(user.email, settings.SIB_MISSYOU_TEMPLATE, email_sent_track.datas)
+        assert (
+            email_sent_track.datas["params"]["url"]
+            == f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{reverse('pages:home')}?notif={notification.uuid}"
+        )
+        assert email_sent_track.datas["params"]["email_thumbnail"] == (
+            "Nous espérons que vous allez bien ! Ca fait longtemps "
+            "qu’on ne vous a pas vu dans la communauté de l’inclusion"
+        )
+
+    @pytest.mark.parametrize("delay", [NotificationDelay.DAY, NotificationDelay.ASAP])
+    def test_missyou_notifications_ignores_messages_notifications(self, db, delay, mock_respx_post_to_sib_smtp_url):
+        user = UserFactory()
+        (NotificationFactory(recipient=user.email, delay=delay, set_post=True),)
+        (NotificationFactory(recipient=user.email, delay=delay, set_anonymous_post=True),)
+
+        send_missyou_notifications(delay)
+        assert EmailSentTrack.objects.count() == 0
 
 
 class AddUserToListWhenRegister(TestCase):
