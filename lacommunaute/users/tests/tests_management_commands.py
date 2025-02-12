@@ -31,44 +31,44 @@ from lacommunaute.users.models import EmailLastSeen
 def test_collect_users_logged_in(db):
     logged_user = UserFactory(last_login=timezone.make_aware(datetime(2024, 10, 22)))
     UserFactory(last_login=None)
-    assert collect_users_logged_in() == [(logged_user.email, logged_user.last_login, EmailLastSeenKind.LOGGED)]
+    assert collect_users_logged_in() == ((logged_user.email, logged_user.last_login, EmailLastSeenKind.LOGGED),)
 
 
 def test_collect_event(db):
     event = EventFactory()
-    assert collect_event() == [(event.poster.email, event.created, EmailLastSeenKind.LOGGED)]
+    assert collect_event() == ((event.poster.email, event.created, EmailLastSeenKind.LOGGED),)
 
 
 def test_collect_DSP(db):
     dsp = DSPFactory()
-    assert collect_DSP() == [(dsp.user.email, dsp.created, EmailLastSeenKind.LOGGED)]
+    assert collect_DSP() == ((dsp.user.email, dsp.created, EmailLastSeenKind.LOGGED),)
 
 
 def test_upvote(db):
     upvote = UpVoteFactory(content_object=ForumFactory(), voter=UserFactory())
-    assert collect_upvote() == [(upvote.voter.email, upvote.created_at, EmailLastSeenKind.LOGGED)]
+    assert collect_upvote() == ((upvote.voter.email, upvote.created_at, EmailLastSeenKind.LOGGED),)
 
 
 def test_forum_rating(db):
     ForumRatingFactory(user=None)
     forum_rating = ForumRatingFactory(user=UserFactory())
-    assert collect_forum_rating() == [(forum_rating.user.email, forum_rating.created, EmailLastSeenKind.LOGGED)]
+    assert collect_forum_rating() == ((forum_rating.user.email, forum_rating.created, EmailLastSeenKind.LOGGED),)
 
 
 def test_collect_post(db):
     topic = TopicFactory(with_post=True)
     anonymous_topic = AnonymousTopicFactory(with_post=True)
 
-    assert collect_post() == [
+    assert collect_post() == (
         (topic.first_post.poster.email, topic.first_post.created, EmailLastSeenKind.POST),
         (anonymous_topic.first_post.username, anonymous_topic.first_post.created, EmailLastSeenKind.POST),
-    ]
+    )
 
 
 def test_collect_clicked_notifs(db):
     notification = NotificationFactory(visited_at=timezone.now())
 
-    assert collect_clicked_notifs() == [(notification.recipient, notification.visited_at, EmailLastSeenKind.VISITED)]
+    assert collect_clicked_notifs() == ((notification.recipient, notification.visited_at, EmailLastSeenKind.VISITED),)
 
 
 def test_collect_existing_email_last_seen(db):

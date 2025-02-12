@@ -22,7 +22,7 @@ def collect_users_logged_in():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.LOGGED))
         .values_list("email", "last_login", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_event():
@@ -31,7 +31,7 @@ def collect_event():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.LOGGED))
         .values_list("poster__email", "created", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_DSP():
@@ -40,7 +40,7 @@ def collect_DSP():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.LOGGED))
         .values_list("user__email", "created", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_upvote():
@@ -49,7 +49,7 @@ def collect_upvote():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.LOGGED))
         .values_list("voter__email", "created_at", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_forum_rating():
@@ -58,7 +58,7 @@ def collect_forum_rating():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.LOGGED))
         .values_list("user__email", "created", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_post():
@@ -70,7 +70,7 @@ def collect_post():
         ),
         kind=Value(EmailLastSeenKind.POST),
     ).values_list("email", "created", "kind")
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_clicked_notifs():
@@ -79,12 +79,12 @@ def collect_clicked_notifs():
         .annotate(last_seen_kind=Value(EmailLastSeenKind.VISITED))
         .values_list("recipient", "visited_at", "last_seen_kind")
     )
-    return list(qs)
+    return tuple(qs)
 
 
 def collect_existing_email_last_seen(emails):
     qs = EmailLastSeen.objects.filter(email__in=emails).values_list("email", "last_seen_at", "last_seen_kind")
-    return list(qs)
+    return tuple(qs)
 
 
 def keep_most_recent_tuple(last_seen):
