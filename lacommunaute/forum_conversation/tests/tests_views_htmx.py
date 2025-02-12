@@ -1,3 +1,4 @@
+import pytest
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
@@ -6,6 +7,7 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
+from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
@@ -15,7 +17,9 @@ from lacommunaute.forum_moderation.factories import BlockedDomainNameFactory, Bl
 from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.factories import NotificationFactory
+from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.models import EmailLastSeen
 
 
 faker = Faker(settings.LANGUAGE_CODE)
@@ -422,6 +426,33 @@ class PostFeedCreateViewTest(TestCase):
         assert blocked_post.content == "la communauté"
         assert blocked_post.username == "spam@blocked.com"
         assert blocked_post.block_reason == BlockedPostReason.BLOCKED_DOMAIN
+
+
+class TestPostFeedCreateView:
+    @pytest.mark.parametrize("logged", [True, False])
+    def test_email_last_seen_is_updated(self, client, db, logged):
+        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+        url = reverse(
+            "forum_conversation_extension:post_create",
+            kwargs={
+                "forum_pk": topic.forum.pk,
+                "forum_slug": topic.forum.slug,
+                "pk": topic.pk,
+                "slug": topic.slug,
+            },
+        )
+        data = {"content": faker.paragraph(nb_sentences=5)}
+
+        if logged:
+            client.force_login(topic.poster)
+        else:
+            data["username"] = "bobby@lapointe.fr"
+
+        response = client.post(url, data=data)
+        assert response.status_code == 200
+
+        email = topic.poster.email if logged else data["username"]
+        assert EmailLastSeen.objects.filter(email=email, last_seen_kind=EmailLastSeenKind.POST).exists()
 
 
 # vincentporte : not to futur self, rewrite it in pytest style

@@ -12,7 +12,8 @@ from taggit.managers import TaggableManager
 from lacommunaute.forum_conversation.signals import post_create
 from lacommunaute.forum_member.shortcuts import get_forum_member_display_name
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.users.models import User
+from lacommunaute.users.enums import EmailLastSeenKind
+from lacommunaute.users.models import EmailLastSeen, User
 
 
 class TopicQuerySet(models.QuerySet):
@@ -155,6 +156,9 @@ class Post(AbstractPost):
         super().save(*args, **kwargs)
         if created:
             post_create.send(sender=self.__class__, instance=self)
+            EmailLastSeen.objects.seen(
+                email=self.poster.email if self.poster else self.username, kind=EmailLastSeenKind.POST
+            )
 
 
 class CertifiedPost(DatedModel):

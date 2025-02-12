@@ -102,6 +102,7 @@ DJANGO_MIDDLEWARE = [
     "lacommunaute.utils.middleware.ParkingPageMiddleware",
     "lacommunaute.openid_connect.middleware.ProConnectLoginMiddleware",
     "lacommunaute.notification.middleware.NotificationMiddleware",
+    "lacommunaute.users.middleware.MarkAsSeenLoggedUserMiddleware",
 ]
 
 THIRD_PARTIES_MIDDLEWARE = [
