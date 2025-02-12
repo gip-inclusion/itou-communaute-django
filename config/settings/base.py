@@ -469,6 +469,7 @@ PERMISSIONS_POLICY = {
     "usb": [],
 }
 
-# Email Last Seen Hash
+# ARCHIVE OLD PERSONNAL DATAS
 # ---------------------------------------
 EMAIL_LAST_SEEN_HASH_SALT = os.getenv("EMAIL_LAST_SEEN_HASH_SALT")
+EMAIL_LAST_SEEN_MISSYOU_DELAY = 23  # months

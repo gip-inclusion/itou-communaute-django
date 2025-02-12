@@ -1,6 +1,7 @@
 import hashlib
 from uuid import uuid4
 
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
@@ -41,6 +42,12 @@ class EmailLastSeenQuerySet(models.QuerySet):
             update_conflicts=True,
             unique_fields=["email"],
         )
+
+    def eligible_to_missyou_message(self):
+        return self.filter(
+            last_seen_at__lte=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
+            missyou_send_at=None,
+        ).order_by("last_seen_at")
 
 
 class EmailLastSeen(models.Model):
