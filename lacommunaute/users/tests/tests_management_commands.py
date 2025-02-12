@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.core.management import call_command
 from django.utils import timezone
 
@@ -8,7 +9,9 @@ from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.factories import ForumFactory, ForumRatingFactory
 from lacommunaute.forum_conversation.factories import AnonymousTopicFactory, TopicFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
+from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
+from lacommunaute.notification.models import Notification
 from lacommunaute.surveys.factories import DSPFactory
 from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import EmailLastSeenFactory, UserFactory
@@ -147,3 +150,29 @@ class TestPopulateEmailLastSeen:
         assert EmailLastSeen.objects.filter(
             email=clicked_notification.recipient, last_seen_kind=EmailLastSeenKind.VISITED
         ).exists()
+
+
+class TestCreateMissyouNotifications:
+    def test_create_missyou_notifications_command(self, db):
+        expected = EmailLastSeenFactory(
+            last_seen_at=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY)
+        )
+        EmailLastSeenFactory(
+            last_seen_at=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
+            missyou_send_at=timezone.now(),
+        )
+        EmailLastSeenFactory(last_seen_at=timezone.now())
+
+        call_command("add_missyou_notifications")
+        notification = Notification.objects.get()
+        assert notification.recipient == expected.email
+        assert notification.kind == EmailSentTrackKind.MISSYOU
+        assert notification.delay == NotificationDelay.ASAP
+
+    def test_create_missyou_notification_command_batch_size(self, db):
+        EmailLastSeenFactory.create_batch(
+            settings.EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE + 1,
+            last_seen_at=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
+        )
+        call_command("add_missyou_notifications")
+        assert Notification.objects.count() == settings.EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE
