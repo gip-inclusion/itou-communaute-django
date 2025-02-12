@@ -42,6 +42,26 @@ def send_messages_notifications(delay: NotificationDelay):
     notifications.update(sent_at=timezone.now())
 
 
+def send_missyou_notifications(delay: NotificationDelay):
+    notifications = Notification.objects.filter(delay=delay, sent_at__isnull=True, kind=EmailSentTrackKind.MISSYOU)
+    for notification in notifications:
+        params = {
+            "email_thumbnail": (
+                "Nous espérons que vous allez bien ! Ca fait longtemps "
+                "qu’on ne vous a pas vu dans la communauté de l’inclusion"
+            ),
+            "url": f"{settings.COMMU_PROTOCOL}://{settings.COMMU_FQDN}{reverse('pages:home')}?notif={notification.uuid}",
+        }
+        send_email(
+            to=[{"email": notification.recipient}],
+            params=params,
+            kind=EmailSentTrackKind.MISSYOU,
+            template_id=settings.SIB_MISSYOU_TEMPLATE,
+        )
+
+    notifications.update(sent_at=timezone.now())
+
+
 def add_user_to_list_when_register():
     new_users = collect_new_users_for_onboarding()
     if new_users:
