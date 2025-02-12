@@ -3,7 +3,7 @@
     {% include "forum/partials/subcategory_forum_list.html" with forum=forum sub_forums=sub_forums tags_of_descendants=tags_of_descendants active_forum_tag_slug=active_forum_tag_slug only %}
 {% endblock subforum_list %}
 {% block forum_foot_content %}
-    {% if user.is_superuser %}
+    {% if user.is_staff %}
         <section class="s-section" id="add-documentation-to-category-control">
             <div class="s-section__container container">
                 <div class="s-section__row row">

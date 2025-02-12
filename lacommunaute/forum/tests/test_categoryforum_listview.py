@@ -38,7 +38,7 @@ def test_display_create_category_button(client, db):
     response = client.get(url)
     assertNotContains(response, reverse("forum_extension:create_category"), status_code=200)
 
-    user.is_superuser = True
+    user.is_staff = True
     user.save()
     response = client.get(url)
     assertContains(response, reverse("forum_extension:create_category"), status_code=200)

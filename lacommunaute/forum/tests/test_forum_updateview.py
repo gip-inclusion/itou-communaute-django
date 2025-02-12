@@ -48,16 +48,11 @@ def test_user_access(client, db):
     user.is_staff = True
     user.save()
     response = client.get(url)
-    assert response.status_code == 403
-
-    user.is_superuser = True
-    user.save()
-    response = client.get(url)
     assert response.status_code == 200
 
 
 def test_context_data(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = ForumFactory()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
     response = client.get(url)
@@ -66,7 +61,7 @@ def test_context_data(client, db):
 
 
 def test_update_forum_image(client, db, fake_image):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = CategoryForumFactory(with_child=True).get_children().first()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
@@ -89,7 +84,7 @@ def test_update_forum_image(client, db, fake_image):
 
 
 def test_certified_forum(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = CategoryForumFactory(with_child=True).get_children().first()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
@@ -109,7 +104,7 @@ def test_certified_forum(client, db):
 
 
 def test_selected_tags_are_preloaded(client, db, reset_tag_sequence, snapshot):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = ForumFactory(with_tags=["iae", "siae", "prescripteur"])
     Tag.objects.create(name="undesired_tag")
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
@@ -124,7 +119,7 @@ def test_selected_tags_are_preloaded(client, db, reset_tag_sequence, snapshot):
 
 
 def test_added_tags_are_saved(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = ForumFactory()
 
     Tag.objects.bulk_create([Tag(name=tag, slug=tag) for tag in [faker.word() for _ in range(3)]])
@@ -149,7 +144,7 @@ def test_added_tags_are_saved(client, db):
 
 
 def test_update_forum_without_tag(client, db):
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
     forum = ForumFactory()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
     response = client.post(
@@ -179,7 +174,7 @@ def test_select_partner(client, db, initial_partner, post_partner):
     initial_partner = initial_partner()
     post_partner = post_partner()
     forum = ForumFactory(partner=initial_partner)
-    client.force_login(UserFactory(is_superuser=True))
+    client.force_login(UserFactory(is_staff=True))
 
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
     response = client.post(
