@@ -30,8 +30,16 @@ admin.site.register(Group, GroupAdmin)
 
 @admin.register(EmailLastSeen)
 class EmailLastSeenAdmin(admin.ModelAdmin):
-    list_display = ("email", "last_seen_at", "last_seen_kind", "deleted_at")
+    list_display = ("email", "last_seen_at", "last_seen_kind", "missyou_send_at", "deleted_at")
     search_fields = ("email",)
-    list_filter = ("last_seen_kind", "deleted_at")
+    list_filter = ("last_seen_kind", "last_seen_at", "missyou_send_at", "deleted_at")
     date_hierarchy = "last_seen_at"
-    readonly_fields = ("email", "email_hash", "deleted_at")
+
+    def has_add_permission(self, *args, **kwargs):
+        return False
+
+    def has_change_permission(self, *args, **kwargs):
+        return False
+
+    def has_delete_permission(self, *args, **kwargs):
+        return False
