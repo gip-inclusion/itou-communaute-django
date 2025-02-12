@@ -34,7 +34,7 @@ class PartnerCreateUpdateMixin(UserPassesTestMixin):
     form_class = PartnerForm
 
     def test_func(self):
-        return self.request.user.is_superuser
+        return self.request.user.is_staff
 
     def get_success_url(self):
         return reverse("partner:detail", kwargs={"pk": self.object.pk, "slug": self.object.slug})
