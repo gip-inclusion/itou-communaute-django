@@ -1,3 +1,4 @@
+from itertools import batched
 from logging import getLogger
 
 from django.core.management.base import BaseCommand
@@ -107,14 +108,13 @@ def insert_last_seen(emails):
 
 def iterate_over_emails(collected_emails, size=1000):
     logger.info("will process %s emails", len(collected_emails))
-    while batch_emails := collected_emails[:size]:
+
+    proceeded = 0
+    for batch_emails in batched(collected_emails, size):
         existing_emails = collect_existing_email_last_seen([email for email, _, _ in batch_emails])
         most_recent = keep_most_recent_tuple(batch_emails + existing_emails)
         insert_last_seen(most_recent)
-
-        collected_emails = collected_emails[size:]
-
-        logger.info("remaining: %s", len(collected_emails))
+        logger.info("proceeded %s emails", proceeded := proceeded + len(batch_emails))
 
 
 class Command(BaseCommand):
