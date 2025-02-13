@@ -20,6 +20,12 @@ def fixture_email_last_seen(db):
     return EmailLastSeenFactory(email=EMAIL)
 
 
+def test_email_hash(db):
+    expected_hash = "a988454cba6b19df0360d1d00ebfc89b2b73dd760fb7aab95dcf2992bbf82a7e"
+    computed_hash = hashlib.sha256(f"{EMAIL}-{settings.EMAIL_LAST_SEEN_HASH_SALT}".encode("utf-8")).hexdigest()
+    assert expected_hash == computed_hash
+
+
 class TestUserModel:
     def test_create_user_without_username(self, db):
         user = User.objects.create_user(email=EMAIL)
@@ -35,19 +41,6 @@ class TestEmailLastSeenModel:
     def test_email_is_not_null(self, db):
         with pytest.raises(IntegrityError):
             EmailLastSeenFactory(email=None)
-
-    def test_email_hash(self, db):
-        expected_hash = "a988454cba6b19df0360d1d00ebfc89b2b73dd760fb7aab95dcf2992bbf82a7e"
-        computed_hash = hashlib.sha256(f"{EMAIL}-{settings.EMAIL_LAST_SEEN_HASH_SALT}".encode("utf-8")).hexdigest()
-        assert expected_hash == computed_hash
-
-    def test_soft_delete(self, db, email_last_seen):
-        expected_hash = hashlib.sha256(f"{EMAIL}-{settings.EMAIL_LAST_SEEN_HASH_SALT}".encode("utf-8")).hexdigest()
-        email_last_seen.soft_delete()
-        email_last_seen.refresh_from_db()
-        assert email_last_seen.deleted_at is not None
-        assert email_last_seen.email == f"email-anonymisé-{email_last_seen.pk}"
-        assert email_last_seen.email_hash == expected_hash
 
 
 class TestEmailLastSeenQueryset:
@@ -114,3 +107,15 @@ class TestEmailLastSeenQueryset:
         qs = EmailLastSeen.objects.eligible_to_missyou_message()
         assert qs.count() == 3
         assert list(qs) == list(qs.order_by("last_seen_at"))
+
+    def test_eligible_to_soft_deletion(self, db):
+        expected = EmailLastSeenFactory(soft_deletable=True)
+        # undesired
+        EmailLastSeenFactory(soft_deleted=True)
+        EmailLastSeenFactory(
+            missyou_send_at=timezone.now()
+            - relativedelta(days=settings.EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY - 1)
+        )
+
+        email_last_seen = EmailLastSeen.objects.eligible_to_soft_deletion().get()
+        assert email_last_seen == expected
