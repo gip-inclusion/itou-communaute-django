@@ -1,5 +1,28 @@
 # Journal des modifications
 
+## [2.21.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.20.0...v2.21.0) (2025-02-13)
+
+
+### Features
+
+* creation de la table de suivi RGPD ([#892](https://github.com/gip-inclusion/itou-communaute-django/issues/892)) ([dfc378a](https://github.com/gip-inclusion/itou-communaute-django/commit/dfc378aabedc284b79e4167004cb0edef37afdfa))
+* enregistrer le dernier evenement connu pour une adresse mail ([#894](https://github.com/gip-inclusion/itou-communaute-django/issues/894)) ([9aa316c](https://github.com/gip-inclusion/itou-communaute-django/commit/9aa316c456567066d575699900a8406607bb1a99))
+* extension des droits des utilisateurs de l'équipe - Documentation et Partenaires ([#914](https://github.com/gip-inclusion/itou-communaute-django/issues/914)) ([95bea05](https://github.com/gip-inclusion/itou-communaute-django/commit/95bea05477d311f9860c7f93f7c6acfc09c8688b))
+* extension des droits des utilisateurs de l'équipe ([#913](https://github.com/gip-inclusion/itou-communaute-django/issues/913)) ([d5add12](https://github.com/gip-inclusion/itou-communaute-django/commit/d5add12f5a254ca898c14aeedf92a989fcfbec56))
+* hydrater la table du dernier évènement connu pour un email à partir des évènements passés ([#896](https://github.com/gip-inclusion/itou-communaute-django/issues/896)) ([28c4cb2](https://github.com/gip-inclusion/itou-communaute-django/commit/28c4cb2f770a1c50ed842084b3ff41606a79aa95))
+* masquer le filtre sur les reponses certifiees ([a648647](https://github.com/gip-inclusion/itou-communaute-django/commit/a648647ec0e2e35709ac52fe3a405b12d5f12a51))
+* masquer le filtre sur les reponses certifiees ([#908](https://github.com/gip-inclusion/itou-communaute-django/issues/908)) ([84e9a42](https://github.com/gip-inclusion/itou-communaute-django/commit/84e9a424bcc5f7a167e898103ba3d28f9505c078))
+* **notification:** enregistrer les retours sur les notifs mails ([#891](https://github.com/gip-inclusion/itou-communaute-django/issues/891)) ([ec67205](https://github.com/gip-inclusion/itou-communaute-django/commit/ec672052e0aec008ca3edee65942aaf3d62d2555))
+* remplacer un nom de domaine expiré dans les données utilisateurs ([#907](https://github.com/gip-inclusion/itou-communaute-django/issues/907)) ([fb886e1](https://github.com/gip-inclusion/itou-communaute-django/commit/fb886e1465ce9c7b70131a38b9008c40f77d37b9))
+* **search:** ajout de liens de recherche vers le site des emplois ([#879](https://github.com/gip-inclusion/itou-communaute-django/issues/879)) ([c6ac2a3](https://github.com/gip-inclusion/itou-communaute-django/commit/c6ac2a370288d9f19a04ae809167c84ea9c162e5))
+* supprimer les traces d'envoi d'emails de plus de 90 jours ([#902](https://github.com/gip-inclusion/itou-communaute-django/issues/902)) ([8abf9ef](https://github.com/gip-inclusion/itou-communaute-django/commit/8abf9ef9e44755394c9a82a9d0c3a1e8f0c7434c))
+
+
+### Bug Fixes
+
+* suppression de type dans `EmailLastSeen` ([#905](https://github.com/gip-inclusion/itou-communaute-django/issues/905)) ([a21b502](https://github.com/gip-inclusion/itou-communaute-django/commit/a21b502169bb6e7222570f946cdb4c98b8d8102d))
+* televersement des fichiers en erreur ([#899](https://github.com/gip-inclusion/itou-communaute-django/issues/899)) ([d9951e1](https://github.com/gip-inclusion/itou-communaute-django/commit/d9951e1d1b0b3abb432607c593c95447bf03fa4c))
+
 ## [2.20.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.19.0...v2.20.0) (2025-01-13)
 
 
