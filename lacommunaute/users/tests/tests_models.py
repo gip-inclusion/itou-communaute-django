@@ -114,3 +114,15 @@ class TestEmailLastSeenQueryset:
         qs = EmailLastSeen.objects.eligible_to_missyou_message()
         assert qs.count() == 3
         assert list(qs) == list(qs.order_by("last_seen_at"))
+
+    def test_eligible_to_soft_deletion(self, db):
+        expected = EmailLastSeenFactory(soft_deletable=True)
+        # undesired
+        EmailLastSeenFactory(soft_deleted=True)
+        EmailLastSeenFactory(
+            missyou_send_at=timezone.now()
+            - relativedelta(days=settings.EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY - 1)
+        )
+
+        email_last_seen = EmailLastSeen.objects.eligible_to_soft_deletion().get()
+        assert email_last_seen == expected

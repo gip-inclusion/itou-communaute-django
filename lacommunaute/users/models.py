@@ -49,6 +49,13 @@ class EmailLastSeenQuerySet(models.QuerySet):
             missyou_send_at=None,
         ).order_by("last_seen_at")
 
+    def eligible_to_soft_deletion(self):
+        return self.filter(
+            missyou_send_at__lte=timezone.now()
+            - relativedelta(days=settings.EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY),
+            deleted_at=None,
+        )
+
 
 class EmailLastSeen(models.Model):
     email = models.EmailField(verbose_name="email", null=False, unique=True)
