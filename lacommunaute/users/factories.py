@@ -2,8 +2,10 @@ import random
 from datetime import UTC
 
 import factory
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 from lacommunaute.users.enums import EmailLastSeenKind, IdentityProvider
 from lacommunaute.users.models import EmailLastSeen, User
@@ -60,3 +62,7 @@ class EmailLastSeenFactory(factory.django.DjangoModelFactory):
             email_hash=factory.Faker("sha256"),
         )
         missyou_sent = factory.Trait(missyou_send_at=factory.Faker("date_time", tzinfo=UTC))
+        soft_deletable = factory.Trait(
+            missyou_send_at=timezone.now() - relativedelta(days=30),
+            deleted_at=None,
+        )
