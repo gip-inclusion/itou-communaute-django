@@ -1,4 +1,3 @@
-import hashlib
 from uuid import uuid4
 
 from dateutil.relativedelta import relativedelta
@@ -68,10 +67,3 @@ class EmailLastSeen(models.Model):
     deleted_at = models.DateTimeField(verbose_name="deleted at", null=True, blank=True)
 
     objects = EmailLastSeenQuerySet.as_manager()
-
-    def soft_delete(self):
-        self.deleted_at = timezone.now()
-        salted_email = f"{self.email}-{settings.EMAIL_LAST_SEEN_HASH_SALT}"
-        self.email_hash = hashlib.sha256(salted_email.encode("utf-8")).hexdigest()
-        self.email = f"email-anonymisé-{self.pk}"
-        self.save()
