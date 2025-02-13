@@ -350,6 +350,7 @@ SUPPORTED_IMAGE_FILE_TYPES = {"image/png": "png", "image/jpeg": "jpeg", "image/j
 SITE_ID = 1
 
 DSP_FORUM_RELATED_ID = 108
+STAFF_GROUP_ID = 48
 
 API_BAN_BASE_URL = "https://api-adresse.data.gouv.fr"
 

@@ -17,7 +17,11 @@ from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.utils.perms import add_public_perms_on_forum, forum_visibility_content_tree_from_forums
+from lacommunaute.utils.perms import (
+    add_public_perms_on_forum,
+    add_staff_perms_on_forum,
+    forum_visibility_content_tree_from_forums,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -152,6 +156,7 @@ class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         add_public_perms_on_forum(form.instance)
+        add_staff_perms_on_forum(form.instance)
         return response
 
 

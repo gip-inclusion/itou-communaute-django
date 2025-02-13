@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -24,7 +25,7 @@ from lacommunaute.forum_conversation.forum_attachments.factories import Attachme
 from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.enums import IdentityProvider
-from lacommunaute.users.factories import UserFactory
+from lacommunaute.users.factories import GroupFactory, UserFactory
 from lacommunaute.utils.date import get_last_sunday
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import (
@@ -34,13 +35,14 @@ from lacommunaute.utils.matomo import (
     get_matomo_forums_data,
     get_matomo_visits_data,
 )
-from lacommunaute.utils.perms import add_public_perms_on_forum
+from lacommunaute.utils.perms import add_public_perms_on_forum, add_staff_perms_on_forum
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
 
 ForumPermission = get_model("forum_permission", "ForumPermission")
 UserForumPermission = get_model("forum_permission", "UserForumPermission")
+GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 
 faker = Faker()
 
@@ -63,7 +65,7 @@ class AttachmentsTemplateTagTests(TestCase):
                 f = SimpleUploadedFile(filename, force_bytes("file_content"))
                 attachment = AttachmentFactory(post=self.post, file=f)
 
-                out = Template("{% load attachments_tags %}" "{{ attachment|is_image }}").render(
+                out = Template("{% load attachments_tags %}{{ attachment|is_image }}").render(
                     Context(
                         {
                             "attachment": attachment,
@@ -79,7 +81,7 @@ class AttachmentsTemplateTagTests(TestCase):
                 f = SimpleUploadedFile(filename, force_bytes("file_content"))
                 attachment = AttachmentFactory(post=self.post, file=f)
 
-                out = Template("{% load attachments_tags %}" "{{ attachment|is_image }}").render(
+                out = Template("{% load attachments_tags %}{{ attachment|is_image }}").render(
                     Context(
                         {
                             "attachment": attachment,
@@ -93,7 +95,7 @@ class AttachmentsTemplateTagTests(TestCase):
         f = SimpleUploadedFile("test.png", force_bytes("file_content"))
         attachment = AttachmentFactory(post=self.post, file=f)
 
-        out = Template("{% load attachments_tags %}" "{{ attachment|is_available }}").render(
+        out = Template("{% load attachments_tags %}{{ attachment|is_available }}").render(
             Context(
                 {
                     "attachment": attachment,
@@ -108,7 +110,7 @@ class AttachmentsTemplateTagTests(TestCase):
         attachment = AttachmentFactory(post=self.post, file=f)
 
         with patch.object(default_storage, "size", side_effect=FileNotFoundError):
-            out = Template("{% load attachments_tags %}" "{{ attachment|is_available }}").render(
+            out = Template("{% load attachments_tags %}{{ attachment|is_available }}").render(
                 Context(
                     {
                         "attachment": attachment,
@@ -232,7 +234,7 @@ class UtilsTemplateTagsTestCase(TestCase):
 
         d = datetime.now() - timedelta(days=2)
         out = template.render(Context({"date": d}))
-        self.assertEqual(out, f"{date(d,'l')}, {time(d)}")
+        self.assertEqual(out, f"{date(d, 'l')}, {time(d)}")
 
         d = datetime.now() - timedelta(days=10)
         out = template.render(Context({"date": d}))
@@ -702,8 +704,8 @@ class UtilsParseResponseToSoupTest(TestCase):
         )
 
 
-class TestAddPublicPermsOnForum:
-    def test_public_perms(self, db):
+class TestAddPermsOnForum:
+    def test_add_public_perms_on_forum(self, db):
         forum = ForumFactory()
         add_public_perms_on_forum(forum)
 
@@ -736,6 +738,23 @@ class TestAddPublicPermsOnForum:
                 permission__in=ForumPermission.objects.filter(codename__in=perms),
             ).count()
             == 7
+        )
+
+    def test_add_staff_perms_on_forum(self, db):
+        forum = ForumFactory()
+        group = GroupFactory(id=settings.STAFF_GROUP_ID)
+        add_staff_perms_on_forum(forum)
+
+        permissions = ["can_edit_posts", "can_move_topics", "can_lock_topics"]
+
+        assert (
+            GroupForumPermission.objects.filter(
+                forum=forum,
+                group=group,
+                has_perm=True,
+                permission__in=ForumPermission.objects.filter(codename__in=permissions),
+            ).count()
+            == 3
         )
 
 
