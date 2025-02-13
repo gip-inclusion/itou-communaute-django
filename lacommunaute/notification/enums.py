@@ -9,6 +9,7 @@ class EmailSentTrackKind(models.TextChoices):
     PENDING_TOPIC = "pending_topic", "Question sans réponse"
     MAGIC_LINK = "magic_link", "Lien de connexion magique"
     BULK_NOTIFS = "bulk_notifs", "Notifications groupées"
+    MISSYOU = "missyou", "Message de relance avant archivage des données"
 
 
 class NotificationDelay(models.TextChoices):
@@ -20,4 +21,5 @@ delay_of_notifications = {
     EmailSentTrackKind.PENDING_TOPIC: NotificationDelay.DAY,
     EmailSentTrackKind.FIRST_REPLY: NotificationDelay.ASAP,
     EmailSentTrackKind.FOLLOWING_REPLIES: NotificationDelay.DAY,
+    EmailSentTrackKind.MISSYOU: NotificationDelay.ASAP,
 }
