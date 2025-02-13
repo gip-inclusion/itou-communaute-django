@@ -27,7 +27,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     )
     first_name = factory.Faker("first_name")
     last_name = factory.Faker("last_name")
-    email = factory.Faker("email")
+    email = factory.Sequence("email{}@domain.com".format)
     password = factory.Transformer(DEFAULT_PASSWORD, transform=make_password)
     identity_provider = IdentityProvider.PRO_CONNECT
 
@@ -47,7 +47,7 @@ class EmailLastSeenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = EmailLastSeen
 
-    email = factory.Faker("email")
+    email = factory.Sequence("email{}@domain.com".format)
     last_seen_at = factory.Faker("date_time", tzinfo=UTC)
     last_seen_kind = factory.Iterator(EmailLastSeenKind.choices, getter=lambda c: c[0])
     missyou_send_at = None
