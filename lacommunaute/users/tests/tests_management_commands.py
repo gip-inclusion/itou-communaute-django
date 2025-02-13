@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from lacommunaute.event.factories import EventFactory
 from lacommunaute.forum.factories import ForumFactory, ForumRatingFactory
-from lacommunaute.forum_conversation.factories import AnonymousTopicFactory, TopicFactory
+from lacommunaute.forum_conversation.factories import AnonymousPostFactory, AnonymousTopicFactory, TopicFactory
 from lacommunaute.forum_upvote.factories import UpVoteFactory
 from lacommunaute.notification.enums import EmailSentTrackKind, NotificationDelay
 from lacommunaute.notification.factories import NotificationFactory
@@ -185,3 +185,28 @@ class TestCreateMissyouNotifications:
             EmailLastSeen.objects.filter(missyou_send_at__isnull=False).count()
             == settings.EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE
         )
+
+
+class TestDatasAnonymisation:
+    def test_datas_anonymisation_commmand(self, db):
+        email_last_seen_list = EmailLastSeenFactory.create_batch(2, soft_deletable=True)
+        user = UserFactory(email=email_last_seen_list[0].email)
+        post = AnonymousPostFactory(topic=TopicFactory())
+        EmailLastSeen.objects.filter(email=post.username).update(
+            missyou_send_at=timezone.now() - relativedelta(days=settings.EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY)
+        )
+
+        # undesired datas
+        EmailLastSeenFactory()
+        EmailLastSeenFactory(
+            missyou_send_at=timezone.now()
+            - relativedelta(days=settings.EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY - 1)
+        )
+
+        call_command("datas_anonymisation")
+
+        assert EmailLastSeen.objects.filter(deleted_at__isnull=False, email_hash__isnull=False).count() == 3
+        user.refresh_from_db()
+        assert user.email.startswith("email-anonymise-")
+        post.refresh_from_db()
+        assert post.username.startswith("email-anonymise-")
