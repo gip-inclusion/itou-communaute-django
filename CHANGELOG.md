@@ -1,5 +1,17 @@
 # Journal des modifications
 
+## [2.22.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.21.0...v2.22.0) (2025-02-13)
+
+
+### Features
+
+* extension des droits des utilisateurs de l'équipe - edition, deplacement et verrouillage des sujets ([#917](https://github.com/gip-inclusion/itou-communaute-django/issues/917)) ([7ef0c62](https://github.com/gip-inclusion/itou-communaute-django/commit/7ef0c627d3ae6f87fc5e5505e177d95340f33640))
+
+
+### Bug Fixes
+
+* desactivation de la collecte automatique des statistiques depuis matomo ([#919](https://github.com/gip-inclusion/itou-communaute-django/issues/919)) ([ed2fb75](https://github.com/gip-inclusion/itou-communaute-django/commit/ed2fb75c146a735d56abe95fe0a1d0fbee41dba4))
+
 ## [2.21.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.20.0...v2.21.0) (2025-02-13)
 
 
