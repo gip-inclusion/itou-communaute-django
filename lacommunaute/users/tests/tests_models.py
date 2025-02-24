@@ -85,14 +85,14 @@ class TestEmailLastSeenQueryset:
 
     def test_eligible_to_missyou_message(self, db):
         expected = EmailLastSeenFactory(
-            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY)),
+            last_seen_at=timezone.now() - relativedelta(days=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
         )
         # undesired
         EmailLastSeenFactory(
-            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY - 1))
+            last_seen_at=timezone.now() - relativedelta(days=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY - 1))
         )
         EmailLastSeenFactory(
-            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY)),
+            last_seen_at=timezone.now() - relativedelta(days=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
             missyou_sent=True,
         )
 
@@ -102,7 +102,7 @@ class TestEmailLastSeenQueryset:
     def test_eligible_to_missyou_message_order(self, db):
         for i in range(3):
             EmailLastSeenFactory(
-                last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY + i))
+                last_seen_at=timezone.now() - relativedelta(days=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY + i))
             )
         qs = EmailLastSeen.objects.eligible_to_missyou_message()
         assert qs.count() == 3

@@ -44,7 +44,7 @@ class EmailLastSeenQuerySet(models.QuerySet):
 
     def eligible_to_missyou_message(self):
         return self.filter(
-            last_seen_at__lte=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
+            last_seen_at__lte=timezone.now() - relativedelta(days=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
             missyou_send_at=None,
         ).order_by("last_seen_at")
 
