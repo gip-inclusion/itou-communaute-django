@@ -5,6 +5,7 @@ from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.factories import CategoryForumFactory
+from lacommunaute.forum.forms import ForumForm, SubCategoryForumUpdateForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import GroupFactory, UserFactory
 
@@ -44,6 +45,8 @@ def test_form_title_and_context_datas(client, db):
     assertContains(
         response, reverse("forum_extension:forum", kwargs={"pk": category_forum.pk, "slug": category_forum.slug})
     )
+    assert isinstance(response.context["form"], ForumForm)
+    assert not isinstance(response.context["form"], SubCategoryForumUpdateForm)
 
 
 def test_success_url(client, db, staff_group):
