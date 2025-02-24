@@ -10,6 +10,7 @@ from pytest_django.asserts import assertContains
 from taggit.models import Tag
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
+from lacommunaute.forum.forms import SubCategoryForumUpdateForm
 from lacommunaute.partner.factories import PartnerFactory
 from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.testing import parse_response_to_soup, reset_model_sequence_fixture
@@ -51,13 +52,22 @@ def test_user_access(client, db):
     assert response.status_code == 200
 
 
-def test_context_data(client, db):
+@pytest.mark.parametrize(
+    "forum,should_be_subcategoryupdateform",
+    [
+        (lambda: ForumFactory(), False),
+        (lambda: CategoryForumFactory(), False),
+        (lambda: CategoryForumFactory(with_child=True).get_children().first(), True),
+    ],
+)
+def test_context_data(client, db, forum, should_be_subcategoryupdateform):
     client.force_login(UserFactory(is_staff=True))
-    forum = ForumFactory()
+    forum = forum()
     url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
     response = client.get(url)
     assertContains(response, f"Mettre à jour le forum {forum.name}", html=True)
     assertContains(response, reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
+    assert isinstance(response.context["form"], SubCategoryForumUpdateForm) == should_be_subcategoryupdateform
 
 
 def test_update_forum_image(client, db, fake_image):
@@ -81,6 +91,27 @@ def test_update_forum_image(client, db, fake_image):
     assert forum.short_description == "new short description"
     assert forum.description.raw == "new description"
     assert forum.image.name == fake_image.name
+
+
+def test_update_subcategory_forum_parent(client, db):
+    forum = CategoryForumFactory(with_child=True).get_children().first()
+    new_parent = CategoryForumFactory()
+    client.force_login(UserFactory(is_staff=True))
+
+    url = reverse("forum_extension:edit_forum", kwargs={"pk": forum.pk, "slug": forum.slug})
+    response = client.post(
+        url,
+        data={
+            "name": forum.name,
+            "short_description": forum.short_description,
+            "description": forum.description.raw,
+            "parent": new_parent.pk,
+        },
+    )
+    assert response.status_code == 302
+
+    forum.refresh_from_db()
+    assert forum.parent == new_parent
 
 
 def test_certified_forum(client, db):
