@@ -58,3 +58,15 @@ class ForumForm(forms.ModelForm):
     class Meta:
         model = Forum
         fields = ["name", "short_description", "description", "image", "certified", "partner"]
+
+
+class SubCategoryForumUpdateForm(ForumForm):
+    parent = forms.ModelChoiceField(
+        label="Mettre à jour le parent",
+        queryset=Forum.objects.filter(type=Forum.FORUM_CAT, level=0),
+        required=False,
+    )
+
+    class Meta:
+        model = Forum
+        fields = ["name", "short_description", "description", "image", "certified", "partner", "parent"]
