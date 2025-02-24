@@ -2,8 +2,10 @@ import hashlib
 import re
 
 import pytest
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db import IntegrityError
+from django.utils import timezone
 
 from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.factories import EmailLastSeenFactory
@@ -56,6 +58,7 @@ class TestEmailLastSeenQueryset:
         email_last_seen.refresh_from_db()
         assert email_last_seen.last_seen_kind == kind
         assert email_last_seen.last_seen_at is not None
+        assert email_last_seen.missyou_send_at is None
 
     def test_seen_invalid_kind(self, db, email_last_seen):
         with pytest.raises(ValueError):
@@ -79,3 +82,35 @@ class TestEmailLastSeenQueryset:
 
         with django_assert_num_queries(1):
             EmailLastSeen.objects.seen(email=email, kind=kind)
+
+    def test_missyou_send_at_is_reset(self, db):
+        email_last_seen = EmailLastSeenFactory(missyou_send_at=timezone.now())
+        EmailLastSeen.objects.seen(email_last_seen.email, EmailLastSeenKind.POST)
+
+        email_last_seen.refresh_from_db()
+        assert email_last_seen.missyou_send_at is None
+
+    def test_eligible_to_missyou_message(self, db):
+        expected = EmailLastSeenFactory(
+            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY)),
+        )
+        # undesired
+        EmailLastSeenFactory(
+            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY - 1))
+        )
+        EmailLastSeenFactory(
+            last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY)),
+            missyou_sent=True,
+        )
+
+        email_last_seen = EmailLastSeen.objects.eligible_to_missyou_message().get()
+        assert email_last_seen == expected
+
+    def test_eligible_to_missyou_message_order(self, db):
+        for i in range(3):
+            EmailLastSeenFactory(
+                last_seen_at=timezone.now() - relativedelta(months=(settings.EMAIL_LAST_SEEN_MISSYOU_DELAY + i))
+            )
+        qs = EmailLastSeen.objects.eligible_to_missyou_message()
+        assert qs.count() == 3
+        assert list(qs) == list(qs.order_by("last_seen_at"))

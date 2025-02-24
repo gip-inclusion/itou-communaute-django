@@ -1,6 +1,7 @@
 import hashlib
 from uuid import uuid4
 
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
@@ -36,11 +37,17 @@ class EmailLastSeenQuerySet(models.QuerySet):
             raise ValueError(f"Invalid kind: {kind}")
 
         return EmailLastSeen.objects.bulk_create(
-            [EmailLastSeen(email=email, last_seen_at=timezone.now(), last_seen_kind=kind)],
-            update_fields=["last_seen_at", "last_seen_kind"],
+            [EmailLastSeen(email=email, last_seen_at=timezone.now(), last_seen_kind=kind, missyou_send_at=None)],
+            update_fields=["last_seen_at", "last_seen_kind", "missyou_send_at"],
             update_conflicts=True,
             unique_fields=["email"],
         )
+
+    def eligible_to_missyou_message(self):
+        return self.filter(
+            last_seen_at__lte=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
+            missyou_send_at=None,
+        ).order_by("last_seen_at")
 
 
 class EmailLastSeen(models.Model):
@@ -50,6 +57,7 @@ class EmailLastSeen(models.Model):
     last_seen_kind = models.CharField(
         max_length=12, verbose_name="last seen kind", choices=EmailLastSeenKind.choices, null=False
     )
+    missyou_send_at = models.DateTimeField(verbose_name="miss you sent at", null=True, blank=True)
     deleted_at = models.DateTimeField(verbose_name="deleted at", null=True, blank=True)
 
     objects = EmailLastSeenQuerySet.as_manager()
