@@ -2,7 +2,6 @@
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
     "0 3 * * * $ROOT/clevercloud/run_management_command.sh clearsessions",
     "*/15 7-21 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications asap",
-    "55 8-18 * * 1-5 $ROOT/clevercloud/run_management_command.sh add_missyou_notifications",
     "20 6 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications day",
     "10 6-22 * * * $ROOT/clevercloud/run_management_command.sh add_user_to_list_when_register",
     "0 12  * * 1 $ROOT/clevercloud/run_management_command.sh delete_old_email_sent_tracks",
