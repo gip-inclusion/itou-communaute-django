@@ -161,13 +161,18 @@ class TestCreateMissyouNotifications:
             last_seen_at=timezone.now() - relativedelta(months=settings.EMAIL_LAST_SEEN_MISSYOU_DELAY),
             missyou_send_at=timezone.now(),
         )
-        EmailLastSeenFactory(last_seen_at=timezone.now())
+        unexpected = EmailLastSeenFactory(last_seen_at=timezone.now())
 
         call_command("add_missyou_notifications")
         notification = Notification.objects.get()
         assert notification.recipient == expected.email
         assert notification.kind == EmailSentTrackKind.MISSYOU
         assert notification.delay == NotificationDelay.ASAP
+
+        expected.refresh_from_db()
+        assert expected.missyou_send_at is not None
+        unexpected.refresh_from_db()
+        assert unexpected.missyou_send_at is None
 
     def test_create_missyou_notification_command_batch_size(self, db):
         EmailLastSeenFactory.create_batch(
@@ -176,3 +181,7 @@ class TestCreateMissyouNotifications:
         )
         call_command("add_missyou_notifications")
         assert Notification.objects.count() == settings.EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE
+        assert (
+            EmailLastSeen.objects.filter(missyou_send_at__isnull=False).count()
+            == settings.EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE
+        )
