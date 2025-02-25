@@ -279,3 +279,23 @@
               </title>
   '''
 # ---
+# name: test_updated_forum_short_description[truncated_encoded_short_description]
+  '''
+  <div class="s-section__col col-12 col-md-8" id="updated_forums">
+                      <p class="h1 text-tertiary">Les fiches pratiques mises à jour</p>
+                      <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
+                          
+                              <li class="list-group-item list-group-item-action">
+                                  <div>
+                                      <a class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="forum" href="/forum/84-rue-georges-[PK of Forum]/">
+                                          84, rue Georges
+                                      </a>
+                                      <p class="mb-0">C'était partout, dans le monde entier, des centaines ou des milliers de millions de gens s'ignorant les uns les autres, séparés par des murs de haine et de mensonges, et cependant presque exactement …</p>
+                                  </div>
+                              </li>
+                          
+                      </ul>
+                      <a class="btn btn-outline-primary matomo-event" data-matomo-action="view" data-matomo-category="engagement" data-matomo-option="documentation" href="/documentation/">Voir toute la documentation</a>
+                  </div>
+  '''
+# ---
