@@ -1,6 +1,11 @@
+from logging import getLogger
+
 from django.core.management.base import BaseCommand
 
 from lacommunaute.notification.tasks import send_notifs_on_unanswered_topics
+
+
+logger = getLogger("commands")
 
 
 class Command(BaseCommand):
@@ -8,4 +13,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         send_notifs_on_unanswered_topics()
-        self.stdout.write(self.style.SUCCESS("That's all, folks!"))
+        logger.info("That's all, folks!")

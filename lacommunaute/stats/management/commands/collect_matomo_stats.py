@@ -1,4 +1,5 @@
 from datetime import date
+from logging import getLogger
 
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand
@@ -6,6 +7,8 @@ from django.core.management.base import BaseCommand
 from lacommunaute.stats.models import Stat
 from lacommunaute.utils.matomo import collect_stats_from_matomo_api
 
+
+logger = getLogger("commands")
 
 matomo_stats_names = [
     "nb_uniq_visitors",
@@ -44,4 +47,4 @@ class Command(BaseCommand):
 
         collect_stats_from_matomo_api(from_date=from_date, to_date=to_date, period=period)
 
-        self.stdout.write(self.style.SUCCESS("That's all, folks!"))
+        logger.info("That's all, folks!")

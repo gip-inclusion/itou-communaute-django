@@ -1,8 +1,8 @@
 # vincenporte ~ assumed quick'n'dirty solution
 # TODO: refactor it code base and test it
-
 import json
 from datetime import datetime
+from logging import getLogger
 
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand
@@ -13,6 +13,9 @@ from django.utils import timezone
 from lacommunaute.forum_conversation.models import Post
 from lacommunaute.forum_upvote.models import CertifiedPost, UpVote
 from lacommunaute.utils.matomo import get_matomo_data
+
+
+logger = getLogger("commands")
 
 
 def save_to_json(stats, period):
@@ -93,10 +96,10 @@ class Command(BaseCommand):
             ("month", timezone.make_aware(datetime(2023, 1, 1), timezone.get_current_timezone())),
             ("week", timezone.make_aware(datetime(2023, 1, 2), timezone.get_current_timezone())),
         ):
-            self.stdout.write(f"Collecting {period}ly events from {search_date}")
+            logger.info("Collecting %sly events from %s", period, search_date)
             stats = []
             stats = collect_matomo_events(period, search_date, stats)
             stats = collect_db_events(period, search_date, stats)
             save_to_json(stats, period)
 
-        self.stdout.write(self.style.SUCCESS("That's all, folks!"))
+        logger.info("That's all, folks!")
