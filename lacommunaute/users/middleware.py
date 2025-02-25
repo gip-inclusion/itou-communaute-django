@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.utils.deprecation import MiddlewareMixin
 
@@ -6,7 +6,7 @@ from lacommunaute.users.enums import EmailLastSeenKind
 from lacommunaute.users.models import EmailLastSeen
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 class MarkAsSeenLoggedUserMiddleware(MiddlewareMixin):
