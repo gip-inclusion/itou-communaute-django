@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from dateutil.relativedelta import relativedelta
 from django.db.models import Avg, CharField, Count, OuterRef, Subquery, Sum
@@ -16,7 +16,7 @@ from lacommunaute.utils.json import extract_values_in_list
 from lacommunaute.utils.math import percent
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 def get_daily_visits_stats(from_date, to_date):

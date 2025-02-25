@@ -329,6 +329,10 @@ LOGGING = {
             "handlers": ["null"],
             "propagate": False,
         },
+        "lacommunaute": {
+            "handlers": ["console"],
+            "level": os.getenv("LACOMMUNAUTE_LOG_LEVEL", "INFO"),
+        },
         "commands": {
             "handlers": ["console"],
             "level": os.getenv("COMMANDS_LOG_LEVEL", "INFO"),

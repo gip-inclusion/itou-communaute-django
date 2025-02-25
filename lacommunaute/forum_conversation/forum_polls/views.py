@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.template.response import TemplateResponse
 from machina.apps.forum_conversation.forum_polls.views import TopicPollVoteView as BaseTopicPollVoteView
@@ -6,7 +6,7 @@ from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 Topic = get_model("forum_conversation", "Topic")
 TopicPollVote = get_model("forum_polls", "TopicPollVote")

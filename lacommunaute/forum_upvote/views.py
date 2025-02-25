@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,7 +13,7 @@ from lacommunaute.forum_conversation.models import Post
 from lacommunaute.forum_upvote.models import UpVote
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")

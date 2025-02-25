@@ -1,5 +1,5 @@
 import dataclasses
-import logging
+from logging import getLogger
 
 import httpx
 import jwt
@@ -14,7 +14,7 @@ from lacommunaute.openid_connect import constants
 from lacommunaute.openid_connect.models import OIDConnectUserData, OpenID_State
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 @dataclasses.dataclass

@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 from typing import Any
 
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -12,7 +12,7 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import Topic
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 class LandingPagesListView(UserPassesTestMixin, TemplateView):

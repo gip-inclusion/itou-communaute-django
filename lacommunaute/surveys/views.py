@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -7,6 +9,9 @@ from django.views.generic.edit import CreateView
 from lacommunaute.forum.models import Forum
 from lacommunaute.surveys.forms import DSPForm
 from lacommunaute.surveys.models import DSP
+
+
+logger = getLogger("lacommunaute")
 
 
 class DSPCreateView(CreateView):
