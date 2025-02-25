@@ -1,6 +1,7 @@
 import os
 
 from dotenv import load_dotenv
+from json_log_formatter import JSONFormatter
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
 
@@ -311,13 +312,10 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "simple": {
-            "format": "{levelname} {asctime} {pathname} : {message}",
-            "style": "{",
-        },
+        "json": {"()": JSONFormatter},
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+        "console": {"class": "logging.StreamHandler", "formatter": "json"},
         "null": {"class": "logging.NullHandler"},
     },
     "loggers": {

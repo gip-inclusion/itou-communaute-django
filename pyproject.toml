@@ -24,6 +24,7 @@ dependencies = [
     "django-permissions-policy>=4.24",
     "langdetect>=1.0.9",
     "pyjwt>=2.10",
+    "json-log-formatter>=1.1",
 ]
 
 [dependency-groups]

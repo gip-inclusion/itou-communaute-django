@@ -672,6 +672,12 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/69/3e/dd37e1a7223247e3ef94714abf572415b89c4e121c4af48e9e4c392e2ca0/jsbeautifier-1.15.1.tar.gz", hash = "sha256:ebd733b560704c602d744eafc839db60a1ee9326e30a2a80c4adb8718adc1b24", size = 75606 }
 
 [[package]]
+name = "json-log-formatter"
+version = "1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/34/02eee63c3871b9f3ea340f58d0675dae8d9cc95a8a961f379f5a1b325911/json_log_formatter-1.1.tar.gz", hash = "sha256:fe8fd801c58c1234df86211720921f60149105ef8d1e2a72966bb61da9bed584", size = 5858 }
+
+[[package]]
 name = "json5"
 version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
@@ -682,7 +688,7 @@ wheels = [
 
 [[package]]
 name = "lacommunaute"
-version = "2.20.0"
+version = "2.21.0"
 source = { virtual = "." }
 dependencies = [
     { name = "boto3" },
@@ -697,6 +703,7 @@ dependencies = [
     { name = "django-storages" },
     { name = "django-taggit" },
     { name = "httpx" },
+    { name = "json-log-formatter" },
     { name = "langdetect" },
     { name = "psycopg" },
     { name = "pyjwt" },
@@ -730,7 +737,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "boto3", specifier = "==1.35.99" },
+    { name = "boto3", specifier = "<1.36" },
     { name = "django", specifier = ">=5.1" },
     { name = "django-compressor", specifier = ">=4.5" },
     { name = "django-csp", specifier = ">=3.8" },
@@ -742,6 +749,7 @@ requires-dist = [
     { name = "django-storages", specifier = ">=1.14" },
     { name = "django-taggit", specifier = ">=6.1" },
     { name = "httpx", specifier = ">=0.28" },
+    { name = "json-log-formatter", specifier = ">=1.1" },
     { name = "langdetect", specifier = ">=1.0.9" },
     { name = "psycopg", specifier = ">=3.2" },
     { name = "pyjwt", specifier = ">=2.10" },
