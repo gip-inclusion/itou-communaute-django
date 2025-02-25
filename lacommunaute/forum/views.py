@@ -12,7 +12,7 @@ from machina.apps.forum.views import ForumView as BaseForumView
 from machina.core.loading import get_class
 from taggit.models import Tag
 
-from lacommunaute.forum.forms import ForumForm
+from lacommunaute.forum.forms import ForumForm, SubCategoryForumUpdateForm
 from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
@@ -125,11 +125,15 @@ class SubCategoryForumListView(BaseForumView, SubCategoryForumListMixin):
 
 class ForumUpdateView(UserPassesTestMixin, UpdateView):
     template_name = "forum/forum_create_or_update.html"
-    form_class = ForumForm
     model = Forum
 
     def test_func(self):
         return self.request.user.is_staff
+
+    def get_form_class(self):
+        if self.object.is_in_documentation_area and self.object.type == Forum.FORUM_POST:
+            return SubCategoryForumUpdateForm
+        return ForumForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

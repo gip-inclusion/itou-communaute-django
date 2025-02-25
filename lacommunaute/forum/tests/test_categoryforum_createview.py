@@ -4,6 +4,7 @@ from django.urls import reverse
 from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
+from lacommunaute.forum.forms import ForumForm, SubCategoryForumUpdateForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import GroupFactory, UserFactory
 
@@ -39,6 +40,8 @@ def test_form_title_and_context_data(client, db):
     response = client.get(url)
     assertContains(response, "Créer une nouvelle catégorie documentaire")
     assertContains(response, reverse("forum_extension:documentation"))
+    assert isinstance(response.context["form"], ForumForm)
+    assert not isinstance(response.context["form"], SubCategoryForumUpdateForm)
 
 
 def test_success_url(client, db, staff_group):

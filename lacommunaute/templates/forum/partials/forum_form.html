@@ -9,6 +9,9 @@
     {% include "partials/form_field.html" with field=form.name %}
     {% include "partials/form_field.html" with field=form.short_description %}
     {% include "partials/form_field.html" with field=form.description %}
+    {% if form.parent %}
+        {% include "partials/form_field.html" with field=form.parent %}
+    {% endif %}
     {% include "partials/form_field.html" with field=form.image %}
     {% include "partials/form_field.html" with field=form.certified %}
     {% include "partials/form_field.html" with field=form.partner %}
