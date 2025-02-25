@@ -26,6 +26,7 @@ class FormValidMixin:
         valid = super().form_valid(*args, **kwargs)
 
         track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
+        logger.info("form is valid", extra={"context": self})
         return valid
 
 
