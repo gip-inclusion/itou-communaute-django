@@ -7,7 +7,7 @@ from django.utils import timezone
 from pytest_django.asserts import assertContains, assertNotContains
 
 from lacommunaute.event.factories import EventFactory
-from lacommunaute.forum.factories import ForumFactory
+from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.utils.testing import parse_response_to_soup
 
@@ -73,3 +73,19 @@ def test_numqueries(db, client, django_assert_num_queries):
         + 1  # get upcoming events
     ):
         client.get(reverse("pages:home"))
+
+
+def test_updated_forum_short_description(client, db, snapshot):
+    parent = CategoryForumFactory()
+    forum = ForumFactory(
+        name="84, rue Georges",
+        short_description="C'était partout, dans le monde entier, des centaines ou des milliers de millions de gens "
+        "s'ignorant les uns les autres, séparés par des murs de haine et de mensonges, et cependant presque exactement"
+        " les mêmes, des gens qui n'avaient jamais appris à penser, mais qui emmagasinaient dans leurs cœurs, leurs ve"
+        "ntres et leurs muscles, la force qui, un jour, bouleverserait le monde.",
+        parent=parent,
+    )
+
+    response = client.get(reverse("pages:home"))
+    content = parse_response_to_soup(response, selector="#updated_forums", replace_in_href=[forum])
+    assert str(content) == snapshot(name="truncated_encoded_short_description")

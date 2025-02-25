@@ -132,7 +132,7 @@
                 <div class="s-section__col d-none d-md-inline col-md-4 pe-4">
                     <img src="{% static 'images/home-illu-01.png' %}" class="img-fluid" loading="lazy" alt="">
                 </div>
-                <div class="s-section__col col-12 col-md-8">
+                <div class="s-section__col col-12 col-md-8" id="updated_forums">
                     <p class="h1 text-tertiary">Les fiches pratiques mises à jour</p>
                     <ul class="list-group list-group-flush list-group-link mb-3 mb-md-4">
                         {% for forum in forums_category %}
@@ -145,7 +145,7 @@
                                        class="h4 d-block text-decoration-none text-tertiary stretched-link matomo-event">
                                         {{ forum.name }}
                                     </a>
-                                    <p class="mb-0">{{ forum.short_description|truncatechars_html:200 }}</p>
+                                    <p class="mb-0">{{ forum.short_description|safe|truncatechars_html:200 }}</p>
                                 </div>
                             </li>
                         {% endfor %}
