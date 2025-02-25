@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -24,7 +24,7 @@ from lacommunaute.utils.perms import (
 )
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 

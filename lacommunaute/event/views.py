@@ -1,5 +1,5 @@
-import logging
 from datetime import datetime
+from logging import getLogger
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -14,7 +14,7 @@ from lacommunaute.event.forms import EventModelForm
 from lacommunaute.event.models import Event
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 class SuccessUrlMixin:

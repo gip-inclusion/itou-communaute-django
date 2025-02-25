@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.conf import settings
 from django.contrib import messages
@@ -15,7 +15,7 @@ from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMi
 from lacommunaute.notification.models import Notification
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 track_handler = TrackingHandler()
@@ -26,6 +26,7 @@ class FormValidMixin:
         valid = super().form_valid(*args, **kwargs)
 
         track_handler.mark_topic_read(self.forum_post.topic, self.request.user)
+        logger.info("form is valid", extra={"context": self})
         return valid
 
 

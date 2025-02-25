@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
@@ -6,6 +8,9 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.partner.forms import PartnerForm
 from lacommunaute.partner.models import Partner
 from lacommunaute.utils.perms import forum_visibility_content_tree_from_forums
+
+
+logger = getLogger("lacommunaute")
 
 
 class PartnerListView(ListView):

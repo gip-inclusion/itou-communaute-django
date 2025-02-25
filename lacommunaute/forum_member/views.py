@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.urls import reverse
 from django.views.generic import ListView
@@ -12,7 +12,7 @@ from lacommunaute.forum_member.forms import ForumProfileForm
 from lacommunaute.forum_member.models import ForumProfile
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")

@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
+from lacommunaute.utils.loggers import CustomJsonFormatter
+
 
 load_dotenv()
 
@@ -311,18 +313,24 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "simple": {
-            "format": "{levelname} {asctime} {pathname} : {message}",
-            "style": "{",
-        },
+        "json": {"()": CustomJsonFormatter},
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "simple"},
+        "console": {"class": "logging.StreamHandler", "formatter": "json"},
+        "null": {"class": "logging.NullHandler"},
     },
     "loggers": {
         "django": {
             "handlers": ["console"],
             "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+        },
+        "django.security.DisallowedHost": {
+            "handlers": ["null"],
+            "propagate": False,
+        },
+        "lacommunaute": {
+            "handlers": ["console"],
+            "level": os.getenv("LACOMMUNAUTE_LOG_LEVEL", "INFO"),
         },
         "commands": {
             "handlers": ["console"],
