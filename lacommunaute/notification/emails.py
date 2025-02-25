@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 from urllib.parse import urljoin
 
 import httpx
@@ -9,7 +9,7 @@ from lacommunaute.notification.models import EmailSentTrack
 from lacommunaute.utils.enums import Environment
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 SIB_SMTP_URL = urljoin(settings.SIB_URL, settings.SIB_SMTP_ROUTE)
 SIB_CONTACTS_URL = urljoin(settings.SIB_URL, settings.SIB_CONTACTS_ROUTE)
