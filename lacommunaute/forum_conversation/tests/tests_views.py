@@ -41,6 +41,18 @@ ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
+@pytest.fixture(name="topics_url")
+def fixture_topics_url():
+    return reverse("forum_conversation_extension:topics")
+
+
+@pytest.fixture(name="public_forum_with_topic")
+def fixture_public_forum_with_topic(db):
+    forum = ForumFactory(with_public_perms=True)
+    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+    return forum
+
+
 def check_email_last_seen(email):
     return EmailLastSeen.objects.filter(
         email=email, last_seen_kind__in=[EmailLastSeenKind.POST, EmailLastSeenKind.LOGGED]
@@ -820,18 +832,6 @@ def test_breadcrumbs_on_topic_view(client, db, snapshot):
         response, selector="nav.c-breadcrumb", replace_in_href=[discussion_area_topic.forum]
     )
     assert str(content) == snapshot(name="discussion_area_topic")
-
-
-@pytest.fixture(name="topics_url")
-def fixture_topics_url():
-    return reverse("forum_conversation_extension:topics")
-
-
-@pytest.fixture(name="public_forum_with_topic")
-def fixture_public_forum_with_topic(db):
-    forum = ForumFactory(with_public_perms=True)
-    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
-    return forum
 
 
 class TestTopicListView:
