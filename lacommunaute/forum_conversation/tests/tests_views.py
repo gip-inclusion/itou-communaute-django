@@ -41,6 +41,18 @@ ForumReadTrack = get_model("forum_tracking", "ForumReadTrack")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
+@pytest.fixture(name="topics_url")
+def fixture_topics_url():
+    return reverse("forum_conversation_extension:topics")
+
+
+@pytest.fixture(name="public_forum_with_topic")
+def fixture_public_forum_with_topic(db):
+    forum = ForumFactory(with_public_perms=True)
+    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
+    return forum
+
+
 def check_email_last_seen(email):
     return EmailLastSeen.objects.filter(
         email=email, last_seen_kind__in=[EmailLastSeenKind.POST, EmailLastSeenKind.LOGGED]
@@ -660,6 +672,140 @@ class PostDeleteViewTest(TestCase):
         self.assertTrue(view.success_message, msgs._queued_messages[0].message)
 
 
+class TestPostModerateView:
+    def get_post_moderate_url(self, topic):
+        return reverse(
+            "forum_conversation_extension:post_moderate",
+            kwargs={
+                "forum_slug": topic.forum.slug,
+                "forum_pk": topic.forum.pk,
+                "slug": topic.slug,
+                "pk": topic.pk,
+            },
+        )
+
+    @pytest.mark.parametrize(
+        "method,status_code", [("post", 302), ("get", 405), ("put", 405), ("delete", 405), ("patch", 405)]
+    )
+    def test_allowed_method(self, client, db, method, status_code, public_forum_with_topic):
+        topic = public_forum_with_topic.topics.first()
+        client.force_login(UserFactory(is_staff=True))
+        response = getattr(client, method)(self.get_post_moderate_url(topic), data={"post_pk": topic.last_post.pk})
+        assert response.status_code == status_code
+
+    @pytest.mark.parametrize(
+        "user,topic,status_code",
+        [
+            (
+                lambda: UserFactory(is_staff=True),
+                lambda: TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True)),
+                302,
+            ),
+            (lambda: UserFactory(is_staff=True), lambda: TopicFactory(with_post=True), 403),
+            (
+                lambda: UserFactory(),
+                lambda: TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True)),
+                403,
+            ),
+            (None, lambda: TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True)), 403),
+        ],
+    )
+    def test_user_permission(self, client, db, user, topic, status_code):
+        topic = topic()
+        if user:
+            client.force_login(user())
+        response = client.post(self.get_post_moderate_url(topic), data={"post_pk": topic.last_post.pk})
+        assert response.status_code == status_code
+
+    @pytest.mark.parametrize(
+        "topic,expected_url",
+        [
+            (
+                lambda: TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True)),
+                lambda topic: reverse("forum_conversation_extension:topics"),
+            ),
+            (
+                lambda: TopicFactory(
+                    with_post=True, forum=ForumFactory(with_public_perms=True, parent=CategoryForumFactory())
+                ),
+                lambda topic: reverse(
+                    "forum_extension:forum", kwargs={"slug": topic.forum.slug, "pk": topic.forum.pk}
+                ),
+            ),
+            (
+                lambda: TopicFactory(with_post=True, answered=True, forum=ForumFactory(with_public_perms=True)),
+                lambda topic: reverse(
+                    "forum_conversation:topic",
+                    kwargs={
+                        "forum_slug": topic.forum.slug,
+                        "forum_pk": topic.forum.pk,
+                        "slug": topic.slug,
+                        "pk": topic.pk,
+                    },
+                ),
+            ),
+        ],
+    )
+    def test_redirection(self, client, db, topic, expected_url):
+        topic = topic()
+        expected_url = expected_url(topic=topic)
+        client.force_login(UserFactory(is_staff=True))
+        response = client.post(self.get_post_moderate_url(topic), data={"post_pk": topic.last_post.pk})
+        assert response.url == expected_url
+
+    @pytest.mark.parametrize(
+        "post_exists,kwargs,status_code",
+        [
+            (
+                True,
+                lambda topic: {
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+                302,
+            ),
+            (
+                False,
+                {
+                    "forum_slug": faker.slug(),
+                    "forum_pk": 99999,
+                    "slug": faker.slug(),
+                    "pk": 99999,
+                },
+                404,
+            ),
+        ],
+    )
+    def test_post_existence(self, client, db, post_exists, kwargs, status_code, public_forum_with_topic):
+        if post_exists:
+            topic = public_forum_with_topic.topics.first()
+            kwargs = kwargs(topic=topic)
+            last_post_pk = topic.last_post.pk
+        else:
+            kwargs = kwargs
+            last_post_pk = 9999
+        client.force_login(UserFactory(is_staff=True))
+        url = reverse("forum_conversation_extension:post_moderate", kwargs=kwargs)
+        response = client.post(url, data={"post_pk": last_post_pk})
+        assert response.status_code == status_code
+
+    def test_pk_is_missing_in_payload(self, client, db, public_forum_with_topic):
+        topic = public_forum_with_topic.topics.first()
+        client.force_login(UserFactory(is_staff=True))
+        response = client.post(self.get_post_moderate_url(topic), data={})
+        assert response.status_code == 404
+
+    def test_post_is_unapproved(self, client, db, public_forum_with_topic):
+        topic = public_forum_with_topic.topics.first()
+        client.force_login(UserFactory(is_staff=True))
+        response = client.post(self.get_post_moderate_url(topic), data={"post_pk": topic.last_post.pk})
+        assert response.status_code == 302
+        topic.last_post.refresh_from_db()
+        assert not topic.last_post.approved
+
+
 class TopicViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -820,18 +966,6 @@ def test_breadcrumbs_on_topic_view(client, db, snapshot):
         response, selector="nav.c-breadcrumb", replace_in_href=[discussion_area_topic.forum]
     )
     assert str(content) == snapshot(name="discussion_area_topic")
-
-
-@pytest.fixture(name="topics_url")
-def fixture_topics_url():
-    return reverse("forum_conversation_extension:topics")
-
-
-@pytest.fixture(name="public_forum_with_topic")
-def fixture_public_forum_with_topic(db):
-    forum = ForumFactory(with_public_perms=True)
-    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
-    return forum
 
 
 class TestTopicListView:

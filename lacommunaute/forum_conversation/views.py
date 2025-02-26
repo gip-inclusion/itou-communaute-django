@@ -2,15 +2,22 @@ import logging
 
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from machina.apps.forum_conversation import views
 from machina.core.loading import get_class
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
-from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_conversation.models import Post, Topic
+from lacommunaute.forum_conversation.shortcuts import (
+    can_certify_post,
+    can_moderate_post,
+    get_posts_of_a_topic_except_first_one,
+)
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.notification.models import Notification
 
@@ -74,6 +81,55 @@ class PostDeleteView(views.PostDeleteView):
             kwargs={
                 "slug": self.object.topic.forum.slug,
                 "pk": self.object.topic.forum.pk,
+            },
+        )
+
+
+class PostModerateView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if request.method != "POST":
+            return self.http_method_not_allowed(request)
+
+        user = request.user
+        obj = self.get_object().topic.forum
+        if not (self.request.forum_permission_handler.can_read_forum(obj, user) and can_moderate_post(user)):
+            raise PermissionDenied
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self):
+        if not hasattr(self, "object"):
+            self.object = get_object_or_404(
+                Post,
+                pk=self.request.POST.get("post_pk", None),
+            )
+        return self.object
+
+    def post(self, request, *args, **kwargs):
+        post = self.get_object()
+        post.approved = False
+        post.save()
+        return HttpResponseRedirect(self.get_redirection_url())
+
+    def get_redirection_url(self):
+        messages.success(self.request, "Le message a été modéré avec succès.")
+        if self.object.is_topic_head:
+            if self.object.topic.forum.is_in_documentation_area:
+                return reverse(
+                    "forum_extension:forum",
+                    kwargs={
+                        "slug": self.object.topic.forum.slug,
+                        "pk": self.object.topic.forum.pk,
+                    },
+                )
+            return reverse("forum_conversation_extension:topics")
+        return reverse(
+            "forum_conversation:topic",
+            kwargs={
+                "forum_slug": self.object.topic.forum.slug,
+                "forum_pk": self.object.topic.forum.pk,
+                "slug": self.object.topic.slug,
+                "pk": self.object.topic.pk,
             },
         )
 

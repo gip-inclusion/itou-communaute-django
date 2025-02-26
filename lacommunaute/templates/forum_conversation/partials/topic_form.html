@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load widget_tweaks %}
 {% load forum_permission_tags %}
+{% load permission_tags %}
 <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {% for error in post_form.non_field_errors %}
@@ -8,6 +9,7 @@
             <i class="icon-exclamation-sign"></i> {{ error }}
         </div>
     {% endfor %}
+    <input type="hidden" name="post_pk" value="{{ post.pk }}">
     {% include "partials/form_field.html" with field=post_form.subject %}
     {% include "partials/form_field.html" with field=post_form.content %}
     {% if post_form.username %}
@@ -96,6 +98,14 @@
             {% if user_can_delete_post %}
                 <div class="form-group col-auto">
                     <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" aria-label="{% trans "Delete" %}" role="button" class="btn btn-outline-danger">{% trans "Delete" %}</a>
+                </div>
+            {% endif %}
+            {% user_can_moderate_post request.user as user_can_moderate_post %}
+            {% if user_can_moderate_post %}
+                <div class="form-group col-auto" id="moderate">
+                    <button type="submit" formaction="{% url 'forum_conversation_extension:post_moderate' forum.slug forum.pk topic.slug topic.pk %}" class="btn btn-outline-warning">
+                        {% trans "Moderate" %}
+                    </button>
                 </div>
             {% endif %}
         {% endif %}
