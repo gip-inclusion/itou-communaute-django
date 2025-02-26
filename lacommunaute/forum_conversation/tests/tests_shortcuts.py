@@ -2,7 +2,6 @@ import pytest
 from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
 
-from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.shortcuts import (
     can_certify_post,
@@ -75,21 +74,13 @@ class GetPostsofaTopicExceptFirstOneTest(TestCase):
         self.assertTrue(post.has_upvoted)
 
 
-class CanCertifyPostShortcutTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = UserFactory.create()
-        cls.forum = ForumFactory.create()
+@pytest.mark.parametrize(
+    "user,has_right",
+    [(lambda: AnonymousUser(), False), (lambda: UserFactory(), False), (lambda: UserFactory(is_staff=True), True)],
+)
+def test_can_certify_post(db, user, has_right):
+    assert can_certify_post(user()) == has_right
 
-    def test_user_is_not_authenticated(self):
-        self.assertFalse(can_certify_post(AnonymousUser()))
-
-    def test_user_is_staff(self):
-        self.user.is_staff = True
-        self.assertTrue(can_certify_post(self.user))
-
-    def test_user_is_not_staff(self):
-        self.assertFalse(can_certify_post(self.user))
 
 @pytest.mark.parametrize(
     "user,has_right",
