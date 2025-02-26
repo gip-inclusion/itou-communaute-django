@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load forum_conversation_tags %}
 {% load forum_permission_tags %}
+{% load permission_tags %}
 {% block sub_title %}
     {% trans "Edit post" %}
 {% endblock sub_title %}
@@ -20,6 +21,7 @@
                 <div class="card-body">
                     <form method="post" action="." class="form" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
+                        <input type="hidden" name="post_pk" value="{{ post.pk }}">
                         {% include "forum_conversation/partials/post_form.html" %}
                         <div class="form-actions form-row">
                             <div class="form-group col-auto">
@@ -29,6 +31,14 @@
                             {% if user_can_delete_post %}
                                 <div class="form-group col-auto">
                                     <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" role="button" class="btn btn-outline-danger" value="{% trans "Delete" %}">{% trans "Delete" %}</a>
+                                </div>
+                            {% endif %}
+                            {% user_can_moderate_post request.user as user_can_moderate_post %}
+                            {% if user_can_moderate_post %}
+                                <div class="form-group col-auto" id="moderate">
+                                    <button type="submit" formaction="{% url 'forum_conversation_extension:post_moderate' forum.slug forum.pk topic.slug topic.pk %}" class="btn btn-outline-warning">
+                                        {% trans "Moderate" %}
+                                    </button>
                                 </div>
                             {% endif %}
                         </div>
