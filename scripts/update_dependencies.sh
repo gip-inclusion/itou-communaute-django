@@ -2,7 +2,7 @@
 echo "Hi, I'm going to update the dependencies of the project"
 pre-commit autoupdate
 wait
-uv lock
+uv lock --upgrade
 wait
 git add uv.lock && git add .pre-commit-config.yaml
 git commit -m "update dependencies"
