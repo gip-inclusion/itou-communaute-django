@@ -1,15 +1,15 @@
 [
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
+    "*/15 7-21 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications asap",
+    "10 6-22 * * * $ROOT/clevercloud/run_management_command.sh add_user_to_list_when_register",
+    "55 8-18 * * 1-5 $ROOT/clevercloud/run_management_command.sh add_missyou_notifications",
     "0 3 * * * $ROOT/clevercloud/run_management_command.sh clearsessions",
+    "20 6 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications day",
     "0 11 * * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats",
     "5 11 * * * $ROOT/clevercloud/run_management_command.sh collect_django_stats",
-    "10 11 1 * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats --period month",
-    "15 11 * * 1 $ROOT/clevercloud/run_management_command.sh collect_matomo_forum_stats",
-    "*/15 7-21 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications asap",
-    "55 8-18 * * 1-5 $ROOT/clevercloud/run_management_command.sh add_missyou_notifications",
-    "20 6 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications day",
-    "10 6-22 * * * $ROOT/clevercloud/run_management_command.sh add_user_to_list_when_register",
-    "0 12  * * 1 $ROOT/clevercloud/run_management_command.sh delete_old_email_sent_tracks",
     "2 12 * * * $ROOT/clevercloud/run_management_command.sh datas_anonymisation",
-    "30 13 * * 1-5 $ROOT/clevercloud/run_management_command.sh send_notifs_on_unanswered_topics"
+    "30 13 * * 1-5 $ROOT/clevercloud/run_management_command.sh send_notifs_on_unanswered_topics",
+    "15 11 * * 1 $ROOT/clevercloud/run_management_command.sh collect_matomo_forum_stats",
+    "0 12  * * 1 $ROOT/clevercloud/run_management_command.sh delete_old_email_sent_tracks",
+    "10 11 1 * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats --period month"
 ]
