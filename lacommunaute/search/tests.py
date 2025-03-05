@@ -209,7 +209,7 @@ def test_extra_context(client, db, user, snapshot_name, search_url, snapshot):
     datas = {"m": "TOPIC", "q": " ".join(["Bubba", "Gump", "Shrimp", "Co."])}
     response = client.get(search_url, datas)
     content = parse_response_to_soup(
-        response, selector="main", replace_in_href=[(forum.slug, "forrest-gump"), (str(forum.pk), "42")]
+        response, selector="main", replace_in_href=[(f"{forum.slug}-{forum.pk}", "forrest-gump-PK")]
     )
     assert str(content) == snapshot(name=snapshot_name)
 
