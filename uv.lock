@@ -711,6 +711,7 @@ dependencies = [
     { name = "langdetect" },
     { name = "psycopg" },
     { name = "pyjwt" },
+    { name = "python-crontab" },
     { name = "python-dotenv" },
     { name = "sentry-sdk" },
 ]
@@ -756,6 +757,7 @@ requires-dist = [
     { name = "langdetect", specifier = ">=1.0.9" },
     { name = "psycopg", specifier = ">=3.2" },
     { name = "pyjwt", specifier = ">=2.10" },
+    { name = "python-crontab", specifier = ">=3.2.0" },
     { name = "python-dotenv", specifier = ">=1.0" },
     { name = "sentry-sdk", specifier = ">=2.20" },
 ]
@@ -1071,6 +1073,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/41/c4/3c310a19bc1f1e9ef50075582652673ef2bfc8cd62afef9585683821902f/pytest_xdist-3.6.1.tar.gz", hash = "sha256:ead156a4db231eec769737f57668ef58a2084a34b2e55c4a8fa20d861107300d", size = 84060 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6d/82/1d96bf03ee4c0fdc3c0cbe61470070e659ca78dc0086fb88b66c185e2449/pytest_xdist-3.6.1-py3-none-any.whl", hash = "sha256:9ed4adfb68a016610848639bb7e02c9352d5d9f03d04809919e2dafc3be4cca7", size = 46108 },
+]
+
+[[package]]
+name = "python-crontab"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dateutil" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e2/f0/25775565c133d4e29eeb607bf9ddba0075f3af36041a1844dd207881047f/python_crontab-3.2.0.tar.gz", hash = "sha256:40067d1dd39ade3460b2ad8557c7651514cd3851deffff61c5c60e1227c5c36b", size = 57001 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/91/832fb3b3a1f62bd2ab4924f6be0c7736c9bc4f84d3b153b74efcf6d4e4a1/python_crontab-3.2.0-py3-none-any.whl", hash = "sha256:82cb9b6a312d41ff66fd3caf3eed7115c28c195bfb50711bc2b4b9592feb9fe5", size = 27351 },
 ]
 
 [[package]]
