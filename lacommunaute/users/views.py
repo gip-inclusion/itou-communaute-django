@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 from urllib.parse import urlencode
 
 from django.conf import settings
@@ -24,7 +24,7 @@ from lacommunaute.utils.enums import Environment
 from lacommunaute.utils.urls import clean_next_url
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 
 def send_magic_link(request, user, next_url):

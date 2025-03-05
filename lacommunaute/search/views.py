@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.contrib.postgres.search import SearchHeadline, SearchQuery, SearchRank
 from django.db.models import F
 from django.views.generic import ListView
@@ -7,6 +9,9 @@ from lacommunaute.forum.models import Forum
 from lacommunaute.search.enums import CommonIndexKind
 from lacommunaute.search.forms import SearchForm
 from lacommunaute.search.models import CommonIndex
+
+
+logger = getLogger("lacommunaute")
 
 
 class SearchView(FormMixin, ListView):

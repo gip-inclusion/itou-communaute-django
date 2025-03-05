@@ -683,6 +683,12 @@ wheels = [
 ]
 
 [[package]]
+name = "json-log-formatter"
+version = "1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/34/02eee63c3871b9f3ea340f58d0675dae8d9cc95a8a961f379f5a1b325911/json_log_formatter-1.1.tar.gz", hash = "sha256:fe8fd801c58c1234df86211720921f60149105ef8d1e2a72966bb61da9bed584", size = 5858 }
+
+[[package]]
 name = "json5"
 version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
@@ -708,6 +714,7 @@ dependencies = [
     { name = "django-storages" },
     { name = "django-taggit" },
     { name = "httpx" },
+    { name = "json-log-formatter" },
     { name = "langdetect" },
     { name = "psycopg" },
     { name = "pyjwt" },
@@ -753,6 +760,7 @@ requires-dist = [
     { name = "django-storages", specifier = ">=1.14" },
     { name = "django-taggit", specifier = ">=6.1" },
     { name = "httpx", specifier = ">=0.28" },
+    { name = "json-log-formatter", specifier = ">=1.1" },
     { name = "langdetect", specifier = ">=1.0.9" },
     { name = "psycopg", specifier = ">=3.2" },
     { name = "pyjwt", specifier = ">=2.10" },

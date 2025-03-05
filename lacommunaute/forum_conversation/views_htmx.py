@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 
 from django.shortcuts import get_object_or_404, render
 from django.views import View
@@ -10,7 +10,7 @@ from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_post
 from lacommunaute.notification.models import Notification
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger("lacommunaute")
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")

@@ -3,15 +3,16 @@ from django.core.management import call_command
 
 from lacommunaute.stats.factories import StatFactory
 from lacommunaute.stats.management.commands.collect_matomo_stats import get_initial_from_date
+from lacommunaute.stats.models import Stat
 from lacommunaute.surveys.factories import DSPFactory
 
 
-def test_collect_django_stats(db, capsys):
+def test_collect_django_stats(db, caplog):
     DSPFactory()
     StatFactory(for_dsp_snapshot=True)
     call_command("collect_django_stats")
-    captured = capsys.readouterr()
-    assert captured.out.strip() == "Collecting DSP stats from 2024-05-18 to yesterday: 1 new stats\nThat's all, folks!"
+    assert "Collecting DSP stats from 2024-05-18 to yesterday: 1 new stats" in caplog.text
+    assert Stat.objects.count() == 2
 
 
 @pytest.mark.parametrize(

@@ -1,7 +1,7 @@
 # vincenporte ~ untested code
 # TODO: refactor it code base and test it
-
 from datetime import timedelta
+from logging import getLogger
 from typing import Dict
 
 from django.core.management.base import BaseCommand
@@ -10,6 +10,9 @@ from django.db.models.query import QuerySet
 
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.models import Post, Topic
+
+
+logger = getLogger("commands")
 
 
 def get_answered_topics_of_a_month(month: int, year: int) -> QuerySet:
@@ -54,5 +57,5 @@ class Command(BaseCommand):
         year = options["year"]
 
         values = min_median_max_values(get_answered_topics_of_a_month(month, year), "time_diff_seconds")
-        self.stdout.write(self.style.SUCCESS(f"{month}/{year}: {values}"))
-        self.stdout.write(self.style.SUCCESS("That's all, folks!"))
+        logger.info("%s/%s: %s", month, year, values)
+        logger.info("That's all, folks!")

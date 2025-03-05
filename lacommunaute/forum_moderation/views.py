@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from django.contrib import messages
 from django.urls import reverse
 from machina.apps.forum_moderation.views import (
@@ -7,6 +9,9 @@ from machina.apps.forum_moderation.views import (
 
 from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedEmail, BlockedPost
+
+
+logger = getLogger("lacommunaute")
 
 
 class TopicDeleteView(BaseTopicDeleteView):
