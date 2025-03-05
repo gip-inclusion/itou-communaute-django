@@ -1,6 +1,10 @@
 [
     "*/10 * * * * $ROOT/clevercloud/rebuild_index.sh",
     "0 3 * * * $ROOT/clevercloud/run_management_command.sh clearsessions",
+    "0 11 * * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats",
+    "5 11 * * * $ROOT/clevercloud/run_management_command.sh collect_django_stats",
+    "10 11 1 * * $ROOT/clevercloud/run_management_command.sh collect_matomo_stats --period month",
+    "15 11 * * 1 $ROOT/clevercloud/run_management_command.sh collect_matomo_forum_stats",
     "*/15 7-21 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications asap",
     "55 8-18 * * 1-5 $ROOT/clevercloud/run_management_command.sh add_missyou_notifications",
     "20 6 * * * $ROOT/clevercloud/run_management_command.sh send_messages_notifications day",
