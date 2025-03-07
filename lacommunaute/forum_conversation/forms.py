@@ -1,9 +1,17 @@
 from django.db.models import F
-from django.forms import CharField, CheckboxSelectMultiple, HiddenInput, ModelMultipleChoiceField
+from django.forms import (
+    BooleanField,
+    CharField,
+    CheckboxInput,
+    CheckboxSelectMultiple,
+    HiddenInput,
+    ModelMultipleChoiceField,
+)
 from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, TopicForm as AbstractTopicForm
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.models import Post
+from lacommunaute.forum_conversation.shortcuts import can_moderate_post
 from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_moderation.utils import check_post_approbation
@@ -38,12 +46,27 @@ class CreateUpdatePostMixin:
 
 class PostForm(CreateUpdatePostMixin, AbstractPostForm):
     subject = CharField(widget=HiddenInput(), required=False)
+    approved = BooleanField(required=False, widget=HiddenInput(), label="")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields["approved"].initial = self.instance.approved
+
+        user = kwargs.get("user", None)
+        if user and can_moderate_post(user):
+            self.fields["approved"].widget = CheckboxInput()
+            self.fields["approved"].label = "Message approuvé"
 
     def create_post(self):
         post = super().create_post()
         post.subject = self.topic.subject
 
         return post
+
+    def update_post(self, post):
+        super().update_post(post)
+        post.approved = self.cleaned_data.get("approved")
 
 
 class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):

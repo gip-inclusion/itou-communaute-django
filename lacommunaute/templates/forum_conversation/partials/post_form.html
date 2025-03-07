@@ -15,6 +15,7 @@
     {% include "partials/form_field.html" with field=post_form.update_reason %}
 {% endif %}
 {% include "partials/form_field.html" with field=post_form.lock_topic %}
+{% include "partials/form_field.html" with field=post_form.approved %}
 <!-- Sub "forms" tabs -->
 {% if attachment_formset %}
     <ul class="nav nav-tabs nav-tabs--communaute">
