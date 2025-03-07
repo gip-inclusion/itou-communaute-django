@@ -1,4 +1,34 @@
 # serializer version: 1
+# name: TestPostUpdateView.test_init_approved_value[False][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Approved</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestPostUpdateView.test_init_approved_value[True][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Approved</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
 # name: TestPosterTemplate.test_topic_from_other_public_forum_in_topics_view[topic_from_other_public_forum_in_topics_view]
   '''
   <small class="text-muted poster-infos">

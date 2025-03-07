@@ -44,7 +44,13 @@
                                 <table class="post-data-table">
                                     <tr>
                                         <td class="post-name">
-                                            <a href="{% url 'forum_moderation:queued_post' post.pk %}" class="post-name-link">{{ post.subject }}</a>
+                                            <a href="{% url 'forum_moderation:queued_post' post.pk %}" class="post-name-link" id="post-name">
+                                                {% if post.subject %}
+                                                    {{ post.subject }}
+                                                {% else %}
+                                                    {{ post.topic.subject }}
+                                                {% endif %}
+                                            </a>
                                             <div>
                                                 <div class="post-created">
                                                     {% if post.poster %}
