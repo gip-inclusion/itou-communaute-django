@@ -74,11 +74,18 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )
     new_tags = CharField(required=False, label="Ajouter un tag ou plusieurs tags (séparés par des virgules)")
+    approved = BooleanField(required=False, widget=HiddenInput(), initial=True, label="")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields["tags"].initial = self.instance.topic.tags.all()
+            self.fields["approved"].initial = self.instance.approved
+
+        user = kwargs.get("user", None)
+        if user and can_moderate_post(user):
+            self.fields["approved"].widget = CheckboxInput()
+            self.fields["approved"].label = "Message approuvé"
 
     def save(self):
         post = super().save()
@@ -88,5 +95,12 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
             if self.cleaned_data.get("new_tags")
             else None
         )
+
+        if post.is_topic_head:
+            post.approved = self.cleaned_data.get("approved")
+            post.save()
+
+            post.topic.approved = self.cleaned_data.get("approved")
+            post.topic.save()
 
         return post
