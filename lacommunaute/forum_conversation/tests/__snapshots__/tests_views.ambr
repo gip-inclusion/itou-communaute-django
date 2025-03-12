@@ -159,15 +159,6 @@
                   </div>
   '''
 # ---
-# name: TestTopicListView.test_queryset_on_filter[CERTIFIED-<lambda>-<lambda>][CERTIFIED-tagged_topics]
-  '''
-  <div class="flex-grow-1" id="topic-list-filter-header">
-                      <span class="h5 m-0">1 question</span>
-                      avec une réponse certifiée
-                      
-                  </div>
-  '''
-# ---
 # name: TestTopicListView.test_queryset_on_filter[NEW-<lambda>-<lambda>][NEW-tagged_topics]
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">
