@@ -60,7 +60,11 @@ class TopicCreateViewTest(TestCase):
             },
         )
 
-        cls.post_data = {"subject": faker.text(max_nb_chars=10), "content": faker.paragraph(nb_sentences=5)}
+        cls.post_data = {
+            "subject": faker.text(max_nb_chars=10),
+            "content": faker.paragraph(nb_sentences=5),
+            "approved": True,
+        }
 
     def test_get_success_url(self):
         view = TopicCreateView()
@@ -318,7 +322,7 @@ class TopicUpdateViewTest(TestCase):
 
         self.client.force_login(self.poster)
 
-        post_data = {"subject": "s", "content": faker.paragraph(nb_sentences=5)}
+        post_data = {"subject": "s", "content": faker.paragraph(nb_sentences=5), "approved": True}
         response = self.client.post(
             self.url,
             post_data,
@@ -370,7 +374,7 @@ class TopicUpdateViewTest(TestCase):
                 kwargs={
                     "forum_slug": self.forum.slug,
                     "forum_pk": self.forum.pk,
-                    "slug": topic.slug,
+                    "slug": updated_subject,
                     "pk": topic.pk,
                 },
             ),
@@ -445,6 +449,53 @@ class TopicUpdateViewTest(TestCase):
         self.assertEqual(topic.first_post.content.raw, initial_raw_content)
 
 
+class TestTopicUpdateView:
+    @pytest.mark.parametrize("post_is_approved", [True, False])
+    def test_init_approved_value(self, client, db, post_is_approved, snapshot):
+        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+        post = topic.first_post
+        post.approved = post_is_approved
+        post.save()
+        user = UserFactory(is_staff=True)
+        assign_perm("can_edit_posts", user, topic.forum)
+        client.force_login(user)
+        response = client.get(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            )
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_approved")
+        assert str(content) == snapshot(name="init_approved_value")
+
+    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
+    def test_approved_field_visibility(self, client, db, user, snapshot):
+        user = user()
+        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+        assign_perm("can_edit_posts", user, topic.forum)
+        client.force_login(user)
+        response = client.get(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            )
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_approved")
+        assert str(content) == snapshot(name="approved_field_visibility")
+
+
 class PostCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -488,7 +539,7 @@ class PostUpdateViewTest(TestCase):
             "pk": cls.post.pk,
         }
         cls.url = reverse("forum_conversation:post_update", kwargs=cls.kwargs)
-        cls.post_data = {"content": faker.paragraph(nb_sentences=5)}
+        cls.post_data = {"content": faker.paragraph(nb_sentences=5), "approved": True}
         cls.initial_raw_content = cls.post.content.raw
 
     def test_delete_post_button_is_visible(self, *args):
@@ -529,7 +580,7 @@ class PostUpdateViewTest(TestCase):
             },
         )
 
-        post_data = {"content": faker.paragraph(nb_sentences=5), "username": post.username}
+        post_data = {"content": faker.paragraph(nb_sentences=5), "username": post.username, "approved": True}
 
         response = self.client.post(
             url,
@@ -639,6 +690,55 @@ class PostUpdateViewTest(TestCase):
         )
         post.refresh_from_db()
         self.assertEqual(post.username, "john@doe.com")
+
+
+class TestPostUpdateView:
+    @pytest.mark.parametrize("last_post_is_approved", [True, False])
+    def test_init_approved_value(self, client, db, last_post_is_approved, snapshot):
+        topic = TopicFactory(with_post=True, answered=True, forum=ForumFactory(with_public_perms=True))
+        last_post = topic.last_post
+        last_post.approved = last_post_is_approved
+        last_post.save()
+        user = UserFactory(is_staff=True)
+        assign_perm("can_edit_posts", user, topic.forum)
+        client.force_login(user)
+        response = client.get(
+            reverse(
+                "forum_conversation:post_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "topic_slug": topic.slug,
+                    "topic_pk": topic.pk,
+                    "pk": last_post.pk,
+                },
+            )
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_approved")
+        assert str(content) == snapshot(name="init_approved_value")
+
+    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
+    def test_approved_field_visibility(self, client, db, user, snapshot):
+        user = user()
+        topic = TopicFactory(with_post=True, answered=True, forum=ForumFactory(with_public_perms=True))
+        assign_perm("can_edit_posts", user, topic.forum)
+        client.force_login(user)
+        response = client.get(
+            reverse(
+                "forum_conversation:post_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "topic_slug": topic.slug,
+                    "topic_pk": topic.pk,
+                    "pk": topic.last_post.pk,
+                },
+            )
+        )
+        assert response.status_code == 200
+        content = parse_response_to_soup(response, selector="#div_id_approved")
+        assert str(content) == snapshot(name="approved_field_visibility")
 
 
 class PostDeleteViewTest(TestCase):

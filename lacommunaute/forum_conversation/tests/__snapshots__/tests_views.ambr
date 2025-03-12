@@ -1,4 +1,64 @@
 # serializer version: 1
+# name: TestPostUpdateView.test_approved_field_visibility[<lambda>0][approved_field_visibility]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          
+          
+              <input class="form-control" id="id_approved" name="approved" type="hidden" value="True"/>
+          
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestPostUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestPostUpdateView.test_init_approved_value[False][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestPostUpdateView.test_init_approved_value[True][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
 # name: TestPosterTemplate.test_topic_from_other_public_forum_in_topics_view[topic_from_other_public_forum_in_topics_view]
   '''
   <small class="text-muted poster-infos">
@@ -99,15 +159,6 @@
                   </div>
   '''
 # ---
-# name: TestTopicListView.test_queryset_on_filter[CERTIFIED-<lambda>-<lambda>][CERTIFIED-tagged_topics]
-  '''
-  <div class="flex-grow-1" id="topic-list-filter-header">
-                      <span class="h5 m-0">1 question</span>
-                      avec une réponse certifiée
-                      
-                  </div>
-  '''
-# ---
 # name: TestTopicListView.test_queryset_on_filter[NEW-<lambda>-<lambda>][NEW-tagged_topics]
   '''
   <div class="flex-grow-1" id="topic-list-filter-header">
@@ -156,6 +207,66 @@
                           </span>
                       
                   </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_approved_field_visibility[<lambda>0][approved_field_visibility]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          
+          
+              <input class="form-control" id="id_approved" name="approved" type="hidden" value="True"/>
+          
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_init_approved_value[False][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_init_approved_value[True][init_approved_value]
+  '''
+  <div class="form-group" id="div_id_approved">
+      
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Message approuvé</label>
+          </div>
+      
+      
+      
+      
+  </div>
   '''
 # ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]

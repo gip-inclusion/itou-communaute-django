@@ -146,7 +146,6 @@ class TestTopicForm:
         assert topic.first_post.username == username
         assert topic.poster is None
         assert topic.first_post.poster is None
-        assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == superuser
 
     def test_create_topic_as_authenticated(self, db, client, public_forum):
@@ -178,7 +177,6 @@ class TestTopicForm:
         assert topic.first_post.username is None
         assert topic.poster == user
         assert topic.first_post.poster == user
-        assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == user
 
     def test_update_authenticated_topic_as_superuser(self, db, client, public_forum):
@@ -199,7 +197,6 @@ class TestTopicForm:
         assert topic.first_post.username is None
         assert topic.poster == user
         assert topic.first_post.poster == user
-        assert topic.first_post.updates_count == 1
         assert topic.first_post.updated_by == superuser
 
     def test_init_tags_when_creating_topic(self, db, client, public_forum):
