@@ -1,5 +1,25 @@
 # Journal des modifications
 
+## [2.22.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.21.0...v2.22.0) (2025-03-12)
+
+
+### Features
+
+* anonymisation des données 30j après la notification ([#916](https://github.com/gip-inclusion/itou-communaute-django/issues/916)) ([7ecd326](https://github.com/gip-inclusion/itou-communaute-django/commit/7ecd326c4fbe84e5d455fb172dd25e8c67ab9e85))
+* envoi des messages pour les utilisateurs non vus depuis plus de 23 mois ([#912](https://github.com/gip-inclusion/itou-communaute-django/issues/912)) ([00acb65](https://github.com/gip-inclusion/itou-communaute-django/commit/00acb65ca2630f05e945978e52de86273f624231))
+* extension des droits des utilisateurs de l'équipe - edition, deplacement et verrouillage des sujets ([#917](https://github.com/gip-inclusion/itou-communaute-django/issues/917)) ([7ef0c62](https://github.com/gip-inclusion/itou-communaute-django/commit/7ef0c627d3ae6f87fc5e5505e177d95340f33640))
+* faciliter la moderation des `Post` pour les utilisateurs `staff` ([#928](https://github.com/gip-inclusion/itou-communaute-django/issues/928)) ([bcc3563](https://github.com/gip-inclusion/itou-communaute-django/commit/bcc35639b0429530f02b44364ee75ec7bcb29ce9))
+* modifier la catégorie d'une fiche pratique par les utilisateurs `staff` ([#925](https://github.com/gip-inclusion/itou-communaute-django/issues/925)) ([457f914](https://github.com/gip-inclusion/itou-communaute-django/commit/457f914234da392ea7876b350f8be2efe8be181c))
+* reactivation de la collecte des stats ([#930](https://github.com/gip-inclusion/itou-communaute-django/issues/930)) ([48b5cec](https://github.com/gip-inclusion/itou-communaute-django/commit/48b5cec5cdf2f9184c34ac9b467f495cc414044c))
+
+
+### Bug Fixes
+
+* desactivation de la collecte automatique des statistiques depuis matomo ([#919](https://github.com/gip-inclusion/itou-communaute-django/issues/919)) ([ed2fb75](https://github.com/gip-inclusion/itou-communaute-django/commit/ed2fb75c146a735d56abe95fe0a1d0fbee41dba4))
+* encodage de la description des fiches pratiques sur la homepage ([#926](https://github.com/gip-inclusion/itou-communaute-django/issues/926)) ([5c94684](https://github.com/gip-inclusion/itou-communaute-django/commit/5c94684fd0b8de917f19c6cd5dfcd7c898682149))
+* mise à jour de la date d'envoi de la notification "vous-nous-manquez" ([#922](https://github.com/gip-inclusion/itou-communaute-django/issues/922)) ([50d7200](https://github.com/gip-inclusion/itou-communaute-django/commit/50d72001b94a2c13d1cd16cff2dfd0f680c3f3d1))
+* mise en pause des notifications "vous nous manquez" ([#920](https://github.com/gip-inclusion/itou-communaute-django/issues/920)) ([30941a3](https://github.com/gip-inclusion/itou-communaute-django/commit/30941a391478efcee2fb26b91f512ce2ee8b354a))
+
 ## [2.21.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.20.0...v2.21.0) (2025-02-13)
 
 
