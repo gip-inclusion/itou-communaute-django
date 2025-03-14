@@ -48,7 +48,6 @@ THIRD_PARTIES_APPS = [
     # Machina apps:
     "machina",
     "machina.apps.forum_tracking",
-    "machina.apps.forum_permission",
     # django-compressor
     "compressor",
     "django_social_share",
@@ -77,6 +76,7 @@ LOCAL_APPS = [
     "lacommunaute.forum_upvote",
     "lacommunaute.stats",
     "lacommunaute.forum_moderation",
+    "lacommunaute.forum_permission",
     "lacommunaute.notification",
     "lacommunaute.event",
     "lacommunaute.openid_connect",
@@ -351,6 +351,7 @@ SITE_ID = 1
 
 DSP_FORUM_RELATED_ID = 108
 STAFF_GROUP_ID = 48
+STAFF_GROUP_NAME = "Equipe"
 
 API_BAN_BASE_URL = "https://api-adresse.data.gouv.fr"
 
