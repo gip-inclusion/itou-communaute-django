@@ -13,7 +13,6 @@ from lacommunaute.utils.testing import parse_response_to_soup
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 class ForumProfileUpdateViewTest(TestCase):

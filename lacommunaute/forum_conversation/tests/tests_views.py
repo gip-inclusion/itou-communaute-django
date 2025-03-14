@@ -767,8 +767,6 @@ class TopicViewTest(TestCase):
         cls.forum = cls.topic.forum
         cls.poster = cls.topic.poster
         cls.perm_handler = PermissionHandler()
-        assign_perm("can_read_forum", cls.poster, cls.topic.forum)
-        assign_perm("can_see_forum", cls.poster, cls.topic.forum)
         cls.kwargs = {
             "forum_pk": cls.topic.forum.pk,
             "forum_slug": cls.topic.forum.slug,
@@ -822,7 +820,6 @@ class TopicViewTest(TestCase):
 
     def test_edit_link_is_visible(self):
         self.client.force_login(self.poster)
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
 
         response = self.client.get(self.url)
         self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs), status_code=200)

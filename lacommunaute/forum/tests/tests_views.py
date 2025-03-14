@@ -26,7 +26,6 @@ from lacommunaute.utils.testing import parse_response_to_soup, reset_model_seque
 faker = Faker()
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
 
 
@@ -177,8 +176,6 @@ class ForumViewTest(TestCase):
     def test_cannot_submit_post(self, *args):
         user = UserFactory()
         forum = ForumFactory()
-        assign_perm("can_read_forum", user, forum)
-        assign_perm("can_see_forum", user, forum)
         remove_perm("can_reply_to_topics", user, self.forum)
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
         self.client.force_login(user)

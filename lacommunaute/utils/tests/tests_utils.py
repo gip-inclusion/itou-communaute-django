@@ -47,7 +47,6 @@ GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 faker = Faker()
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 override_storage = {"default": {"BACKEND": "django.core.files.storage.FileSystemStorage"}}
 

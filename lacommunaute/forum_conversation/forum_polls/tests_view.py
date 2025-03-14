@@ -69,8 +69,6 @@ class TopicPollVoteViewTest(TestCase):
         self.assertEqual(TopicReadTrack.objects.count(), 0)
 
         assign_perm("can_vote_in_polls", self.user, self.forum)
-        assign_perm("can_see_forum", self.user, self.forum)
-        assign_perm("can_read_forum", self.user, self.forum)
 
         self.client.force_login(self.user)
 
