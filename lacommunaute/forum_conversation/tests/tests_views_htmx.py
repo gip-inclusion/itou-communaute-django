@@ -7,7 +7,6 @@ from faker import Faker
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
-from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import CertifiedPostFactory, PostFactory, TopicFactory
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Topic
@@ -44,11 +43,6 @@ class TopicContentViewTest(TestCase):
                 "slug": cls.topic.slug,
             },
         )
-
-    def test_cannot_read_topic(self):
-        self.client.force_login(self.user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
 
     def test_topic_doesnt_exist(self):
         assign_perm("can_read_forum", self.user, self.topic.forum)
@@ -115,11 +109,6 @@ class PostListViewTest(TestCase):
             "forum_conversation_extension:showmore_posts",
             kwargs=cls.kwargs,
         )
-
-    def test_cannot_read_post(self):
-        self.client.force_login(UserFactory())
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
 
     def test_topic_doesnt_exist(self):
         self.client.force_login(self.user)
@@ -247,12 +236,7 @@ class PostFeedCreateViewTest(TestCase):
     def test_get_method_unallowed(self):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 403)
-
-    def test_cannot_post(self):
-        self.client.force_login(self.user)
-        response = self.client.post(self.url, data={})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 405)
 
     def test_topic_doesnt_exist(self):
         assign_perm("can_reply_to_topics", self.user, self.topic.forum)

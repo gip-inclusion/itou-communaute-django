@@ -3,7 +3,6 @@ from django.urls import reverse
 from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
-from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.users.factories import UserFactory
@@ -18,17 +17,9 @@ def test_get(client, db):
     assert response.status_code == 405
 
 
-def test_upvote_without_permission(client, db):
-    topic = TopicFactory(with_post=True)
-    form_data = {"pk": topic.first_post.pk}
-    client.force_login(UserFactory())
-    response = client.post(url, data=form_data)
-    assert response.status_code == 403
-
-
-def test_upvote_with_permission(client, db):
+def test_upvote(client, db):
     user = UserFactory()
-    topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+    topic = TopicFactory(with_post=True)
     form_data = {"pk": topic.first_post.pk}
     client.force_login(user)
 
