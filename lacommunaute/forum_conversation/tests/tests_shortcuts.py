@@ -76,7 +76,11 @@ class GetPostsofaTopicExceptFirstOneTest(TestCase):
 
 @pytest.mark.parametrize(
     "user,has_right",
-    [(lambda: AnonymousUser(), False), (lambda: UserFactory(), False), (lambda: UserFactory(is_staff=True), True)],
+    [
+        (lambda: AnonymousUser(), False),
+        (lambda: UserFactory(), False),
+        (lambda: UserFactory(is_in_staff_group=True), True),
+    ],
 )
 def test_can_certify_post(db, user, has_right):
     assert can_certify_post(user()) == has_right
@@ -84,7 +88,11 @@ def test_can_certify_post(db, user, has_right):
 
 @pytest.mark.parametrize(
     "user,has_right",
-    [(lambda: AnonymousUser(), False), (lambda: UserFactory(), False), (lambda: UserFactory(is_staff=True), True)],
+    [
+        (lambda: AnonymousUser(), False),
+        (lambda: UserFactory(), False),
+        (lambda: UserFactory(is_in_staff_group=True), True),
+    ],
 )
 def test_can_moderate_post(db, user, has_right):
     assert can_moderate_post(user()) == has_right

@@ -456,7 +456,7 @@ class TestTopicUpdateView:
         post = topic.first_post
         post.approved = post_is_approved
         post.save()
-        user = UserFactory(is_staff=True)
+        user = UserFactory(is_in_staff_group=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -474,7 +474,7 @@ class TestTopicUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
+    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_in_staff_group=True)])
     def test_approved_field_visibility(self, client, db, user, snapshot):
         user = user()
         topic = TopicFactory(with_post=True)
@@ -699,7 +699,7 @@ class TestPostUpdateView:
         last_post = topic.last_post
         last_post.approved = last_post_is_approved
         last_post.save()
-        user = UserFactory(is_staff=True)
+        user = UserFactory(is_in_staff_group=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -718,7 +718,7 @@ class TestPostUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
+    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_in_staff_group=True)])
     def test_approved_field_visibility(self, client, db, user, snapshot):
         user = user()
         topic = TopicFactory(with_post=True, answered=True)
