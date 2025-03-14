@@ -38,7 +38,3 @@ def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[
 
 def can_certify_post(user):
     return user.is_authenticated and user.is_staff
-
-
-def can_moderate_post(user):
-    return user.is_authenticated and user.is_staff

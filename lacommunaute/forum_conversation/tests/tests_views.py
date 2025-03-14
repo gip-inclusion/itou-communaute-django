@@ -474,9 +474,9 @@ class TestTopicUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_in_staff_group=True)])
-    def test_approved_field_visibility(self, client, db, user, snapshot):
-        user = user()
+    @pytest.mark.parametrize("is_staff", [True, False])
+    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
+        user = UserFactory(is_in_staff_group=is_staff)
         topic = TopicFactory(with_post=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
@@ -492,8 +492,11 @@ class TestTopicUpdateView:
             )
         )
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="approved_field_visibility")
+        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
+        if is_staff:
+            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
+                name="approved_field_visibility"
+            )
 
 
 class PostCreateViewTest(TestCase):
@@ -718,9 +721,9 @@ class TestPostUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_in_staff_group=True)])
-    def test_approved_field_visibility(self, client, db, user, snapshot):
-        user = user()
+    @pytest.mark.parametrize("is_staff", [True, False])
+    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
+        user = UserFactory(is_in_staff_group=is_staff)
         topic = TopicFactory(with_post=True, answered=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
@@ -737,8 +740,11 @@ class TestPostUpdateView:
             )
         )
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="approved_field_visibility")
+        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
+        if is_staff:
+            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
+                name="approved_field_visibility"
+            )
 
 
 class PostDeleteViewTest(TestCase):

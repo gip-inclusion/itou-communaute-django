@@ -2,7 +2,6 @@ from django.db.models import F
 from django.forms import (
     BooleanField,
     CharField,
-    CheckboxInput,
     CheckboxSelectMultiple,
     HiddenInput,
     ModelMultipleChoiceField,
@@ -11,7 +10,6 @@ from machina.apps.forum_conversation.forms import PostForm as AbstractPostForm, 
 from taggit.models import Tag
 
 from lacommunaute.forum_conversation.models import Post
-from lacommunaute.forum_conversation.shortcuts import can_moderate_post
 from lacommunaute.forum_moderation.enums import BlockedPostReason
 from lacommunaute.forum_moderation.models import BlockedPost
 from lacommunaute.forum_moderation.utils import check_post_approbation
@@ -46,17 +44,12 @@ class CreateUpdatePostMixin:
 
 class PostForm(CreateUpdatePostMixin, AbstractPostForm):
     subject = CharField(widget=HiddenInput(), required=False)
-    approved = BooleanField(required=False, widget=HiddenInput(), label="")
+    approved = BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields["approved"].initial = self.instance.approved
-
-        user = kwargs.get("user", None)
-        if user and can_moderate_post(user):
-            self.fields["approved"].widget = CheckboxInput()
-            self.fields["approved"].label = "Message approuvé"
 
     def create_post(self):
         post = super().create_post()
@@ -74,18 +67,13 @@ class TopicForm(CreateUpdatePostMixin, AbstractTopicForm):
         label="", queryset=Tag.objects.all(), widget=CheckboxSelectMultiple, required=False
     )
     new_tags = CharField(required=False, label="Ajouter un tag ou plusieurs tags (séparés par des virgules)")
-    approved = BooleanField(required=False, widget=HiddenInput(), initial=True, label="")
+    approved = BooleanField(required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields["tags"].initial = self.instance.topic.tags.all()
             self.fields["approved"].initial = self.instance.approved
-
-        user = kwargs.get("user", None)
-        if user and can_moderate_post(user):
-            self.fields["approved"].widget = CheckboxInput()
-            self.fields["approved"].label = "Message approuvé"
 
     def save(self):
         post = super().save()
