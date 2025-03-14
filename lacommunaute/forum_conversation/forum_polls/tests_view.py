@@ -6,13 +6,13 @@ from machina.test.factories.forum import create_forum
 from machina.test.factories.polls import TopicPollFactory, TopicPollOptionFactory
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
 from lacommunaute.users.factories import UserFactory
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
-TopicPollVote = get_model("forum_polls", "TopicPollVote")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 
 
