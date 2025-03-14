@@ -34,7 +34,3 @@ def get_posts_of_a_topic_except_first_one(topic: Topic, user: User) -> QuerySet[
             upvotes_count=Count("upvotes"),
         )
     return qs.order_by("created")
-
-
-def can_certify_post(user):
-    return user.is_authenticated and user.is_staff

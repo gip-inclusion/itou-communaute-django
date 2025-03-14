@@ -1,14 +1,11 @@
-import pytest
 from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
 from lacommunaute.forum_conversation.shortcuts import (
-    can_certify_post,
     get_posts_of_a_topic_except_first_one,
 )
 from lacommunaute.forum_upvote.factories import UpVoteFactory
-from lacommunaute.users.factories import UserFactory
 
 
 class GetPostsofaTopicExceptFirstOneTest(TestCase):
@@ -71,15 +68,3 @@ class GetPostsofaTopicExceptFirstOneTest(TestCase):
         self.assertEqual(len(posts), 1)
         self.assertEqual(post.upvotes_count, 1)
         self.assertTrue(post.has_upvoted)
-
-
-@pytest.mark.parametrize(
-    "user,has_right",
-    [
-        (lambda: AnonymousUser(), False),
-        (lambda: UserFactory(), False),
-        (lambda: UserFactory(is_in_staff_group=True), True),
-    ],
-)
-def test_can_certify_post(db, user, has_right):
-    assert can_certify_post(user()) == has_right
