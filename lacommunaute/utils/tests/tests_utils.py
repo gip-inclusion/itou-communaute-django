@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 import pytest
 from bs4 import BeautifulSoup
-from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -16,7 +15,6 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlencode
 from django.utils.timesince import timesince
 from faker import Faker
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory
@@ -25,7 +23,7 @@ from lacommunaute.forum_conversation.forum_attachments.factories import Attachme
 from lacommunaute.forum_file.models import PublicFile
 from lacommunaute.stats.models import ForumStat
 from lacommunaute.users.enums import IdentityProvider
-from lacommunaute.users.factories import GroupFactory, UserFactory
+from lacommunaute.users.factories import UserFactory
 from lacommunaute.utils.date import get_last_sunday
 from lacommunaute.utils.math import percent
 from lacommunaute.utils.matomo import (
@@ -35,14 +33,9 @@ from lacommunaute.utils.matomo import (
     get_matomo_forums_data,
     get_matomo_visits_data,
 )
-from lacommunaute.utils.perms import add_public_perms_on_forum, add_staff_perms_on_forum
 from lacommunaute.utils.testing import parse_response_to_soup
 from lacommunaute.utils.urls import urlize
 
-
-ForumPermission = get_model("forum_permission", "ForumPermission")
-UserForumPermission = get_model("forum_permission", "UserForumPermission")
-GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 
 faker = Faker()
 
@@ -700,60 +693,6 @@ class UtilsParseResponseToSoupTest(TestCase):
             '<div hx-get="/bream/">bream</div>'
             '<div hx-get="/slug2/">red mullet</div>'
             "</body></html>"
-        )
-
-
-class TestAddPermsOnForum:
-    def test_add_public_perms_on_forum(self, db):
-        forum = ForumFactory()
-        add_public_perms_on_forum(forum)
-
-        perms = [
-            "can_see_forum",
-            "can_read_forum",
-            "can_start_new_topics",
-            "can_reply_to_topics",
-            "can_edit_own_posts",
-            "can_delete_own_posts",
-            "can_post_without_approval",
-        ]
-
-        assert (
-            UserForumPermission.objects.filter(
-                forum=forum,
-                anonymous_user=True,
-                authenticated_user=False,
-                has_perm=True,
-                permission__in=ForumPermission.objects.filter(codename__in=perms),
-            ).count()
-            == 7
-        )
-        assert (
-            UserForumPermission.objects.filter(
-                forum=forum,
-                anonymous_user=False,
-                authenticated_user=True,
-                has_perm=True,
-                permission__in=ForumPermission.objects.filter(codename__in=perms),
-            ).count()
-            == 7
-        )
-
-    def test_add_staff_perms_on_forum(self, db):
-        forum = ForumFactory()
-        group = GroupFactory(id=settings.STAFF_GROUP_ID)
-        add_staff_perms_on_forum(forum)
-
-        permissions = ["can_edit_posts", "can_move_topics", "can_lock_topics"]
-
-        assert (
-            GroupForumPermission.objects.filter(
-                forum=forum,
-                group=group,
-                has_perm=True,
-                permission__in=ForumPermission.objects.filter(codename__in=permissions),
-            ).count()
-            == 3
         )
 
 

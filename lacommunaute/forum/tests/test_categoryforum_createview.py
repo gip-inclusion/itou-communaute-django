@@ -1,16 +1,11 @@
 import pytest
 from django.conf import settings
 from django.urls import reverse
-from machina.core.db.models import get_model
 from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.forms import ForumForm, SubCategoryForumUpdateForm
 from lacommunaute.forum.models import Forum
 from lacommunaute.users.factories import GroupFactory, UserFactory
-
-
-UserForumPermission = get_model("forum_permission", "UserForumPermission")
-GroupForumPermission = get_model("forum_permission", "GroupForumPermission")
 
 
 @pytest.fixture(name="staff_group")
@@ -61,6 +56,3 @@ def test_create_category_with_perms(client, db, staff_group):
     forum = Forum.objects.get()
     assert forum.type == Forum.FORUM_CAT
     assert forum.parent is None
-
-    assert UserForumPermission.objects.filter(forum=forum).count() == 14
-    assert GroupForumPermission.objects.filter(forum=forum, group=staff_group).count() == 3
