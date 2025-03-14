@@ -3,7 +3,6 @@ from machina.test.factories.forum import ForumFactory as BaseForumFactory
 
 from lacommunaute.forum.models import Forum, ForumRating
 from lacommunaute.forum_upvote.models import UpVote
-from lacommunaute.utils.perms import add_public_perms_on_forum
 
 
 class ForumFactory(BaseForumFactory):
@@ -21,12 +20,6 @@ class ForumFactory(BaseForumFactory):
             name="Test Forum", description="Test description", short_description="Test description"
         )
 
-    @factory.post_generation
-    def with_public_perms(self, create, extracted, **kwargs):
-        if not create or not extracted:
-            return
-
-        add_public_perms_on_forum(self)
 
     @factory.post_generation
     def upvoted_by(self, create, extracted, **kwargs):
@@ -63,7 +56,7 @@ class CategoryForumFactory(ForumFactory):
         if not create or not extracted:
             return
 
-        ForumFactory(parent=self, with_public_perms=True, with_image=True, name=f"{self.name} - Forum")
+        ForumFactory(parent=self, with_image=True, name=f"{self.name} - Forum")
 
 
 class ForumRatingFactory(factory.django.DjangoModelFactory):

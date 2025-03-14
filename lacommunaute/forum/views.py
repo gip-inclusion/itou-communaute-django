@@ -18,8 +18,6 @@ from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.forum_upvote.models import UpVote
 from lacommunaute.utils.perms import (
-    add_public_perms_on_forum,
-    add_staff_perms_on_forum,
     forum_visibility_content_tree_from_forums,
 )
 
@@ -156,12 +154,6 @@ class BaseCategoryForumCreateView(UserPassesTestMixin, CreateView):
 
     def test_func(self):
         return self.request.user.is_staff
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        add_public_perms_on_forum(form.instance)
-        add_staff_perms_on_forum(form.instance)
-        return response
 
 
 class CategoryForumCreateView(BaseCategoryForumCreateView):

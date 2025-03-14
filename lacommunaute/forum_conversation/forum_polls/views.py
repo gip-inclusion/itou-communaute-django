@@ -2,14 +2,13 @@ import logging
 
 from django.template.response import TemplateResponse
 from machina.apps.forum_conversation.forum_polls.views import TopicPollVoteView as BaseTopicPollVoteView
-from machina.core.db.models import get_model
 from machina.core.loading import get_class
+
+from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
 
 
 logger = logging.getLogger(__name__)
 
-Topic = get_model("forum_conversation", "Topic")
-TopicPollVote = get_model("forum_polls", "TopicPollVote")
 
 PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")

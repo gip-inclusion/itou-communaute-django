@@ -1,4 +1,4 @@
-{% if can_certify_post %}
+{% if request.user.is_staff %}
     {% if not topic.is_certified or post.is_certified %}
         - <i class="ri-award-line small" aria-hidden="true"></i>
         <form hx-post="{% url 'forum_conversation_extension:certify' topic.forum.slug topic.forum.pk topic.slug topic.pk %}"

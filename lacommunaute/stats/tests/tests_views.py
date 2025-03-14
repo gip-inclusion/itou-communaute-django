@@ -9,7 +9,6 @@ from django.utils.dateformat import format
 from django.utils.timezone import localdate
 from faker import Faker
 from freezegun import freeze_time
-from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 
 from lacommunaute.forum.factories import CategoryForumFactory, ForumFactory, ForumRatingFactory
@@ -21,7 +20,6 @@ from lacommunaute.utils.testing import parse_response_to_soup
 
 
 faker = Faker()
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 
 class StatistiquesPageTest(TestCase):

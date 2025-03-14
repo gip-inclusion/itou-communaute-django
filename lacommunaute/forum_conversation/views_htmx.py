@@ -6,7 +6,7 @@ from machina.core.loading import get_class
 
 from lacommunaute.forum_conversation.forms import PostForm
 from lacommunaute.forum_conversation.models import CertifiedPost, Post, Topic
-from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 from lacommunaute.notification.models import Notification
 
 
@@ -83,7 +83,6 @@ class PostListView(PermissionRequiredMixin, View):
                 "posts": get_posts_of_a_topic_except_first_one(topic, request.user),
                 "form": PostForm(forum=self.topic.forum, user=request.user),
                 "next_url": self.topic.get_absolute_url(),
-                "can_certify_post": can_certify_post(request.user),
             },
         )
 
@@ -141,11 +140,6 @@ class PostFeedCreateView(PermissionRequiredMixin, View):
 
 
 class CertifiedPostView(PermissionRequiredMixin, View):
-    def _can_certify_post(self, user):
-        if not hasattr(self, "can_certify_post"):
-            self.can_certify_post = can_certify_post(user)
-        return self.can_certify_post
-
     def dispatch(self, request, *args, **kwargs):
         if request.method != "POST":
             return self.http_method_not_allowed(request)
@@ -178,7 +172,6 @@ class CertifiedPostView(PermissionRequiredMixin, View):
                 "posts": get_posts_of_a_topic_except_first_one(post.topic, request.user),
                 "form": PostForm(forum=post.topic.forum, user=request.user),
                 "next_url": post.topic.get_absolute_url(),
-                "can_certify_post": self._can_certify_post(request.user),
             },
         )
 
@@ -186,4 +179,4 @@ class CertifiedPostView(PermissionRequiredMixin, View):
         return self.get_object().topic.forum
 
     def perform_permissions_check(self, user, obj, perms):
-        return self.request.forum_permission_handler.can_read_forum(obj, user) and self._can_certify_post(user)
+        return self.request.forum_permission_handler.can_read_forum(obj, user) and user and user.is_staff

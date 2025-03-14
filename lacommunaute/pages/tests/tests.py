@@ -14,7 +14,7 @@ class LandingPagesListViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
-        self.client.force_login(UserFactory(is_staff=True))
+        self.client.force_login(UserFactory(is_in_staff_group=True))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/landing_pages.html")

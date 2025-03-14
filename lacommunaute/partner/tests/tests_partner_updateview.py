@@ -17,11 +17,11 @@ def url_fixture(partner):
 
 @pytest.fixture(name="saff_user")
 def saff_user():
-    return UserFactory(is_staff=True)
+    return UserFactory(is_in_staff_group=True)
 
 
 @pytest.mark.parametrize(
-    "user,status_code", [(None, 302), (lambda: UserFactory(), 403), (lambda: UserFactory(is_staff=True), 200)]
+    "user,status_code", [(None, 302), (lambda: UserFactory(), 403), (lambda: UserFactory(is_in_staff_group=True), 200)]
 )
 def test_user_passes_test_mixin(client, db, url, user, status_code):
     if user:

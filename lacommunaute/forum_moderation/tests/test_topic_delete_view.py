@@ -3,7 +3,6 @@ from django.urls import reverse
 from machina.core.loading import get_class
 from pytest_django.asserts import assertContains
 
-from lacommunaute.forum.factories import ForumFactory
 from lacommunaute.forum_conversation.factories import TopicFactory
 
 
@@ -12,7 +11,7 @@ assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
 @pytest.fixture(name="topic")
 def topic_fixture():
-    topic = TopicFactory(forum=ForumFactory(with_public_perms=True), with_post=True)
+    topic = TopicFactory(with_post=True)
     assign_perm("can_delete_posts", topic.poster, topic.forum)
     return topic
 
