@@ -854,7 +854,7 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(38):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
