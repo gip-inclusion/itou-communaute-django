@@ -52,7 +52,7 @@ def test_object_not_found(client, db):
 
 def test_mark_as_read(client, db):
     user = UserFactory()
-    topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+    topic = TopicFactory(with_post=True)
     form_data = {"pk": topic.first_post.pk}
     client.force_login(user)
     response = client.post(url, data=form_data)
@@ -61,7 +61,7 @@ def test_mark_as_read(client, db):
 
 
 def test_context(client, db):
-    topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+    topic = TopicFactory(with_post=True)
     form_data = {"pk": topic.first_post.pk}
     client.force_login(UserFactory())
     response = client.post(url, data=form_data)

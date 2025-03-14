@@ -16,10 +16,9 @@ def search_url_fixture():
     return reverse("search:index")
 
 
-@pytest.fixture(name="public_forums")
-def public_forums_fixture():
+@pytest.fixture(name="forums")
+def forums_fixture():
     forum1 = ForumFactory.create(
-        with_public_perms=True,
         name="Le PASS IAE",
         description="Tout savoir sur le PASS IAE, l’insertion par l’activité économique, et plus encore !",
         short_description="Tout savoir sur le PASS IAE",
@@ -31,7 +30,6 @@ def public_forums_fixture():
         content="L’équipe des emplois de l’inclusion",
     )
     forum2 = ForumFactory.create(
-        with_public_perms=True,
         name="Administrateur de structure",
         description="Gérer votre structure, ses membres, sa localisation et ses fiches de postes.",
         short_description="Gestion de la structure",
@@ -46,10 +44,9 @@ def public_forums_fixture():
     return [forum1, forum2]
 
 
-@pytest.fixture(name="public_topics")
-def public_topics_fixture():
+@pytest.fixture(name="topics")
+def topics_fixture():
     forum = ForumFactory.create(
-        with_public_perms=True,
         name="Le rôle de prescripteur",
         description="Explication du rôle de prescripteur, un acteur clé de l’insertion.",
         short_description="Détails du rôle de prescripteur",
@@ -75,7 +72,7 @@ def refresh_search_index():
         c.execute("REFRESH MATERIALIZED VIEW search_commonindex;")
 
 
-def test_search_on_post(client, db, search_url, public_topics):
+def test_search_on_post(client, db, search_url, topics):
     query = ["au", "service", "des", "jeunes"]
     response = client.get(search_url, {"q": " ".join(query)})
 
@@ -84,11 +81,11 @@ def test_search_on_post(client, db, search_url, public_topics):
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
-def test_search_on_forum(client, db, search_url, public_forums):
+def test_search_on_forum(client, db, search_url, forums):
     query = ["Tout", "savoir", "sur"]
     response = client.get(search_url, {"q": " ".join(query)})
 
-    assertNotContains(response, public_forums[1].description.raw)
+    assertNotContains(response, forums[1].description.raw)
     for word in ["Tout", "savoir"]:  # Stop words are ignored, thus not highlighted.
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
@@ -118,7 +115,7 @@ def test_search_with_non_unicode_characters(client, db, search_url):
     assertContains(response, "Aucun résultat")
 
 
-def test_search_on_post_model_only(client, db, search_url, public_topics, public_forums):
+def test_search_on_post_model_only(client, db, search_url, topics, forums):
     datas = {"m": "TOPIC"}
 
     query = ["La", "mission", "locale", "est"]
@@ -136,7 +133,7 @@ def test_search_on_post_model_only(client, db, search_url, public_topics, public
         assertNotContains(response, f'<span class="highlighted">{word}</span>')
 
 
-def test_search_on_forum_model_only(client, db, search_url, public_topics, public_forums):
+def test_search_on_forum_model_only(client, db, search_url, topics, forums):
     datas = {"m": "FORUM"}
 
     query = ["La", "mission", "locale", "est"]
@@ -154,7 +151,7 @@ def test_search_on_forum_model_only(client, db, search_url, public_topics, publi
         assertContains(response, f'<span class="highlighted">{word}</span>')
 
 
-def test_search_on_both_models(client, db, search_url, public_topics, public_forums):
+def test_search_on_both_models(client, db, search_url, topics, forums):
     datas = {"m": "all"}
     query = ["La", "mission", "locale", "est"]
     datas["q"] = " ".join(query)
@@ -173,7 +170,6 @@ def test_search_on_both_models(client, db, search_url, public_topics, public_for
 
 def test_unapproved_post_is_exclude(client, db, search_url):
     forum = ForumFactory.create(
-        with_public_perms=True,
         name="Le PASS IAE",
         description="Tout savoir sur le PASS IAE, l’insertion par l’activité économique, et plus encore !",
         short_description="Tout savoir sur le PASS IAE",

@@ -26,7 +26,7 @@ class Command(BaseCommand):
         partners = PartnerFactory.create_batch(5, with_logo=True)
         sys.stdout.write("partners created\n")
 
-        forum = ForumFactory(name="Espace d'échanges", with_public_perms=True)
+        forum = ForumFactory(name="Espace d'échanges")
         TopicFactory.create_batch(20, forum=forum, with_post=True)
         TopicFactory.create_batch(3, forum=forum, with_post=True, with_tags=tags)
         TopicFactory(forum=forum, with_post=True, with_certified_post=True)
@@ -35,16 +35,13 @@ class Command(BaseCommand):
         sys.stdout.write("public forum created\n")
 
         for i in range(1, 4):
-            parent = CategoryForumFactory(with_public_perms=True, name=f"Thème {i}")
-            TopicFactory.create_batch(
-                2, forum=ForumFactory(parent=parent, with_public_perms=True, name=f"Fiche {i}-0"), with_post=True
-            )
+            parent = CategoryForumFactory(name=f"Thème {i}")
+            TopicFactory.create_batch(2, forum=ForumFactory(parent=parent, name=f"Fiche {i}-0"), with_post=True)
             for j in range(1, 4):
                 TopicFactory.create_batch(
                     2,
                     forum=ForumFactory(
                         parent=parent,
-                        with_public_perms=True,
                         with_partner=partners[j],
                         with_tags=tags[:j],
                         name=f"Fiche {i}-{j}",

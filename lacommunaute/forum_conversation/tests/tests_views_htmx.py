@@ -395,7 +395,7 @@ class PostFeedCreateViewTest(TestCase):
 class TestPostFeedCreateView:
     @pytest.mark.parametrize("logged", [True, False])
     def test_email_last_seen_is_updated(self, client, db, logged):
-        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+        topic = TopicFactory(with_post=True)
         url = reverse(
             "forum_conversation_extension:post_create",
             kwargs={
