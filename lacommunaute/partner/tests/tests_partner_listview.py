@@ -31,7 +31,7 @@ def test_pagination(client, db, snapshot, url):
 
 @pytest.mark.parametrize(
     "user,link_is_visible",
-    [(None, False), (lambda: UserFactory(), False), (lambda: UserFactory(is_staff=True), True)],
+    [(None, False), (lambda: UserFactory(), False), (lambda: UserFactory(is_in_staff_group=True), True)],
 )
 def test_link_to_createview(client, db, url, user, link_is_visible):
     if user:

@@ -7,17 +7,16 @@ from lacommunaute.utils.testing import parse_response_to_soup
 
 @pytest.fixture(name="documentation_forum")
 def fixture_documentation_forum():
-    category_forum = CategoryForumFactory(with_public_perms=True, for_snapshot=True, name="Category Forum")
+    category_forum = CategoryForumFactory(for_snapshot=True, name="Category Forum")
     ForumFactory(
         parent=category_forum,
-        with_public_perms=True,
         with_image=True,
         with_tags=["Jazz", "Blues"],
         for_snapshot=True,
         name="Ella Fitzgerald",
     )
     ForumFactory(
-        parent=category_forum, with_public_perms=True, with_image=True, for_snapshot=True, name="Mayra Andrade"
+        parent=category_forum, with_image=True, for_snapshot=True, name="Mayra Andrade"
     )
     return category_forum
 

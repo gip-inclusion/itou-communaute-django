@@ -28,7 +28,7 @@ def test_partner_detailview(client, db, snapshot, user, snapshot_name):
 
 def test_partner_with_forums(client, db, snapshot):
     partner = PartnerFactory(for_snapshot=True, with_logo=True)
-    forum = ForumFactory(with_partner=partner, with_public_perms=True, with_tags=["sun", "moon"], for_snapshot=True)
+    forum = ForumFactory(with_partner=partner, with_tags=["sun", "moon"], for_snapshot=True)
     response = client.get(partner.get_absolute_url())
     assert response.status_code == 200
     assert str(

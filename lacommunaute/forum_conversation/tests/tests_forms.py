@@ -50,9 +50,9 @@ class PostFormTest(TestCase):
         )
 
 
-@pytest.fixture(name="public_forum")
-def fixture_public_forum():
-    return ForumFactory(with_public_perms=True)
+@pytest.fixture(name="forum")
+def fixture_forum():
+    return ForumFactory()
 
 
 def get_create_topic_url(forum):
@@ -95,11 +95,11 @@ superuser_hidden_fields = {
 
 
 class TestTopicForm:
-    def test_create_topic_as_anonymous(self, db, client, public_forum):
+    def test_create_topic_as_anonymous(self, db, client, forum):
         username = faker.email()
 
         response = client.post(
-            get_create_topic_url(public_forum),
+            get_create_topic_url(forum),
             data={"subject": "Test", "content": faker.paragraph(nb_sentences=5), "username": username},
         )
         assert response.status_code == 302
@@ -111,8 +111,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 0
         assert topic.first_post.updated_by is None
 
-    def test_update_anonymous_topic_as_self(self, db, client, public_forum):
-        topic = AnonymousTopicFactory(forum=public_forum, with_post=True)
+    def test_update_anonymous_topic_as_self(self, db, client, forum):
+        topic = AnonymousTopicFactory(forum=forum, with_post=True)
         username = topic.first_post.username
         session = client.session
         session["anonymous_topic"] = topic.first_post.anonymous_key
@@ -128,8 +128,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 0  # surprisingly, this is not incremented
         assert topic.first_post.updated_by is None  # updated_by is a FK on User
 
-    def test_update_anonymous_topic_as_superuser(self, db, client, public_forum):
-        topic = AnonymousTopicFactory(forum=public_forum, with_post=True)
+    def test_update_anonymous_topic_as_superuser(self, db, client, forum):
+        topic = AnonymousTopicFactory(forum=forum, with_post=True)
         username = topic.first_post.username
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)
@@ -148,12 +148,12 @@ class TestTopicForm:
         assert topic.first_post.poster is None
         assert topic.first_post.updated_by == superuser
 
-    def test_create_topic_as_authenticated(self, db, client, public_forum):
+    def test_create_topic_as_authenticated(self, db, client, forum):
         user = UserFactory()
         client.force_login(user)
 
         response = client.post(
-            get_create_topic_url(public_forum), data={"subject": "Test", "content": faker.paragraph(nb_sentences=5)}
+            get_create_topic_url(forum), data={"subject": "Test", "content": faker.paragraph(nb_sentences=5)}
         )
         assert response.status_code == 302
 
@@ -164,8 +164,8 @@ class TestTopicForm:
         assert topic.first_post.updates_count == 0
         assert topic.first_post.updated_by is None
 
-    def test_update_authenticated_topic_as_self(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True)
+    def test_update_authenticated_topic_as_self(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True)
         user = topic.poster
         client.force_login(user)
 
@@ -179,8 +179,8 @@ class TestTopicForm:
         assert topic.first_post.poster == user
         assert topic.first_post.updated_by == user
 
-    def test_update_authenticated_topic_as_superuser(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True)
+    def test_update_authenticated_topic_as_superuser(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True)
         user = topic.poster
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)
@@ -199,20 +199,20 @@ class TestTopicForm:
         assert topic.first_post.poster == user
         assert topic.first_post.updated_by == superuser
 
-    def test_init_tags_when_creating_topic(self, db, client, public_forum):
-        response = client.get(get_create_topic_url(public_forum))
+    def test_init_tags_when_creating_topic(self, db, client, forum):
+        response = client.get(get_create_topic_url(forum))
         assert response.status_code == 200
         assert response.context_data["post_form"].fields["tags"].initial is None
 
-    def test_init_tags_when_updating_topic(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True)
+    def test_init_tags_when_updating_topic(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True)
         client.force_login(topic.poster)
         response = client.get(get_update_topic_url(topic))
         assert response.status_code == 200
         assert set(response.context_data["post_form"].fields["tags"].initial) == set(Tag.objects.none())
 
-    def test_init_tags_when_updating_tagged_topic(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True, with_tags=[faker.word() for _ in range(2)])
+    def test_init_tags_when_updating_tagged_topic(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True, with_tags=[faker.word() for _ in range(2)])
         client.force_login(topic.poster)
 
         response = client.get(get_update_topic_url(topic))
@@ -221,8 +221,8 @@ class TestTopicForm:
 
 
 class TestPostForm:
-    def test_reply_as_anonymous(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True)
+    def test_reply_as_anonymous(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True)
         username = faker.email()
 
         response = client.post(
@@ -237,8 +237,8 @@ class TestPostForm:
         assert post.updates_count == 0
         assert post.updated_by is None
 
-    def test_update_anonymous_reply_as_self(self, db, client, public_forum):
-        post = AnonymousPostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
+    def test_update_anonymous_reply_as_self(self, db, client, forum):
+        post = AnonymousPostFactory(topic=TopicFactory(forum=forum, with_post=True))
         username = post.username
         session = client.session
         session["anonymous_post"] = post.anonymous_key
@@ -253,8 +253,8 @@ class TestPostForm:
         assert post.updates_count == 0  # surprisingly, this is not incremented
         assert post.updated_by is None
 
-    def test_update_anonymous_reply_as_superuser(self, db, client, public_forum):
-        post = AnonymousPostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
+    def test_update_anonymous_reply_as_superuser(self, db, client, forum):
+        post = AnonymousPostFactory(topic=TopicFactory(forum=forum, with_post=True))
         username = post.username
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)
@@ -269,8 +269,8 @@ class TestPostForm:
         assert post.updates_count == 1
         assert post.updated_by == superuser
 
-    def test_reply_as_authenticated(self, db, client, public_forum):
-        topic = TopicFactory(forum=public_forum, with_post=True)
+    def test_reply_as_authenticated(self, db, client, forum):
+        topic = TopicFactory(forum=forum, with_post=True)
         user = UserFactory()
         client.force_login(user)
 
@@ -286,8 +286,8 @@ class TestPostForm:
         assert post.updates_count == 0
         assert post.updated_by is None
 
-    def test_update_authenticated_reply_as_self(self, db, client, public_forum):
-        post = PostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
+    def test_update_authenticated_reply_as_self(self, db, client, forum):
+        post = PostFactory(topic=TopicFactory(forum=forum, with_post=True))
         user = post.poster
         client.force_login(user)
 
@@ -301,8 +301,8 @@ class TestPostForm:
         assert post.updates_count == 1
         assert post.updated_by == user
 
-    def test_update_authenticated_reply_as_superuser(self, db, client, public_forum):
-        post = PostFactory(topic=TopicFactory(forum=public_forum, with_post=True))
+    def test_update_authenticated_reply_as_superuser(self, db, client, forum):
+        post = PostFactory(topic=TopicFactory(forum=forum, with_post=True))
         user = post.poster
         superuser = UserFactory(is_superuser=True)
         client.force_login(superuser)

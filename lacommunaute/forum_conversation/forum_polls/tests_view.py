@@ -2,17 +2,16 @@ from django.test import TestCase
 from django.urls import reverse
 from machina.core.db.models import get_model
 from machina.core.loading import get_class
-from machina.test.factories.forum import create_forum
 from machina.test.factories.polls import TopicPollFactory, TopicPollOptionFactory
 
 from lacommunaute.forum_conversation.factories import PostFactory, TopicFactory
+from lacommunaute.forum_conversation.forum_polls.models import TopicPollVote
 from lacommunaute.users.factories import UserFactory
 
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
 assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 
-TopicPollVote = get_model("forum_polls", "TopicPollVote")
 TopicReadTrack = get_model("forum_tracking", "TopicReadTrack")
 
 
@@ -21,8 +20,8 @@ class TopicPollVoteViewTest(TestCase):
     def setUpTestData(cls):
         cls.user = UserFactory()
         cls.perm_handler = PermissionHandler()
-        cls.forum = create_forum()
-        cls.topic = TopicFactory(forum=cls.forum, poster=cls.user)
+        cls.topic = TopicFactory(poster=cls.user)
+        cls.forum = cls.topic.forum
         cls.post = PostFactory.create(topic=cls.topic, poster=cls.user)
         cls.poll_option = TopicPollOptionFactory(poll=TopicPollFactory(topic=cls.topic))
         cls.url = reverse(
@@ -69,8 +68,6 @@ class TopicPollVoteViewTest(TestCase):
         self.assertEqual(TopicReadTrack.objects.count(), 0)
 
         assign_perm("can_vote_in_polls", self.user, self.forum)
-        assign_perm("can_see_forum", self.user, self.forum)
-        assign_perm("can_read_forum", self.user, self.forum)
 
         self.client.force_login(self.user)
 

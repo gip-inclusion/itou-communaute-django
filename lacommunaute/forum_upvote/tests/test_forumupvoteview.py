@@ -16,17 +16,9 @@ def test_get(client, db):
     assert response.status_code == 405
 
 
-def test_upvote_without_permission(client, db):
-    forum = ForumFactory()
-    form_data = {"pk": forum.pk}
-    client.force_login(UserFactory())
-    response = client.post(url, data=form_data)
-    assert response.status_code == 403
-
-
-def test_upvote_downvote_with_permission(client, db):
+def test_upvote_downvote(client, db):
     user = UserFactory()
-    forum = ForumFactory(with_public_perms=True)
+    forum = ForumFactory()
     form_data = {"pk": forum.pk}
     client.force_login(user)
 
@@ -55,7 +47,7 @@ def test_object_not_found(client, db):
 
 def test_mark_as_read(client, db):
     user = UserFactory()
-    forum = ForumFactory(with_public_perms=True)
+    forum = ForumFactory()
     form_data = {"pk": forum.pk}
     client.force_login(user)
     response = client.post(url, data=form_data)
@@ -64,7 +56,7 @@ def test_mark_as_read(client, db):
 
 
 def test_context(client, db):
-    forum = ForumFactory(with_public_perms=True)
+    forum = ForumFactory()
     form_data = {"pk": forum.pk}
     client.force_login(UserFactory())
     response = client.post(url, data=form_data)

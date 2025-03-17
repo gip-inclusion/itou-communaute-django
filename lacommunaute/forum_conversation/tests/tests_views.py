@@ -51,7 +51,7 @@ class TopicCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.poster = UserFactory()
-        cls.forum = ForumFactory(with_public_perms=True)
+        cls.forum = ForumFactory()
         cls.url = reverse(
             "forum_conversation:topic_create",
             kwargs={
@@ -248,7 +248,7 @@ class TopicCreateViewTest(TestCase):
 
 class TestTopicCreateView:
     def test_create_with_new_tags(self, db, client):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
         client.force_login(UserFactory())
         tags_list = [faker.word() for i in range(2)]
         response = client.post(
@@ -266,7 +266,7 @@ class TestTopicCreateView:
         assert all(tag in queryset.values_list("name", flat=True) for tag in tags_list)
 
     def test_create_without_tag(self, db, client):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
         client.force_login(UserFactory())
         response = client.post(
             reverse("forum_conversation:topic_create", kwargs={"forum_pk": forum.pk, "forum_slug": forum.slug}),
@@ -283,8 +283,8 @@ class TestTopicCreateView:
 class TopicUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.forum = ForumFactory(with_public_perms=True)
-        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
+        cls.topic = TopicFactory(with_post=True)
+        cls.forum = cls.topic.forum
         cls.poster = cls.topic.poster
         cls.url = reverse(
             "forum_conversation:topic_update",
@@ -452,11 +452,11 @@ class TopicUpdateViewTest(TestCase):
 class TestTopicUpdateView:
     @pytest.mark.parametrize("post_is_approved", [True, False])
     def test_init_approved_value(self, client, db, post_is_approved, snapshot):
-        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+        topic = TopicFactory(with_post=True)
         post = topic.first_post
         post.approved = post_is_approved
         post.save()
-        user = UserFactory(is_staff=True)
+        user = UserFactory(is_in_staff_group=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -474,10 +474,10 @@ class TestTopicUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
-    def test_approved_field_visibility(self, client, db, user, snapshot):
-        user = user()
-        topic = TopicFactory(with_post=True, forum=ForumFactory(with_public_perms=True))
+    @pytest.mark.parametrize("is_staff", [True, False])
+    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
+        user = UserFactory(is_in_staff_group=is_staff)
+        topic = TopicFactory(with_post=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -492,8 +492,11 @@ class TestTopicUpdateView:
             )
         )
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="approved_field_visibility")
+        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
+        if is_staff:
+            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
+                name="approved_field_visibility"
+            )
 
 
 class PostCreateViewTest(TestCase):
@@ -527,8 +530,8 @@ class PostCreateViewTest(TestCase):
 class PostUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.forum = ForumFactory(with_public_perms=True)
-        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
+        cls.topic = TopicFactory(with_post=True)
+        cls.forum = cls.topic.forum
         cls.post = PostFactory(topic=cls.topic)
         cls.poster = cls.post.poster
         cls.kwargs = {
@@ -695,11 +698,11 @@ class PostUpdateViewTest(TestCase):
 class TestPostUpdateView:
     @pytest.mark.parametrize("last_post_is_approved", [True, False])
     def test_init_approved_value(self, client, db, last_post_is_approved, snapshot):
-        topic = TopicFactory(with_post=True, answered=True, forum=ForumFactory(with_public_perms=True))
+        topic = TopicFactory(with_post=True, answered=True)
         last_post = topic.last_post
         last_post.approved = last_post_is_approved
         last_post.save()
-        user = UserFactory(is_staff=True)
+        user = UserFactory(is_in_staff_group=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -718,10 +721,10 @@ class TestPostUpdateView:
         content = parse_response_to_soup(response, selector="#div_id_approved")
         assert str(content) == snapshot(name="init_approved_value")
 
-    @pytest.mark.parametrize("user", [lambda: UserFactory(), lambda: UserFactory(is_staff=True)])
-    def test_approved_field_visibility(self, client, db, user, snapshot):
-        user = user()
-        topic = TopicFactory(with_post=True, answered=True, forum=ForumFactory(with_public_perms=True))
+    @pytest.mark.parametrize("is_staff", [True, False])
+    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
+        user = UserFactory(is_in_staff_group=is_staff)
+        topic = TopicFactory(with_post=True, answered=True)
         assign_perm("can_edit_posts", user, topic.forum)
         client.force_login(user)
         response = client.get(
@@ -737,8 +740,11 @@ class TestPostUpdateView:
             )
         )
         assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="approved_field_visibility")
+        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
+        if is_staff:
+            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
+                name="approved_field_visibility"
+            )
 
 
 class PostDeleteViewTest(TestCase):
@@ -767,8 +773,6 @@ class TopicViewTest(TestCase):
         cls.forum = cls.topic.forum
         cls.poster = cls.topic.poster
         cls.perm_handler = PermissionHandler()
-        assign_perm("can_read_forum", cls.poster, cls.topic.forum)
-        assign_perm("can_see_forum", cls.poster, cls.topic.forum)
         cls.kwargs = {
             "forum_pk": cls.topic.forum.pk,
             "forum_slug": cls.topic.forum.slug,
@@ -822,7 +826,6 @@ class TopicViewTest(TestCase):
 
     def test_edit_link_is_visible(self):
         self.client.force_login(self.poster)
-        assign_perm("can_edit_own_posts", self.poster, self.forum)
 
         response = self.client.get(self.url)
         self.assertContains(response, reverse("forum_conversation:topic_update", kwargs=self.kwargs), status_code=200)
@@ -857,19 +860,19 @@ class TopicViewTest(TestCase):
         self.client.force_login(self.poster)
 
         # note vincentporte : to be optimized
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(38):
             response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
 
 def test_breadcrumbs_on_topic_view(client, db, snapshot):
-    discussion_area_forum = ForumFactory(with_public_perms=True)
-    category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="D Category")
+    discussion_area_forum = ForumFactory()
+    category_forum = CategoryForumFactory(with_child=True, name="D Category")
 
     documentation_topic = TopicFactory(with_post=True, forum=category_forum.get_children().first())
     discussion_area_toplevel_topic = TopicFactory(with_post=True, forum=discussion_area_forum)
     discussion_area_topic = TopicFactory(
-        with_post=True, forum=ForumFactory(with_public_perms=True, parent=discussion_area_forum, name="Forum B")
+        with_post=True, forum=ForumFactory(parent=discussion_area_forum, name="Forum B")
     )
 
     response = client.get(
@@ -929,9 +932,8 @@ def fixture_topics_url():
 
 @pytest.fixture(name="public_forum_with_topic")
 def fixture_public_forum_with_topic(db):
-    forum = ForumFactory(with_public_perms=True)
-    TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
-    return forum
+    topic = TopicFactory(with_post=True, with_tags=["tag"])
+    return topic.forum
 
 
 class TestTopicListView:
@@ -1070,7 +1072,7 @@ class TestTopicListView:
     def test_clickable_tags(
         self, client, db, topics_url, num_of_topics_before_tagged_topic, query_param, snapshot_name, snapshot
     ):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
 
         TopicFactory(with_post=True, forum=forum, with_tags=["tag"])
         if num_of_topics_before_tagged_topic:
@@ -1103,11 +1105,11 @@ class TestPosterTemplate:
 
     def test_topic_from_other_public_forum_in_topics_view(self, client, db, topics_url, snapshot):
         # first_public_forum
-        ForumFactory(with_public_perms=True)
+        ForumFactory()
 
         topic = TopicFactory(
             with_post=True,
-            forum=ForumFactory(with_public_perms=True, name="Abby's Forum"),
+            forum=ForumFactory(name="Abby's Forum"),
             poster=UserFactory(for_snapshot=True),
         )
         response = client.get(topics_url)
@@ -1126,11 +1128,11 @@ class TestPosterTemplate:
 
     def test_topic_in_its_own_public_forum(self, client, db, snapshot):
         # first_public_forum
-        ForumFactory(with_public_perms=True)
+        ForumFactory()
 
         topic = TopicFactory(
             with_post=True,
-            forum=ForumFactory(with_public_perms=True, name="Joe's Forum"),
+            forum=ForumFactory(name="Joe's Forum"),
             poster=UserFactory(for_snapshot=True),
         )
         response = client.get(

@@ -10,7 +10,7 @@ from machina.core.loading import get_class
 from lacommunaute.forum.models import Forum
 from lacommunaute.forum_conversation.forms import PostForm, TopicForm
 from lacommunaute.forum_conversation.models import Topic
-from lacommunaute.forum_conversation.shortcuts import can_certify_post, get_posts_of_a_topic_except_first_one
+from lacommunaute.forum_conversation.shortcuts import get_posts_of_a_topic_except_first_one
 from lacommunaute.forum_conversation.view_mixins import FilteredTopicsListViewMixin
 from lacommunaute.notification.models import Notification
 
@@ -87,7 +87,6 @@ class TopicView(views.TopicView):
         context = super().get_context_data(**kwargs)
         context["next_url"] = self.topic.get_absolute_url()
         context["form"] = PostForm(forum=self.topic.forum, user=self.request.user)
-        context["can_certify_post"] = can_certify_post(self.request.user)
         return context
 
     def get_queryset(self):

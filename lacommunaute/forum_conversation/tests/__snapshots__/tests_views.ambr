@@ -1,12 +1,12 @@
 # serializer version: 1
-# name: TestPostUpdateView.test_approved_field_visibility[<lambda>0][approved_field_visibility]
+# name: TestPostUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
   '''
   <div class="form-group" id="div_id_approved">
       
-          
-          
-              <input class="form-control" id="id_approved" name="approved" type="hidden" value="True"/>
-          
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Approved</label>
+          </div>
       
       
       
@@ -14,13 +14,13 @@
   </div>
   '''
 # ---
-# name: TestPostUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
+# name: TestPostUpdateView.test_approved_field_visibility[True][approved_field_visibility]
   '''
   <div class="form-group" id="div_id_approved">
       
           <div class="form-check mt-2">
               <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       
@@ -35,7 +35,7 @@
       
           <div class="form-check mt-2">
               <input class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       
@@ -50,7 +50,7 @@
       
           <div class="form-check mt-2">
               <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       
@@ -209,14 +209,14 @@
                   </div>
   '''
 # ---
-# name: TestTopicUpdateView.test_approved_field_visibility[<lambda>0][approved_field_visibility]
+# name: TestTopicUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
   '''
   <div class="form-group" id="div_id_approved">
       
-          
-          
-              <input class="form-control" id="id_approved" name="approved" type="hidden" value="True"/>
-          
+          <div class="form-check mt-2">
+              <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
+              <label class="form-check-label" for="id_approved">Approved</label>
+          </div>
       
       
       
@@ -224,13 +224,13 @@
   </div>
   '''
 # ---
-# name: TestTopicUpdateView.test_approved_field_visibility[<lambda>1][approved_field_visibility]
+# name: TestTopicUpdateView.test_approved_field_visibility[True][approved_field_visibility]
   '''
   <div class="form-group" id="div_id_approved">
       
           <div class="form-check mt-2">
               <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       
@@ -245,7 +245,7 @@
       
           <div class="form-check mt-2">
               <input class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       
@@ -260,7 +260,7 @@
       
           <div class="form-check mt-2">
               <input checked="" class="form-check-input" id="id_approved" name="approved" type="checkbox"/>
-              <label class="form-check-label" for="id_approved">Message approuvé</label>
+              <label class="form-check-label" for="id_approved">Approved</label>
           </div>
       
       

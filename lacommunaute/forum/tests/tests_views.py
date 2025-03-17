@@ -26,7 +26,6 @@ from lacommunaute.utils.testing import parse_response_to_soup, reset_model_seque
 faker = Faker()
 
 PermissionHandler = get_class("forum_permission.handler", "PermissionHandler")
-assign_perm = get_class("forum_permission.shortcuts", "assign_perm")
 remove_perm = get_class("forum_permission.shortcuts", "remove_perm")
 
 
@@ -66,8 +65,8 @@ class ForumViewQuerysetTest(TestCase):
 class ForumViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.forum = ForumFactory(with_public_perms=True)
-        cls.topic = TopicFactory(with_post=True, forum=cls.forum)
+        cls.topic = TopicFactory(with_post=True)
+        cls.forum = cls.topic.forum
         cls.user = cls.topic.poster
         cls.forum = cls.topic.forum
 
@@ -109,7 +108,7 @@ class ForumViewTest(TestCase):
         response = self.client.get(self.url, **{"HTTP_HX_REQUEST": "true"})
         self.assertTemplateUsed(response, "forum_conversation/topic_list.html")
 
-        documentation_category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        documentation_category_forum = CategoryForumFactory(with_child=True)
         documentation_forum = documentation_category_forum.children.first()
 
         response = self.client.get(documentation_category_forum.get_absolute_url())
@@ -177,8 +176,6 @@ class ForumViewTest(TestCase):
     def test_cannot_submit_post(self, *args):
         user = UserFactory()
         forum = ForumFactory()
-        assign_perm("can_read_forum", user, forum)
-        assign_perm("can_see_forum", user, forum)
         remove_perm("can_reply_to_topics", user, self.forum)
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
         self.client.force_login(user)
@@ -270,7 +267,7 @@ class ForumViewTest(TestCase):
         self.assertContains(response, "<h1>title</h1>", status_code=200)
 
     def test_descendants_are_in_cards_if_forum_is_category_type(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        forum = CategoryForumFactory(with_child=True)
         child_forum = forum.get_children().first()
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
@@ -283,7 +280,7 @@ class ForumViewTest(TestCase):
         )
 
     def test_show_add_forum_button_for_staff_if_forum_is_category_type(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        forum = CategoryForumFactory(with_child=True)
         url = reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug})
 
         user = UserFactory()
@@ -301,8 +298,8 @@ class ForumViewTest(TestCase):
         )
 
     def test_siblings_in_context(self):
-        forum = CategoryForumFactory(with_public_perms=True)
-        ForumFactory.create_batch(3, parent=forum, with_public_perms=True)
+        forum = CategoryForumFactory()
+        ForumFactory.create_batch(3, parent=forum)
         child_forum = forum.get_children().first()
         url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
 
@@ -319,7 +316,7 @@ class ForumViewTest(TestCase):
         self.assertEqual(response.context_data["next_url"], self.url)
 
     def test_share_buttons(self):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        forum = CategoryForumFactory(with_child=True)
         child_forum = forum.get_children().first()
         url = reverse("forum_extension:forum", kwargs={"pk": child_forum.pk, "slug": child_forum.slug})
 
@@ -375,7 +372,7 @@ class ForumViewTest(TestCase):
                 self.assertNotContains(response, topic.subject)
 
     def test_banner_display_on_subcategory_forum(self):
-        category_forum = CategoryForumFactory(with_child=True, with_public_perms=True)
+        category_forum = CategoryForumFactory(with_child=True)
         forum = category_forum.get_children().first()
         response = self.client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         self.assertContains(response, forum.image.url.split("=")[0])
@@ -386,7 +383,7 @@ reset_forum_sequence = pytest.fixture(reset_model_sequence_fixture(Forum))
 
 class TestForumViewContent:
     def test_not_rated_forum(self, client, db, snapshot):
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
+        category_forum = CategoryForumFactory(with_child=True, name="B Category")
         forum = category_forum.get_children().first()
 
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
@@ -396,7 +393,7 @@ class TestForumViewContent:
 
     def test_rated_forum(self, client, db, snapshot):
         client.session.save()
-        category_forum = CategoryForumFactory(with_public_perms=True, with_child=True)
+        category_forum = CategoryForumFactory(with_child=True)
         forum = category_forum.get_children().first()
         ForumRatingFactory(forum=forum, rating=5, session_id=client.session.session_key)
 
@@ -406,7 +403,7 @@ class TestForumViewContent:
         assert str(content) == snapshot(name="rated_forum")
 
     def test_opengraph_for_forum_with_image(self, client, db):
-        forum = ForumFactory(with_public_perms=True, with_image=True)
+        forum = ForumFactory(with_image=True)
         response = client.get(forum.get_absolute_url())
         assertContains(
             response,
@@ -418,7 +415,7 @@ class TestForumViewContent:
         )
 
     def test_opengraph_for_forum_wo_image(self, client, db):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
         response = client.get(forum.get_absolute_url())
         assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
         assertContains(response, '<meta property="og:image" content="/static/images/logo-og-communaute')
@@ -427,7 +424,7 @@ class TestForumViewContent:
         "upvote_count, logged", [(0, False), (0, True), (1, False), (1, True), (2, False), (2, True)]
     )
     def test_upvotes_counts(self, client, db, reset_forum_sequence, snapshot, upvote_count, logged):
-        forum = CategoryForumFactory(with_public_perms=True, with_child=True, for_snapshot=True)
+        forum = CategoryForumFactory(with_child=True, for_snapshot=True)
         child_forum = forum.get_children().first()
 
         for _ in range(upvote_count):
@@ -453,8 +450,7 @@ class TestForumViewContent:
 @pytest.fixture(name="forum_for_snapshot")
 def forum_for_snapshot_fixture():
     return ForumFactory(
-        parent=ForumFactory(with_public_perms=True, name="Parent-Forum"),
-        with_public_perms=True,
+        parent=ForumFactory(name="Parent-Forum"),
         with_image=True,
         for_snapshot=True,
     )
@@ -463,8 +459,7 @@ def forum_for_snapshot_fixture():
 @pytest.fixture(name="documentation_forum")
 def documentation_forum_fixture():
     return ForumFactory(
-        parent=CategoryForumFactory(with_public_perms=True, name="Parent-Forum"),
-        with_public_perms=True,
+        parent=CategoryForumFactory(name="Parent-Forum"),
         with_image=True,
         for_snapshot=True,
     )
@@ -472,7 +467,7 @@ def documentation_forum_fixture():
 
 class TestForumDetailContent:
     def test_template_forum_detail_share_actions(self, client, db, snapshot):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
         response = client.get(forum.get_absolute_url())
         content = parse_response_to_soup(response, replace_in_href=[forum])
 
@@ -501,7 +496,7 @@ class TestForumDetailContent:
         self, client, db, snapshot, reset_forum_sequence, forum_for_snapshot
     ):
         # subforum
-        ForumFactory(parent=forum_for_snapshot, with_public_perms=True, name="Test-Child", for_snapshot=True)
+        ForumFactory(parent=forum_for_snapshot, name="Test-Child", for_snapshot=True)
 
         response = client.get(forum_for_snapshot.get_absolute_url())
         content = parse_response_to_soup(response)
@@ -545,7 +540,7 @@ class TestDocumentationForumContent:
         assert len(content) == 1
 
     def test_documentation_forum_header_content(self, client, db, snapshot, reset_forum_sequence, documentation_forum):
-        sibling_forum = ForumFactory(parent=documentation_forum.parent, with_public_perms=True, name="Test-2")
+        sibling_forum = ForumFactory(parent=documentation_forum.parent, name="Test-2")
 
         response = client.get(documentation_forum.get_absolute_url())
         content = parse_response_to_soup(response)
@@ -586,15 +581,15 @@ class TestDocumentationForumContent:
 @pytest.fixture(name="documentation_category_forum_with_descendants")
 def documentation_category_forum_with_descendants_fixture():
     tags = [faker.word() for _ in range(3)]
-    category_forum = CategoryForumFactory(with_public_perms=True)
-    first_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0]])
-    second_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[0], tags[1]])
-    third_child = ForumFactory(parent=category_forum, with_public_perms=True, with_tags=[tags[2]])
+    category_forum = CategoryForumFactory()
+    first_child = ForumFactory(parent=category_forum, with_tags=[tags[0]])
+    second_child = ForumFactory(parent=category_forum, with_tags=[tags[0], tags[1]])
+    third_child = ForumFactory(parent=category_forum, with_tags=[tags[2]])
     # forum without tags
-    ForumFactory(parent=category_forum, with_public_perms=True)
+    ForumFactory(parent=category_forum)
 
     # edge case: grand_child is filtered out. No actual use case to display them in the subforum list
-    ForumFactory(parent=third_child, with_public_perms=True, with_tags=[tags[2]])
+    ForumFactory(parent=third_child, with_tags=[tags[2]])
 
     return category_forum, tags[0], [first_child, second_child]
 
@@ -619,7 +614,7 @@ class TestDocumentationCategoryForumContent:
         # require superuser permission
         assert len(content.select("#add-documentation-to-category-control")) == 0
 
-        client.force_login(UserFactory(is_staff=True))
+        client.force_login(UserFactory(is_in_staff_group=True))
         response = client.get(documentation_forum.parent.get_absolute_url())
         content = parse_response_to_soup(response)
 
@@ -647,11 +642,10 @@ class TestDocumentationCategoryForumContent:
         assert len(sub_forums) == sub_forums_count
 
     def test_show_subforum_tag(self, client, db, snapshot, reset_forum_sequence):
-        category_forum = CategoryForumFactory(with_public_perms=True, for_snapshot=True)
-        ForumFactory(parent=category_forum, with_public_perms=True, for_snapshot=True, name="Test-1")
+        category_forum = CategoryForumFactory(for_snapshot=True)
+        ForumFactory(parent=category_forum, for_snapshot=True, name="Test-1")
         ForumFactory(
             parent=category_forum,
-            with_public_perms=True,
             with_tags=["tag1", "tag2"],
             with_image=True,
             for_snapshot=True,
@@ -664,10 +658,8 @@ class TestDocumentationCategoryForumContent:
         assert str(content) == snapshot(name="documentation_category_subforum_tag")
 
     def test_numqueries_on_tags(self, client, db, django_assert_num_queries):
-        category_forum = CategoryForumFactory(with_public_perms=True)
-        ForumFactory.create_batch(
-            20, parent=category_forum, with_public_perms=True, with_tags=[f"tag{i}" for i in range(3)]
-        )
+        category_forum = CategoryForumFactory()
+        ForumFactory.create_batch(20, parent=category_forum, with_tags=[f"tag{i}" for i in range(3)])
         # vincentporte TOBEFIXED : DUPLICATED QUERIES
         with django_assert_num_queries(19):
             client.get(category_forum.get_absolute_url())
@@ -675,41 +667,41 @@ class TestDocumentationCategoryForumContent:
 
 @pytest.fixture(name="discussion_area_forum")
 def discussion_area_forum_fixture():
-    return ForumFactory(with_public_perms=True, name="A Forum")
+    return ForumFactory(name="A Forum")
 
 
 class TestBreadcrumb:
     def test_sub_discussion_area_forum(self, client, db, snapshot, discussion_area_forum):
-        forum = ForumFactory(parent=discussion_area_forum, with_public_perms=True, name="b")
+        forum = ForumFactory(parent=discussion_area_forum, name="b")
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
         assert str(content) == snapshot(name="sub_discussion_area_forum")
 
     def test_forum(self, client, db, snapshot, discussion_area_forum):
-        forum = ForumFactory(with_public_perms=True)
+        forum = ForumFactory()
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
         assert str(content) == snapshot(name="forum")
 
     def test_sub_forum(self, client, db, snapshot, discussion_area_forum):
-        parent_forum = ForumFactory(with_public_perms=True, name="B Forum")
-        forum = ForumFactory(parent=parent_forum, with_public_perms=True)
+        parent_forum = ForumFactory(name="B Forum")
+        forum = ForumFactory(parent=parent_forum)
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="nav.c-breadcrumb", replace_in_href=[parent_forum])
         assert str(content) == snapshot(name="sub_forum")
 
     def test_category_forum(self, client, db, snapshot, discussion_area_forum):
-        forum = CategoryForumFactory(with_public_perms=True)
+        forum = CategoryForumFactory()
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
         content = parse_response_to_soup(response, selector="nav.c-breadcrumb")
         assert str(content) == snapshot(name="category_forum")
 
     def test_child_category_forum(self, client, db, snapshot, discussion_area_forum):
-        parent_forum = CategoryForumFactory(with_child=True, with_public_perms=True, name="A Category")
+        parent_forum = CategoryForumFactory(with_child=True, name="A Category")
         forum = parent_forum.get_children().first()
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
@@ -717,8 +709,8 @@ class TestBreadcrumb:
         assert str(content) == snapshot(name="child_category_forum")
 
     def test_grandchild_category_forum(self, client, db, snapshot, discussion_area_forum):
-        parent_forum = CategoryForumFactory(with_public_perms=True, with_child=True, name="B Category")
-        forum = ForumFactory(parent=parent_forum.get_children().first(), with_public_perms=True)
+        parent_forum = CategoryForumFactory(with_child=True, name="B Category")
+        forum = ForumFactory(parent=parent_forum.get_children().first())
         response = client.get(reverse("forum_extension:forum", kwargs={"pk": forum.pk, "slug": forum.slug}))
         assert response.status_code == 200
         content = parse_response_to_soup(
