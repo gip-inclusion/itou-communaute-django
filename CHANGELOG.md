@@ -1,5 +1,12 @@
 # Journal des modifications
 
+## [2.23.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.22.0...v2.23.0) (2025-03-19)
+
+
+### Features
+
+* banniere de collab Dora ([#936](https://github.com/gip-inclusion/itou-communaute-django/issues/936)) ([ad8fa4b](https://github.com/gip-inclusion/itou-communaute-django/commit/ad8fa4ba93d4ed056fa64d933a7e44f0c4c1b289))
+
 ## [2.22.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.21.0...v2.22.0) (2025-03-12)
 
 
