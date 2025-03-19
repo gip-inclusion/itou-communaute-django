@@ -34,12 +34,6 @@ Démarrer le service web
 $ python manage.py runserver_plus
 ```
 
-NB : pour démarrer la stack complète sous docker-compose
-
-```bash
-$ docker-compose --profile django up
-```
-
 ## Préparer l'environnement de données
 
 ```bash
@@ -47,12 +41,6 @@ $ python manage.py createcachetable
 $ python manage.py migrate
 $ python manage.py populate
 $ python manage.py configure_bucket
-```
-
-NB : accéder au bash du conteneur `commu_django` pour exécuter ces commandes
-
-```bash
-$ docker exec -it commu_django bash
 ```
 
 ### restaurer une base de données
