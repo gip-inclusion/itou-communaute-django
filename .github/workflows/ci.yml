@@ -75,3 +75,13 @@ jobs:
         run: pytest --numprocesses=logical --create-db
         env:
           DJANGO_DEBUG: True
+      - name: 🚀 Update boto3 to 1.36+ and test clever S3 compliance
+        env:
+          CELLAR_ADDON_KEY_ID: ${{ secrets.REVIEW_CELLAR_ADDON_KEY_ID }}
+          CELLAR_ADDON_KEY_SECRET: ${{ secrets.REVIEW_CELLAR_ADDON_KEY_SECRET }}
+          CELLAR_ADDON_HOST: cellar-c2.services.clever-cloud.com
+          CELLAR_ADDON_PROTOCOL: https
+        run: |
+          uv remove boto3
+          uv add "boto3>1.36"
+          pytest lacommunaute/utils/tests/tests_boto3_against_clever.py --create-db
