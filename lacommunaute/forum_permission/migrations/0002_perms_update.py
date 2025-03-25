@@ -30,6 +30,7 @@ def setup_global_permissions(apps, schema_editor):
         "can_edit_own_posts",
         "can_delete_own_posts",
         "can_post_without_approval",
+        "can_download_file",
     ]
 
     anonymous_perms = [
