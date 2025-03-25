@@ -11,7 +11,7 @@ dependencies = [
     "python-dotenv>=1.0",
     "psycopg>=3.2",
     "django-machina>=1.2.0",
-    "boto3<1.36",
+    "boto3>=1.36",
     "django-storages>=1.14",
     "httpx>=0.28",
     "django-compressor>=4.5",
