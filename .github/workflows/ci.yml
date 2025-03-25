@@ -75,3 +75,11 @@ jobs:
         run: pytest --numprocesses=logical --create-db
         env:
           DJANGO_DEBUG: True
+      - name: 🚀 test S3 compliance
+        env:
+          CELLAR_ADDON_KEY_ID: ${{ secrets.REVIEW_CELLAR_ADDON_KEY_ID }}
+          CELLAR_ADDON_KEY_SECRET: ${{ secrets.REVIEW_CELLAR_ADDON_KEY_SECRET }}
+          CELLAR_ADDON_HOST: cellar-c2.services.clever-cloud.com
+          CELLAR_ADDON_PROTOCOL: https
+        run: |
+          pytest lacommunaute/utils/tests/tests_live_cellar.py --create-db
