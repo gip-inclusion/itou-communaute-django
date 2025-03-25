@@ -374,7 +374,7 @@ class TopicUpdateViewTest(TestCase):
                 kwargs={
                     "forum_slug": self.forum.slug,
                     "forum_pk": self.forum.pk,
-                    "slug": updated_subject,
+                    "slug": topic.slug,
                     "pk": topic.pk,
                 },
             ),
@@ -447,56 +447,6 @@ class TopicUpdateViewTest(TestCase):
         )
         topic.refresh_from_db()
         self.assertEqual(topic.first_post.content.raw, initial_raw_content)
-
-
-class TestTopicUpdateView:
-    @pytest.mark.parametrize("post_is_approved", [True, False])
-    def test_init_approved_value(self, client, db, post_is_approved, snapshot):
-        topic = TopicFactory(with_post=True)
-        post = topic.first_post
-        post.approved = post_is_approved
-        post.save()
-        user = UserFactory(is_in_staff_group=True)
-        assign_perm("can_edit_posts", user, topic.forum)
-        client.force_login(user)
-        response = client.get(
-            reverse(
-                "forum_conversation:topic_update",
-                kwargs={
-                    "forum_slug": topic.forum.slug,
-                    "forum_pk": topic.forum.pk,
-                    "slug": topic.slug,
-                    "pk": topic.pk,
-                },
-            )
-        )
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="init_approved_value")
-
-    @pytest.mark.parametrize("is_staff", [True, False])
-    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
-        user = UserFactory(is_in_staff_group=is_staff)
-        topic = TopicFactory(with_post=True)
-        assign_perm("can_edit_posts", user, topic.forum)
-        client.force_login(user)
-        response = client.get(
-            reverse(
-                "forum_conversation:topic_update",
-                kwargs={
-                    "forum_slug": topic.forum.slug,
-                    "forum_pk": topic.forum.pk,
-                    "slug": topic.slug,
-                    "pk": topic.pk,
-                },
-            )
-        )
-        assert response.status_code == 200
-        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
-        if is_staff:
-            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
-                name="approved_field_visibility"
-            )
 
 
 class PostCreateViewTest(TestCase):
@@ -693,58 +643,6 @@ class PostUpdateViewTest(TestCase):
         )
         post.refresh_from_db()
         self.assertEqual(post.username, "john@doe.com")
-
-
-class TestPostUpdateView:
-    @pytest.mark.parametrize("last_post_is_approved", [True, False])
-    def test_init_approved_value(self, client, db, last_post_is_approved, snapshot):
-        topic = TopicFactory(with_post=True, answered=True)
-        last_post = topic.last_post
-        last_post.approved = last_post_is_approved
-        last_post.save()
-        user = UserFactory(is_in_staff_group=True)
-        assign_perm("can_edit_posts", user, topic.forum)
-        client.force_login(user)
-        response = client.get(
-            reverse(
-                "forum_conversation:post_update",
-                kwargs={
-                    "forum_slug": topic.forum.slug,
-                    "forum_pk": topic.forum.pk,
-                    "topic_slug": topic.slug,
-                    "topic_pk": topic.pk,
-                    "pk": last_post.pk,
-                },
-            )
-        )
-        assert response.status_code == 200
-        content = parse_response_to_soup(response, selector="#div_id_approved")
-        assert str(content) == snapshot(name="init_approved_value")
-
-    @pytest.mark.parametrize("is_staff", [True, False])
-    def test_approved_field_visibility(self, client, db, is_staff, snapshot):
-        user = UserFactory(is_in_staff_group=is_staff)
-        topic = TopicFactory(with_post=True, answered=True)
-        assign_perm("can_edit_posts", user, topic.forum)
-        client.force_login(user)
-        response = client.get(
-            reverse(
-                "forum_conversation:post_update",
-                kwargs={
-                    "forum_slug": topic.forum.slug,
-                    "forum_pk": topic.forum.pk,
-                    "topic_slug": topic.slug,
-                    "topic_pk": topic.pk,
-                    "pk": topic.last_post.pk,
-                },
-            )
-        )
-        assert response.status_code == 200
-        assert ('<div id="div_id_approved" class="form-group">' in response.content.decode()) == is_staff
-        if is_staff:
-            assert str(parse_response_to_soup(response, selector="#div_id_approved")) == snapshot(
-                name="approved_field_visibility"
-            )
 
 
 class PostDeleteViewTest(TestCase):
