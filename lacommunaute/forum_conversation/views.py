@@ -69,7 +69,12 @@ class PostCreateView(views.PostCreateView):
 
 
 class PostUpdateView(FormValidMixin, views.PostUpdateView):
-    pass
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.POST.get("unapprove") and self.request.user.is_staff:
+            self.object.approved = False
+            self.object.save()
+        return super().post(request, *args, **kwargs)
 
 
 class PostDeleteView(views.PostDeleteView):
