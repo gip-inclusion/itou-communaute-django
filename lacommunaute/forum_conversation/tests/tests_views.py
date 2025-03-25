@@ -449,6 +449,69 @@ class TopicUpdateViewTest(TestCase):
         self.assertEqual(topic.first_post.content.raw, initial_raw_content)
 
 
+class TestTopicUpdateView:
+    @pytest.mark.parametrize("user", [lambda: UserFactory(is_in_staff_group=True), lambda: UserFactory()])
+    @pytest.mark.parametrize("is_poster", [True, False])
+    def test_button_visibility_for_user(self, db, client, user, is_poster, snapshot):
+        user = user()
+        topic = TopicFactory(with_post=True, poster=user) if is_poster else TopicFactory(with_post=True)
+
+        client.force_login(user)
+
+        response = client.get(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            )
+        )
+
+        assert response.status_code == (200 if user.is_staff or is_poster else 403)
+
+        if response.status_code == 200:
+            content = parse_response_to_soup(
+                response,
+                selector="div.form-actions",
+                replace_in_href=[
+                    (f"{topic.forum.slug}-{topic.forum.pk}", "[forum-slug-pk]"),
+                    (f"{topic.slug}-{topic.pk}", "[topic-slug-pk]"),
+                    topic.first_post,
+                ],
+            )
+            assert str(content) == snapshot(name="form-actions-buttons")
+
+    @pytest.mark.parametrize("user", [lambda: UserFactory(is_in_staff_group=True), lambda: UserFactory(), None])
+    @pytest.mark.parametrize("name", [None, "dummy", "unapprove"])
+    def test_topic_update(self, db, client, user, name):
+        data = {"content": "content", name: True} if name else {"content": "content"}
+        if user:
+            user = user()
+            client.force_login(user)
+
+        topic = TopicFactory(with_post=True, poster=user) if user else AnonymousTopicFactory(with_post=True)
+
+        response = client.post(
+            reverse(
+                "forum_conversation:topic_update",
+                kwargs={
+                    "forum_slug": topic.forum.slug,
+                    "forum_pk": topic.forum.pk,
+                    "slug": topic.slug,
+                    "pk": topic.pk,
+                },
+            ),
+            data,
+            follow=True,
+        )
+        assert response.status_code == 200
+        topic.refresh_from_db()
+        assert topic.first_post.approved is not (user and user.is_staff and name == "unapprove")
+
+
 class PostCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):

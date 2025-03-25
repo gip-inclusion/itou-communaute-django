@@ -55,6 +55,13 @@ class TopicCreateView(FormValidMixin, views.TopicCreateView):
 class TopicUpdateView(FormValidMixin, views.TopicUpdateView):
     post_form_class = TopicForm
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.POST.get("unapprove") and self.request.user.is_staff:
+            self.object.first_post.approved = False
+            self.object.first_post.save()
+        return super().post(request, *args, **kwargs)
+
 
 class PostCreateView(views.PostCreateView):
     def perform_permissions_check(self, user, obj, perms):

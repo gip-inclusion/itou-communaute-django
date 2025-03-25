@@ -149,6 +149,57 @@
                   </div>
   '''
 # ---
+# name: TestTopicUpdateView.test_button_visibility_for_user[False-<lambda>0][form-actions-buttons]
+  '''
+  <div class="form-actions form-row">
+          <div class="form-group col-auto">
+              <input class="btn btn-primary matomo-event" data-matomo-action="contribute" data-matomo-category="engagement" data-matomo-option="submit_topic" type="submit" value="Publier"/>
+          </div>
+          
+              
+              
+                  <div class="form-group col-auto">
+                      <input class="btn btn-outline-warning" name="unapprove" type="submit" value="Unapprove"/>
+                  </div>
+              
+          
+      </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_button_visibility_for_user[True-<lambda>0][form-actions-buttons]
+  '''
+  <div class="form-actions form-row">
+          <div class="form-group col-auto">
+              <input class="btn btn-primary matomo-event" data-matomo-action="contribute" data-matomo-category="engagement" data-matomo-option="submit_topic" type="submit" value="Publier"/>
+          </div>
+          
+              
+              
+                  <div class="form-group col-auto">
+                      <a aria-label="Supprimer" class="btn btn-outline-danger" href="/forum/[forum-slug-pk]/topic/[topic-slug-pk]/[PK of Post]/post/delete/" role="button">Supprimer</a>
+                  </div>
+              
+          
+      </div>
+  '''
+# ---
+# name: TestTopicUpdateView.test_button_visibility_for_user[True-<lambda>1][form-actions-buttons]
+  '''
+  <div class="form-actions form-row">
+          <div class="form-group col-auto">
+              <input class="btn btn-primary matomo-event" data-matomo-action="contribute" data-matomo-category="engagement" data-matomo-option="submit_topic" type="submit" value="Publier"/>
+          </div>
+          
+              
+              
+                  <div class="form-group col-auto">
+                      <a aria-label="Supprimer" class="btn btn-outline-danger" href="/forum/[forum-slug-pk]/topic/[topic-slug-pk]/[PK of Post]/post/delete/" role="button">Supprimer</a>
+                  </div>
+              
+          
+      </div>
+  '''
+# ---
 # name: test_breadcrumbs_on_topic_view[discussion_area_topic]
   '''
   <nav aria-label="Fil d'ariane" class="c-breadcrumb">
