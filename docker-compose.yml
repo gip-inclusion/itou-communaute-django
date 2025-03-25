@@ -28,33 +28,6 @@ services:
     ports:
       - "127.0.0.1:${POSTGRESQL_ADDON_PORT:-5432}:5432"
 
-  django:
-    profiles: [ "django" ]
-    container_name: commu_django
-    env_file:
-      - .env
-    environment:
-      # override values in .env
-      POSTGRESQL_ADDON_HOST: postgres
-      CELLAR_ADDON_HOST: minio:9000
-    depends_on:
-      - postgres
-    build:
-      context: .
-      dockerfile: ./docker/django/Dockerfile
-      args:
-        APP_USER: app
-        APP_DIR: /app
-        PYTHON_VERSION: 3.11
-        PG_MAJOR: 15
-    volumes:
-      # Mount the current directory into `/app` inside the running container.
-      - .:/app
-    restart: always
-    ports:
-      - "127.0.0.1:${DJANGO_PORT_ON_DOCKER_HOST:-8000}:8000"
-      - "127.0.0.1:${DJANGO_DEBUGPY_PORT:-5678}:5678"
-
 volumes:
   postgres_data:
   postgres_data_backups:
