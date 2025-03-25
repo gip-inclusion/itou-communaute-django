@@ -1,5 +1,6 @@
 import os
 
+from botocore.config import Config
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
 
@@ -274,6 +275,13 @@ AWS_S3_ENDPOINT_URL = f"{os.getenv('CELLAR_ADDON_PROTOCOL', 'https')}://{os.gete
 AWS_STORAGE_BUCKET_NAME = os.getenv("S3_STORAGE_BUCKET_NAME")
 AWS_STORAGE_BUCKET_NAME_PUBLIC = os.getenv("S3_STORAGE_BUCKET_NAME_PUBLIC")
 AWS_S3_STORAGE_BUCKET_REGION = os.getenv("S3_STORAGE_BUCKET_REGION")
+# CleverCloud S3 implementation does not support recent data integrity features from AWS.
+# https://github.com/boto/boto3/issues/4392
+# https://github.com/boto/boto3/issues/4398#issuecomment-2619946229
+AWS_S3_CLIENT_CONFIG = Config(
+    request_checksum_calculation="when_required",
+    response_checksum_validation="when_required",
+)
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
