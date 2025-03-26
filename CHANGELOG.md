@@ -1,5 +1,19 @@
 # Journal des modifications
 
+## [2.23.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.22.0...v2.23.0) (2025-03-26)
+
+
+### Features
+
+* banniere de collab Dora ([#936](https://github.com/gip-inclusion/itou-communaute-django/issues/936)) ([ad8fa4b](https://github.com/gip-inclusion/itou-communaute-django/commit/ad8fa4ba93d4ed056fa64d933a7e44f0c4c1b289))
+* desapprobation de contenus ([#941](https://github.com/gip-inclusion/itou-communaute-django/issues/941)) ([2dfabf5](https://github.com/gip-inclusion/itou-communaute-django/commit/2dfabf57b6706147ab8c6ff95c2018c4a40f8404))
+
+
+### Bug Fixes
+
+* ajout de l'autorisation `can_download_file` ([#939](https://github.com/gip-inclusion/itou-communaute-django/issues/939)) ([376fc24](https://github.com/gip-inclusion/itou-communaute-django/commit/376fc245225363d10facead5acca3ebee39a4abf))
+* suppression de la case "approved" pour les staffs ([#940](https://github.com/gip-inclusion/itou-communaute-django/issues/940)) ([d92f600](https://github.com/gip-inclusion/itou-communaute-django/commit/d92f60053846d467a0ad229f17b2c900273db970))
+
 ## [2.22.0](https://github.com/gip-inclusion/itou-communaute-django/compare/v2.21.0...v2.22.0) (2025-03-12)
 
 
