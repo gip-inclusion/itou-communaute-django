@@ -97,6 +97,10 @@
                 <div class="form-group col-auto">
                     <a href="{% url 'forum_conversation:post_delete' forum.slug forum.pk topic.slug topic.pk post.pk %}" aria-label="{% trans "Delete" %}" role="button" class="btn btn-outline-danger">{% trans "Delete" %}</a>
                 </div>
+            {% elif user.is_staff %}
+                <div class="form-group col-auto">
+                    <input type="submit" class="btn btn-outline-warning" name="unapprove" value="{% trans "Unapprove" %}" />
+                </div>
             {% endif %}
         {% endif %}
     </div>
