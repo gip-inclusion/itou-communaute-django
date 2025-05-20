@@ -2,16 +2,53 @@
 
 ## Initial dev setup
 
+### Environnement virtuel
+
 Installer l'environnement virtuel et les dépendances :
 
 ```bash
 $ uv sync
 ```
 
-Copier le fichier `.env.template` en `.env` et le modifier en fonction de vos besoins.
+## direnv
 
-```bash
-$ cp .env.template .env
+Nous conseillons d'installer le minuscule utilitaire `direnv` pour charger et
+décharger automatiquement des variables d'environnement à l'entrée dans un
+répertoire.
+
+Une fois muni de cet outil (avec `apt`, `brew` ou autre, et sans oublier de
+[mettre le hook](https://direnv.net/#basic-installation)) il suffit de créer un
+fichier de variables d'environnement local:
+
+```sh
+cat <<EOF >.envrc
+# Activate the virtual environment
+source .venv/bin/activate
+# Setting environment variables for the application
+export DJANGO_DEBUG=True
+export DJANGO_LOG_LEVEL=WARNING
+export SQL_LOG_LEVEL=INFO
+export DJANGO_SECRET_KEY=foobar
+# For psql
+export PGDATABASE=communaute
+export PGHOST=localhost
+export PGUSER=communaute
+export PGPASSWORD=password
+EOF
+```
+
+Une fois le fichier `.envrc` saisit, il suffit de l'autoriser dans `direnv`:
+
+```sh
+direnv allow
+```
+
+Et c’est bon, vos variables seront chargées à chaque entrée dans le dossier et
+retirées en sortant.
+
+```sh
+psql  # connects directly to the communaute database
+./manage.py xxxx  # any commands work immediately
 ```
 
 Accéder à l'environnement virtuel :
@@ -113,6 +150,7 @@ pytest --numprocesses=logical --create-db
 
 ## Déploiement sur Clever Cloud
 
+### Premier déploiement
 Ajouter les secrets suivants dans le repo git
 
 - CLEVER_SECRET
@@ -140,6 +178,17 @@ Créer les variables d'environnement suivantes dans le configuration provider
 - STATIC_FILES_PATH
 - STATIC_URL_PREFIX
 - UV_PROJECT_ENVIRONMENT
+
+### Variables d'environnement
+Dans votre environnement de développement, l’utilisation de
+direnv est recommandée.
+
+En production, un fichier `.env` est généré au déploiement et chargé avec
+l’utilitaire [`dotenv`](https://pypi.org/project/python-dotenv/). Cette
+configuration est moins flexible que direnv, car les variables d’environnement
+ne sont pas disponibles pour votre shell, ce qui empêche le chargement
+automatique de l’environnement virtuel, ou de lancer `psql` sans spécifier les
+arguments pour se connecter à la base de données.
 
 ### pour le déploiment des recettes jetables
 
