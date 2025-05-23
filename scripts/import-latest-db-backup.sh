@@ -3,7 +3,7 @@
 # PLEASE RUN THIS SCRIPT WITH:
 # make postgres_restore_latest_backup
 
-source .env
+source .envrc
 
 if [ -z $PATH_TO_BACKUPS ]; then
   echo "please add 'PATH_TO_BACKUPS=/your/backups/directory' in .env at the root of the project in order to run this script"
