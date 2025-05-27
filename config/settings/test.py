@@ -44,3 +44,13 @@ EMPLOIS_PRESCRIBER_SEARCH = "http://test.com/prescriber/search"
 EMPLOIS_COMPANY_SEARCH = "http://test.com/company/search"
 
 EMAIL_LAST_SEEN_HASH_SALT = "bobby"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
+    "machina_attachments": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/tmp",
+    },
+}
