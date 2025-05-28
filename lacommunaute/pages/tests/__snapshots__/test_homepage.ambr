@@ -141,7 +141,7 @@
               <div class="s-header__row row">
                   <div class="s-header__col s-header__col--logo-ministere col col-md-auto d-flex align-items-center pe-0">
                       <a class="s-header__logo-ministere" href="/">
-                          <img alt="Rébublique Française" src="/static/vendor/theme-inclusion/images/logo-republique-francaise.svg"/>
+                          <img alt="République Française" src="/static/vendor/theme-inclusion/images/logo-republique-francaise.svg"/>
                       </a>
                   </div>
                   <div class="s-header__col s-header__col--logo-service col-auto d-flex align-items-center px-0">
