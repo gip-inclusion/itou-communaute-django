@@ -76,8 +76,8 @@ $ python manage.py runserver_plus
 ```bash
 $ python manage.py createcachetable
 $ python manage.py migrate
-$ python manage.py populate
 $ python manage.py configure_bucket
+$ python manage.py populate
 ```
 
 ### restaurer une base de données
