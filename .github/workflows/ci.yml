@@ -9,7 +9,6 @@ jobs:
     env:
       PYTHONPATH: .
       DJANGO_SETTINGS_MODULE: config.settings.test
-      CPUCOUNT: 1
       PGPASSWORD: password
       PGHOST: localhost
       PGUSER: postgres
