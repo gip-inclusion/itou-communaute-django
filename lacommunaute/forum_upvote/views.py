@@ -15,7 +15,9 @@ from lacommunaute.forum_upvote.models import UpVote
 
 logger = logging.getLogger(__name__)
 
-PermissionRequiredMixin = get_class("forum_permission.viewmixins", "PermissionRequiredMixin")
+PermissionRequiredMixin = get_class(
+    "forum_permission.viewmixins", "PermissionRequiredMixin"
+)
 TrackingHandler = get_class("forum_tracking.handler", "TrackingHandler")
 
 track_handler = TrackingHandler()
@@ -55,11 +57,15 @@ class BaseUpvoteMixin:
         self.handle_extra_logic(request)
 
         return render(
-            request, "partials/upvotes.html", context={"obj": self.object, "kind": self.object._meta.model_name}
+            request,
+            "partials/upvotes.html",
+            context={"obj": self.object, "kind": self.object._meta.model_name},
         )
 
     def handle_extra_logic(self, request):
-        raise NotImplementedError("handle_extra_logic method must be implemented in the subclass")
+        raise NotImplementedError(
+            "handle_extra_logic method must be implemented in the subclass"
+        )
 
 
 class PostUpvoteView(BaseUpvoteMixin, PermissionRequiredMixin, View):
@@ -102,8 +108,13 @@ class UpVoteListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         qs = (
             UpVote.objects.filter(voter=self.request.user)
-            .select_related("content_type")
-            .prefetch_related("content_object")
+            .select_related("content_type", "voter")
+            .prefetch_related(
+                "content_object",
+                "content_object__topic",
+                "content_object__topic__forum",
+                "content_object__poster",
+            )
             .order_by("-created_at")
         )
         return qs

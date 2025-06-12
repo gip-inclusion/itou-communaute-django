@@ -77,6 +77,5 @@ def test_numqueries(client, db, django_assert_num_queries):
     ForumFactory.create_batch(20, upvoted_by=[user])
     PostFactory.create_batch(20, topic=TopicFactory(), upvoted_by=[user])
 
-    # vincentporte : to be optimized
-    with django_assert_num_queries(38):
+    with django_assert_num_queries(25):
         client.get(url)
