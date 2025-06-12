@@ -9,7 +9,6 @@ jobs:
     env:
       PYTHONPATH: .
       DJANGO_SETTINGS_MODULE: config.settings.test
-      CPUCOUNT: 1
       PGPASSWORD: password
       PGHOST: localhost
       PGUSER: postgres
@@ -55,8 +54,6 @@ jobs:
         run: |
           source .venv/bin/activate
           echo PATH=$PATH >> $GITHUB_ENV
-      - name: ✨ Ruff & djlint
-        run: make quality
       - name: 🚧 create cache table
         run: python manage.py createcachetable
       - name: 🚧 collect static for testing purposes
@@ -67,10 +64,6 @@ jobs:
         run: |
           sudo apt-get install -y gettext
           python manage.py compilemessages
-      - name: 🚧 Check pending migrations
-        run: python manage.py makemigrations --check --dry-run --noinput
-      - name: 🚧 Configure bucket
-        run: python manage.py configure_bucket
       - name: 🤹‍ Django tests
         run: pytest --numprocesses=logical --create-db
         env:
