@@ -1,5 +1,6 @@
 import os
 
+import csp.constants
 from botocore.config import Config
 from dotenv import load_dotenv
 from machina import MACHINA_MAIN_STATIC_DIR, MACHINA_MAIN_TEMPLATE_DIR
@@ -54,6 +55,7 @@ THIRD_PARTIES_APPS = [
     "django_social_share",
     "django_htmx",
     "taggit",
+    "csp",
 ]
 
 # MIGRATION CONFIGURATION
@@ -397,12 +399,18 @@ TAGGIT_STRIP_UNICODE_WHEN_SLUGIFY = True
 
 # CSP
 # ---------------------------------------
-CSP_DEFAULT_SRC = ("'self'",)
-# unsafe-inline for htmx.js, embed.js & tartecitron.js needs
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "'unsafe-inline'")
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com/", "data:")
-CSP_SCRIPT_SRC = (
-    "'self'",
+connect_src = [
+    csp.constants.SELF,
+    "*.sentry.io",
+]
+img_src = [
+    csp.constants.SELF,
+    "data:",
+    "cellar-c2.services.clever-cloud.com",
+]
+script_src = [
+    csp.constants.SELF,
+    csp.constants.NONCE,
     "https://cdn.jsdelivr.net/npm/chart.js@4.0.1",
     "https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js",
     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
@@ -413,22 +421,51 @@ CSP_SCRIPT_SRC = (
     "https://tally.so",
     "https://www.youtube.com/iframe_api",
     "https://www.youtube.com/s/player/",
-)
-CSP_FRAME_SRC = ("'self'", "https://tally.so", "https://www.youtube.com/embed/")
-CSP_IMG_SRC = ("'self'", "data:", "cellar-c2.services.clever-cloud.com")
-CSP_CONNECT_SRC = ("'self'", "*.sentry.io")
-CSP_INCLUDE_NONCE_IN = ["script-src", "script-src-elem"]
-
+]
+style_src = [
+    csp.constants.SELF,
+    "https://fonts.googleapis.com",
+    csp.constants.UNSAFE_INLINE,  # needed for htmx.js, embed.js & tartecitron.js
+]
 if API_BAN_BASE_URL:
-    CSP_CONNECT_SRC += (API_BAN_BASE_URL,)
+    connect_src += [
+        API_BAN_BASE_URL,
+    ]
 
 if MATOMO_BASE_URL:
-    CSP_IMG_SRC += (MATOMO_BASE_URL,)
-    CSP_SCRIPT_SRC += (MATOMO_BASE_URL,)
-    CSP_CONNECT_SRC += (MATOMO_BASE_URL,)
+    connect_src += [
+        MATOMO_BASE_URL,
+    ]
+    img_src += [
+        MATOMO_BASE_URL,
+    ]
+    script_src += [
+        MATOMO_BASE_URL,
+    ]
 
-CSP_SCRIPT_SRC_ELEM = CSP_SCRIPT_SRC
-CSP_STYLE_SRC_ELEM = CSP_STYLE_SRC
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [
+            csp.constants.SELF,
+        ],
+        "connect-src": connect_src,
+        "img-src": img_src,
+        "frame-src": [
+            csp.constants.SELF,
+            "https://tally.so",
+            "https://www.youtube.com/embed/",
+        ],
+        "font-src": [
+            csp.constants.SELF,
+            "https://fonts.gstatic.com/",
+            "data:",
+        ],
+        "script-src": script_src,
+        "script-src-elem": script_src,
+        "style-src": style_src,
+        "style-src-elem": style_src,
+    },
+}
 
 # HSTS
 # ---------------------------------------
