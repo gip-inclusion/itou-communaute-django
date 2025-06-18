@@ -416,8 +416,7 @@ script_src = [
     "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js",
     # https://docs.sentry.io/platforms/javascript/install/loader/#content-security-policy
-    "https://browser.sentry-cdn.com",
-    "https://js-de.sentry-cdn.com",
+    "https://browser.sentry-cdn.com/9.30.0/bundle.min.js",
     "https://tally.so",
     "https://www.youtube.com/iframe_api",
     "https://www.youtube.com/s/player/",
