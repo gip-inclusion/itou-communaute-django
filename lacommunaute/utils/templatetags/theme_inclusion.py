@@ -76,7 +76,7 @@ def import_static_CSS_theme_inclusion():
     scripts_import = ""
     for css_dep in CSS_DEPENDENCIES_THEME:
         if css_dep["is_external"]:
-            scripts_import += ('<link rel="stylesheet" href="{}" integrity="{}" ' 'crossorigin="anonymous">').format(
+            scripts_import += ('<link rel="stylesheet" href="{}" integrity="{}" crossorigin="anonymous">').format(
                 css_dep["src"], css_dep["integrity"]
             )
         else:
