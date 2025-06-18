@@ -34,7 +34,7 @@
             <!-- Use this to get the value of the CSRF token in JavaScript. -->
             <meta name="csrf-token" content="{{ csrf_token }}">
             {% if not debug %}
-                <script src="https://js-de.sentry-cdn.com/d8db4407379a081efd03c2e388a88323.min.js" crossorigin="anonymous"></script>
+                <script src="https://browser.sentry-cdn.com/9.30.0/bundle.min.js" integrity="sha384-LmM+A4DydF1AZmOq6WQjgjRJR6kP5cMplsMi5NTXpcIcDvxuXctipgRiB+a6Ih1/" crossorigin="anonymous" nonce="{{ request.csp_nonce }}"></script>
             {% endif %}
         {% endblock head %}
         {% block extra_head %}{% endblock %}
