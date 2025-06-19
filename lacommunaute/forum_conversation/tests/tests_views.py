@@ -166,6 +166,23 @@ class TopicCreateViewTest(TestCase):
         )
         self.assertEqual(Topic.objects.count(), 0)
 
+    def test_topic_create_with_numeric_content(self, *args):
+        self.client.force_login(self.poster)
+        self.post_data["content"] = "20"
+
+        response = self.client.post(
+            self.url,
+            self.post_data,
+            follow=True,
+        )
+
+        self.assertContains(
+            response,
+            "Votre message ne respecte pas les règles de la communauté.",
+            status_code=200,
+        )
+        self.assertEqual(Topic.objects.count(), 0)
+
     def test_topic_create_with_html_content(self, *args):
         self.client.force_login(self.poster)
         self.post_data["content"] = "<p>la communaute</p>"
