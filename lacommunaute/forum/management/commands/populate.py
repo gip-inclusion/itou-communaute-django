@@ -18,11 +18,13 @@ class Command(BaseCommand):
 
         UserFactory(
             email="super@inclusion.gouv.fr",
+            username="admin",
             is_superuser=True,
             is_staff=True,
         )
         sys.stdout.write("superuser created\n")
-        UserFactory(email="staff@inclusion.gouv.fr", is_in_staff_group=True)
+        UserFactory(email="staff@inclusion.gouv.fr", username="staff", is_in_staff_group=True)
+
         sys.stdout.write("staff created\n")
 
         partners = PartnerFactory.create_batch(5, with_logo=True)
