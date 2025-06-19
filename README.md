@@ -203,3 +203,18 @@ Ajouter les secrets suivants dans le repo git
 - CLEVER_REVIEW_APPS_CONFIGURATION_ADDON
 - CLEVER_REVIEW_APPS_ORG
 - CLEVER_REVIEW_APPS_S3_ADDON
+
+## Recettes jetables
+
+Les recettes jetables sont créées lorsque l'étiquette « recette-jetable » est ajoutée.
+Lorsque l'étiquette est supprimée, la recette jetable l'est aussi.
+Voir les GitHub actions `.github/workflows/review_app_creation.yml` et `.github/workflow/review_app_removal.yml`.
+
+### Comptes de test
+
+Des données fictives sont créées pour les recettes jetables. Voir la commande de gestion `forum/management/commands/populate.py`.
+- Compte superadministrateur : login `admin`, mot de passe `supercalifragilisticexpialidocious`.
+- Compte équipe : `staff` et `supercalifragilisticexpialidocious`.
+
+Vous pouvez utiliser l'interface d'administration de Django avec le compte super-administrateur
+pour changer les adresses email.
