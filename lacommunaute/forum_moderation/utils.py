@@ -1,5 +1,6 @@
 from django.conf import settings
-from langdetect import detect
+from langdetect import LangDetectException, detect
+from langdetect.detector import Detector
 from machina.models.fields import render_func
 from markdown2 import Markdown
 
@@ -14,6 +15,10 @@ def check_post_approbation(post):
     because the post is not save yet
     """
     rendered = render_func(post.content.raw, safe_mode=True)
+    try:
+        language = detect(post.content.raw)
+    except LangDetectException:
+        language = Detector.UNKNOWN_LANG
 
     conditions = [
         (
@@ -21,7 +26,7 @@ def check_post_approbation(post):
             BlockedPostReason.BLOCKED_DOMAIN.label,
         ),
         (Markdown.html_removed_text_compat in rendered, BlockedPostReason.HTML_TAGS.label),
-        (detect(post.content.raw) not in settings.LANGUAGE_CODE, BlockedPostReason.ALTERNATIVE_LANGUAGE.label),
+        (language not in settings.LANGUAGE_CODE, BlockedPostReason.ALTERNATIVE_LANGUAGE.label),
         (
             post.username and BlockedEmail.objects.filter(email=post.username).exists(),
             BlockedPostReason.BLOCKED_USER.label,
