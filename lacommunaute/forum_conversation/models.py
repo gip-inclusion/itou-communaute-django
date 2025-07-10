@@ -59,7 +59,7 @@ class TopicQuerySet(models.QuerySet):
 
 
 class Topic(AbstractTopic):
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def get_absolute_url(self, with_fqdn=False):
         absolute_url = reverse(
@@ -159,7 +159,6 @@ class Post(AbstractPost):
             EmailLastSeen.objects.seen(
                 email=self.poster.email if self.poster else self.username, kind=EmailLastSeenKind.POST
             )
-
 
 
 class CertifiedPost(DatedModel):
