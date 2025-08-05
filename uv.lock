@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 
 [[package]]
@@ -996,7 +996,7 @@ wheels = [
 
 [[package]]
 name = "pylint"
-version = "3.3.5"
+version = "3.3.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "astroid" },
@@ -1007,9 +1007,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d5/e7/3616e8caa61f918c4864db075800a6bd7422621618045c188fd45c3f7a2b/pylint-3.3.5.tar.gz", hash = "sha256:38d0f784644ed493d91f76b5333a0e370a1c1bc97c22068a77523b4bf1e82c31", size = 1519168, upload-time = "2025-03-09T06:47:47.346Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/e4/83e487d3ddd64ab27749b66137b26dc0c5b5c161be680e6beffdc99070b3/pylint-3.3.7.tar.gz", hash = "sha256:2b11de8bde49f9c5059452e0c310c079c746a0a8eeaa789e5aa966ecc23e4559", size = 1520709, upload-time = "2025-05-04T17:07:51.089Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/62/42199570fc199cc0f6825d746ddb0183b30739b334dc6d85edeaa8a2073c/pylint-3.3.5-py3-none-any.whl", hash = "sha256:7cb170929a371238530b2eeea09f5f28236d106b70308c3d46a9c0cf11634633", size = 522215, upload-time = "2025-03-09T06:47:45.03Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/83/bff755d09e31b5d25cc7fdc4bf3915d1a404e181f1abf0359af376845c24/pylint-3.3.7-py3-none-any.whl", hash = "sha256:43860aafefce92fca4cf6b61fe199cdc5ae54ea28f9bf4cd49de267b5195803d", size = 522565, upload-time = "2025-05-04T17:07:48.714Z" },
 ]
 
 [[package]]
