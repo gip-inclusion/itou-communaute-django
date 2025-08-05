@@ -858,7 +858,7 @@ wheels = [
 
 [[package]]
 name = "moto"
-version = "5.1.1"
+version = "5.1.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "boto3" },
@@ -871,9 +871,9 @@ dependencies = [
     { name = "werkzeug" },
     { name = "xmltodict" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ee/ee/88b514190cb4ece02b377ea61ff26b596fa967609c82aa2f2856bfae2f3e/moto-5.1.1.tar.gz", hash = "sha256:5b25dbc62cccd9f36ef062c870db49d976b241129024fab049e2d3d1296e2a57", size = 6647375, upload-time = "2025-03-02T19:48:06.408Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/33/62/767e0f65066489b50580a25182025fec19825cbed499ae2044da1e779ed6/moto-5.1.9.tar.gz", hash = "sha256:0c4f0387b06b5d24c0ce90f8f89f31a565cc05789189c5d59b5df02594f2e371", size = 7041662, upload-time = "2025-07-28T19:24:48.773Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e9/36/e3d70d25064a03dfa13555bf26ca934bb2167df221065938278e1e1961eb/moto-5.1.1-py3-none-any.whl", hash = "sha256:615904d6210431950a59a2bdec365d60e791eacbe3dd07a3a5d742c88ef847dd", size = 4788429, upload-time = "2025-03-02T19:48:03.308Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/0b/fd37926e3fd597df879d7c360f1641850023d30b1d67ba6686f4e33ab1fb/moto-5.1.9-py3-none-any.whl", hash = "sha256:e9ba7e4764a6088ccc34e3cc846ae719861ca202409fa865573de40a3e805b9b", size = 5216109, upload-time = "2025-07-28T19:24:45.997Z" },
 ]
 
 [[package]]
