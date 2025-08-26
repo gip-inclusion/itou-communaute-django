@@ -45,6 +45,14 @@ class Forum(AbstractForum):
             },
         )
 
+    class Meta(AbstractForum.Meta):
+        indexes = [
+            # MPTT isn’t supported anymore, and the index is only created for Django<5.
+            # https://github.com/django-mptt/django-mptt/commit/c169d90cf868ad5f0665d850706aaf5d3ef3923f
+            # https://github.com/django-mptt/django-mptt/pull/845
+            models.Index(fields=["tree_id", "lft"], name="forum_forum_tree_id_lft_idx"),
+        ]
+
     def get_unanswered_topics(self):
         return Topic.objects.unanswered().filter(forum__in=self.get_descendants(include_self=True))
 
