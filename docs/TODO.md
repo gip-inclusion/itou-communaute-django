@@ -1,5 +1,11 @@
 # Sujets à corriger à la reprise du projet
 
+## État des dépendances
+
+https://github.com/ellmetha/django-machina semble être en mode maintenance au
+mieux, pas de nouveau développements. Ce projet est basé sur
+https://github.com/django-mptt/django-mptt, qui n’est plus maintenu.
+
 ## Bucket S3
 
 Voir la branche git `ff/minio` pour un peu de code brouillon qui illustre l’idée.
