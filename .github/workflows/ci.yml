@@ -15,7 +15,7 @@ jobs:
 
     services:
       minio:
-        image: bitnami/minio
+        image: bitnamilegacy/minio
         env:
           MINIO_ROOT_USER: minioadmin
           MINIO_ROOT_PASSWORD: minioadmin

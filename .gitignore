@@ -40,7 +40,6 @@ lacommunaute/staticfiles/
 lacommunaute/media/
 backups
 exports
-docs
 
 # Debian
 .bash_history
