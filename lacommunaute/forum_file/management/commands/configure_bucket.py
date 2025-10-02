@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 
 import boto3
 import httpx
-from botocore.client import Config
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -15,7 +14,7 @@ def s3_client():
         aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
         region_name=settings.AWS_S3_STORAGE_BUCKET_REGION,
-        config=Config(signature_version="s3v4"),
+        config=settings.AWS_S3_CLIENT_CONFIG,
     )
 
 
