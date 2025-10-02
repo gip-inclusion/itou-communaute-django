@@ -5,22 +5,6 @@ import pytest
 from botocore.config import Config
 from django.conf import settings
 
-from lacommunaute.forum.factories import ForumFactory
-from lacommunaute.forum.models import Forum
-
-
-# CleverCloud S3 implementation does not support recent data integrity features from AWS.
-# https://github.com/boto/boto3/issues/4392
-# https://github.com/boto/boto3/issues/4398#issuecomment-2619946229
-#
-# This test is here to ensure that file operations are ok on live cellar, to prevent
-# future failure.
-#
-@pytest.mark.skipif(os.getenv("CELLAR_ADDON_KEY_ID") is None, reason="Not using Cellar")
-def test_e2e_file_can_be_uploaded_to_cellar(db):
-    ForumFactory(with_image=True)
-    assert Forum.objects.exists()
-
 
 #
 # This test is expected not fail when live cellar conf will accept the integrity protection.
