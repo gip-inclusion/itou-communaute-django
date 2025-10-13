@@ -37,14 +37,14 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: 💾 Create a database to check migrations
         run: |
           psql <<SQL
               CREATE DATABASE communaute;
           SQL
       - name: 💂 Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
       - name: 💂 Set up Python
         run: uv python install
       - name: 💂 Install the project
