@@ -141,7 +141,7 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.contrib.messages.context_processors.messages",
                 "machina.core.context_processors.metadata",
-                "lacommunaute.utils.settings_context_processors.expose_settings",
+                "lacommunaute.utils.context_processors.expose_settings",
             ],
             "loaders": [
                 "django.template.loaders.filesystem.Loader",
