@@ -167,7 +167,7 @@ class OpenID_LoginTest(OpenID_BaseTestCase):
     @respx.mock
     def test_normal_signin(self):
         """
-        A user has created an account with Pro Connect.
+        A user has created an account with ProConnect.
         He logs out.
         He can log in again later.
         """
@@ -196,7 +196,7 @@ class OpenID_LogoutTest(OpenID_BaseTestCase):
         mock_oauth_dance(self)
         params = {
             "id_token_hint": 123456,
-            "post_logout_redirect_uri": f'http://testserver{reverse("pages:home")}',
+            "post_logout_redirect_uri": f"http://testserver{reverse('pages:home')}",
         }
         expected_redirection = f"{constants.OPENID_CONNECT_ENDPOINT_LOGOUT}?{urlencode(params)}"
         respx.get(constants.OPENID_CONNECT_ENDPOINT_LOGOUT).respond(200)
