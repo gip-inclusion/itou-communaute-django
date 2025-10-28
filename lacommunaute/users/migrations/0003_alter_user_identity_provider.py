@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="user",
             name="identity_provider",
             field=models.CharField(
-                choices=[("IC", "Inclusion Connect"), ("PC", "Pro Connect"), ("ML", "Magic Link")], max_length=2
+                choices=[("IC", "Inclusion Connect"), ("PC", "ProConnect"), ("ML", "Magic Link")], max_length=2
             ),
         ),
     ]

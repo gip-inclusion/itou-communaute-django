@@ -88,7 +88,7 @@ class OIDConnectUserData:
             created = False
         except User.DoesNotExist:
             try:
-                # look for a user with the same email but not yet migrated from Inclusion Connect to Pro Connect
+                # look for a user with the same email but not yet migrated from Inclusion Connect to ProConnect
                 user = User.objects.get(email=self.email)
                 created = False
             except User.DoesNotExist:
