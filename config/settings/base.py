@@ -80,6 +80,7 @@ LOCAL_APPS = [
     "lacommunaute.stats",
     "lacommunaute.forum_moderation",
     "lacommunaute.forum_permission",
+    "lacommunaute.nexus",
     "lacommunaute.notification",
     "lacommunaute.event",
     "lacommunaute.openid_connect",
@@ -520,3 +521,11 @@ EMAIL_LAST_SEEN_HASH_SALT = os.getenv("EMAIL_LAST_SEEN_HASH_SALT")
 EMAIL_LAST_SEEN_MISSYOU_BATCH_SIZE = 25
 EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY = 30  # days
 EMAIL_LAST_SEEN_MISSYOU_DELAY = 2 * 365 - EMAIL_LAST_SEEN_ARCHIVE_PERSONNAL_DATAS_DELAY  # days
+
+# Nexus metabase db
+# ---------------------------------------
+NEXUS_METABASE_DB_HOST = os.getenv("NEXUS_METABASE_DB_HOST")
+NEXUS_METABASE_DB_PORT = os.getenv("NEXUS_METABASE_DB_PORT")
+NEXUS_METABASE_DB_DATABASE = os.getenv("NEXUS_METABASE_DB_DATABASE")
+NEXUS_METABASE_DB_USER = os.getenv("NEXUS_METABASE_DB_USER")
+NEXUS_METABASE_DB_PASSWORD = os.getenv("NEXUS_METABASE_DB_PASSWORD")

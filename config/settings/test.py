@@ -44,3 +44,11 @@ EMPLOIS_PRESCRIBER_SEARCH = "http://test.com/prescriber/search"
 EMPLOIS_COMPANY_SEARCH = "http://test.com/company/search"
 
 EMAIL_LAST_SEEN_HASH_SALT = "bobby"
+
+# Nexus metabase db
+# ---------------------------------------
+NEXUS_METABASE_DB_HOST = DATABASES["default"]["HOST"]
+NEXUS_METABASE_DB_PORT = DATABASES["default"]["PORT"]
+NEXUS_METABASE_DB_DATABASE = DATABASES["default"]["NAME"]
+NEXUS_METABASE_DB_USER = DATABASES["default"]["USER"]
+NEXUS_METABASE_DB_PASSWORD = DATABASES["default"]["PASSWORD"]
