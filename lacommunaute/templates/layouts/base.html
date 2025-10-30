@@ -157,14 +157,19 @@
                     "partnersList": false /* Show the number of partners on the popup/middle banner */
                 });
 
-                {% if MATOMO_BASE_URL %}
+                {% if MATOMO_BASE_URL and matomo_custom_url %}
 	                // Matomo :
                     tarteaucitron.user.matomoId = {{ MATOMO_SITE_ID }};
                     tarteaucitron.user.matomoHost = '{{ MATOMO_BASE_URL }}';
                     (tarteaucitron.job = tarteaucitron.job || []).push('matomo');
                 {% endif %}
             </script>
-            {% if MATOMO_BASE_URL %}
+            {% if MATOMO_BASE_URL and matomo_custom_url %}
+                {# Matomo/Piwik open source web analytics #}
+                <script id="matomo-custom-init" nonce="{{ request.csp_nonce }}">
+                    window._paq = window._paq || [];
+                    window._paq.push(['setCustomUrl', new URL('{{ matomo_custom_url }}', window.location.origin).href]);
+                </script>
                 <script type="text/javascript" src="{% static 'javascripts/matomo.js' %}" defer></script>
             {% endif %}
             <script type="text/javascript" src="{% static 'vendor/htmx-1.9.5/htmx.min.js' %}" defer></script>

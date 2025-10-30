@@ -142,6 +142,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "machina.core.context_processors.metadata",
                 "lacommunaute.utils.context_processors.expose_settings",
+                "lacommunaute.utils.context_processors.matomo",
             ],
             "loaders": [
                 "django.template.loaders.filesystem.Loader",
